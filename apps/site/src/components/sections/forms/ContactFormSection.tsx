@@ -119,6 +119,7 @@ export default function ContactFormSection({ onSuccess, onError }: ContactFormSe
   const onSubmit = (data: ContactFormClientData) => {
     trackEvent('contact_form_submitted', { inquiry_type: data.inquiryType });
 
+    // eslint-disable-next-line react-hooks/purity -- Date.now() in event handler is safe
     const submissionTime = formLoadTime.current > 0 ? Date.now() - formLoadTime.current : 0;
     const sanitizedData = sanitizeContactFormData(data);
 

@@ -50,7 +50,7 @@ describe('Contact API Route', () => {
 
   afterEach(() => {
     // Clear rate limit map between tests
-    const rateLimitMap = (globalThis as any).rateLimitMap;
+    const rateLimitMap = (globalThis as { rateLimitMap?: Map<string, number[]> }).rateLimitMap;
     if (rateLimitMap) {
       rateLimitMap.clear();
     }
