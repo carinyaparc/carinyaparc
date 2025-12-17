@@ -51,7 +51,8 @@ const textVariants = cva('', {
 });
 
 export interface TextProps
-  extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
+  extends
+    Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
     VariantProps<typeof textVariants> {
   as?: 'p' | 'span' | 'div';
   asChild?: boolean;

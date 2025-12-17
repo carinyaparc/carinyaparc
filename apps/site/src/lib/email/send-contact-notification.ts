@@ -176,7 +176,7 @@ export async function verifyEmailServiceConfig(): Promise<{
       // This is a lightweight API call to verify the key
       const testResend = new Resend(process.env.RESEND_API_KEY);
       await testResend.domains.list(); // Simple API call to verify auth
-    } catch (error) {
+    } catch {
       errors.push('RESEND_API_KEY is invalid or expired');
     }
   }

@@ -5,15 +5,39 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_SANITY_PROJECT_ID",
+        "NEXT_PUBLIC_SANITY_DATASET",
+        "SANITY_API_READ_TOKEN",
+        "SANITY_API_WRITE_TOKEN"
+      ]
     },
     "lint": {
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_SANITY_PROJECT_ID",
+        "NEXT_PUBLIC_SANITY_DATASET",
+        "SANITY_API_READ_TOKEN",
+        "SANITY_API_WRITE_TOKEN"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_SANITY_PROJECT_ID",
+        "NEXT_PUBLIC_SANITY_DATASET",
+        "SANITY_API_READ_TOKEN",
+        "SANITY_API_WRITE_TOKEN"
+      ]
     },
     "test": {
       "dependsOn": ["^build"],
@@ -33,7 +57,13 @@
     "test:unit": {
       "dependsOn": ["^build"],
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "tests/unit/**/*.ts", "tests/unit/**/*.tsx"],
-      "env": ["NODE_ENV"]
+      "env": [
+        "NODE_ENV",
+        "NEXT_PUBLIC_SANITY_PROJECT_ID",
+        "NEXT_PUBLIC_SANITY_DATASET",
+        "SANITY_API_READ_TOKEN",
+        "SANITY_API_WRITE_TOKEN"
+      ]
     },
     "test:integration": {
       "dependsOn": ["^build"],
@@ -60,7 +90,15 @@
       "cache": false
     },
     "typecheck": {
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_SANITY_PROJECT_ID",
+        "NEXT_PUBLIC_SANITY_DATASET",
+        "SANITY_API_READ_TOKEN",
+        "SANITY_API_WRITE_TOKEN"
+      ]
     }
   },
   "globalEnv": [
@@ -73,6 +111,17 @@
     "SECURITY_CSP_ENABLED",
     "SECURITY_CSP_REPORT_ONLY",
     "SECURITY_CACHE_ENABLED",
-    "SECURITY_CSP_REPORT_URI"
+    "SECURITY_CSP_REPORT_URI",
+    "NEXT_PUBLIC_SANITY_PROJECT_ID",
+    "NEXT_PUBLIC_SANITY_DATASET",
+    "SANITY_API_READ_TOKEN",
+    "SANITY_API_WRITE_TOKEN",
+    "CONTACT_FORM_ENABLE",
+    "CONTACT_FORM_RATE_LIMITING",
+    "CONTACT_RATE_LIMIT_MAX",
+    "CONTACT_RATE_LIMIT_WINDOW_HOURS",
+    "RESEND_API_KEY",
+    "CONTACT_EMAIL_RECIPIENT",
+    "CONTACT_EMAIL_FROM"
   ]
 }

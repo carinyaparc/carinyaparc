@@ -2,7 +2,7 @@
  * Email template for contact form notifications
  */
 
-import { sanitizeForEmailGeneration, type ContactFormInput } from '@/src/lib/validation/sanitize';
+import { sanitizeForEmailGeneration } from '@/src/lib/validation/sanitize';
 
 /**
  * Generate HTML email template for contact form submission

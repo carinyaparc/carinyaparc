@@ -49,8 +49,7 @@ const stackVariants = cva('flex', {
 });
 
 export interface StackProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof stackVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof stackVariants> {
   align?: Align;
   justify?: Justify;
 }

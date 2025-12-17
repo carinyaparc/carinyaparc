@@ -33,7 +33,7 @@ Before you contribute, it’s worth skimming:
 - **Node.js**: `>= 22.17.0`
 - **pnpm**: `>= 9` (preferred package manager)
 
-Install pnpm if you don’t already have it:
+Install pnpm if you don't already have it:
 
 ```bash
 npm install -g pnpm
@@ -46,6 +46,56 @@ git clone <REPO_URL> carinya-parc
 cd carinya-parc
 pnpm install
 ```
+
+### Environment setup
+
+The site requires environment variables for Sanity CMS integration. Follow these steps to configure your local environment:
+
+1. **Copy the example environment file:**
+
+   ```bash
+   cp apps/site/.env.example apps/site/.env.local
+   ```
+
+2. **Obtain Sanity credentials:**
+   - Navigate to [Sanity Dashboard](https://sanity.io/manage)
+   - Select the Carinya Parc project
+   - Go to **API** → **Tokens**
+   - Create or obtain the required API tokens (see below)
+
+3. **Configure required variables in `.env.local`:**
+
+   | Variable                        | Description                                  | Where to get it                     |
+   | ------------------------------- | -------------------------------------------- | ----------------------------------- |
+   | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project identifier                    | Sanity Dashboard → Project Settings |
+   | `NEXT_PUBLIC_SANITY_DATASET`    | Dataset name (`development` or `production`) | Use `development` for local work    |
+   | `SANITY_API_READ_TOKEN`         | API token with Viewer permissions            | Sanity Dashboard → API → Tokens     |
+   | `SANITY_API_WRITE_TOKEN`        | API token with Editor permissions (optional) | Sanity Dashboard → API → Tokens     |
+
+4. **Create API tokens in Sanity (if needed):**
+
+   **Read Token (Viewer role):**
+   - Name: `Carinya Parc Site - Read Token (Development)`
+   - Permissions: **Viewer** (read-only)
+   - Click "Add API Token"
+
+   **Write Token (Editor role) - Optional:**
+   - Name: `Carinya Parc Site - Write Token (Development)`
+   - Permissions: **Editor** (read/write)
+   - Click "Add API Token"
+
+5. **Verify configuration:**
+
+   Your `.env.local` file should look like:
+
+   ```bash
+   NEXT_PUBLIC_SANITY_PROJECT_ID=abc123xyz
+   NEXT_PUBLIC_SANITY_DATASET=development
+   SANITY_API_READ_TOKEN=skYourActualReadTokenHere
+   SANITY_API_WRITE_TOKEN=skYourActualWriteTokenHere
+   ```
+
+**Security note:** Never commit `.env.local` to version control. This file contains sensitive API tokens and is excluded via `.gitignore`.
 
 ### Run the site locally
 

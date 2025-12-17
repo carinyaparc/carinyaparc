@@ -44,8 +44,7 @@ const gridVariants = cva('grid', {
 });
 
 export interface GridProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof gridVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof gridVariants> {
   align?: Align;
 }
 

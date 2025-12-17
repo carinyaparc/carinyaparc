@@ -46,7 +46,8 @@ const headingVariants = cva('font-semibold tracking-tight', {
 });
 
 export interface HeadingProps
-  extends Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color'>,
+  extends
+    Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color'>,
     VariantProps<typeof headingVariants> {
   level: 1 | 2 | 3 | 4 | 5 | 6;
   asChild?: boolean;
