@@ -16,6 +16,9 @@ vi.mock('@sentry/nextjs', () => ({
   init: vi.fn(),
 }));
 
+// Mock server-only package for test environment
+vi.mock('server-only', () => ({}));
+
 // Only mock browser APIs if we're in jsdom environment
 if (isJsdomEnvironment) {
   // Mock browser APIs not available in jsdom

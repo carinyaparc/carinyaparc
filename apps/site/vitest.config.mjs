@@ -26,6 +26,8 @@ const sharedConfig = {
       '@': resolve(__dirname, './src'),
       // Test utilities
       'test-utils': resolve(__dirname, './__tests__/helpers/renderWithProviders.tsx'),
+      // Mock server-only package for tests
+      'server-only': resolve(__dirname, './__tests__/mocks/server-only.js'),
     },
   },
   define: {
