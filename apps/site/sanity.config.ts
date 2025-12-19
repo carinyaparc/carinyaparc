@@ -14,10 +14,10 @@ import { visionTool } from '@sanity/vision';
 import { presentationTool } from 'sanity/presentation';
 
 // Import Sanity client configuration
-import { projectId, dataset, apiVersion } from '@/sanity/lib/api';
+import { projectId, dataset, apiVersion } from './src/sanity/lib/api';
 
 // Import schema types
-import { schemaTypes } from '@/sanity/schemas';
+import { schemaTypes } from './src/sanity/schemas';
 
 /**
  * Site URL for preview mode in presentation tool
