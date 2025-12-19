@@ -13,42 +13,23 @@ import type { SchemaTypeDefinition } from 'sanity';
 
 import { authorSchema } from './documents/author';
 import { categorySchema } from './documents/category';
+import { postSchema } from './documents/post';
 import { tagSchema } from './documents/tag';
 
 /**
  * Array of all schema type definitions for Sanity Studio
  *
- * Currently registered schemas:
- * - Author schema (CP-04-001)
- * - Category schema (CP-04-002)
- * - Tag schema (CP-04-003)
- *
- * Future schemas to be added:
+ * Defined schemas:
+ * - Author schema
+ * - Category schema
+ * - Tag schema
  * - Post schema
- * - Recipe schema
- * - Legal Page schema
- * - Site Settings schema
- * - Portable Text schema
- * - Recipe Ingredient schema
- * - SEO schema
- *
- * @example
- * ```typescript
- * import { postSchema } from './documents/post'
- * import { authorSchema } from './documents/author'
- * import { categorySchema } from './documents/category'
- *
- * export const schemaTypes: SchemaTypeDefinition[] = [
- *   postSchema,
- *   authorSchema,
- *   categorySchema,
- *   // ... other schemas
- * ]
- * ```
  */
+
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Document schemas
   authorSchema,
   categorySchema,
+  postSchema,
   tagSchema,
 ];
