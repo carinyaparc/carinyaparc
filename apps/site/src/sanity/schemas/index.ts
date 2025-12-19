@@ -11,13 +11,17 @@
 
 import type { SchemaTypeDefinition } from 'sanity';
 
+import { authorSchema } from './documents/author';
+
 /**
  * Array of all schema type definitions for Sanity Studio
  *
- * Initially empty - will be populated with content type schemas:
+ * Currently registered schemas:
+ * - Author schema (CP-04-001)
+ *
+ * Future schemas to be added:
  * - Post schema
  * - Recipe schema
- * - Author schema
  * - Category schema
  * - Tag schema
  * - Legal Page schema
@@ -38,4 +42,7 @@ import type { SchemaTypeDefinition } from 'sanity';
  * ]
  * ```
  */
-export const schemaTypes: SchemaTypeDefinition[] = [];
+export const schemaTypes: SchemaTypeDefinition[] = [
+  // Document schemas
+  authorSchema,
+];
