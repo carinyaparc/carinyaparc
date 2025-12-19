@@ -259,6 +259,10 @@ Accessibility is treated as a ✓ requirement, not a “nice to have”.
 
 - **Location**: `apps/site/src/lib/security/` - centralised security utilities
 - **Content Security Policy (CSP)**: Dynamic CSP generation with nonce support
+  - Allows Google Tag Manager, Google Analytics, Google Fonts
+  - Allows Sanity Studio (`*.sanity.io` for API, `cdn.sanity.io` for images)
+  - Allows Sentry error tracking and Vercel analytics
+  - Configuration in `apps/site/src/lib/security/constants.ts`
 - **Security headers**: Comprehensive headers (HSTS, X-Frame-Options, etc.)
 - **Cache control**: Route-based cache directives for sensitive/public paths
 
