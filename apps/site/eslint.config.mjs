@@ -1,13 +1,11 @@
 import { nextJsConfig } from '@repo/eslint-config/next-js';
 import prettier from 'eslint-plugin-prettier';
-import turboPlugin from 'eslint-plugin-turbo';
 
 const eslintConfig = [
   ...nextJsConfig,
   {
     plugins: {
       prettier,
-      turbo: turboPlugin,
     },
     rules: {
       'react/no-unescaped-entities': 'off',
