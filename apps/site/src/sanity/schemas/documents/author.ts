@@ -39,10 +39,7 @@ export const authorSchema: SchemaTypeDefinition = defineType({
       type: 'string',
       description: 'Full name of the author (e.g., "Jonno Daddia")',
       validation: (Rule) =>
-        Rule.required()
-          .min(2)
-          .max(100)
-          .error('Name must be between 2 and 100 characters'),
+        Rule.required().min(2).max(100).error('Name must be between 2 and 100 characters'),
     }),
     defineField({
       name: 'slug',
@@ -123,4 +120,3 @@ export const authorSchema: SchemaTypeDefinition = defineType({
     },
   },
 });
-

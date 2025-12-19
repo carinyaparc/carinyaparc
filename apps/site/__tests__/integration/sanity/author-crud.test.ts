@@ -20,8 +20,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createClient } from 'next-sanity';
 
 // Skip these tests if Sanity credentials are not configured
-const shouldSkip =
-  !process.env.SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN;
+const shouldSkip = !process.env.SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN;
 
 const testClient = shouldSkip
   ? null
@@ -60,7 +59,7 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
       url: 'https://cdn.sanity.io/images/test/image.jpg',
     };
 
-    const author = await testClient.create({
+    const author = (await testClient.create({
       _type: 'author',
       name: 'Test Author',
       slug: { _type: 'slug', current: 'test-author-unique-1' },
@@ -73,7 +72,7 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
         },
         alt: 'Test author profile image',
       },
-    }) as any;
+    })) as any;
 
     expect(author._id).toBeDefined();
     expect(author.name).toBe('Test Author');
@@ -87,7 +86,7 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
     // AC-007: Bio field is optional and document saves successfully without it
     if (!testClient) return;
 
-    const author = await testClient.create({
+    const author = (await testClient.create({
       _type: 'author',
       name: 'Author Without Bio',
       slug: { _type: 'slug', current: 'author-without-bio' },
@@ -99,7 +98,7 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
         },
         alt: 'Author without bio profile image',
       },
-    }) as any;
+    })) as any;
 
     expect(author._id).toBeDefined();
     expect(author.name).toBe('Author Without Bio');
@@ -112,10 +111,9 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
     // Verify GROQ queries work correctly for author retrieval
     if (!testClient) return;
 
-    const author = await testClient.fetch(
-      `*[_type == "author" && slug.current == $slug][0]`,
-      { slug: 'test-author-unique-1' }
-    );
+    const author = await testClient.fetch(`*[_type == "author" && slug.current == $slug][0]`, {
+      slug: 'test-author-unique-1',
+    });
 
     expect(author).toBeDefined();
     expect(author.name).toBe('Test Author');
@@ -127,7 +125,7 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
     if (!testClient) return;
 
     const authors = await testClient.fetch(
-      `*[_type == "author"] | order(name asc) { _id, name, "slug": slug.current }`
+      `*[_type == "author"] | order(name asc) { _id, name, "slug": slug.current }`,
     );
 
     expect(Array.isArray(authors)).toBe(true);
@@ -147,10 +145,10 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
 
     const authorId = testAuthorIds[0] as string;
 
-    const updated = await testClient
+    const updated = (await testClient
       .patch(authorId)
       .set({ bio: 'Updated biography content' })
-      .commit() as any;
+      .commit()) as any;
 
     expect(updated.bio).toBe('Updated biography content');
   });
@@ -178,10 +176,9 @@ describe.skipIf(shouldSkip)('Author CRUD Operations', () => {
     await testClient.delete(deletedId);
 
     // Verify deletion
-    const result = await testClient.fetch(
-      `*[_type == "author" && _id == $id][0]`,
-      { id: deletedId }
-    );
+    const result = await testClient.fetch(`*[_type == "author" && _id == $id][0]`, {
+      id: deletedId,
+    });
 
     expect(result).toBeNull();
   });
@@ -256,4 +253,3 @@ describe.skipIf(shouldSkip)('Author Schema Validation', () => {
     }
   });
 });
-

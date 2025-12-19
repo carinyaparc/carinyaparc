@@ -80,4 +80,3 @@ export interface AuthorReference {
   _ref: string;
   _type: 'reference';
 }
-

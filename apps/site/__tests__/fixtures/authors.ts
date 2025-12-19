@@ -114,4 +114,3 @@ export const mockAuthorData: AuthorData[] = [
     // No bio - testing optional field
   },
 ];
-
