@@ -158,6 +158,11 @@ API routes:
 - `/api/sentry` → `src/app/api/sentry/route.ts`.
 - `/api/cron` → `src/app/api/cron/route.ts`.
 
+CMS routes:
+
+- `/studio` → `src/app/studio/[[...tool]]/page.tsx` (✓ new).
+  - Sanity Studio CMS interface (catch-all route for all studio tools).
+
 ### Route groups & segmentation (assumption)
 
 As the site grows, we may introduce route groups such as:

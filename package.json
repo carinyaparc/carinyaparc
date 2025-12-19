@@ -24,7 +24,8 @@
     "format": "prettier --write --log-level=warn .",
     "format:check": "prettier --check --log-level=warn .",
     "clean": "turbo run clean",
-    "validate:env": "bash scripts/validate-env.sh"
+    "validate:env": "bash scripts/validate-env.sh",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -36,6 +37,7 @@
     "@vitest/coverage-istanbul": "^4.0.16",
     "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9.39.2",
+    "husky": "^9.1.7",
     "jsdom": "^27.3.0",
     "msw": "^2.12.4",
     "prettier": "^3.7.4",
