@@ -4,9 +4,6 @@
  * Defines the Tag content type for Sanity CMS.
  * Tags provide flat taxonomy for cross-referencing posts, recipes, and other content.
  *
- * Requirements: FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009
- * Task: CP-04-003 (Tag Schema & Taxonomy System)
- *
  * @module sanity/schemas/documents/tag
  */
 
@@ -17,16 +14,16 @@ import type { SchemaTypeDefinition } from 'sanity';
  * Tag schema definition
  *
  * Fields:
- * - title: Tag name (required, 1-50 chars) (FR-002)
- * - slug: URL-friendly identifier (required, auto-generated from title, unique) (FR-003, FR-004)
- * - contentTypes: Array of content types this tag applies to (FR-005, FR-006)
+ * - title: Tag name (required, 1-50 chars)
+ * - slug: URL-friendly identifier (required, auto-generated from title, unique)
+ * - contentTypes: Array of content types this tag applies to
  *
  * Validation:
- * - Title required (1-50 chars) (FR-002)
- * - Slug uniqueness enforced via async validation (FR-004)
- * - At least one content type must be selected (FR-005)
+ * - Title required (1-50 chars)
+ * - Slug uniqueness enforced via async validation
+ * - At least one content type must be selected
  *
- * Preview: Shows tag title with content type scope badges (FR-009)
+ * Preview: Shows tag title with content type scope badges
  */
 export const tagSchema: SchemaTypeDefinition = defineType({
   name: 'tag',
@@ -57,7 +54,7 @@ export const tagSchema: SchemaTypeDefinition = defineType({
       },
       validation: (Rule) =>
         Rule.required().custom(async (slug, context) => {
-          // FR-004: Enforce slug uniqueness across all tag documents
+          // Enforce slug uniqueness across all tag documents
           if (!slug?.current) {
             return true; // Let required() rule handle empty case
           }
@@ -96,7 +93,7 @@ export const tagSchema: SchemaTypeDefinition = defineType({
         ],
         layout: 'grid',
       },
-      initialValue: ['post', 'recipe'], // FR-005: Default to all types for simplicity
+      initialValue: ['post', 'recipe'],
       validation: (Rule) =>
         Rule.required()
           .min(1)
@@ -106,7 +103,7 @@ export const tagSchema: SchemaTypeDefinition = defineType({
     }),
   ],
   preview: {
-    // FR-009: Configure preview with tag title and content type scope
+    // Configure preview with tag title and content type scope
     select: {
       title: 'title',
       contentTypes: 'contentTypes',

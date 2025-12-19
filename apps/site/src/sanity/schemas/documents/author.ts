@@ -4,8 +4,6 @@
  * Defines the Author content type for Sanity CMS.
  * Authors are referenced by blog posts and recipes for consistent attribution.
  *
- * Requirements: FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007
- *
  * @module sanity/schemas/documents/author
  */
 
@@ -22,11 +20,11 @@ import type { SchemaTypeDefinition } from 'sanity';
  * - image: Profile photo (required, with alt text for accessibility)
  *
  * Validation:
- * - Name, slug, and image are required (FR-006)
- * - Slug uniqueness enforced via async validation (FR-003)
- * - Image alt text required for accessibility (FR-004, NFR-004)
+ * - Name, slug, and image are required
+ * - Slug uniqueness enforced via async validation
+ * - Image alt text required for accessibility
  *
- * Preview: Shows author name and profile image (FR-005)
+ * Preview: Shows author name and profile image
  */
 export const authorSchema: SchemaTypeDefinition = defineType({
   name: 'author',
@@ -53,7 +51,7 @@ export const authorSchema: SchemaTypeDefinition = defineType({
       },
       validation: (Rule) =>
         Rule.required().custom(async (slug, context) => {
-          // FR-003: Enforce slug uniqueness across all author documents
+          // Enforce slug uniqueness across all author documents
           if (!slug?.current) {
             return true; // Let required() rule handle empty case
           }
@@ -85,7 +83,7 @@ export const authorSchema: SchemaTypeDefinition = defineType({
       description:
         'Short biographical information about the author (optional). Plain text for now; can be upgraded to rich text in future.',
       rows: 4,
-      // FR-007: Bio is optional
+      // Bio is optional
     }),
     defineField({
       name: 'image',
@@ -93,7 +91,7 @@ export const authorSchema: SchemaTypeDefinition = defineType({
       type: 'image',
       description: 'Author profile photo (required). Use a clear headshot or portrait.',
       options: {
-        hotspot: true, // Enable smart cropping for different aspect ratios
+        hotspot: true,
       },
       fields: [
         {
@@ -113,7 +111,7 @@ export const authorSchema: SchemaTypeDefinition = defineType({
     }),
   ],
   preview: {
-    // FR-005: Configure preview with author name and image
+    // Configure preview with author name and image
     select: {
       title: 'name',
       media: 'image',
