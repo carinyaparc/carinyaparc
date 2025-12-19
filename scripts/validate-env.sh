@@ -4,8 +4,7 @@
 # This script validates that environment variable configuration meets
 # requirements for Sanity CMS integration.
 #
-# Requirements covered: FR-005, FR-006, FR-007, NFR-001, NFR-004
-# Design reference: CI/CD Smoke Test section in design.md
+# Requirements covered:# Design reference: CI/CD Smoke Test section in design.md
 #
 # Usage: ./scripts/validate-env.sh
 #
@@ -21,7 +20,7 @@ echo ""
 # Track validation status
 validation_failed=0
 
-# FR-005: Check .env.example exists and contains required variables
+#Check .env.example exists and contains required variables
 echo "Checking .env.example file..."
 if [ ! -f "apps/site/.env.example" ]; then
   echo "✗ .env.example not found at apps/site/.env.example"
@@ -30,7 +29,7 @@ else
   echo "✓ .env.example file exists"
 fi
 
-# FR-005, AC-001: Verify all required variables are documented
+#Verify all required variables are documented
 if [ -f "apps/site/.env.example" ]; then
   echo ""
   echo "Checking required variables in .env.example..."
@@ -52,7 +51,7 @@ if [ -f "apps/site/.env.example" ]; then
   done
 fi
 
-# FR-006, AC-002, NFR-001: Check .gitignore excludes sensitive files
+#Check .gitignore excludes sensitive files
 echo ""
 echo "Checking .gitignore configuration..."
 
@@ -77,7 +76,7 @@ if grep -q "^\.env\.example$" .gitignore || grep -q "^\.env\.example$" apps/site
   echo "  Current .gitignore has exclusion rule that may prevent committing .env.example"
 fi
 
-# NFR-004: Verify .env.example is committed (exists in git)
+#Verify .env.example is committed (exists in git)
 echo ""
 echo "Checking .env.example is tracked by git..."
 if git ls-files --error-unmatch apps/site/.env.example > /dev/null 2>&1; then

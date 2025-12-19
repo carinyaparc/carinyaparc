@@ -1,7 +1,6 @@
 /**
  * Container layout primitive
  * Max-width container with responsive padding
- * Maps to: FR-3, NFR-3
  * Task: T1.10
  */
 

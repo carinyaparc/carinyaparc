@@ -1,7 +1,6 @@
 /**
  * Grid layout primitive
  * Responsive grid layout
- * Maps to: FR-3, NFR-3
  * Task: T1.12
  */
 

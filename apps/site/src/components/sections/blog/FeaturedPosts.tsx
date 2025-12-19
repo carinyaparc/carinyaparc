@@ -1,7 +1,6 @@
 /**
  * FeaturedPosts organism - Refactored with PostCard molecule
- * Maps to: FR-5, NFR-3
- * Task: T4.6
+ * Maps to: * Task: T4.6
  */
 
 import Image from 'next/image';

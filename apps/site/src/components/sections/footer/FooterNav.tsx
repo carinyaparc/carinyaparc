@@ -1,7 +1,6 @@
 /**
  * FooterNav sub-component - Extracted from Footer
- * Maps to: FR-5, NFR-3
- * Task: T4.2
+ * Maps to: * Task: T4.2
  */
 
 import Link from 'next/link';

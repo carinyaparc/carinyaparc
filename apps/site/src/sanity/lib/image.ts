@@ -4,10 +4,10 @@
  * This module provides a type-safe image URL builder for generating optimized
  * image URLs from Sanity's image CDN. It wraps @sanity/image-url to provide:
  *
- * - Type-safe image URL generation with full IntelliSense support (FR-001, FR-002)
- * - Graceful handling of null/undefined image references (FR-007)
- * - Integration with Next.js <Image> component (FR-009)
- * - Support for all Sanity image transformations (FR-005)
+ * - Type-safe image URL generation with full IntelliSense support
+ * - Graceful handling of null/undefined image references
+ * - Integration with Next.js <Image> component
+ * - Support for all Sanity image transformations
  *
  * @module sanity/lib/image
  */
@@ -19,7 +19,7 @@ import { client } from './client';
 
 /**
  * Pre-configured image URL builder instance
- * Cached at module level for performance (NFR-001, NFR-003)
+ * Cached at module level for performance
  */
 const builder = imageUrlBuilder(client);
 
@@ -67,17 +67,17 @@ const createSafeFallbackBuilder = (): ImageUrlBuilder => {
  * generate CDN URLs with transformation parameters (width, height, quality,
  * format, crop, etc.). The builder uses a fluent API for chaining transformations.
  *
- * **Graceful Null Handling (FR-007, AC-006):**
+ * **Graceful Null Handling:**
  * - Returns a safe fallback builder for `null` or `undefined` sources
  * - Calling `.url()` on the fallback returns an empty string
  * - Never throws runtime errors for missing image references
  *
- * **TypeScript Support (FR-004, NFR-002):**
+ * **TypeScript Support:**
  * - Full type inference for transformation methods
  * - IntelliSense for available parameters
  * - Compile-time validation of transformation chains
  *
- * **Performance (NFR-001, NFR-003):**
+ * **Performance:**
  * - URL generation completes in < 1ms p95
  * - Module-level builder caching for zero initialization overhead
  * - Tree-shakeable when used only in server components
@@ -106,7 +106,7 @@ const createSafeFallbackBuilder = (): ImageUrlBuilder => {
  * // Graceful null handling
  * const imageUrl = urlFor(post.maybeImage)?.url() || '/placeholder.jpg';
  *
- * // Next.js Image integration (FR-009, AC-009)
+ * // Next.js Image integration
  * <Image
  *   src={urlFor(image).width(800).url()}
  *   alt={image.alt}
@@ -118,7 +118,7 @@ const createSafeFallbackBuilder = (): ImageUrlBuilder => {
  * @see https://github.com/sanity-io/image-url - Official @sanity/image-url documentation
  */
 export function urlFor(source: SanityImageSource | null | undefined): ImageUrlBuilder {
-  // Graceful null/undefined handling (FR-007, AC-006)
+  // Graceful null/undefined handling
   // Return safe fallback that produces empty string URL
   if (!source) {
     if (process.env.NODE_ENV === 'development') {
@@ -131,8 +131,8 @@ export function urlFor(source: SanityImageSource | null | undefined): ImageUrlBu
     return createSafeFallbackBuilder();
   }
 
-  // Create and return configured ImageUrlBuilder (FR-002, AC-002)
-  // Builder is pre-configured with projectId and dataset from client (FR-003, AC-002)
+  // Create and return configured ImageUrlBuilder
+  // Builder is pre-configured with projectId and dataset from client
   try {
     const imageBuilder = builder.image(source);
     // Wrap the url() method to catch any errors during URL generation
@@ -141,7 +141,7 @@ export function urlFor(source: SanityImageSource | null | undefined): ImageUrlBu
       try {
         return originalUrl();
       } catch (error) {
-        // Graceful error handling for malformed references (NFR-005)
+        // Graceful error handling for malformed references
         if (process.env.NODE_ENV === 'development') {
           console.error('[Sanity Image] Failed to generate image URL:', error);
         }
@@ -150,7 +150,7 @@ export function urlFor(source: SanityImageSource | null | undefined): ImageUrlBu
     };
     return imageBuilder;
   } catch (error) {
-    // Graceful error handling (NFR-005)
+    // Graceful error handling
     if (process.env.NODE_ENV === 'development') {
       console.error('[Sanity Image] Failed to create image URL builder:', error);
     }
@@ -160,19 +160,19 @@ export function urlFor(source: SanityImageSource | null | undefined): ImageUrlBu
 }
 
 /**
- * Re-export ImageUrlBuilder type for external usage (FR-004, AC-004)
+ * Re-export ImageUrlBuilder type for external usage
  * Provides full TypeScript support for transformation methods
  */
 export type { ImageUrlBuilder } from '@sanity/image-url';
 
 /**
- * Re-export SanityImageSource type for external usage (FR-004, AC-004)
+ * Re-export SanityImageSource type for external usage
  * Covers all valid input formats for urlFor()
  */
 export type { SanityImageSource } from '@sanity/image-url';
 
 /**
- * Sanity image object type with crop and hotspot data (FR-004, FR-008)
+ * Sanity image object type with crop and hotspot data
  * This is the typical structure returned from Sanity image fields
  */
 export interface SanityImageObject {
@@ -210,7 +210,7 @@ export interface SanityAsset {
 }
 
 /**
- * Sanity crop data for image cropping (FR-008, AC-007)
+ * Sanity crop data for image cropping
  * Defines the crop boundaries relative to the original image
  */
 export interface SanityCrop {
@@ -222,7 +222,7 @@ export interface SanityCrop {
 }
 
 /**
- * Sanity hotspot data for focal point cropping (FR-008, AC-007)
+ * Sanity hotspot data for focal point cropping
  * Defines the focal point for intelligent cropping
  */
 export interface SanityHotspot {
@@ -247,7 +247,7 @@ export interface SanityImagePalette {
 }
 
 /**
- * Helper type for Next.js Image component integration (FR-009)
+ * Helper type for Next.js Image component integration
  * Extracts necessary properties from Sanity image for Next.js <Image>
  */
 export interface NextImageProps {
@@ -259,7 +259,7 @@ export interface NextImageProps {
 }
 
 /**
- * Convert Sanity image to Next.js Image props (FR-009, AC-009)
+ * Convert Sanity image to Next.js Image props
  *
  * This helper extracts the necessary properties from a Sanity image object
  * and generates optimized URLs for use with Next.js <Image> component.

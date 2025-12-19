@@ -1,6 +1,5 @@
 /**
  * Input primitive component
- * Maps to: FR-3, NFR-2, NFR-3
  * Task: T1.8
  */
 

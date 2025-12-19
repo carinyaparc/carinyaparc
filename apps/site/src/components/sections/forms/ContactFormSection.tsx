@@ -1,7 +1,6 @@
 /**
  * ContactFormSection organism - Refactored with FormField molecule
- * Maps to: FR-5, NFR-3
- * Task: T4.3
+ * Maps to: * Task: T4.3
  *
  * Uses FormField molecule from @repo/ui
  * Preserved all existing validation and submission logic

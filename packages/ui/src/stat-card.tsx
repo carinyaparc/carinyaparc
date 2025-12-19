@@ -1,7 +1,6 @@
 /**
  * StatCard composition component
  * Display metric with label and optional icon
- * Maps to: FR-4, NFR-3
  * Task: T2.4
  */
 

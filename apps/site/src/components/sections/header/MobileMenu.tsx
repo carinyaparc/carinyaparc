@@ -1,7 +1,6 @@
 /**
  * MobileMenu sub-component - Extracted from Header
- * Maps to: FR-5, NFR-3
- * Task: T4.1
+ * Maps to: * Task: T4.1
  */
 
 'use client';

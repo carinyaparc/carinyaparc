@@ -1,7 +1,6 @@
 /**
  * Stack layout primitive
  * Vertical/horizontal flex layout with consistent spacing
- * Maps to: FR-3, NFR-3
  * Task: T1.11
  */
 

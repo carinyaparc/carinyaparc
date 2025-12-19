@@ -5,8 +5,8 @@
  * and that server-only enforcement is working correctly.
  *
  * Requirements tested:
- * - NFR-003: No token exposure in client bundles
- * - FR-009: Token validation and error messages
+ * -No token exposure in client bundles
+ * -Token validation and error messages
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -25,7 +25,7 @@ describe('Sanity Client Security', () => {
     vi.stubEnv('NODE_ENV', originalNodeEnv || 'test');
   });
 
-  describe('Token Protection (NFR-003)', () => {
+  describe('Token Protection', () => {
     it('should not expose token in client config when accessed', async () => {
       // Arrange
       vi.stubEnv('NODE_ENV', 'test');
@@ -52,7 +52,7 @@ describe('Sanity Client Security', () => {
     });
   });
 
-  describe('Token Validation (FR-009)', () => {
+  describe('Token Validation', () => {
     it('should throw clear error when token is missing', async () => {
       // Arrange
       vi.stubEnv('NODE_ENV', 'test');

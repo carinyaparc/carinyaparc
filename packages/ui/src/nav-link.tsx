@@ -1,7 +1,6 @@
 /**
  * NavLink composition component
  * Navigation link with active state handling
- * Maps to: FR-4, NFR-3
  * Task: T2.3
  */
 

@@ -1,7 +1,6 @@
 /**
  * RadioGroup primitive component
  * Accessible radio group using Radix UI
- * Maps to: FR-3, NFR-2, NFR-3
  * Task: T1.9
  */
 

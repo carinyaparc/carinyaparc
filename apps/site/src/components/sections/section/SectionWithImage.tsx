@@ -1,7 +1,6 @@
 /**
  * SectionWithImage organism - Refactored without React Context
- * Maps to: FR-5, NFR-3
- * Task: T3.4
+ * Maps to: * Task: T3.4
  *
  * Removed React Context, uses explicit props
  * Preserved existing styling and layout

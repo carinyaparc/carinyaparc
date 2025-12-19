@@ -1,7 +1,6 @@
 /**
  * LatestPosts organism - Refactored with PostCard molecule
- * Maps to: FR-5, NFR-3
- * Task: T4.5
+ * Maps to: * Task: T4.5
  */
 
 import Link from 'next/link';

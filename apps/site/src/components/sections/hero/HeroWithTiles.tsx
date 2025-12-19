@@ -1,7 +1,6 @@
 /**
  * HeroWithTiles organism - Refactored
- * Maps to: FR-5, NFR-3
- * Task: T3.3
+ * Maps to: * Task: T3.3
  *
  * Hero with image tile grid
  * Preserved existing styling, simplified structure

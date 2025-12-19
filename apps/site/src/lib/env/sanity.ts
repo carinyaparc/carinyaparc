@@ -16,8 +16,6 @@ import type { SanityEnv } from './types';
  * This function should be called at application startup or when initializing
  * Sanity clients to ensure all required environment variables are properly configured.
  *
- * Requirements covered: NFR-002 (clear error messages)
- *
  * @throws {Error} if validation fails with detailed error messages
  * @returns {SanityEnv} Validated environment configuration
  *

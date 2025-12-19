@@ -2,7 +2,7 @@
  * Unit tests for Sanity Live Content Configuration
  *
  * Tests live query configuration, cache tag generation, revalidation strategies,
- * and environment-based configuration as specified in CP-02-002.
+ * and environment-based configuration.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';

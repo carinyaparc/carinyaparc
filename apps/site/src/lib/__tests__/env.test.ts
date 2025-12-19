@@ -1,8 +1,7 @@
 /**
  * Unit tests for Sanity environment variable validation
  *
- * Tests coverage for FR-001, FR-002, FR-003, FR-004, FR-005
- * Design reference: Testing Strategy section in design.md
+ * Tests coverage for * Design reference: Testing Strategy section in design.md
  *
  * @module env.test
  */
@@ -25,7 +24,7 @@ describe('Sanity Environment Configuration', () => {
 
   describe('getSanityEnv - valid configurations', () => {
     it('should validate correct environment variables', () => {
-      // AC-003: Application starts with configured environment variables
+      //Application starts with configured environment variables
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'abc123xyz';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       process.env.SANITY_API_READ_TOKEN = 'skTestToken1234567890abcdefghijklmnopqrstuvwxyz';
@@ -40,7 +39,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should allow SANITY_API_WRITE_TOKEN to be optional', () => {
-      // FR-004: Write token is optional
+      //Write token is optional
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'abc123';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       process.env.SANITY_API_READ_TOKEN = 'skValidToken123';
@@ -53,7 +52,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should accept "development" as valid dataset', () => {
-      // FR-002: Dataset can be "development" or "production"
+      //Dataset can be "development" or "production"
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'test123';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'development';
       process.env.SANITY_API_READ_TOKEN = 'skValidToken456';
@@ -65,7 +64,7 @@ describe('Sanity Environment Configuration', () => {
 
   describe('getSanityEnv - missing required variables', () => {
     it('should throw error when NEXT_PUBLIC_SANITY_PROJECT_ID is missing', () => {
-      // FR-001: Project ID is required
+      //Project ID is required
       delete process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       process.env.SANITY_API_READ_TOKEN = 'skValidToken123';
@@ -75,7 +74,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should throw error when NEXT_PUBLIC_SANITY_DATASET is missing', () => {
-      // FR-002: Dataset is required
+      //Dataset is required
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'abc123';
       delete process.env.NEXT_PUBLIC_SANITY_DATASET;
       process.env.SANITY_API_READ_TOKEN = 'skValidToken123';
@@ -85,7 +84,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should throw error when SANITY_API_READ_TOKEN is missing', () => {
-      // FR-003: Read token is required
+      //Read token is required
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'abc123';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       delete process.env.SANITY_API_READ_TOKEN;
@@ -97,7 +96,7 @@ describe('Sanity Environment Configuration', () => {
 
   describe('getSanityEnv - invalid formats', () => {
     it('should throw error when NEXT_PUBLIC_SANITY_PROJECT_ID has invalid format', () => {
-      // FR-001: Project ID must be alphanumeric
+      //Project ID must be alphanumeric
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'Invalid-Project_ID!';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       process.env.SANITY_API_READ_TOKEN = 'skValidToken123';
@@ -106,7 +105,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should throw error when SANITY_API_READ_TOKEN has invalid format', () => {
-      // FR-003, AC-004: Read token must start with "sk"
+      //Read token must start with "sk"
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'abc123';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       process.env.SANITY_API_READ_TOKEN = 'invalidtoken';
@@ -115,7 +114,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should throw error when SANITY_API_WRITE_TOKEN has invalid format', () => {
-      // FR-004, AC-005: Write token must start with "sk"
+      //Write token must start with "sk"
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'abc123';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       process.env.SANITY_API_READ_TOKEN = 'skValidToken123';
@@ -125,7 +124,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should accept valid dataset values only', () => {
-      // FR-002: Dataset must be "production" or "development"
+      //Dataset must be "production" or "development"
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'abc123';
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'invalid-dataset';
       process.env.SANITY_API_READ_TOKEN = 'skValidToken123';
@@ -163,7 +162,7 @@ describe('Sanity Environment Configuration', () => {
 
   describe('error messages', () => {
     it('should provide helpful error message with documentation link', () => {
-      // NFR-002: Clear error messages for misconfiguration
+      //Clear error messages for misconfiguration
       delete process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'production';
       process.env.SANITY_API_READ_TOKEN = 'skToken123';
@@ -173,7 +172,7 @@ describe('Sanity Environment Configuration', () => {
     });
 
     it('should list all validation errors when multiple fields are invalid', () => {
-      // NFR-002: Comprehensive error reporting
+      //Comprehensive error reporting
       delete process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
       process.env.NEXT_PUBLIC_SANITY_DATASET = 'invalid';
       process.env.SANITY_API_READ_TOKEN = 'notavalidtoken';

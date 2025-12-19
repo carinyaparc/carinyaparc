@@ -5,8 +5,8 @@
  * The 'server-only' import ensures this module cannot be imported in client-side code.
  *
  * Requirements:
- * - NFR-003: No token exposure in client bundles
- * - FR-009: Clear error messages for missing configuration
+ * -No token exposure in client bundles
+ * -Clear error messages for missing configuration
  *
  * @module sanity/lib/token
  */

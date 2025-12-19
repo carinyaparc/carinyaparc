@@ -1,7 +1,6 @@
 /**
  * Icon primitive component
  * Wrapper for lucide-react icons with consistent sizing
- * Maps to: FR-3, NFR-3
  * Task: T1.6
  */
 

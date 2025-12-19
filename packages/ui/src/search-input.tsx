@@ -1,7 +1,6 @@
 /**
  * SearchInput composition component
  * Input with search icon and clear button
- * Maps to: FR-4, NFR-3
  * Task: T2.2
  */
 

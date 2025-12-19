@@ -12,7 +12,7 @@
 
 /**
  * Helper function to assert required environment variables
- * Provides clear error messages when configuration is missing (FR-009)
+ * Provides clear error messages when configuration is missing
  */
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
@@ -24,7 +24,7 @@ function assertValue<T>(v: T | undefined, errorMessage: string): T {
 
 /**
  * Sanity dataset name (development or production)
- * FR-003: Dataset from NEXT_PUBLIC_SANITY_DATASET
+ *Dataset from NEXT_PUBLIC_SANITY_DATASET
  *
  * @throws {Error} if NEXT_PUBLIC_SANITY_DATASET is not set
  */
@@ -35,7 +35,7 @@ export const dataset = assertValue(
 
 /**
  * Sanity project ID
- * FR-002: Project ID from NEXT_PUBLIC_SANITY_PROJECT_ID
+ *Project ID from NEXT_PUBLIC_SANITY_PROJECT_ID
  *
  * @throws {Error} if NEXT_PUBLIC_SANITY_PROJECT_ID is not set
  */
@@ -46,7 +46,7 @@ export const projectId = assertValue(
 
 /**
  * Sanity API version in YYYY-MM-DD format
- * FR-004: API version string
+ *API version string
  *
  * Defaults to '2025-09-25' if not explicitly set.
  * See https://www.sanity.io/docs/api-versioning for versioning details.

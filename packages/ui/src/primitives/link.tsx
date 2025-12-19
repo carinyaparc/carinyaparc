@@ -1,7 +1,6 @@
 /**
  * Link primitive component
  * Next.js Link wrapper with consistent variants
- * Maps to: FR-3, NFR-3
  * Task: T1.5
  */
 

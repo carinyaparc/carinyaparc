@@ -1,7 +1,6 @@
 /**
  * FormField composition component
  * Composes Label + children + error message for forms
- * Maps to: FR-4, NFR-3
  * Task: T2.1
  */
 

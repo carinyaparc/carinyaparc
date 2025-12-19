@@ -2,12 +2,12 @@
  * Unit Tests - Sanity Image URL Builder Utility
  *
  * Tests coverage:
- * - Valid image reference URL generation (AC-001, AC-002, AC-003)
- * - Transformation chaining (AC-005, AC-008, AC-010)
- * - Null/undefined handling (AC-006)
- * - TypeScript type exports (AC-004)
- * - Next.js Image integration (AC-009)
- * - Focal point support (AC-007)
+ * - Valid image reference URL generation
+ * - Transformation chaining
+ * - Null/undefined handling
+ * - TypeScript type exports
+ * - Next.js Image integration
+ * - Focal point support
  *
  * @module sanity/lib/image.test
  */
@@ -29,7 +29,7 @@ vi.mock('./client', () => ({
 
 describe('urlFor()', () => {
   describe('valid image references', () => {
-    it('should generate URL for image object with asset reference (AC-001, AC-002, AC-003)', () => {
+    it('should generate URL for image object with asset reference ', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -57,7 +57,7 @@ describe('urlFor()', () => {
       expect(url).toContain('Xyz789AbcDefGhiJklMnoPqr');
     });
 
-    it('should support transformation chaining (AC-005, AC-008, AC-010)', () => {
+    it('should support transformation chaining ', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -74,7 +74,7 @@ describe('urlFor()', () => {
       expect(url).toContain('fm=webp');
     });
 
-    it('should support fit and crop transformations (AC-008)', () => {
+    it('should support fit and crop transformations', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -91,7 +91,7 @@ describe('urlFor()', () => {
       expect(url).toContain('crop=center');
     });
 
-    it('should respect focal point from hotspot data (AC-007)', () => {
+    it('should respect focal point from hotspot data', () => {
       const imageWithHotspot: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -114,7 +114,7 @@ describe('urlFor()', () => {
       expect(url).toBeTruthy();
     });
 
-    it('should support crop data from Sanity (AC-007)', () => {
+    it('should support crop data from Sanity', () => {
       const imageWithCrop: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -137,7 +137,7 @@ describe('urlFor()', () => {
       expect(url).toContain('cdn.sanity.io');
     });
 
-    it('should maintain immutability and allow method chaining (AC-010)', () => {
+    it('should maintain immutability and allow method chaining', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -160,7 +160,7 @@ describe('urlFor()', () => {
   });
 
   describe('null/undefined handling', () => {
-    it('should handle null image gracefully (AC-006)', () => {
+    it('should handle null image gracefully', () => {
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const url = urlFor(null).url();
@@ -176,7 +176,7 @@ describe('urlFor()', () => {
       consoleSpy.mockRestore();
     });
 
-    it('should handle undefined image gracefully (AC-006)', () => {
+    it('should handle undefined image gracefully', () => {
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const url = urlFor(undefined).url();
@@ -195,7 +195,7 @@ describe('urlFor()', () => {
   });
 
   describe('TypeScript types', () => {
-    it('should export ImageUrlBuilder type (AC-004)', () => {
+    it('should export ImageUrlBuilder type', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -216,7 +216,7 @@ describe('urlFor()', () => {
       expect(builder).toHaveProperty('crop');
     });
 
-    it('should accept various SanityImageSource formats (AC-004)', () => {
+    it('should accept various SanityImageSource formats', () => {
       // Image object
       const imageObject: SanityImageObject = {
         _type: 'image',
@@ -240,7 +240,7 @@ describe('urlFor()', () => {
   });
 
   describe('integration with Next.js Image', () => {
-    it('should generate URLs compatible with next/image src prop (AC-009)', () => {
+    it('should generate URLs compatible with next/image src prop', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -257,7 +257,7 @@ describe('urlFor()', () => {
       expect(url).not.toContain('null');
     });
 
-    it('should work with getNextImageProps helper (AC-009)', () => {
+    it('should work with getNextImageProps helper', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -317,7 +317,7 @@ describe('urlFor()', () => {
   });
 
   describe('performance', () => {
-    it('should generate URLs in < 1ms p95 (NFR-001)', () => {
+    it('should generate URLs in < 1ms p95', () => {
       const imageRef: SanityImageObject = {
         _type: 'image',
         asset: {
@@ -364,7 +364,7 @@ describe('urlFor()', () => {
   });
 
   describe('error handling', () => {
-    it('should handle malformed image references gracefully (NFR-005)', () => {
+    it('should handle malformed image references gracefully', () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       // Pass various malformed inputs

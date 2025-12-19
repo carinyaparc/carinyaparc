@@ -3,13 +3,6 @@
  *
  * Tests client instantiation, environment-based configuration,
  * and type safety as specified in the design document.
- *
- * Requirements tested:
- * - FR-001: Client configuration
- * - FR-005: CDN usage based on environment
- * - FR-006: Stega encoding based on environment
- * - NFR-001: Client instantiation performance
- * - NFR-005: Type safety
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -30,7 +23,7 @@ describe('Sanity Client Configuration', () => {
     vi.stubEnv('NODE_ENV', originalNodeEnv || 'test');
   });
 
-  describe('Environment-based CDN configuration (FR-005, AC-005)', () => {
+  describe('Environment-based CDN configuration ', () => {
     it('should enable CDN in production environment', async () => {
       // Arrange
       vi.stubEnv('NODE_ENV', 'production');
@@ -77,7 +70,7 @@ describe('Sanity Client Configuration', () => {
     });
   });
 
-  describe('Environment-based Stega encoding (FR-006, AC-006)', () => {
+  describe('Environment-based Stega encoding ', () => {
     it('should disable Stega in production environment', async () => {
       // Arrange
       vi.stubEnv('NODE_ENV', 'production');
@@ -124,7 +117,7 @@ describe('Sanity Client Configuration', () => {
     });
   });
 
-  describe('Client configuration (FR-001, AC-001)', () => {
+  describe('Client configuration ', () => {
     beforeEach(() => {
       vi.stubEnv('NODE_ENV', 'test');
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'test-project-123';
@@ -142,7 +135,7 @@ describe('Sanity Client Configuration', () => {
       expect(typeof client.config).toBe('function');
     });
 
-    it('should configure client with project ID from environment (FR-002, AC-002)', async () => {
+    it('should configure client with project ID from environment ', async () => {
       // Act
       const { client } = await import('@/sanity/lib/client');
       const config = client.config();
@@ -151,7 +144,7 @@ describe('Sanity Client Configuration', () => {
       expect(config.projectId).toBe('test-project-123');
     });
 
-    it('should configure client with dataset from environment (FR-003, AC-003)', async () => {
+    it('should configure client with dataset from environment ', async () => {
       // Act
       const { client } = await import('@/sanity/lib/client');
       const config = client.config();
@@ -160,7 +153,7 @@ describe('Sanity Client Configuration', () => {
       expect(config.dataset).toBe('development');
     });
 
-    it('should configure client with API version (FR-004, AC-004)', async () => {
+    it('should configure client with API version ', async () => {
       // Act
       const { client } = await import('@/sanity/lib/client');
       const config = client.config();
@@ -180,7 +173,7 @@ describe('Sanity Client Configuration', () => {
     });
   });
 
-  describe('Type safety (FR-007, NFR-005)', () => {
+  describe('Type safety ', () => {
     it('should export SanityClient type', async () => {
       // Act
       const module = await import('@/sanity/lib/client');
@@ -191,7 +184,7 @@ describe('Sanity Client Configuration', () => {
     });
   });
 
-  describe('Performance (NFR-001)', () => {
+  describe('Performance', () => {
     it('should instantiate client quickly', async () => {
       // Arrange
       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = 'test-project';
@@ -204,7 +197,7 @@ describe('Sanity Client Configuration', () => {
       const endTime = performance.now();
       const duration = endTime - startTime;
 
-      // Assert - should be well under 10ms target (NFR-001)
+      // Assert - should be well under 10ms target
       expect(duration).toBeLessThan(50); // Generous threshold for test environment
     });
   });

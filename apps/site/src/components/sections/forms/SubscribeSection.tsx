@@ -1,7 +1,6 @@
 /**
  * SubscribeSection organism - Consolidated from SubscribeForm and SubscribeModal
- * Maps to: FR-5, NFR-3
- * Task: T4.4
+ * Maps to: * Task: T4.4
  *
  * Consolidated subscribe form and modal into single component
  */

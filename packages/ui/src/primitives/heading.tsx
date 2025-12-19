@@ -1,7 +1,6 @@
 /**
  * Heading primitive component
  * Decouples semantic level (h1-h6) from visual size
- * Maps to: FR-3, NFR-2, NFR-3
  * Task: T1.3
  */
 

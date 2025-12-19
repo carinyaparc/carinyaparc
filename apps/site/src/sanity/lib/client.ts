@@ -15,14 +15,14 @@ import { token } from './token';
 
 /**
  * Determine CDN usage based on environment
- * CDN enabled in production for performance (FR-005, AC-005)
+ * CDN enabled in production for performance
  * CDN disabled in development for fresh content
  */
 const useCdn = process.env.NODE_ENV === 'production';
 
 /**
  * Determine Stega encoding based on environment
- * Stega enabled in development/preview for visual editing (FR-006, AC-006)
+ * Stega enabled in development/preview for visual editing
  * Stega disabled in production to reduce payload size
  */
 const stegaEnabled = process.env.NODE_ENV !== 'production';
@@ -49,11 +49,11 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn, // Environment-based CDN configuration (FR-005)
+  useCdn, // Environment-based CDN configuration
   perspective: 'published',
-  token, // Required for private datasets (server-only, NFR-003)
+  token, // Required for private datasets
   stega: {
-    enabled: stegaEnabled, // Environment-based Stega encoding (FR-006)
+    enabled: stegaEnabled, // Environment-based Stega encoding
     studioUrl,
     // Uncomment for verbose logging during development:
     // logger: console,

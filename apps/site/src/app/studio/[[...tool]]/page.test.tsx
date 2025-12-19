@@ -38,7 +38,7 @@ describe('/studio/[[...tool]] route', () => {
     process.env.NEXT_PUBLIC_SANITY_DATASET = 'test-dataset';
   });
 
-  describe('Component Rendering (AC-001)', () => {
+  describe('Component Rendering', () => {
     it('renders NextStudio component', async () => {
       const StudioPage = (await import('./page')).default;
       render(<StudioPage />);
@@ -46,7 +46,7 @@ describe('/studio/[[...tool]] route', () => {
       expect(screen.getByTestId('next-studio')).toBeInTheDocument();
     });
 
-    it('passes studio configuration to NextStudio (AC-002)', async () => {
+    it('passes studio configuration to NextStudio', async () => {
       const StudioPage = (await import('./page')).default;
       render(<StudioPage />);
 
@@ -56,14 +56,14 @@ describe('/studio/[[...tool]] route', () => {
     });
   });
 
-  describe('Route Configuration (AC-004)', () => {
+  describe('Route Configuration', () => {
     it('exports dynamic = "force-dynamic"', async () => {
       const pageModule = await import('./page');
       expect(pageModule.dynamic).toBe('force-dynamic');
     });
   });
 
-  describe('Metadata Export (AC-005)', () => {
+  describe('Metadata Export', () => {
     it('exports metadata with correct title', async () => {
       const layoutModule = await import('./layout');
       expect(layoutModule.metadata).toBeDefined();
@@ -87,7 +87,7 @@ describe('/studio/[[...tool]] route', () => {
     });
   });
 
-  describe('Viewport Export (AC-006)', () => {
+  describe('Viewport Export', () => {
     it('exports viewport configuration', async () => {
       const layoutModule = await import('./layout');
       expect(layoutModule.viewport).toBeDefined();
@@ -114,7 +114,7 @@ describe('/studio/[[...tool]] route', () => {
     });
   });
 
-  describe('Type Safety (NFR-005)', () => {
+  describe('Type Safety', () => {
     it('page exports have correct TypeScript types', async () => {
       const pageModule = await import('./page');
 

@@ -1,7 +1,6 @@
 /**
  * Select primitive component using Radix UI
  * Accessible select dropdown
- * Maps to: FR-3, NFR-2, NFR-3
  * Task: T1.13
  */
 

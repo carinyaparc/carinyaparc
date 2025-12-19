@@ -1,20 +1,35 @@
 /**
  * Sanity Studio Layout
  *
- * This layout provides metadata and viewport configuration for the studio route.
- * Metadata/viewport must be exported from server components (layout), not client
- * components (page).
+ * This layout provides an isolated rendering environment for the Sanity Studio
+ * at /studio, preventing the site's header, footer, and global styles from
+ * interfering with the studio interface.
+ *
+ * Key Features:
+ * - Full viewport height for maximum editing space
+ * - No site header or footer components
+ * - No inherited site-specific CSS
+ * - Minimal DOM structure for optimal studio performance
+ *
+ * Architecture:
+ * This layout creates a nested layout boundary in the Next.js App Router.
+ * By defining layout.tsx in the studio route directory, we prevent the root
+ * layout's header, footer, and styling from being inherited by studio routes.
+ *
+ * Related:
+ * - Studio configuration: apps/site/sanity.config.ts
+ * - Studio route: apps/site/src/app/studio/[[...tool]]/page.tsx
  *
  * @module app/studio/layout
- * @implements FR-007, FR-008
+ * @see https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates
  */
 
+import type { ReactNode } from 'react';
 import type { Metadata, Viewport } from 'next';
 
 /**
  * Studio page metadata
  * Configured to prevent search engine indexing
- * @implements FR-007
  */
 export const metadata: Metadata = {
   title: 'Sanity Studio | Carinya Parc CMS',
@@ -28,7 +43,6 @@ export const metadata: Metadata = {
 /**
  * Studio viewport configuration
  * Optimized for desktop editing experience (≥ 1024px)
- * @implements FR-008
  */
 export const viewport: Viewport = {
   width: 'device-width',
@@ -40,9 +54,33 @@ export const viewport: Viewport = {
 /**
  * Studio Layout Component
  *
- * Simple passthrough layout that provides metadata/viewport config
- * for the studio route.
+ * Creates an isolated full-height container for the Sanity Studio interface.
+ * This layout prevents the root layout's site header, footer, and styling from
+ * affecting the studio, ensuring content editors have a clean, distraction-free
+ * workspace that occupies the full browser viewport.
+ *
+ * Implementation Details:
+ * - Uses inline styles to avoid CSS cascade issues
+ * - height: 100vh provides full viewport height
+ * - overflow: hidden prevents double scrollbars
+ * - No imports of site components or styles
+ *
+ * @param props - Layout props
+ * @param props.children - NextStudio component from page.tsx
+ * @returns Full-height container wrapping studio interface
  */
-export default function StudioLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default function StudioLayout({ children }: { children: ReactNode }) {
+  // Render children (NextStudio) with no additional wrapper constraints
+  // Full viewport height container with minimal DOM structure (single div wrapper)
+  return (
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        overflow: 'hidden', // Prevent layout shift and double scrollbars
+      }}
+    >
+      {children}
+    </div>
+  );
 }

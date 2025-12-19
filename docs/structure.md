@@ -77,6 +77,11 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
     - `[recipe]/page.tsx` – individual recipe route at `/[recipe]` (root level).
     - Future: `recipes/page.tsx`, `recipes/category/[slug]/page.tsx`, `recipes/tag/[tag]/page.tsx`.
 
+  - `studio/[[...tool]]/` – Sanity Studio CMS route:
+    - `layout.tsx` – dedicated layout isolating studio from site chrome.
+    - `page.tsx` – NextStudio component rendering.
+    - Note: This route uses a nested layout to prevent the root layout's header, footer, and styles from affecting the studio interface.
+
   - `api/` – API route handlers (`subscribe`, `cookie`, `sentry`, `cron`).
   - `global-error.tsx`, `not-found.tsx`, `sitemap.ts`, and other app-wide files.
   - Optional route-level `loading.tsx`, `error.tsx`, and `layout.tsx` as needed.

@@ -1,7 +1,6 @@
 /**
  * PostCard molecule - Extracted from LatestPosts
- * Maps to: FR-4, FR-5, NFR-3
- * Task: T4.5
+ * Maps to: * Task: T4.5
  *
  * Reusable blog post card component
  */

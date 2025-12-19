@@ -1,6 +1,5 @@
 /**
  * Shared type definitions for @repo/ui component library
- * Maps to: FR-1, FR-3
  * Task: T1.2
  */
 

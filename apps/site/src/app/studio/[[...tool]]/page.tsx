@@ -9,7 +9,6 @@
  * metadata/viewport must be exported from server components, not client components).
  *
  * @module app/studio
- * @implements FR-001, FR-002, FR-003, FR-004, FR-005, FR-006
  */
 
 'use client';
@@ -20,7 +19,6 @@ import config from '../../../../sanity.config';
 /**
  * Force dynamic rendering for studio route
  * Studio is fully interactive and cannot be statically generated
- * @implements FR-006
  */
 export const dynamic = 'force-dynamic';
 
@@ -34,14 +32,13 @@ export const dynamic = 'force-dynamic';
  * - /studio/vision → vision tool
  * - /studio/presentation → presentation tool
  *
- * @implements FR-001, FR-002, FR-003, FR-004, FR-005, FR-009
  * @returns NextStudio component with studio configuration
  */
 export default function StudioPage() {
   // NextStudio handles all functionality internally:
-  // - Configuration validation (FR-005)
-  // - Sanity Cloud authentication (FR-009)
-  // - Tool navigation and routing (FR-002)
-  // - Error boundaries and retry logic (FR-010)
+  // - Configuration validation
+  // - Sanity Cloud authentication
+  // - Tool navigation and routing
+  // - Error boundaries and retry logic
   return <NextStudio config={config} />;
 }

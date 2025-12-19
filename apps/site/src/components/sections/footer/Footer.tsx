@@ -1,7 +1,6 @@
 /**
  * Footer organism - Refactored with extracted sub-components
- * Maps to: FR-5, NFR-3
- * Task: T4.2
+ * Maps to: * Task: T4.2
  */
 
 'use client';

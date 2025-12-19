@@ -5,9 +5,9 @@
  * These tests require valid environment variables to be configured.
  *
  * Requirements tested:
- * - FR-001: Client can fetch content from Sanity
- * - NFR-004: Error handling for network failures
- * - NFR-006: Server component compatibility
+ * -Client can fetch content from Sanity
+ * -Error handling for network failures
+ * -Server component compatibility
  */
 
 import { describe, it, expect } from 'vitest';
@@ -48,7 +48,7 @@ describe('Sanity Client Integration', () => {
     });
   });
 
-  describe('Error Handling (NFR-004)', () => {
+  describe('Error Handling', () => {
     it('should handle invalid queries gracefully', async () => {
       // Arrange
       const invalidQuery = '*[invalid syntax{';
