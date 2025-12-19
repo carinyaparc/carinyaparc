@@ -2,6 +2,8 @@
  * Unit tests for Sanity Studio route
  * Tests route configuration, metadata, viewport, and component rendering
  *
+ * Note: Metadata and viewport are tested from layout.tsx (Next.js requirement)
+ *
  * @module app/studio
  */
 
@@ -56,29 +58,29 @@ describe('/studio/[[...tool]] route', () => {
 
   describe('Route Configuration (AC-004)', () => {
     it('exports dynamic = "force-dynamic"', async () => {
-      const module = await import('./page');
-      expect(module.dynamic).toBe('force-dynamic');
+      const pageModule = await import('./page');
+      expect(pageModule.dynamic).toBe('force-dynamic');
     });
   });
 
   describe('Metadata Export (AC-005)', () => {
     it('exports metadata with correct title', async () => {
-      const module = await import('./page');
-      expect(module.metadata).toBeDefined();
-      expect(module.metadata.title).toContain('Sanity Studio');
-      expect(module.metadata.title).toContain('Carinya Parc CMS');
+      const layoutModule = await import('./layout');
+      expect(layoutModule.metadata).toBeDefined();
+      expect(layoutModule.metadata.title).toContain('Sanity Studio');
+      expect(layoutModule.metadata.title).toContain('Carinya Parc CMS');
     });
 
     it('exports metadata with description', async () => {
-      const module = await import('./page');
-      expect(module.metadata.description).toBe(
+      const layoutModule = await import('./layout');
+      expect(layoutModule.metadata.description).toBe(
         'Content management system for Carinya Parc website',
       );
     });
 
     it('configures robots to prevent indexing', async () => {
-      const module = await import('./page');
-      expect(module.metadata.robots).toEqual({
+      const layoutModule = await import('./layout');
+      expect(layoutModule.metadata.robots).toEqual({
         index: false,
         follow: false,
       });
@@ -87,44 +89,50 @@ describe('/studio/[[...tool]] route', () => {
 
   describe('Viewport Export (AC-006)', () => {
     it('exports viewport configuration', async () => {
-      const module = await import('./page');
-      expect(module.viewport).toBeDefined();
+      const layoutModule = await import('./layout');
+      expect(layoutModule.viewport).toBeDefined();
     });
 
     it('configures viewport for device width', async () => {
-      const module = await import('./page');
-      expect(module.viewport.width).toBe('device-width');
+      const layoutModule = await import('./layout');
+      expect(layoutModule.viewport.width).toBe('device-width');
     });
 
     it('configures initial scale', async () => {
-      const module = await import('./page');
-      expect(module.viewport.initialScale).toBe(1);
+      const layoutModule = await import('./layout');
+      expect(layoutModule.viewport.initialScale).toBe(1);
     });
 
     it('configures maximum scale', async () => {
-      const module = await import('./page');
-      expect(module.viewport.maximumScale).toBe(1);
+      const layoutModule = await import('./layout');
+      expect(layoutModule.viewport.maximumScale).toBe(1);
     });
 
     it('disables user scaling for stable editing', async () => {
-      const module = await import('./page');
-      expect(module.viewport.userScalable).toBe(false);
+      const layoutModule = await import('./layout');
+      expect(layoutModule.viewport.userScalable).toBe(false);
     });
   });
 
   describe('Type Safety (NFR-005)', () => {
-    it('exports have correct TypeScript types', async () => {
-      const module = await import('./page');
+    it('page exports have correct TypeScript types', async () => {
+      const pageModule = await import('./page');
 
-      // Verify exports are defined and have expected types
-      expect(module.dynamic).toBeDefined();
-      expect(module.metadata).toBeDefined();
-      expect(module.viewport).toBeDefined();
+      // Verify page exports
+      expect(pageModule.dynamic).toBeDefined();
+      expect(typeof pageModule.dynamic).toBe('string');
+    });
+
+    it('layout exports have correct TypeScript types', async () => {
+      const layoutModule = await import('./layout');
+
+      // Verify layout exports
+      expect(layoutModule.metadata).toBeDefined();
+      expect(layoutModule.viewport).toBeDefined();
 
       // Type check that they match Next.js type definitions
-      expect(typeof module.dynamic).toBe('string');
-      expect(typeof module.metadata).toBe('object');
-      expect(typeof module.viewport).toBe('object');
+      expect(typeof layoutModule.metadata).toBe('object');
+      expect(typeof layoutModule.viewport).toBe('object');
     });
   });
 });

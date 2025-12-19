@@ -5,13 +5,15 @@
  * catch-all dynamic segments to handle all studio tool navigation (structure,
  * vision, presentation).
  *
+ * Metadata and viewport configuration are in layout.tsx (Next.js requirement:
+ * metadata/viewport must be exported from server components, not client components).
+ *
  * @module app/studio
- * @implements FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008
+ * @implements FR-001, FR-002, FR-003, FR-004, FR-005, FR-006
  */
 
 'use client';
 
-import type { Metadata, Viewport } from 'next';
 import { NextStudio } from 'next-sanity/studio';
 import config from '../../../../sanity.config';
 
@@ -21,32 +23,6 @@ import config from '../../../../sanity.config';
  * @implements FR-006
  */
 export const dynamic = 'force-dynamic';
-
-/**
- * Studio page metadata
- * Configured to prevent search engine indexing
- * @implements FR-007
- */
-export const metadata: Metadata = {
-  title: 'Sanity Studio | Carinya Parc CMS',
-  description: 'Content management system for Carinya Parc website',
-  robots: {
-    index: false, // Don't index studio pages in search engines
-    follow: false, // Don't follow links from studio
-  },
-};
-
-/**
- * Studio viewport configuration
- * Optimized for desktop editing experience (≥ 1024px)
- * @implements FR-008
- */
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false, // Prevent pinch-zoom for stable editing UI
-};
 
 /**
  * Studio Page Component
