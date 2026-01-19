@@ -34,15 +34,15 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.6.1",
-    "@vitest/coverage-istanbul": "^4.0.16",
-    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/coverage-istanbul": "^4.0.17",
+    "@vitest/coverage-v8": "^4.0.17",
     "eslint": "^9.39.2",
     "husky": "^9.1.7",
-    "jsdom": "^27.3.0",
-    "msw": "^2.12.4",
-    "prettier": "^3.7.4",
-    "turbo": "^2.7.0",
+    "jsdom": "^27.4.0",
+    "msw": "^2.12.7",
+    "prettier": "^3.8.0",
+    "turbo": "^2.7.5",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.17"
   }
 }
