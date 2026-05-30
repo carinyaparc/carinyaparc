@@ -86,7 +86,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
 
-- `src/seed/` – idempotent seed scripts (`pnpm seed:blog`, `pnpm seed:recipes` from `apps/site` with Postgres running).
+- `src/seed/` – idempotent seed and migration scripts (`pnpm seed:blog`, `pnpm seed:recipes`, `pnpm migrate:mdx` from `apps/site` with Postgres running).
 
 - `src/components/`
   - `sections/` – larger page sections (hero blocks, feature sections, etc.).
@@ -99,7 +99,8 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/lib/`
   - `cn.ts` – class name utility.
-  - `payload/` – Payload helpers (access control, slugify, lexical seed utilities).
+  - `payload/` – Payload helpers (access control, slugify, lexical utilities, markdown conversion, MDX migration).
+  - `mdx/` – MDX content loading, slug map, and migration parsers (used by `pnpm migrate:mdx`).
   - `mdx.ts` – MDX loading/rendering utilities.
   - `metadata/` – helper functions for route metadata.
   - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).

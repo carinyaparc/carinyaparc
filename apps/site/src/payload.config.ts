@@ -46,5 +46,9 @@ export default buildConfig({
       key: 'seed:recipes',
       scriptPath: path.resolve(dirname, 'seed/recipes-bin.ts'),
     },
+    {
+      key: 'migrate:mdx',
+      scriptPath: path.resolve(dirname, 'seed/migrate-mdx-bin.ts'),
+    },
   ],
 });
