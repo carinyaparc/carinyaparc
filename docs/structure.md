@@ -82,10 +82,11 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `Users.ts` – admin authentication.
   - `Authors.ts`, `Categories.ts`, `Tags.ts` – blog supporting entities.
   - `Posts.ts` – blog posts (title, slug, date, author, excerpt, body, tags, featured, image).
+  - `Recipes.ts` – recipes (title, slug, times, servings, ingredients, instructions, tags, difficulty, SEO fields).
 
-- `src/fields/` – reusable Payload field definitions (e.g. slug generation).
+- `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
 
-- `src/seed/` – idempotent seed scripts; run `pnpm seed:blog` from `apps/site` with Postgres running.
+- `src/seed/` – idempotent seed scripts (`pnpm seed:blog`, `pnpm seed:recipes` from `apps/site` with Postgres running).
 
 - `src/components/`
   - `sections/` – larger page sections (hero blocks, feature sections, etc.).

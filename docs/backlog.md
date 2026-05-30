@@ -61,7 +61,7 @@ related:
 | PLD01 | Sanity decommission             | Now   | P0       | —            | 8      | Done        |
 | PLD02 | Payload foundation and database | Now   | P0       | PLD01        | 8      | Done        |
 | PLD03 | Blog content model and admin    | Now   | P0       | PLD02        | 13     | Done        |
-| PLD04 | Recipe content model and admin  | Now   | P0       | PLD02        | 8      | Not started |
+| PLD04 | Recipe content model and admin  | Now   | P0       | PLD02        | 8      | Done        |
 | PLD05 | MDX content migration           | Now   | P0       | PLD03, PLD04 | 5      | Not started |
 | PLD06 | Frontend data layer rewiring    | Now   | P0       | PLD05        | 13     | Not started |
 | PLD07 | Documentation and delivery gate | Now   | P1       | PLD06        | 5      | Not started |
@@ -113,7 +113,7 @@ related:
 
 **Dependencies.** PLD02. Can run in parallel with PLD03 once PLD02 is done.
 
-**Status.** Not started.
+**Status.** Done.
 
 ---
 
