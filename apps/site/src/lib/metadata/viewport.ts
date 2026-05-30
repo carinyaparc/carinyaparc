@@ -6,5 +6,5 @@ import type { Viewport } from 'next';
  */
 export const viewport: Viewport = {
   // You can expand this object with width, initial-scale, etc.
-  themeColor: '#4CA77F',
+  themeColor: '#5F8575',
 };
