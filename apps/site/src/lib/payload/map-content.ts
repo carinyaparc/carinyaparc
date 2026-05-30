@@ -1,6 +1,6 @@
 import type { Author, Post as PayloadPost, Recipe as PayloadRecipe, Tag } from '@/payload-types';
 import { PLACEHOLDER_IMAGE } from '@/lib/constants';
-import { postUrl, recipeUrl } from '@/lib/mdx/slugs';
+import { postUrl, recipeUrl } from '@/lib/payload/urls';
 import type { Post } from '@/lib/posts';
 
 const FALLBACK_IMAGES = [
