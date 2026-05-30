@@ -20,15 +20,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "rm -rf .next",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:unit": "vitest run ./src",
-    "test:integration": "vitest run ./__tests__/integration",
-    "test:smoke": "vitest run ./__tests__/smoke",
-    "test:security": "vitest run ./__tests__/security",
-    "test:ci": "vitest run --reporter=junit --reporter=default --outputFile=junit.xml",
-    "optimize-images": "node scripts/optimize-images.mjs"
+    "test": "vitest run"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
