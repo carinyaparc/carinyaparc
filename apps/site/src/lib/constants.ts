@@ -68,8 +68,8 @@ export const DEFAULT_BREADCRUMB_HOME = { name: 'Home', url: BASE_URL, position: 
 export const APP_DIR = process.cwd() + '/src/app';
 
 // Cookies
-export const CONSENT_COOKIE_NAME = 'carinya_parc_consent';
-export const SESSION_COOKIE_NAME = 'carinya_parc_session';
+export const CONSENT_COOKIE_NAME = 'cp_consent';
+export const SESSION_COOKIE_NAME = 'cp_session';
 
 // LocalBusiness schema defaults
 export const LOCAL_BUSINESS = {

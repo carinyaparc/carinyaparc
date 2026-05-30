@@ -3,7 +3,7 @@ import '@/src/styles/globals.css';
 import { draftMode } from 'next/headers';
 import { cookies, headers } from 'next/headers';
 import { fontClassNames } from '../lib/font';
-import { CONSENT_COOKIE_NAME } from '@/src/lib/constants';
+import { CONSENT_COOKIE_NAME } from '@/lib/constants';
 
 import { navigation } from './navigation';
 import Banner from '@/src/components/ui/Banner';
@@ -87,6 +87,8 @@ export default async function RootLayout({
 
   const cookieStore = await cookies();
   const cookieConsent = cookieStore.get(CONSENT_COOKIE_NAME);
+  const hasConsentChoice =
+    cookieConsent?.value === 'accepted' || cookieConsent?.value === 'rejected';
   const hasConsentedToAnalytics = cookieConsent?.value === 'accepted';
 
   // Read nonce from middleware headers (T3.1, SEC-001, SEC-002)
@@ -131,7 +133,7 @@ export default async function RootLayout({
           <main className="flex-1">{children}</main>
           <Newsletter />
           <Footer />
-          <CookiePolicy />
+          <CookiePolicy showBanner={!hasConsentChoice} />
           <Toaster />
           {/* Only load Analytics if user consented */}
           {hasConsentedToAnalytics && <Analytics />}

@@ -3,56 +3,22 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CONSENT_COOKIE_NAME } from '@/src/lib/constants';
+import { setConsent, type ConsentChoice } from '@/lib/consent/actions';
 
-export default function CookiePolicy() {
-  const [isVisible, setIsVisible] = useState(() => {
-    // Check for cookie consent cookie using document.cookie on initialization
-    if (typeof document !== 'undefined') {
-      const hasCookieConsent = document.cookie
-        .split('; ')
-        .some((cookie) => cookie.startsWith(`${CONSENT_COOKIE_NAME}=`));
-      return !hasCookieConsent;
-    }
-    return false;
-  });
+interface CookiePolicyProps {
+  showBanner: boolean;
+}
+
+export default function CookiePolicy({ showBanner }: CookiePolicyProps) {
+  const [isVisible, setIsVisible] = useState(showBanner);
   const router = useRouter();
 
-  const handleAccept = async () => {
+  const handleConsent = async (consent: ConsentChoice) => {
     try {
-      // Set consent via API call to use HTTP-only cookies
-      const response = await fetch('/api/cookie', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ consent: 'accepted' }),
-      });
+      const result = await setConsent(consent);
 
-      if (response.ok) {
+      if (result.success) {
         setIsVisible(false);
-        // Refresh to ensure the cookie is properly applied
-        router.refresh();
-      }
-    } catch (error) {
-      console.error('Failed to set cookie consent:', error);
-    }
-  };
-
-  const handleReject = async () => {
-    try {
-      // Set rejection via API call to use HTTP-only cookies
-      const response = await fetch('/api/cookie', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ consent: 'rejected' }),
-      });
-
-      if (response.ok) {
-        setIsVisible(false);
-        // Refresh to ensure the cookie is properly applied
         router.refresh();
       }
     } catch (error) {
@@ -79,14 +45,14 @@ export default function CookiePolicy() {
         <div className="mt-4 flex items-center gap-x-5">
           <button
             type="button"
-            onClick={handleAccept}
+            onClick={() => handleConsent('accepted')}
             className="rounded-md bg-charcoal-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-charcoal-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal-600"
           >
             Accept all
           </button>
           <button
             type="button"
-            onClick={handleReject}
+            onClick={() => handleConsent('rejected')}
             className="text-sm/6 font-semibold text-charcoal-600"
           >
             Reject all

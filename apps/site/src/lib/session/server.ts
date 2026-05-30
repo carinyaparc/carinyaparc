@@ -1,6 +1,7 @@
 import 'server-only';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import { SESSION_COOKIE_NAME } from '@/lib/constants';
 import type { SessionPayload } from './types';
 
 // Make sure SESSION_SECRET is set in your .env file
@@ -9,8 +10,6 @@ if (!secretKey) {
   throw new Error('SESSION_SECRET environment variable is not set');
 }
 const encodedKey = new TextEncoder().encode(secretKey);
-
-export const SESSION_COOKIE_NAME = 'carinya_parc_session';
 
 // Get session data from cookie
 export async function getSession(): Promise<SessionPayload | null> {

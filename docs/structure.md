@@ -74,7 +74,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
     - `[recipe]/page.tsx` – individual recipe route at `/[recipe]` (root level).
     - Future: `recipes/page.tsx`, `recipes/category/[slug]/page.tsx`, `recipes/tag/[tag]/page.tsx`.
 
-  - `api/` – API route handlers (`subscribe`, `cookie`, `sentry`, `cron`).
+  - `api/` – API route handlers (`subscribe`, `contact`, `sentry`, `cron`).
   - `global-error.tsx`, `not-found.tsx`, `sitemap.ts`, and other app-wide files.
   - Optional route-level `loading.tsx`, `error.tsx`, and `layout.tsx` as needed.
 
@@ -103,7 +103,8 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `mdx.ts` – MDX loading/rendering utilities.
   - `metadata/` – helper functions for route metadata.
   - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).
-  - `session/` – session management (types, server-only functions).
+  - `consent/` – cookie-consent server actions (httpOnly `cp_consent` cookie).
+  - `session/` – JWT session management (httpOnly `cp_session` cookie; server-only).
   - `security/` – security utilities (CSP, headers, caching).
   - Other cross-cutting library code.
 
@@ -156,9 +157,10 @@ API routes:
 
 - `/api/subscribe` → `src/app/api/subscribe/route.ts`.
 - `/api/contact` → `src/app/api/contact/route.ts` (✓ new).
-- `/api/cookie` → `src/app/api/cookie/route.ts`.
 - `/api/sentry` → `src/app/api/sentry/route.ts`.
 - `/api/cron` → `src/app/api/cron/route.ts`.
+
+Cookie consent is **not** an API route. It uses the server action `setConsent` in `src/lib/consent/actions.ts`, called from `src/components/ui/Policy.tsx`. The root layout reads the httpOnly `cp_consent` cookie to gate analytics and banner visibility (✓). ✗ Retired: `/api/cookie`.
 
 ### Route groups & segmentation (assumption)
 
@@ -232,7 +234,7 @@ Any structural shift (e.g., introducing route groups like `(marketing)` or `(app
 
 - **Module organisation (✓)**:
   - **Single files** (e.g., `cn.ts`, `mdx.ts`, `posts.ts`) for focused utilities.
-  - **Folders** (e.g., `metadata/`, `schema/`, `session/`, `security/`) for related functionality with:
+  - **Folders** (e.g., `metadata/`, `schema/`, `consent/`, `session/`, `security/`) for related functionality with:
     - Multiple implementation files
     - Separate type definitions
     - Co-located tests
@@ -251,8 +253,23 @@ Examples of established folder patterns:
   - `send-contact-notification.ts` - Resend SDK integration
   - `templates/contact-notification.ts` - Email HTML templates
 - `src/lib/schema/` – schema generators (article, breadcrumb, recipe) with tests.
-- `src/lib/session/` – session management with types, server functions, and barrel export.
+- `src/lib/consent/` – cookie-consent server actions:
+  - `actions.ts` – `setConsent('accepted' | 'rejected')`; sets httpOnly `cp_consent` (defined in `constants.ts`).
+- `src/lib/session/` – JWT session management (server-only):
+  - `server.ts` – `getSession`, `setSession`, `updateSession`, `clearSession`; signs httpOnly `cp_session`.
+  - `types.ts`, `index.ts` – types and barrel export.
 - `src/lib/security/` – security utilities (CSP, headers, caching) with types and tests.
+
+### Cookies (✓)
+
+Cookie names live in `src/lib/constants.ts`:
+
+| Cookie | Constant | Purpose | Set by | Read by |
+|--------|----------|---------|--------|---------|
+| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | `setConsent` server action | Root `layout.tsx` |
+| `cp_session` | `SESSION_COOKIE_NAME` | Auth session (JWT) | `setSession` in `lib/session/server.ts` | `getSession` (server-only) |
+
+Both cookies are httpOnly and set only on the server. Consent and session are separate cookies with different lifetimes and concerns.
 
 ## Naming Conventions
 
@@ -296,6 +313,7 @@ import { getAllPosts } from '@/lib/posts';
 // Importing from modular lib folders (via barrel exports)
 import { getSession, setSession } from '@/lib/session';
 import type { SessionPayload } from '@/lib/session';
+import { setConsent } from '@/lib/consent/actions';
 
 // Importing a hook
 import { useMobile } from '@/hooks/use-mobile';
