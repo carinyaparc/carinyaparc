@@ -264,10 +264,10 @@ Examples of established folder patterns:
 
 Cookie names live in `src/lib/constants.ts`:
 
-| Cookie | Constant | Purpose | Set by | Read by |
-|--------|----------|---------|--------|---------|
-| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | `setConsent` server action | Root `layout.tsx` |
-| `cp_session` | `SESSION_COOKIE_NAME` | Auth session (JWT) | `setSession` in `lib/session/server.ts` | `getSession` (server-only) |
+| Cookie       | Constant              | Purpose              | Set by                                  | Read by                    |
+| ------------ | --------------------- | -------------------- | --------------------------------------- | -------------------------- |
+| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | `setConsent` server action              | Root `layout.tsx`          |
+| `cp_session` | `SESSION_COOKIE_NAME` | Auth session (JWT)   | `setSession` in `lib/session/server.ts` | `getSession` (server-only) |
 
 Both cookies are httpOnly and set only on the server. Consent and session are separate cookies with different lifetimes and concerns.
 

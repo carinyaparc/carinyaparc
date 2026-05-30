@@ -16,25 +16,27 @@ Flattening first would mean two large refactors back-to-back (repo surgery, then
 
 ## Plan
 
-**Phase 1 — Payload migration (keep monorepo as-is)**  
-- Add Payload to `apps/site` using the standard embedded Next.js pattern.  
-- Migrate blog and recipes from MDX to Payload collections.  
-- Keep legal as MDX unless you want one CMS for everything.  
-- Remove Sanity, its studio route, env vars, CSP rules, and related tests once Payload replaces it.  
+**Phase 1 — Payload migration (keep monorepo as-is)**
+
+- Add Payload to `apps/site` using the standard embedded Next.js pattern.
+- Migrate blog and recipes from MDX to Payload collections.
+- Keep legal as MDX unless you want one CMS for everything.
+- Remove Sanity, its studio route, env vars, CSP rules, and related tests once Payload replaces it.
 - Update `docs/tech.md` to reflect Payload + database.
 
-**Phase 2 — Consolidate the repo (after Payload is stable)**  
-- Move `packages/ui` into the app (e.g. `src/components/ui`).  
-- Inline `@repo/eslint-config`, `@repo/typescript-config`, and `@repo/tailwind-config` as normal root config files.  
-- Promote `apps/site` to repo root.  
-- Remove Turbo, pnpm workspaces, and the `packages/` folder.  
+**Phase 2 — Consolidate the repo (after Payload is stable)**
+
+- Move `packages/ui` into the app (e.g. `src/components/ui`).
+- Inline `@repo/eslint-config`, `@repo/typescript-config`, and `@repo/tailwind-config` as normal root config files.
+- Promote `apps/site` to repo root.
+- Remove Turbo, pnpm workspaces, and the `packages/` folder.
 - Point Vercel at the flat root.
 
 ---
 
 ## What not to do
 
-- Don’t stack Payload on top of Sanity and MDX long term.  
+- Don’t stack Payload on top of Sanity and MDX long term.
 - Don’t keep the monorepo after UI is inlined — tooling alone doesn’t justify it.
 
 ---

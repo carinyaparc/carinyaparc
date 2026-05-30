@@ -93,16 +93,13 @@ export async function seedRecipes(payload: Payload) {
       ],
       instructions: [
         {
-          step:
-            'Preheat oven to 140 °C (fan-forced). Season beef with olive oil, salt, pepper, rosemary and garlic.',
+          step: 'Preheat oven to 140 °C (fan-forced). Season beef with olive oil, salt, pepper, rosemary and garlic.',
         },
         {
-          step:
-            'Place beef on a rack over a roasting tray. Scatter root vegetables below. Roast for 3 hours until internal temperature reaches 60 °C for medium-rare.',
+          step: 'Place beef on a rack over a roasting tray. Scatter root vegetables below. Roast for 3 hours until internal temperature reaches 60 °C for medium-rare.',
         },
         {
-          step:
-            'Transfer beef to a plate, cover loosely with foil, and rest for 15 minutes. Slice and serve with roasted root veg and pan juices.',
+          step: 'Transfer beef to a plate, cover loosely with foil, and rest for 15 minutes. Slice and serve with roasted root veg and pan juices.',
         },
       ],
       _status: 'published',

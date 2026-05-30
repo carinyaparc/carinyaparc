@@ -62,7 +62,13 @@ export default function SubscribePage() {
 
         <SectionWithImage variant="light" imagePosition="left">
           <SectionImage imagePosition="left">
-            <Image src="/images/river-valley-aerial.jpg" alt="Farm gate" fill className="object-cover" priority />
+            <Image
+              src="/images/river-valley-aerial.jpg"
+              alt="Farm gate"
+              fill
+              className="object-cover"
+              priority
+            />
           </SectionImage>
           <SectionContent imagePosition="left">
             <SectionSubtitle variant="light">Join the Community</SectionSubtitle>

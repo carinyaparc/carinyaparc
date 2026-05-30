@@ -153,12 +153,6 @@ related:
 
 ---
 
-### PLD08 — Repo consolidation (Phase 2)
-
-**Scope.** Placeholder — see [`migration.md`](migration.md) Phase 2. Inline `@repo/ui`, flatten monorepo, remove Turbo/workspaces after Payload is stable.
-
-**Status.** Not started.
-
 ## 5. Dependency graph
 
 ```text
@@ -169,7 +163,6 @@ PLD01 (Sanity removal)
               +-- PLD05 (MDX migration)
                     +-- PLD06 (frontend rewire)
                           +-- PLD07 (docs & CI gate)
-                                +-- PLD08 (Phase 2 — Next)
 ```
 
 **Critical path:** PLD01 → PLD02 → PLD03 → PLD05 → PLD06 → PLD07
