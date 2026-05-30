@@ -18,6 +18,8 @@
       "@/src/lib/*": ["./src/lib/*"],
       "@/hooks/*": ["./src/hooks/*"],
       "@/src/hooks/*": ["./src/hooks/*"],
+      "@/providers/*": ["./src/providers/*"],
+      "@/src/providers/*": ["./src/providers/*"],
       "@/types/*": ["./src/types/*"],
       "@/src/types/*": ["./src/types/*"],
       "@/styles/*": ["./src/styles/*"],

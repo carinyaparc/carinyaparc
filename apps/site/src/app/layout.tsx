@@ -12,7 +12,7 @@ import Newsletter from '@/src/components/ui/Newsletter';
 import { Footer } from '@/src/components/sections/footer';
 import CookiePolicy from '@/src/components/ui/Policy';
 import { Toaster } from '@repo/ui/toaster';
-import { Providers } from '@/src/components/providers/Providers';
+import { Providers } from '@/providers/Providers';
 
 import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
