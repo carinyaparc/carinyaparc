@@ -83,8 +83,7 @@ function getAppRoutes(): RouteInfo[] {
         item.startsWith('.') ||
         item.startsWith('[') || // Skip dynamic routes with brackets
         item === 'api' ||
-        item === 'sitemap.ts' ||
-        item === 'favicon.ico'
+        item === 'sitemap.ts'
       )
         continue;
 

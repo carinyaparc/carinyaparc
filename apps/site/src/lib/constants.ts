@@ -30,9 +30,10 @@ export const TWITTER_CARD_TYPE = 'summary_large_image';
 
 // Icons and manifest
 export const SITE_MANIFEST_PATH = '/site.webmanifest';
-export const FAVICON_ICO_PATH = '/favicon.ico';
-export const FAVICON_16_PATH = '/favicon-16x16.png';
-export const APPLE_TOUCH_ICON_PATH = '/apple-touch-icon.png';
+export const FAVICON_DIR = '/favicon';
+export const FAVICON_ICO_PATH = `${FAVICON_DIR}/favicon.ico`;
+export const FAVICON_192_PATH = `${FAVICON_DIR}/favicon-192x192.png`;
+export const FAVICON_512_PATH = `${FAVICON_DIR}/favicon-512x512.png`;
 
 // JSON‑LD schema defaults
 export const ORG_LOGO_URL = `${BASE_URL}/logo.png`;

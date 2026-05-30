@@ -19,7 +19,7 @@ At a high level, the monorepo is structured as:
 ├── apps/
 │   └── site/                 # Next.js App Router app. for the Carinya Parc website
 │       ├── content/          # MDX content (blog, recipes, legal)
-│       ├── public/           # Static assets (images, favicons, manifest, robots.txt)
+│       ├── public/           # Static assets (images, favicon, manifest, robots.txt)
 │       ├── src/
 │       │   ├── app/          # App Router routes, layouts, and route-level files
 │       │   ├── components/   # Shared React components
@@ -57,7 +57,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `public/`
   - `images/` – photography showcasing the property.
-  - `favicons/`, `logo.png`, `robots.txt`, `site.webmanifest`, etc.
+  - `favicon/` – favicon.ico and PNG sizes; `logo.png`, `robots.txt`, `site.webmanifest`, etc.
 
 - `src/app/`
   - `layout.tsx` – root layout for the app.

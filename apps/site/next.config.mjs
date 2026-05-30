@@ -7,6 +7,10 @@ const nextConfig = {
   trailingSlash: true,
   transpilePackages: ['@repo/ui'],
 
+  async redirects() {
+    return [{ source: '/favicon.ico', destination: '/favicon/favicon.ico', permanent: true }];
+  },
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
