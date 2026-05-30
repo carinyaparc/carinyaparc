@@ -21,7 +21,7 @@ const eslintConfig = [
             'NEXT_RUNTIME',
             'SESSION_SECRET',
             'PAYLOAD_SECRET',
-            'DATABASE_URI',
+            'NEON_DATABASE_URL',
             'NEXT_PUBLIC_SERVER_URL',
             'NEXT_PUBLIC_SENTRY_DSN',
             'SENTRY_DSN',
