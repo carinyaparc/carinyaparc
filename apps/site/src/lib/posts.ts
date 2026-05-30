@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { PLACEHOLDER_IMAGE } from './constants';
 
 export interface Post {
   id: number;
@@ -82,7 +83,7 @@ export async function getBlogPosts(
     const excerpt = fm.excerpt ?? fm.description ?? '';
     const description = fm.description ?? '';
     const author = fm.author ?? 'Jonathan Daddia';
-    const authorImageUrl = '/images/authors/jonathan.jpg';
+    const authorImageUrl = PLACEHOLDER_IMAGE;
     const fallbackImage = fallbackImages[idx % fallbackImages.length];
     const imageUrl = String(fm.image || fallbackImage);
     const isFeatured = fm.featured ?? false;

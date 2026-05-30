@@ -20,7 +20,6 @@ export const DEFAULT_KEYWORDS = [
 ];
 
 // Social defaults
-export const DEFAULT_SOCIAL_IMAGE = '/default-og.jpg';
 export const DEFAULT_OG_IMAGE = '/images/hero-home.jpg';
 export const PLACEHOLDER_IMAGE = '/images/placeholder.jpg';
 export const PLACEHOLDER_IMAGE_SVG = '/images/placeholder.svg';
@@ -38,9 +37,9 @@ export const FAVICON_192_PATH = `${FAVICON_DIR}/favicon-192x192.png`;
 export const FAVICON_512_PATH = `${FAVICON_DIR}/favicon-512x512.png`;
 
 // JSON‑LD schema defaults
-export const ORG_LOGO_URL = `${BASE_URL}/logo.png`;
-export const ORG_LOGO_WIDTH = 600;
-export const ORG_LOGO_HEIGHT = 600;
+export const ORG_LOGO_URL = `${BASE_URL}${FAVICON_512_PATH}`;
+export const ORG_LOGO_WIDTH = 512;
+export const ORG_LOGO_HEIGHT = 512;
 
 // Article schema defaults
 export const DEFAULT_ARTICLE_SECTION = 'Blog';
