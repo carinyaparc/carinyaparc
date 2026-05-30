@@ -15,6 +15,7 @@ At a high level, the monorepo is structured as:
 │       ├── public/           # Static assets (images, favicon, logo)
 │       ├── src/
 │       │   ├── app/          # App Router routes, layouts, and route-level files
+│       │   │   └── (payload)/ # Payload admin UI and REST/GraphQL API routes
 │       │   ├── components/   # Shared React components
 │       │   ├── context/      # React contexts (if any)
 │       │   ├── hooks/        # Reusable hooks
@@ -53,6 +54,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `favicon/` – favicon.ico and PNG sizes; `logo.png`, `robots.txt`, `site.webmanifest`, etc.
 
 - `src/app/`
+  - `(payload)/` – Payload CMS admin (`/admin`) and API routes (`/api/*` for Payload collections).
   - `layout.tsx` – root layout for the app.
   - `(www)/` – routing group for main marketing site:
     - `page.tsx` – home page.

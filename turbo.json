@@ -5,15 +5,36 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "PAYLOAD_SECRET",
+        "DATABASE_URI",
+        "NEXT_PUBLIC_SERVER_URL"
+      ]
     },
     "lint": {
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "PAYLOAD_SECRET",
+        "DATABASE_URI",
+        "NEXT_PUBLIC_SERVER_URL"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "PAYLOAD_SECRET",
+        "DATABASE_URI",
+        "NEXT_PUBLIC_SERVER_URL"
+      ]
     },
     "test": {
       "dependsOn": ["^build"],
@@ -24,7 +45,14 @@
       "cache": false
     },
     "typecheck": {
-      "env": ["NODE_ENV", "MAILERLITE_API_KEY", "NEXT_PUBLIC_GTM_ID"]
+      "env": [
+        "NODE_ENV",
+        "MAILERLITE_API_KEY",
+        "NEXT_PUBLIC_GTM_ID",
+        "PAYLOAD_SECRET",
+        "DATABASE_URI",
+        "NEXT_PUBLIC_SERVER_URL"
+      ]
     }
   },
   "globalEnv": [
@@ -44,6 +72,9 @@
     "CONTACT_RATE_LIMIT_WINDOW_HOURS",
     "RESEND_API_KEY",
     "CONTACT_EMAIL_RECIPIENT",
-    "CONTACT_EMAIL_FROM"
+    "CONTACT_EMAIL_FROM",
+    "PAYLOAD_SECRET",
+    "DATABASE_URI",
+    "NEXT_PUBLIC_SERVER_URL"
   ]
 }

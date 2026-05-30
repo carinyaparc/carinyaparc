@@ -8,6 +8,7 @@ export default defineConfig({
     alias: {
       '@/src': resolve(__dirname, './src'),
       '@': resolve(__dirname, './src'),
+      '@payload-config': resolve(__dirname, './src/payload.config.ts'),
     },
   },
   test: {

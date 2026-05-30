@@ -7,7 +7,9 @@
       }
     ],
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
+      "@payload-config": ["./src/payload.config.ts"],
       "@/*": ["./src/*"],
       "@/src/*": ["./src/*"],
       "@/app/*": ["./src/app/*"],
