@@ -63,7 +63,7 @@ related:
 | PLD03 | Blog content model and admin    | Now   | P0       | PLD02        | 13     | Done        |
 | PLD04 | Recipe content model and admin  | Now   | P0       | PLD02        | 8      | Done        |
 | PLD05 | MDX content migration           | Now   | P0       | PLD03, PLD04 | 5      | Not started |
-| PLD06 | Frontend data layer rewiring    | Now   | P0       | PLD05        | 13     | Not started |
+| PLD06 | Frontend data layer rewiring    | Now   | P0       | PLD05        | 13     | Done        |
 | PLD07 | Documentation and delivery gate | Now   | P1       | PLD06        | 5      | Not started |
 | PLD08 | Repo consolidation (Phase 2)    | Next  | P1       | PLD07        | TBD    | Not started |
 
@@ -125,7 +125,7 @@ related:
 
 **Dependencies.** PLD03, PLD04.
 
-**Status.** Not started.
+**Status.** Done.
 
 ---
 
@@ -137,7 +137,7 @@ related:
 
 **Dependencies.** PLD05.
 
-**Status.** Not started.
+**Status.** Done.
 
 ---
 
@@ -145,7 +145,7 @@ related:
 
 **Scope.** Update engineering docs to reflect Payload + database as the content stack. Confirm all pre-flight checks pass and Phase 1 success criteria from `migration.md` are met.
 
-**Key deliverables.** `docs/tech.md` updated (Payload, database, env vars); `docs/structure.md` updated (admin route, content paths); `docs/agents.md` commands/conventions if changed; CI green on lint, typecheck, unit, smoke, and integration tests.
+**Key deliverables.** `docs/` updated.
 
 **Dependencies.** PLD06.
 
