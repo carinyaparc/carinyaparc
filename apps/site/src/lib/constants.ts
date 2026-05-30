@@ -21,7 +21,7 @@ export const DEFAULT_KEYWORDS = [
 
 // Social defaults
 export const DEFAULT_SOCIAL_IMAGE = '/default-og.jpg';
-export const DEFAULT_OG_IMAGE = '/images/hero_image.jpg';
+export const DEFAULT_OG_IMAGE = '/images/hero-home.jpg';
 export const PLACEHOLDER_IMAGE = '/images/placeholder.jpg';
 export const PLACEHOLDER_IMAGE_SVG = '/images/placeholder.svg';
 export const DEFAULT_OG_IMAGE_WIDTH = 1200;
@@ -47,7 +47,7 @@ export const DEFAULT_ARTICLE_SECTION = 'Blog';
 export const DEFAULT_ARTICLE_WORD_COUNT = 2000;
 export const DEFAULT_ARTICLE_KEYWORDS =
   'regenerative farming, sustainable agriculture, permaculture';
-export const DEFAULT_ARTICLE_IMAGE = '/images/hero_image.jpg';
+export const DEFAULT_ARTICLE_IMAGE = '/images/hero-home.jpg';
 export const DEFAULT_AUTHOR_NAME = 'Jonathan Daddia';
 export const DEFAULT_AUTHOR_URL_PATH = '/about/jonathan';
 

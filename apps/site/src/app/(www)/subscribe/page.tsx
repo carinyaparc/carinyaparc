@@ -21,7 +21,7 @@ export const metadata: Metadata = generatePageMetadata({
   description:
     'Stay connected to our regenerative journey at Carinya Parc to receive thoughtful, seasonal updates directly from the farm to your inbox.',
   path: '/subscribe',
-  image: '/images/img_5.jpg',
+  image: '/images/river-valley-aerial.jpg',
   keywords: [
     'subscribe',
     'newsletter',
@@ -62,7 +62,7 @@ export default function SubscribePage() {
 
         <SectionWithImage variant="light" imagePosition="left">
           <SectionImage imagePosition="left">
-            <Image src="/images/img_5.jpg" alt="Farm gate" fill className="object-cover" priority />
+            <Image src="/images/river-valley-aerial.jpg" alt="Farm gate" fill className="object-cover" priority />
           </SectionImage>
           <SectionContent imagePosition="left">
             <SectionSubtitle variant="light">Join the Community</SectionSubtitle>

@@ -49,7 +49,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `legal/` – legal pages (privacy, terms) in MDX.
 
 - `public/`
-  - `images/` – photography and UI placeholders (`placeholder.jpg`, `placeholder.svg`).
+  - `images/` – photography and UI placeholders. Use kebab-case, subject-descriptor names (e.g. `hero-home.jpg`, `farm-track-gate.jpg`); keep `404.jpg` for the not-found page.
   - `favicon/` – favicon.ico and PNG sizes; `logo.png`, `robots.txt`, `site.webmanifest`, etc.
 
 - `src/app/`

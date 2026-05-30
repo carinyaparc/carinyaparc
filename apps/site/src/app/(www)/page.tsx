@@ -37,7 +37,7 @@ export default async function HomePage() {
         {/* Hero Section */}
         <section>
           <Hero>
-            <HeroBackgroundImage src="/images/hero_image.jpg" alt="Carinya Parc Hero" priority />
+            <HeroBackgroundImage src="/images/hero-home.jpg" alt="Carinya Parc Hero" priority />
             <HeroContent>
               <HeroTitle>
                 Restoring the Land,
@@ -108,7 +108,7 @@ export default async function HomePage() {
           <SectionWithImage variant="dark" imagePosition="right">
             <SectionImage imagePosition="right">
               <Image
-                src="/images/img_23.jpg"
+                src="/images/farm-track-gate.jpg"
                 alt="Farm landscape"
                 fill
                 className="object-cover"
@@ -139,7 +139,7 @@ export default async function HomePage() {
           <SectionWithImage variant="light" imagePosition="left">
             <SectionImage imagePosition="left">
               <Image
-                src="/images/img_5.jpg"
+                src="/images/river-valley-aerial.jpg"
                 alt="Farm gate"
                 fill
                 className="object-cover"
@@ -194,7 +194,7 @@ export default async function HomePage() {
           <SectionWithImage variant="dark" imagePosition="right">
             <SectionImage imagePosition="right">
               <Image
-                src="/images/img_9.jpg"
+                src="/images/highland-cattle-paddock.jpg"
                 alt="Farm gate"
                 fill
                 className="object-cover"

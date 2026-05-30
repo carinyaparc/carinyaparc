@@ -14,7 +14,7 @@ const pageHeaderProps = {
   subtitle: 'Our Blog',
   description:
     'Follow our regeneration journey through detailed updates, insights, and lessons learned as we transform Carinya Parc into a thriving ecosystem.',
-  backgroundImage: '/images/img_23.jpg',
+  backgroundImage: '/images/farm-track-gate.jpg',
   backgroundImageAlt: 'Carinya Parc landscape',
 };
 

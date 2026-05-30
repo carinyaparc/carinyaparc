@@ -59,12 +59,12 @@ export async function getBlogPosts(
 
   const files = fs.readdirSync(postsDir).filter((f) => f.endsWith('.mdx'));
   const fallbackImages = [
-    '/images/img_6.jpg',
-    '/images/img_8.jpg',
-    '/images/img_12.jpg',
-    '/images/img_5.jpg',
-    '/images/img_9.jpg',
-    '/images/img_23.jpg',
+    '/images/hero-home.jpg',
+    '/images/highland-cattle-dam.jpg',
+    '/images/alpacas-hill-pasture.jpg',
+    '/images/river-valley-aerial.jpg',
+    '/images/highland-cattle-paddock.jpg',
+    '/images/farm-track-gate.jpg',
   ];
 
   const allPosts: Post[] = files.map((filename, idx) => {

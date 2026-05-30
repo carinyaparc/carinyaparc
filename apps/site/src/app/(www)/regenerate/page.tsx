@@ -32,7 +32,7 @@ export default function RegeneratePage() {
           subtitle="Regenerate with Us"
           title="Healing Land Through Ecological Restoration"
           description="Join us as we transform 42 hectares of former grazing land into thriving, biodiverse ecosystems through strategic restoration, wildlife corridors, and regenerative agroforestry."
-          backgroundImage="/images/img_5.jpg"
+          backgroundImage="/images/river-valley-aerial.jpg"
           backgroundImageAlt="Carinya Parc landscape being regenerated"
           links={links}
           stats={stats}

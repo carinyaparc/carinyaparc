@@ -11,7 +11,7 @@ export const metadata: Metadata = generatePageMetadata({
   description:
     'Explore our 42-hectare property in The Branch, NSW - home to native woodland, river frontage, and the beginning of our ecological restoration journey.',
   path: '/about/the-property',
-  image: '/images/img_23.jpg',
+  image: '/images/farm-track-gate.jpg',
   keywords: [
     'The Branch NSW',
     'property',
@@ -41,7 +41,7 @@ export default function ThePropertyPage() {
               <div className="relative h-80 lg:-ml-8 lg:h-auto lg:w-full lg:grow xl:ml-0">
                 <Image
                   alt="Aerial view of Carinya Parc property"
-                  src="/images/img_5.jpg"
+                  src="/images/river-valley-aerial.jpg"
                   fill
                   className="absolute inset-0 size-full bg-gray-50 object-cover"
                   priority

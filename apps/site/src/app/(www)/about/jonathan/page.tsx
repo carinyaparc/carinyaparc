@@ -49,7 +49,7 @@ export default function JonathanPage() {
                 <div className="w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end">
                   <Image
                     alt="Jonathan working on the farm"
-                    src="/images/img_5.jpg"
+                    src="/images/river-valley-aerial.jpg"
                     width={592}
                     height={423}
                     className="aspect-[7/5] w-[37rem] max-w-none rounded-2xl bg-gray-50 object-cover"
@@ -59,7 +59,7 @@ export default function JonathanPage() {
                   <div className="order-first flex w-64 flex-none justify-end self-end lg:w-auto">
                     <Image
                       alt="Farm landscape"
-                      src="/images/img_12.jpg"
+                      src="/images/alpacas-hill-pasture.jpg"
                       width={384}
                       height={288}
                       className="aspect-[4/3] w-[24rem] max-w-none flex-none rounded-2xl bg-gray-50 object-cover"
@@ -68,7 +68,7 @@ export default function JonathanPage() {
                   <div className="flex w-96 flex-auto justify-end lg:w-auto lg:flex-none">
                     <Image
                       alt="Jonathan in strategic planning"
-                      src="/images/img_2.jpg"
+                      src="/images/property-river-aerial.jpg"
                       width={592}
                       height={423}
                       className="aspect-[7/5] w-[37rem] max-w-none flex-none rounded-2xl bg-gray-50 object-cover"
@@ -77,7 +77,7 @@ export default function JonathanPage() {
                   <div className="hidden sm:block sm:w-0 sm:flex-auto lg:w-auto lg:flex-none">
                     <Image
                       alt="Jonathan planting trees"
-                      src="/images/img_9.jpg"
+                      src="/images/highland-cattle-paddock.jpg"
                       width={384}
                       height={288}
                       className="aspect-[4/3] w-[24rem] max-w-none rounded-2xl bg-gray-50 object-cover"

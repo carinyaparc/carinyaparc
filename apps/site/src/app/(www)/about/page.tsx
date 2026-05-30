@@ -18,7 +18,7 @@ export const metadata: Metadata = generatePageMetadata({
   description:
     "Discover the story of Carinya Parc, our peaceful home where we're regenerating land, building community, and demonstrating ecological stewardship in practice.",
   path: '/about',
-  image: '/images/img_10.jpg',
+  image: '/images/hero-home.jpg',
   keywords: [
     'about',
     'our story',
@@ -50,11 +50,11 @@ export default function AboutPage() {
             subtitle="About Carinya Parc"
             description="Discover the story of Carinya Parc, our peaceful home where we're regenerating land, building community, and demonstrating ecological stewardship in practice."
             tileImages={[
-              { src: '/images/img_9.jpg', alt: 'Carinya Parc landscape' },
-              { src: '/images/img_8.jpg', alt: 'Carinya Parc river' },
-              { src: '/images/img_13.jpg', alt: 'Native plantings' },
-              { src: '/images/img_23.jpg', alt: 'Farm dam' },
-              { src: '/images/img_16.jpg', alt: 'Carinya Parc landscape' }, // Duplicating first image to ensure we have 5 for the layout
+              { src: '/images/highland-cattle-paddock.jpg', alt: 'Carinya Parc landscape' },
+              { src: '/images/highland-cattle-dam.jpg', alt: 'Carinya Parc river' },
+              { src: '/images/alpacas-farm-field.jpg', alt: 'Native plantings' },
+              { src: '/images/farm-track-gate.jpg', alt: 'Farm dam' },
+              { src: '/images/farm-valley-landscape.jpg', alt: 'Carinya Parc landscape' }, // Duplicating first image to ensure we have 5 for the layout
             ]}
           />
         </section>
@@ -131,7 +131,7 @@ export default function AboutPage() {
           <div className="mt-32 sm:mt-40 xl:mx-auto xl:max-w-7xl xl:px-8">
             <Image
               alt="Carinya Parc landscape"
-              src="/images/img_23.jpg"
+              src="/images/farm-track-gate.jpg"
               width={1920}
               height={768}
               className="aspect-5/2 w-full object-cover xl:rounded-3xl"
