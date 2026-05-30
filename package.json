@@ -13,7 +13,7 @@
     "site:build": "turbo run build --filter=site",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
-    "test": "turbo run test",
+    "test": "turbo run test --filter=site",
     "typecheck": "turbo run typecheck",
     "format": "prettier --write --log-level=warn .",
     "format:check": "prettier --check --log-level=warn .",
@@ -22,18 +22,9 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@vitest/coverage-istanbul": "^4.1.7",
-    "@vitest/coverage-v8": "^4.1.7",
     "eslint": "^10.4.1",
-    "jsdom": "^29.1.1",
-    "msw": "^2.14.6",
     "prettier": "^3.8.3",
     "turbo": "^2.9.16",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
+    "typescript": "^6.0.3"
   }
 }

@@ -17,44 +17,8 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tests/**/*.ts", "tests/**/*.tsx"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "vitest.config.mjs", "vitest.setup.ts"],
       "env": ["NODE_ENV"]
-    },
-    "test:watch": {
-      "cache": false,
-      "dependsOn": ["^build"],
-      "env": ["NODE_ENV"]
-    },
-    "test:coverage": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"],
-      "env": ["NODE_ENV"]
-    },
-    "test:unit": {
-      "dependsOn": ["^build"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tests/unit/**/*.ts", "tests/unit/**/*.tsx"],
-      "env": ["NODE_ENV"]
-    },
-    "test:integration": {
-      "dependsOn": ["^build"],
-      "inputs": [
-        "src/**/*.tsx",
-        "src/**/*.ts",
-        "tests/integration/**/*.ts",
-        "tests/integration/**/*.tsx"
-      ],
-      "env": ["NODE_ENV"]
-    },
-    "test:smoke": {
-      "dependsOn": ["^build"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tests/smoke/**/*.ts", "tests/smoke/**/*.tsx"],
-      "env": ["NODE_ENV"]
-    },
-    "test:ci": {
-      "dependsOn": ["^build"],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "tests/**/*.ts", "tests/**/*.tsx"],
-      "outputs": ["junit.xml"],
-      "env": ["NODE_ENV", "CI"]
     },
     "clean": {
       "cache": false

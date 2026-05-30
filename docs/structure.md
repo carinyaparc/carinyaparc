@@ -105,10 +105,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 - `src/utils/`
   - Smaller, focused utility functions.
 
-- `__tests__/`
-  - Integration, smoke, security tests, fixtures, mocks, helpers, and test setup
-  - Unit tests are colocated with source files (e.g., `Button.tsx` → `Button.test.tsx`)
-  - See `apps/site/__tests__/STRUCTURE.md` for full details
+- `vitest.config.mjs`, `vitest.setup.ts` – minimal test config (API routes and form validation only)
 
 ## Routing & Layout (Next.js App Router)
 
@@ -262,9 +259,8 @@ Examples of established folder patterns:
   - `useSomething` naming with strong, focused purpose.
 
 - **Tests**:
-  - **Unit tests**: Colocated with source files using `.test.ts` / `.test.tsx` suffix (not `.spec.ts`)
-    - Example: `src/lib/cn.ts` → `src/lib/cn.test.ts`
-  - **Integration/Smoke/Security tests**: Centralized in `apps/site/__tests__/` subdirectories
+  - Colocated with source using `.test.ts` / `.test.tsx` — limited to API routes and input validation (forms, sanitisation)
+  - Run with `pnpm test` from the repo root
 
 ## Import Aliases & Examples
 
@@ -324,9 +320,8 @@ When adding a new feature (page, component, or flow):
    - Place new hooks in `src/hooks/` (e.g., `use-experiences-filter.ts`).
    - Place content or data helpers in `src/lib/` (e.g., `experiences.ts` for MDX loaders).
 
-5. **Add tests**
-   - For components, hooks, utilities, or route logic, add unit tests colocated with the source file (e.g., `Button.tsx` → `Button.test.tsx`).
-   - For important user flows (e.g., subscription), add integration or smoke tests under `apps/site/__tests__/integration` or `apps/site/__tests__/smoke`.
+5. **Add tests (when behaviour is non-trivial)**
+   - Prefer tests for API routes and validation logic only (e.g. `route.test.ts` next to `route.ts`).
 
 6. **Update navigation and metadata**
    - If the route should be discoverable, update `apps/site/src/app/navigation.tsx` and any header components.
@@ -379,20 +374,15 @@ Goal: Add `/experiences` as a marketing page that introduces on-farm experiences
    - Update `apps/site/src/app/navigation.tsx` to include an `/experiences` link where appropriate.
    - Add a metadata helper for `/experiences` under `apps/site/src/lib/metadata/` if that pattern exists (or inline `export const metadata` on the page).
 
-5. **Add tests**
-   - `apps/site/src/app/experiences/page.test.tsx`:
-     - Colocate unit test with the page file
-     - Ensure the page renders key headings and content
-
-   - Optional integration/smoke tests in `apps/site/__tests__/` if this is a critical path.
+5. **Add tests (optional)**
+   - e.g. `apps/site/src/app/experiences/page.test.tsx` only if the page has non-trivial logic worth guarding.
 
 6. **Run checks**
    - From the monorepo root:
 
      ```bash
      pnpm lint
-     pnpm test:unit
-     pnpm test:smoke
+     pnpm test
      pnpm build
      ```
 
