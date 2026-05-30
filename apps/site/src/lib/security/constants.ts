@@ -8,7 +8,7 @@ import type { SecurityHeadersConfig, CacheControlConfig } from './types';
 /**
  * Balanced CSP directives preset
  * Follows Next.js v16 best practices for nonce-based CSP
- * Allows GTM, Google Analytics, Google Fonts, Sanity Studio while maintaining strong security
+ * Allows GTM, Google Analytics, and Google Fonts while maintaining strong security
  * Note: 'strict-dynamic' is NOT used as it breaks Next.js script loading
  */
 export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
@@ -20,16 +20,14 @@ export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
       'https://www.googletagmanager.com',
       'https://www.google-analytics.com',
       'https://*.vercel-scripts.com',
-      'https://*.sanity.io',
     ],
-    'style-src': ["'self'", 'https://fonts.googleapis.com', 'https://*.sanity.io'],
+    'style-src': ["'self'", 'https://fonts.googleapis.com'],
     'img-src': [
       "'self'",
       'blob:',
       'data:',
       'https://www.google-analytics.com',
       'https://*.googleusercontent.com',
-      'https://cdn.sanity.io',
     ],
     'font-src': ["'self'", 'https://fonts.gstatic.com'],
     'connect-src': [
@@ -38,7 +36,6 @@ export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
       'https://*.google-analytics.com',
       'https://*.sentry.io',
       'https://vitals.vercel-insights.com',
-      'https://*.sanity.io',
     ],
     'worker-src': ["'self'", 'blob:'],
     'frame-src': ["'self'", 'https://www.googletagmanager.com'],
