@@ -1,3 +1,4 @@
+import { withPayload } from '@payloadcms/next/withPayload';
 import { withSentryConfig } from '@sentry/nextjs';
 import createMDX from '@next/mdx';
 
@@ -15,20 +16,33 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
-  // Image optimization settings
   images: {
     remotePatterns: [],
+    localPatterns: [
+      {
+        pathname: '/api/media/file/**',
+      },
+    ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     qualities: [75, 80, 85],
-    minimumCacheTTL: 60 * 60 * 24, // 1 day
+    minimumCacheTTL: 60 * 60 * 24,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+
+  webpack: (webpackConfig) => {
+    webpackConfig.resolve.extensionAlias = {
+      '.cjs': ['.cts', '.cjs'],
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+      '.mjs': ['.mts', '.mjs'],
+    };
+
+    return webpackConfig;
+  },
 };
 
-// Configure MDX options
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
@@ -37,13 +51,12 @@ const withMDX = createMDX({
   },
 });
 
-// Merge MDX config with Next.js config
 const mdxConfig = withMDX(nextConfig);
+const payloadConfig = withPayload(mdxConfig, { devBundleServerPackages: false });
 
-// Only apply Sentry wrapper in production
 const finalConfig =
   process.env.NODE_ENV === 'production'
-    ? withSentryConfig(mdxConfig, {
+    ? withSentryConfig(payloadConfig, {
         org: 'carinya-parc-pty-ltd',
         project: 'javascript-nextjs',
         silent: !process.env.CI,
@@ -56,6 +69,6 @@ const finalConfig =
           automaticVercelMonitors: true,
         },
       })
-    : mdxConfig;
+    : payloadConfig;
 
 export default finalConfig;
