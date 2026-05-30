@@ -14,7 +14,9 @@ import type { SchemaTypeDefinition } from 'sanity';
 import { authorSchema } from './documents/author';
 import { categorySchema } from './documents/category';
 import { postSchema } from './documents/post';
+import { recipeSchema } from './documents/recipe';
 import { tagSchema } from './documents/tag';
+import { recipeIngredientSchema } from './objects/recipeIngredient';
 
 /**
  * Array of all schema type definitions for Sanity Studio
@@ -24,6 +26,8 @@ import { tagSchema } from './documents/tag';
  * - Category schema
  * - Tag schema
  * - Post schema
+ * - Recipe schema
+ * - Recipe Ingredient object schema
  */
 
 export const schemaTypes: SchemaTypeDefinition[] = [
@@ -31,5 +35,9 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   authorSchema,
   categorySchema,
   postSchema,
+  recipeSchema,
   tagSchema,
+
+  // Object schemas
+  recipeIngredientSchema,
 ];

@@ -1,4 +1,0 @@
-export PATH="/opt/homebrew/bin:$PATH"
-
-pnpm lint
-pnpm typecheck

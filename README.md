@@ -1,6 +1,6 @@
 # Carinya Parc Website
 
-This repository contains the website for Carinya Parc, a regenerative farm committed to sustainable practices and community engagement.
+This repository contains the website for Carinya Parc [carinyaparc.com.au](htts://carinyaparc.com.au)
 
 ## Getting Started
 
