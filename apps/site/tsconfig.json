@@ -20,8 +20,6 @@
       "@/src/hooks/*": ["./src/hooks/*"],
       "@/types/*": ["./src/types/*"],
       "@/src/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/src/utils/*": ["./src/utils/*"],
       "@/styles/*": ["./src/styles/*"],
       "@/src/styles/*": ["./src/styles/*"],
       "@repo/ui/*": ["../packages/ui/src/*"]

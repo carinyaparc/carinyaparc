@@ -3,7 +3,18 @@
  */
 
 import { z } from 'zod';
-import { validateEmailForAPI } from '@/utils/validateEmail';
+
+const SPAM_EMAIL_PATTERNS = [
+  /test@test/i,
+  /example@/i,
+  /\d{8,}@/i,
+  /@(example|test|temp|fake|invalid|localhost)/i,
+  /[a-z0-9]{20,}@/i,
+];
+
+function isSpamEmail(email: string): boolean {
+  return SPAM_EMAIL_PATTERNS.some((pattern) => pattern.test(email));
+}
 
 /**
  * Inquiry type options
@@ -37,13 +48,9 @@ export const contactFormSchema = z.object({
     .string()
     .min(1, 'Email is required')
     .email('Please enter a valid email address')
-    .refine(
-      (email) => {
-        const { isValid, isSpam } = validateEmailForAPI(email);
-        return isValid && !isSpam;
-      },
-      { message: 'This email address appears to be invalid' },
-    ),
+    .refine((email) => !isSpamEmail(email), {
+      message: 'This email address appears to be invalid',
+    }),
 
   phone: z
     .string()
