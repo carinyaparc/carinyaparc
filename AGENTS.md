@@ -1,0 +1,201 @@
+# AGENTS.md
+
+Guidance for AI coding agents working on the Carinya Parc website monorepo.
+
+## Project overview
+
+Carinya Parc ([carinyaparc.com.au](https://carinyaparc.com.au)) is a working rural property in New South Wales. This repository is a **pnpm + Turborepo monorepo** that powers the public website and CMS.
+
+- **Primary app:** `apps/site` — Next.js 16 (App Router) with Payload CMS 3, Postgres, MDX content, Tailwind CSS 4, and React 19.
+- **Shared packages:** `@repo/ui` (component library), `@repo/eslint-config`, `@repo/tailwind-config`, `@repo/typescript-config`.
+- **Deployment:** Vercel (production). Payload admin at `/admin`; public marketing site, blog, and recipes share a common site root layout.
+
+For product context and feature intent, read `docs/product.md`. For routing and folder conventions, read `docs/structure.md`. For architecture rules, read `docs/principles.md`.
+
+## Project structure
+
+```text
+.
+├── apps/
+│   └── site/                 # Next.js App Router app (main work happens here)
+│       ├── content/          # MDX: blog posts, recipes, legal pages
+│       ├── public/           # Static assets (images, favicon, manifest)
+│       └── src/
+│           ├── app/          # Routes and layouts
+│           │   ├── (payload)/  # Payload admin + API (separate root layout)
+│           │   ├── (www)/      # Marketing pages (home, about, contact, …)
+│           │   ├── (blog)/     # Blog index and post routes
+│           │   └── (recipes)/  # Recipe routes
+│           ├── collections/  # Payload CMS collection configs
+│           ├── components/   # React components (sections/, forms/, ui/, …)
+│           ├── hooks/        # Client hooks (use-*)
+│           ├── lib/          # Utilities (metadata/, schema/, security/, session/, …)
+│           ├── providers/    # App-wide React providers
+│           └── styles/       # Global CSS
+├── packages/
+│   ├── ui/                   # Shared UI primitives
+│   ├── eslint-config/
+│   ├── tailwind-config/
+│   └── typescript-config/
+└── docs/                     # Product, structure, and migration docs
+```
+
+**Import aliases** (from `apps/site/tsconfig.json`):
+
+- `@/*` → `./src/*`
+- `@repo/ui/*` → shared UI package
+
+Prefer aliases over deep relative paths (`../../../…`).
+
+**Key conventions:**
+
+- Route segments: **kebab-case** (`the-property`, `[post]`, `[recipe]`)
+- Components: **PascalCase** files and exports (`SubscribeForm.tsx`)
+- Hooks: **kebab-case** files, `use*` names (`use-mobile.ts`)
+- `page.tsx` files stay thin — delegate UI to `components/sections/` and data helpers to `lib/`
+
+## Build and test commands
+
+**Requirements:** Node `^24.10.0`, pnpm `10.26.0` (see root `package.json`).
+
+### Setup
+
+```bash
+pnpm install
+cp apps/site/.env.example apps/site/.env.local   # then fill in values
+docker compose -f apps/site/docker-compose.yml up -d   # Postgres for Payload /admin
+```
+
+### Development
+
+```bash
+pnpm dev              # all packages (Turbo)
+pnpm site:dev         # site app only (Next.js + Turbopack)
+```
+
+Site-only scripts from `apps/site`:
+
+```bash
+pnpm seed:blog        # seed blog content (Postgres must be running)
+pnpm seed:recipes     # seed recipe content
+pnpm migrate:mdx      # migrate MDX content into Payload
+pnpm generate:types   # regenerate Payload types after schema changes
+```
+
+### Quality checks (run from repo root before finishing work)
+
+```bash
+pnpm lint             # ESLint across the monorepo
+pnpm lint:fix         # auto-fix where possible
+pnpm typecheck        # TypeScript (no emit)
+pnpm format:check     # Prettier
+pnpm test             # Vitest (site app)
+pnpm build            # production build (all packages)
+pnpm site:build       # site app only
+```
+
+To scope work to a single package:
+
+```bash
+pnpm turbo run lint --filter=site
+pnpm turbo run test --filter=site
+pnpm turbo run build --filter=site
+```
+
+## Code style guidelines
+
+**TypeScript:** strict mode is required (`packages/typescript-config`). Avoid `any`. Shared types live under `src/types/` or next to related modules.
+
+**Formatting (Prettier):** single quotes, semicolons, trailing commas, 100-char print width, 2-space indent, LF line endings. ESLint enforces Prettier via `prettier/prettier: error`.
+
+**React / Next.js:**
+
+- Default to **Server Components**. Add `"use client"` only for browser APIs, state, or event handlers.
+- Client components must not import server-only modules (database, session helpers, etc.).
+- Data fetching belongs in server components or route handlers — not in UI components.
+- Use `cn()` from `@/lib/cn` for conditional Tailwind classes.
+- Reuse primitives from `@repo/ui` before adding new low-level UI.
+
+**Styling:** Tailwind CSS 4 with shared config from `@repo/tailwind-config`. Global styles in `src/styles/`.
+
+**Architecture (from `docs/principles.md`):**
+
+- Separation of concerns: UI components must not contain side effects or business logic.
+- Metadata: compose small helpers in `lib/metadata/`; JSON-LD via discrete functions in `lib/schema/`.
+- Environment variables exposed to the browser must use the `NEXT_PUBLIC_` prefix and must not contain secrets.
+
+**Scope of changes:** keep diffs focused. Match existing patterns in the file and directory you are editing. Do not refactor unrelated code.
+
+## Testing instructions
+
+**Runner:** Vitest (`apps/site/vitest.config.mjs`). Tests use the Node environment with `vitest.setup.ts`.
+
+**Where tests live:** colocated with source as `*.test.ts` / `*.test.tsx` under `src/`. The `include` glob is `src/**/*.test.{ts,tsx}`.
+
+**What to test:**
+
+- API route handlers and input validation (Zod schemas, sanitisation)
+- Non-trivial library logic (MDX migration, Payload helpers, schema generators)
+- Shared UI primitives in `packages/ui`
+
+**What not to test by default:** presentational pages and static marketing sections unless they contain meaningful logic.
+
+```bash
+pnpm test                                    # all site tests
+pnpm --filter site vitest run                # same, explicit filter
+pnpm --filter site vitest run path/to/file   # single file
+pnpm --filter site vitest run -t "test name" # by test name
+```
+
+Add or update tests when changing validation, API behaviour, or security-sensitive logic. Fix all lint, type, and test failures before considering work complete.
+
+## Security considerations
+
+**Secrets and environment:**
+
+- Never commit `.env.local`, `.env.sentry-build-plugin`, or real API keys.
+- Copy `apps/site/.env.example` to `.env.local` for local development.
+- Required secrets include `PAYLOAD_SECRET`, `NEON_DATABASE_URL`, `SESSION_SECRET`, `MAILERLITE_API_KEY`, and (when enabled) `RESEND_API_KEY`. See `turbo.json` for the full env var list.
+- Only `NEXT_PUBLIC_*` variables are safe for client-side code.
+
+**Authentication and cookies:**
+
+- Session JWT in httpOnly `cp_session` cookie — set/read only via `src/lib/session/` (server-only).
+- Analytics consent in httpOnly `cp_consent` cookie — set via `setConsent` server action in `src/lib/consent/`.
+- Cookie name constants live in `src/lib/constants.ts`.
+
+**HTTP security:**
+
+- CSP, HSTS, and security headers are implemented in `src/lib/security/` and applied per request.
+- CSP uses nonce-based `strict-dynamic` scripting; do not weaken directives without explicit approval.
+- Feature flags: `SECURITY_CSP_ENABLED`, `SECURITY_CSP_REPORT_ONLY`, `SECURITY_CACHE_ENABLED`.
+
+**Input handling:**
+
+- Validate all external input with Zod schemas in `src/lib/validation/`.
+- Sanitise user-provided HTML/text via utilities in `src/lib/validation/sanitize.ts` (DOMPurify).
+- Contact and subscribe endpoints support rate limiting via env-configured limits.
+
+**Payload CMS:**
+
+- Admin UI at `/admin` uses a separate root layout from the public site.
+- Regenerate Payload types after collection schema changes: `pnpm generate:types`.
+
+**General rules for agents:**
+
+- Do not log or expose secrets, session tokens, or PII in error messages or comments.
+- Do not disable security headers, CSP, or validation to make tests pass.
+- Do not add `"use client"` to modules that handle secrets or server-only credentials.
+- When adding API routes, follow existing patterns for validation, rate limiting, and error responses.
+
+## Additional resources
+
+| Document | Purpose |
+| --- | --- |
+| `docs/structure.md` | Routes, layouts, naming, and how to add features |
+| `docs/product.md` | Product vision, personas, and feature scope |
+| `docs/principles.md` | Architecture rules (server/client split, metadata, types) |
+| `docs/backlog.md` | Current work items and priorities |
+| `apps/site/.env.example` | Required environment variables |
+
+When adding or changing user-visible features, update the relevant doc in `docs/` alongside code changes.
