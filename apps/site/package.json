@@ -2,6 +2,7 @@
   "name": "site",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.26.0",
   "engines": {
     "node": "^24.10.0"
@@ -12,19 +13,19 @@
     "> 0.1%"
   ],
   "scripts": {
-    "dev": "NODE_OPTIONS=--no-deprecation next dev --turbopack",
-    "build": "NODE_OPTIONS=--no-deprecation next build",
-    "start": "NODE_OPTIONS=--no-deprecation next start",
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "rm -rf .next",
-    "generate:importmap": "NODE_OPTIONS=--no-deprecation payload generate:importmap",
-    "generate:types": "NODE_OPTIONS=--no-deprecation payload generate:types",
-    "payload": "NODE_OPTIONS=--no-deprecation payload",
-    "seed:blog": "NODE_OPTIONS=--no-deprecation payload run src/seed/run-blog.ts",
-    "seed:recipes": "NODE_OPTIONS=--no-deprecation payload run src/seed/run-recipes.ts",
+    "generate:importmap": "payload generate:importmap",
+    "generate:types": "payload generate:types",
+    "payload": "payload",
+    "seed:blog": "payload seed:blog",
+    "seed:recipes": "payload seed:recipes",
     "test": "vitest run"
   },
   "dependencies": {
@@ -91,6 +92,7 @@
     "prettier": "^3.8.3",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.3.0",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "vite": "^8.0.0",
     "vitest": "^4.1.7"

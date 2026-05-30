@@ -37,7 +37,7 @@ async function findOrCreateAuthor(payload: Payload) {
 }
 
 async function findOrCreateTags(payload: Payload) {
-  const tagIds: Array<string | number> = [];
+  const tagIds: number[] = [];
 
   for (const name of blogSeedTags) {
     const slug = name;

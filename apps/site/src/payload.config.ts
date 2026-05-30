@@ -37,4 +37,14 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
+  bin: [
+    {
+      key: 'seed:blog',
+      scriptPath: path.resolve(dirname, 'seed/blog-bin.ts'),
+    },
+    {
+      key: 'seed:recipes',
+      scriptPath: path.resolve(dirname, 'seed/recipes-bin.ts'),
+    },
+  ],
 });

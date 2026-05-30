@@ -26,7 +26,7 @@ async function findOrCreateAuthor(payload: Payload) {
 }
 
 async function findOrCreateTags(payload: Payload, names: readonly string[]) {
-  const tagIds: Array<string | number> = [];
+  const tagIds: number[] = [];
 
   for (const name of names) {
     const existing = await payload.find({

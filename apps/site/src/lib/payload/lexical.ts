@@ -1,4 +1,6 @@
-export function createLexicalParagraph(text: string) {
+import type { Post } from '@/payload-types';
+
+export function createLexicalParagraph(text: string): Post['body'] {
   return {
     root: {
       type: 'root',
