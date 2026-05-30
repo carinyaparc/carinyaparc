@@ -20,6 +20,9 @@ const nextConfig = {
     remotePatterns: [],
     localPatterns: [
       {
+        pathname: '/images/**',
+      },
+      {
         pathname: '/api/media/file/**',
       },
     ],
@@ -57,8 +60,9 @@ const payloadConfig = withPayload(mdxConfig, { devBundleServerPackages: false })
 const finalConfig =
   process.env.NODE_ENV === 'production'
     ? withSentryConfig(payloadConfig, {
-        org: 'carinya-parc-pty-ltd',
-        project: 'javascript-nextjs',
+        org: process.env.SENTRY_ORG || 'carinya-parc',
+        project: process.env.SENTRY_PROJECT || 'carinyaparc',
+        authToken: process.env.SENTRY_AUTH_TOKEN,
         silent: !process.env.CI,
         widenClientFileUpload: true,
         tunnelRoute: '/monitoring',

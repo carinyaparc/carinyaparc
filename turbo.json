@@ -11,7 +11,12 @@
         "NEXT_PUBLIC_GTM_ID",
         "PAYLOAD_SECRET",
         "DATABASE_URI",
-        "NEXT_PUBLIC_SERVER_URL"
+        "NEXT_PUBLIC_SERVER_URL",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "SENTRY_DSN",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT"
       ]
     },
     "lint": {
@@ -21,7 +26,12 @@
         "NEXT_PUBLIC_GTM_ID",
         "PAYLOAD_SECRET",
         "DATABASE_URI",
-        "NEXT_PUBLIC_SERVER_URL"
+        "NEXT_PUBLIC_SERVER_URL",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "SENTRY_DSN",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT"
       ]
     },
     "dev": {
@@ -33,7 +43,12 @@
         "NEXT_PUBLIC_GTM_ID",
         "PAYLOAD_SECRET",
         "DATABASE_URI",
-        "NEXT_PUBLIC_SERVER_URL"
+        "NEXT_PUBLIC_SERVER_URL",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "SENTRY_DSN",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT"
       ]
     },
     "test": {
@@ -51,7 +66,12 @@
         "NEXT_PUBLIC_GTM_ID",
         "PAYLOAD_SECRET",
         "DATABASE_URI",
-        "NEXT_PUBLIC_SERVER_URL"
+        "NEXT_PUBLIC_SERVER_URL",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "SENTRY_DSN",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT"
       ]
     }
   },
@@ -75,6 +95,11 @@
     "CONTACT_EMAIL_FROM",
     "PAYLOAD_SECRET",
     "DATABASE_URI",
-    "NEXT_PUBLIC_SERVER_URL"
+    "NEXT_PUBLIC_SERVER_URL",
+    "NEXT_PUBLIC_SENTRY_DSN",
+    "SENTRY_DSN",
+    "SENTRY_AUTH_TOKEN",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT"
   ]
 }
