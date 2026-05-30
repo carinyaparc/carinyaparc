@@ -8,8 +8,8 @@ import type { SecurityHeadersConfig, CacheControlConfig } from './types';
 /**
  * Balanced CSP directives preset
  * Follows Next.js v16 best practices for nonce-based CSP
- * Allows GTM, Google Analytics, and Google Fonts while maintaining strong security
- * Note: 'strict-dynamic' is NOT used as it breaks Next.js script loading
+ * Allows GTM, Google Analytics, Google Fonts, and Vercel tooling while maintaining strong security.
+ * Nonce is injected per request in proxy.ts; `'strict-dynamic'` trusts scripts loaded by nonced scripts.
  */
 export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
   BALANCED: {
@@ -20,6 +20,10 @@ export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
       'https://www.googletagmanager.com',
       'https://www.google-analytics.com',
       'https://*.vercel-scripts.com',
+      'https://vercel.live',
+      "'strict-dynamic'",
+      // Next.js RSC / hydration inline bootstrap (stable for a given Next build)
+      "'sha256-mjAPvJKRBATPwtDkDe1t+tw2mbmVjgXVfYImJfeAdz8='",
     ],
     'style-src': ["'self'", 'https://fonts.googleapis.com'],
     'img-src': [
@@ -36,9 +40,11 @@ export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
       'https://*.google-analytics.com',
       'https://*.sentry.io',
       'https://vitals.vercel-insights.com',
+      'https://vercel.live',
+      'wss://vercel.live',
     ],
     'worker-src': ["'self'", 'blob:'],
-    'frame-src': ["'self'", 'https://www.googletagmanager.com'],
+    'frame-src': ["'self'", 'https://www.googletagmanager.com', 'https://vercel.live'],
     'object-src': ["'none'"],
     'base-uri': ["'self'"],
     'form-action': ["'self'"],
