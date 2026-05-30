@@ -56,9 +56,13 @@ function injectNonceIntoDirectives(
   const updated = { ...directives };
   const formattedNonce = formatNonceForCSP(nonce);
 
-  // Inject nonce into script-src if present
+  // Inject nonce into script-src and script-src-elem (Next.js script tags use src + nonce)
   if (updated['script-src']) {
     updated['script-src'] = [formattedNonce, ...updated['script-src']];
+  }
+
+  if (updated['script-src-elem']) {
+    updated['script-src-elem'] = [formattedNonce, ...updated['script-src-elem']];
   }
 
   // DO NOT inject nonce into style-src - see function comment above
