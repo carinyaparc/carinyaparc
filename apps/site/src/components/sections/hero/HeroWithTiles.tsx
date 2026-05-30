@@ -9,6 +9,7 @@
 'use client';
 
 import { cn } from '@/src/lib/cn';
+import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@repo/ui/button';
@@ -130,7 +131,7 @@ export default function HeroWithTiles({
                     <div className="relative">
                       <Image
                         alt={tileImages[0]?.alt || ''}
-                        src={tileImages[0]?.src || '/placeholder.jpg'}
+                        src={tileImages[0]?.src || PLACEHOLDER_IMAGE}
                         width={176}
                         height={264}
                         loading="lazy"
@@ -146,7 +147,7 @@ export default function HeroWithTiles({
                     <div className="relative">
                       <Image
                         alt={tileImages[1]?.alt || ''}
-                        src={tileImages[1]?.src || '/placeholder.jpg'}
+                        src={tileImages[1]?.src || PLACEHOLDER_IMAGE}
                         width={176}
                         height={264}
                         loading="lazy"
@@ -157,7 +158,7 @@ export default function HeroWithTiles({
                     <div className="relative">
                       <Image
                         alt={tileImages[2]?.alt || ''}
-                        src={tileImages[2]?.src || '/placeholder.jpg'}
+                        src={tileImages[2]?.src || PLACEHOLDER_IMAGE}
                         width={176}
                         height={264}
                         loading="lazy"
@@ -173,7 +174,7 @@ export default function HeroWithTiles({
                     <div className="relative">
                       <Image
                         alt={tileImages[3]?.alt || ''}
-                        src={tileImages[3]?.src || '/placeholder.jpg'}
+                        src={tileImages[3]?.src || PLACEHOLDER_IMAGE}
                         width={176}
                         height={264}
                         loading="lazy"
@@ -184,7 +185,7 @@ export default function HeroWithTiles({
                     <div className="relative">
                       <Image
                         alt={tileImages[4]?.alt || ''}
-                        src={tileImages[4]?.src || '/placeholder.jpg'}
+                        src={tileImages[4]?.src || PLACEHOLDER_IMAGE}
                         width={176}
                         height={264}
                         loading="lazy"

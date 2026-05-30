@@ -2,7 +2,7 @@
 
 1. **Separation of Concerns:** Modules **SHALL** adhere to the single‑responsibility principle. UI components **SHALL NOT** contain side‑effects such as data fetching or business logic.
 
-2. **Reusability:** Shared logic and UI elements **MUST** reside in dedicated folders (`components/`, `hooks/`, `utils/`, `lib/`) to avoid duplication and encourage reuse.
+2. **Reusability:** Shared logic and UI elements **MUST** reside in dedicated folders (`components/`, `hooks/`, `lib/`) to avoid duplication and encourage reuse.
 
 3. **Maintainability:** File‑based routing conventions **MUST** be followed. Each route folder **SHALL** include at least a `page.tsx`, and **SHOULD** include a `layout.tsx` (where required) for consistent nested layouts.
 

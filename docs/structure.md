@@ -1,11 +1,4 @@
----
-title: Carinya Parc – Project Structure
-status: active
-owner: engineering
-last_updated: 2025-11-25
----
-
-## Overview
+# Project Structure
 
 This document describes the structure of the Carinya Parc repository, with a focus on the `apps/site` Next.js v16 App Router application.  
 It explains how routes, components, hooks, and utilities are organised, and provides guidance for adding new features in a consistent way.
@@ -19,15 +12,15 @@ At a high level, the monorepo is structured as:
 ├── apps/
 │   └── site/                 # Next.js App Router app. for the Carinya Parc website
 │       ├── content/          # MDX content (blog, recipes, legal)
-│       ├── public/           # Static assets (images, favicon, manifest, robots.txt)
+│       ├── public/           # Static assets (images, favicon, logo)
 │       ├── src/
 │       │   ├── app/          # App Router routes, layouts, and route-level files
 │       │   ├── components/   # Shared React components
 │       │   ├── context/      # React contexts (if any)
 │       │   ├── hooks/        # Reusable hooks
+│       │   ├── providers/    # App-wide React context providers
 │       │   ├── lib/          # Utilities, metadata, schema, session helpers
 │       │   ├── styles/       # Global and component-level styles
-│       │   └── utils/        # Cross-cutting utility functions
 │       ├── eslint.config.mjs
 │       ├── next.config.mjs
 │       ├── tailwind.config.ts
@@ -56,7 +49,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `legal/` – legal pages (privacy, terms) in MDX.
 
 - `public/`
-  - `images/` – photography showcasing the property.
+  - `images/` – photography and UI placeholders (`placeholder.jpg`, `placeholder.svg`).
   - `favicon/` – favicon.ico and PNG sizes; `logo.png`, `robots.txt`, `site.webmanifest`, etc.
 
 - `src/app/`
@@ -101,9 +94,6 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/styles/`
   - `globals.css`, `components.css`, typography, and page-level overrides.
-
-- `src/utils/`
-  - Smaller, focused utility functions.
 
 - `vitest.config.mjs`, `vitest.setup.ts` – minimal test config (API routes and form validation only)
 
@@ -195,8 +185,11 @@ Any structural shift (e.g., introducing route groups like `(marketing)` or `(app
     - `SubscribeModal.tsx` - modal wrapper for subscription
   - `ui/` for wrappers around shared UI primitives from `@repo/ui`.
   - `pages/` and `posts/` for page-specific and post-specific components.
-  - `providers/` for React context providers:
-    - `Providers.tsx` - TanStack Query provider wrapper (✓ new)
+
+### Providers
+
+- Live under `src/providers/`.
+  - `Providers.tsx` - TanStack Query provider wrapper
 
 **Naming convention:**
 
@@ -214,7 +207,7 @@ Any structural shift (e.g., introducing route groups like `(marketing)` or `(app
 
 ### Utilities & lib
 
-- Live under `src/lib/` and `src/utils/`.
+- Live under `src/lib/`.
 - **Data-fetching and content utilities**:
   - Functions like `getAllPosts`, `getPostBySlug`, `getRecipes` live in `src/lib/` (often with MDX helpers).
 
@@ -270,10 +263,10 @@ From `apps/site/tsconfig.json`, the primary aliases are:
 - `@/app/*` → `./src/app/*`
 - `@/components/*` → `./src/components/*`
 - `@/hooks/*` → `./src/hooks/*`
+- `@/providers/*` → `./src/providers/*`
 - `@/lib/*` → `./src/lib/*`
 - `@/styles/*` → `./src/styles/*`
 - `@/types/*` → `./src/types/*`
-- `@/utils/*` → `./src/utils/*`
 - `@repo/ui/*` → `../packages/ui/src/*`
 
 **Examples (✓):**

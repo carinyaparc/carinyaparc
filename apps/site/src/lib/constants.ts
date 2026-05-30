@@ -22,6 +22,8 @@ export const DEFAULT_KEYWORDS = [
 // Social defaults
 export const DEFAULT_SOCIAL_IMAGE = '/default-og.jpg';
 export const DEFAULT_OG_IMAGE = '/images/hero_image.jpg';
+export const PLACEHOLDER_IMAGE = '/images/placeholder.jpg';
+export const PLACEHOLDER_IMAGE_SVG = '/images/placeholder.svg';
 export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 export const DEFAULT_OG_IMAGE_ALT = 'Carinya Parc regenerative farm landscape';
