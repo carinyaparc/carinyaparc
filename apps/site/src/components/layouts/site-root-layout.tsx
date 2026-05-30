@@ -2,10 +2,10 @@ import '@/src/styles/globals.css';
 
 import { draftMode } from 'next/headers';
 import { cookies, headers } from 'next/headers';
-import { fontClassNames } from '../lib/font';
+import { fontClassNames } from '@/lib/font';
 import { CONSENT_COOKIE_NAME } from '@/lib/constants';
 
-import { navigation } from './navigation';
+import { navigation } from '@/app/navigation';
 import Banner from '@/src/components/ui/Banner';
 import { Header } from '@/src/components/sections/header';
 import Newsletter from '@/src/components/ui/Newsletter';
@@ -18,29 +18,17 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-import type { Metadata } from 'next';
-import { viewport, generateMetadata as generateMetadataHelper } from '../lib/metadata';
-import { generateOrganizationSchema } from '../lib/schema/organization';
-import { SITE_TITLE, BASE_URL, ORG_LOGO_URL, ORG_SOCIAL_PROFILES } from '../lib/constants';
-
-export { viewport };
-
-// Site-wide metadata that all pages inherit
-export const metadata: Metadata = await generateMetadataHelper({
-  // No pageTitle here - just use the default SITE_TITLE
-  // No path here - this is site-wide
-  path: '/',
-});
+import { generateOrganizationSchema } from '@/lib/schema/organization';
+import { SITE_TITLE, BASE_URL, ORG_LOGO_URL, ORG_SOCIAL_PROFILES } from '@/lib/constants';
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
-// Critical CSS inlined directly for production compatibility
 const criticalCSS = `
   /* Essential design tokens for critical styles */
   :root {
     --font-sans: var(--font-raleway), sans-serif;
     --radius: 0.5rem;
-    
+
     /* Essential colors for above-the-fold */
     --color-background: #ffffff;
     --color-foreground: #3a3a3a;
@@ -78,7 +66,7 @@ const criticalCSS = `
   }
 `;
 
-export default async function RootLayout({
+export default async function SiteRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -91,11 +79,9 @@ export default async function RootLayout({
     cookieConsent?.value === 'accepted' || cookieConsent?.value === 'rejected';
   const hasConsentedToAnalytics = cookieConsent?.value === 'accepted';
 
-  // Read nonce from middleware headers (T3.1, SEC-001, SEC-002)
   const headersList = await headers();
   const nonce = headersList.get('x-nonce') || '';
 
-  // Generate organization schema for all pages
   const organizationSchema = generateOrganizationSchema({
     name: SITE_TITLE,
     url: BASE_URL,
@@ -106,17 +92,13 @@ export default async function RootLayout({
   return (
     <html lang="en" className={fontClassNames} suppressHydrationWarning>
       <head>
-        {/* Preconnect to Google Fonts for optimal performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* Inline critical CSS for immediate rendering */}
         <style
           nonce={nonce}
           dangerouslySetInnerHTML={{ __html: criticalCSS }}
           suppressHydrationWarning
         />
-        {/* Organization schema present on all pages */}
         <script
           nonce={nonce}
           type="application/ld+json"
@@ -124,7 +106,6 @@ export default async function RootLayout({
           suppressHydrationWarning
         />
       </head>
-      {/* Only load Google Tag Manager if user consented */}
       {hasConsentedToAnalytics && <GoogleTagManager gtmId={GTM_ID || ''} />}
       <body className="flex flex-col min-h-screen">
         <Providers>
@@ -135,7 +116,6 @@ export default async function RootLayout({
           <Footer />
           <CookiePolicy showBanner={!hasConsentChoice} />
           <Toaster />
-          {/* Only load Analytics if user consented */}
           {hasConsentedToAnalytics && <Analytics />}
           <SpeedInsights />
         </Providers>
