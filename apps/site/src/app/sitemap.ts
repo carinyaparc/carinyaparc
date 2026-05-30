@@ -1,67 +1,48 @@
 import { MetadataRoute } from 'next';
 import fs from 'fs';
 import path from 'path';
-import { BASE_URL } from '../lib/constants';
 
-type RouteInfo = {
-  route: string;
-  lastModified: string;
-  priority?: number;
-  changeFrequency?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
-};
+import { BASE_URL } from '../lib/constants';
+import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
+import { getRecipeSitemapEntries } from '@/lib/payload/queries/recipes';
+import type { ContentRouteEntry } from '@/lib/payload/map-content';
+
+type RouteInfo = ContentRouteEntry;
 
 /**
- * Gets routes from the content directory
+ * Legal pages remain MDX-backed in Phase 1.
  */
-function getContentRoutes(): RouteInfo[] {
+function getLegalContentRoutes(): RouteInfo[] {
   const routes: RouteInfo[] = [];
-  const contentDirectory = path.join(process.cwd(), 'content');
+  const legalDirectory = path.join(process.cwd(), 'content', 'legal');
 
-  // Skip if content directory doesn't exist
-  if (!fs.existsSync(contentDirectory)) {
+  if (!fs.existsSync(legalDirectory)) {
     return routes;
   }
 
-  // Helper function to recursively scan content directories
-  function scanContentDirectory(currentPath: string, routePath: string = '') {
-    const items = fs.readdirSync(currentPath);
+  const files = fs.readdirSync(legalDirectory);
 
-    for (const item of items) {
-      // Skip hidden files/directories
-      if (item.startsWith('.')) continue;
-
-      const itemPath = path.join(currentPath, item);
-      const stats = fs.statSync(itemPath);
-
-      if (stats.isDirectory()) {
-        // Regular directory - add to path and scan
-        const newPath = routePath === '' ? item : path.join(routePath, item);
-        scanContentDirectory(itemPath, newPath);
-      } else if (item === 'index.mdx' || item === 'index.md') {
-        // Found a content page - add its route
-        routes.push({
-          route: routePath === '' ? '/' : `/${routePath}`,
-          lastModified: new Date(stats.mtime).toISOString(),
-          priority: routePath === '' ? 1.0 : routePath.includes('blog') ? 0.7 : 0.8,
-          changeFrequency:
-            routePath === '' ? 'weekly' : routePath.includes('blog') ? 'daily' : 'monthly',
-        });
-      } else if ((item.endsWith('.mdx') || item.endsWith('.md')) && !item.startsWith('index')) {
-        // Non-index mdx/md file - add as a slug
-        const slug = item.replace(/\.mdx?$/, '');
-        const fullPath = routePath === '' ? slug : `${routePath}/${slug}`;
-
-        routes.push({
-          route: `/${fullPath}`,
-          lastModified: new Date(stats.mtime).toISOString(),
-          priority: routePath.includes('blog') ? 0.7 : 0.8,
-          changeFrequency: routePath.includes('blog') ? 'daily' : 'monthly',
-        });
-      }
+  for (const item of files) {
+    if (item.startsWith('.')) {
+      continue;
     }
+
+    const itemPath = path.join(legalDirectory, item);
+    const stats = fs.statSync(itemPath);
+
+    if (!stats.isFile() || (!item.endsWith('.mdx') && !item.endsWith('.md'))) {
+      continue;
+    }
+
+    const slug = item.replace(/\.mdx?$/, '');
+    routes.push({
+      route: `/legal/${slug}`,
+      lastModified: new Date(stats.mtime).toISOString(),
+      priority: 0.5,
+      changeFrequency: 'yearly',
+    });
   }
 
-  scanContentDirectory(contentDirectory);
   return routes;
 }
 
@@ -72,36 +53,31 @@ function getAppRoutes(): RouteInfo[] {
   const routes: RouteInfo[] = [];
   const appDirectory = path.join(process.cwd(), 'src/app');
 
-  // Helper function to recursively scan directories
   function scanDirectory(currentPath: string, routePath: string = '') {
     const items = fs.readdirSync(currentPath);
 
     for (const item of items) {
-      // Skip special files and directories
       if (
         item.startsWith('_') ||
         item.startsWith('.') ||
-        item.startsWith('[') || // Skip dynamic routes with brackets
+        item.startsWith('[') ||
         item === 'api' ||
         item === 'sitemap.ts'
-      )
+      ) {
         continue;
+      }
 
       const itemPath = path.join(currentPath, item);
       const stats = fs.statSync(itemPath);
 
       if (stats.isDirectory()) {
-        // Handle route groups (directories with parentheses)
         if (item.startsWith('(') && item.endsWith(')')) {
-          // For route groups, don't add to the path but scan inside
           scanDirectory(itemPath, routePath);
         } else {
-          // Regular directory - add to path and scan
           const newPath = routePath === '' ? item : path.join(routePath, item);
           scanDirectory(itemPath, newPath);
         }
       } else if (item === 'page.tsx' || item === 'page.js' || item === 'page.mdx') {
-        // Found a page - add its route
         const isHomePage = routePath === '';
 
         routes.push({
@@ -118,31 +94,26 @@ function getAppRoutes(): RouteInfo[] {
   return routes;
 }
 
-/**
- * Combine and deduplicate routes
- */
-function combineRoutes(appRoutes: RouteInfo[], contentRoutes: RouteInfo[]): RouteInfo[] {
+function combineRoutes(...routeGroups: RouteInfo[][]): RouteInfo[] {
   const routeMap = new Map<string, RouteInfo>();
 
-  // Add app routes first
-  appRoutes.forEach((route) => {
-    routeMap.set(route.route, route);
-  });
-
-  // Add content routes, overriding app routes if they exist
-  contentRoutes.forEach((route) => {
-    routeMap.set(route.route, route);
-  });
+  for (const group of routeGroups) {
+    for (const route of group) {
+      routeMap.set(route.route, route);
+    }
+  }
 
   return Array.from(routeMap.values());
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const appRoutes = getAppRoutes();
-  const contentRoutes = getContentRoutes();
-  const routes = combineRoutes(appRoutes, contentRoutes);
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [postRoutes, recipeRoutes] = await Promise.all([
+    getPostSitemapEntries(),
+    getRecipeSitemapEntries(),
+  ]);
 
-  // Convert to the expected MetadataRoute.Sitemap format
+  const routes = combineRoutes(getAppRoutes(), getLegalContentRoutes(), postRoutes, recipeRoutes);
+
   return routes.map(({ route, lastModified, priority, changeFrequency }) => ({
     url: `${BASE_URL}${route}`,
     lastModified,
