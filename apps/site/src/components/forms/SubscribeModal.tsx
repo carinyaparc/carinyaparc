@@ -10,7 +10,7 @@ import {
   DialogClose,
 } from '@repo/ui/dialog';
 import { cn } from '@/src/lib/cn';
-import { SubscribeSection } from '@/src/components/sections/forms';
+import SubscribeSection from '@/src/components/sections/forms/SubscribeSection';
 
 interface SubscribeModalProps {
   open: boolean;

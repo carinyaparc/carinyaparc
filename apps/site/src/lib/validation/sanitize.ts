@@ -1,69 +1,78 @@
 /**
- * Input sanitization utilities using DOMPurify
+ * Input sanitization utilities for contact forms and email templates.
+ * Plain Node implementations — no jsdom/DOMPurify (avoids ESM/CJS issues on Vercel).
  */
 
-import DOMPurify from 'isomorphic-dompurify';
-
-/**
- * Sanitization configuration for different contexts
- */
-const SANITIZE_CONFIGS = {
-  // Strip all HTML tags - for form inputs that should be plain text
-  plainText: {
-    ALLOWED_TAGS: [] as string[],
-    ALLOWED_ATTR: [] as string[],
-    KEEP_CONTENT: true,
-  },
-
-  // For email body - allow basic formatting but strip dangerous content
-  email: {
-    ALLOWED_TAGS: ['br', 'p', 'strong', 'em'] as string[],
-    ALLOWED_ATTR: [] as string[],
-    KEEP_CONTENT: true,
-  },
+const HTML_ENTITY_MAP: Record<string, string> = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&#x27;': "'",
 };
+
+function decodeHtmlEntities(input: string): string {
+  return input.replace(/&(?:amp|lt|gt|quot|#39|#x27);/g, (entity) => HTML_ENTITY_MAP[entity] ?? entity);
+}
+
+function stripHtmlTags(input: string): string {
+  return input
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<[^>]*>/g, '');
+}
+
+function removeControlCharacters(input: string): string {
+  return input.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
+}
+
+function escapeHtml(input: string): string {
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+const ALLOWED_EMAIL_TAGS = new Set(['br', 'p', 'strong', 'em']);
+
+function sanitizeEmailHtml(input: string): string {
+  return input.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, (match, tagName: string) => {
+    const tag = tagName.toLowerCase();
+    if (!ALLOWED_EMAIL_TAGS.has(tag)) {
+      return '';
+    }
+
+    if (match.startsWith('</')) {
+      return `</${tag}>`;
+    }
+
+    return `<${tag}>`;
+  });
+}
 
 /**
  * Sanitize text input for plain text contexts (form fields, names, etc.)
  * Strips all HTML tags and dangerous characters
- *
- * @param input - Raw user input string
- * @returns Sanitized plain text string safe for display and storage
- *
- * @example
- * ```typescript
- * const name = sanitizePlainText('<script>alert("xss")</script>John');
- * // Returns: "John"
- * ```
  */
 export function sanitizePlainText(input: string | null | undefined): string {
   if (!input) return '';
 
-  const sanitized = DOMPurify.sanitize(input, SANITIZE_CONFIGS.plainText);
-  return sanitized.trim();
+  return removeControlCharacters(decodeHtmlEntities(stripHtmlTags(input))).trim();
 }
 
 /**
  * Sanitize text for email body inclusion
- * Preserves basic formatting (line breaks, emphasis) but strips dangerous content
- *
- * @param input - Raw user input string
- * @returns Sanitized HTML string safe for email body
- *
- * @example
- * ```typescript
- * const message = sanitizeForEmail('Hello\n\nThis is a message');
- * // Returns: "Hello<br><br>This is a message" (with line breaks)
- * ```
+ * Preserves line breaks and a small allowlist of safe tags
  */
 export function sanitizeForEmail(input: string | null | undefined): string {
   if (!input) return '';
 
-  // Convert line breaks to <br> tags before sanitization
-  const withBreaks = input.replace(/\n/g, '<br>');
+  const withBreaks = escapeHtml(input).replace(/\n/g, '<br>');
 
-  const sanitized = DOMPurify.sanitize(withBreaks, SANITIZE_CONFIGS.email);
-  return sanitized.trim();
+  return sanitizeEmailHtml(withBreaks).trim();
 }
 
 /**
