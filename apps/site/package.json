@@ -23,6 +23,7 @@
     "generate:importmap": "NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "NODE_OPTIONS=--no-deprecation payload generate:types",
     "payload": "NODE_OPTIONS=--no-deprecation payload",
+    "seed:blog": "NODE_OPTIONS=--no-deprecation payload run src/seed/run-blog.ts",
     "test": "vitest run"
   },
   "dependencies": {

@@ -17,7 +17,9 @@ At a high level, the monorepo is structured as:
 │       │   ├── app/          # App Router routes, layouts, and route-level files
 │       │   │   └── (payload)/ # Payload admin UI and REST/GraphQL API routes
 │       │   ├── components/   # Shared React components
-│       │   ├── context/      # React contexts (if any)
+│       │   ├── collections/  # Payload CMS collection configs
+│       │   ├── fields/       # Reusable Payload field definitions
+│       │   ├── seed/         # Payload seed scripts (e.g. pnpm seed:blog)
 │       │   ├── hooks/        # Reusable hooks
 │       │   ├── providers/    # App-wide React context providers
 │       │   ├── lib/          # Utilities, metadata, schema, session helpers
@@ -76,6 +78,15 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `global-error.tsx`, `not-found.tsx`, `sitemap.ts`, and other app-wide files.
   - Optional route-level `loading.tsx`, `error.tsx`, and `layout.tsx` as needed.
 
+- `src/collections/` – Payload CMS collection configs:
+  - `Users.ts` – admin authentication.
+  - `Authors.ts`, `Categories.ts`, `Tags.ts` – blog supporting entities.
+  - `Posts.ts` – blog posts (title, slug, date, author, excerpt, body, tags, featured, image).
+
+- `src/fields/` – reusable Payload field definitions (e.g. slug generation).
+
+- `src/seed/` – idempotent seed scripts; run `pnpm seed:blog` from `apps/site` with Postgres running.
+
 - `src/components/`
   - `sections/` – larger page sections (hero blocks, feature sections, etc.).
   - `forms/` – reusable form components (e.g., subscribe form).
@@ -87,6 +98,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/lib/`
   - `cn.ts` – class name utility.
+  - `payload/` – Payload helpers (access control, slugify, lexical seed utilities).
   - `mdx.ts` – MDX loading/rendering utilities.
   - `metadata/` – helper functions for route metadata.
   - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).
