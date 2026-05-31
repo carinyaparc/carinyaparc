@@ -5,9 +5,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@repo/ui/button';
-import { Card, CardContent } from '@repo/ui/card';
-import { Badge } from '@repo/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Tag, ArrowRight } from 'lucide-react';
 import { getBlogPosts } from '@/src/lib/posts';
 
@@ -67,12 +67,13 @@ export default async function FeaturedPosts({ limit = 1 }: FeaturedPostsProps) {
                   <p className="text-eucalyptus-600 text-lg mb-6 leading-relaxed">
                     {featuredPost.excerpt}
                   </p>
-                  <Button className="bg-eucalyptus-600 hover:bg-eucalyptus-400" asChild>
-                    <Link href={featuredPost.href}>
-                      <span className="flex items-center">
-                        Read Full Article <ArrowRight className="ml-2 h-4 w-4" />
-                      </span>
-                    </Link>
+                  <Button
+                    render={<Link href={featuredPost.href} />}
+                    className="bg-eucalyptus-600 hover:bg-eucalyptus-400"
+                  >
+                    <span className="flex items-center">
+                      Read Full Article <ArrowRight className="ml-2 h-4 w-4" />
+                    </span>
                   </Button>
                 </CardContent>
               </div>

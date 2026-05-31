@@ -2,8 +2,7 @@
  * ContactFormSection organism - Refactored with FormField molecule
  * Maps to: * Task: T4.3
  *
- * Uses FormField molecule from @repo/ui
- * Preserved all existing validation and submission logic
+ *Preserved all existing validation and submission logic
  */
 
 'use client';
@@ -14,12 +13,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@repo/ui/button';
-import { Input } from '@repo/ui/input';
-import { Textarea } from '@repo/ui/textarea';
-import { Select } from '@repo/ui/select-native';
-import { Alert } from '@repo/ui/alert';
-import { FormField } from '@repo/ui/form-field';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select } from '@/components/ui/select-native';
+import { Alert } from '@/components/ui/alert';
+import { FormField } from '@/components/ui/form-field';
 import {
   contactFormClientSchema,
   type ContactFormClientData,

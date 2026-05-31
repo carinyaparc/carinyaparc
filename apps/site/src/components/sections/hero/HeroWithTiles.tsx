@@ -12,7 +12,7 @@ import { cn } from '@/src/lib/cn';
 import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@repo/ui/button';
+import { Button } from '@/components/ui/button';
 
 interface TileImage {
   src: string;
@@ -106,8 +106,11 @@ export default function HeroWithTiles({
               {(primaryButton || secondaryButton) && (
                 <div className="mt-10 flex items-center gap-x-6">
                   {primaryButton && (
-                    <Button asChild className={primaryButtonClass}>
-                      <Link href={primaryButton.href}>{primaryButton.label}</Link>
+                    <Button
+                      render={<Link href={primaryButton.href} />}
+                      className={primaryButtonClass}
+                    >
+                      {primaryButton.label}
                     </Button>
                   )}
                   {secondaryButton && (

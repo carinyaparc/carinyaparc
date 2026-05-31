@@ -14,7 +14,7 @@ import { MapPin } from 'lucide-react';
 import { cn } from '@/src/lib/cn';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@repo/ui/button';
+import { Button } from '@/components/ui/button';
 
 // Hero Container Component
 interface HeroProps {
@@ -155,10 +155,10 @@ export function HeroActions({ children }: { children: ReactNode }) {
 export function HeroButton({ href, children }: { href: string; children: ReactNode }) {
   return (
     <Button
-      asChild
+      render={<Link href={href} />}
       className="text-white bg-eucalyptus-600 hover:bg-eucalyptus-200 hover:text-eucalyptus-600"
     >
-      <Link href={href}>{children}</Link>
+      {children}
     </Button>
   );
 }
