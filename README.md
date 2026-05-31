@@ -9,7 +9,18 @@ This repository contains the website for [Carinya Parc](https://carinyaparc.com.
 - **MDX** for legal pages only
 - **pnpm** + **Turborepo** monorepo, deployed on **Vercel**
 
-See [`docs/structure.md`](docs/structure.md) for architecture details and [`AGENTS.md`](AGENTS.md) for agent and contributor guidance.
+## Documentation
+
+The docs are split by role — each topic has one home:
+
+| Document | Role |
+| --- | --- |
+| [`docs/product.md`](docs/product.md) | **What and why** — vision, scope, features |
+| [`docs/product/roadmap.md`](docs/product/roadmap.md) | **When** — phased delivery and exit criteria |
+| [`docs/solution.md`](docs/solution.md) | **How** — architecture, runtime, data model; debt in §10 only |
+| [`docs/structure.md`](docs/structure.md) | **Where** — routes, folders, conventions |
+| [`docs/principles.md`](docs/principles.md) | Engineering rules |
+| [`AGENTS.md`](AGENTS.md) | Agent and contributor setup, commands, security |
 
 ## Getting started
 
@@ -27,7 +38,7 @@ pnpm site:dev
 
 ## Quality checks
 
-From the repo root:
+Run from the repo root before merge. GitHub Actions CI is planned ([`docs/product/roadmap.md`](docs/product/roadmap.md) Phase 1).
 
 ```bash
 pnpm format:check
@@ -36,15 +47,6 @@ pnpm typecheck
 pnpm test
 pnpm build
 ```
-
-## Documentation
-
-| Document                                 | Purpose                        |
-| ---------------------------------------- | ------------------------------ |
-| [`docs/product.md`](docs/product.md)     | Product vision and scope       |
-| [`docs/structure.md`](docs/structure.md) | Routes, folders, conventions, content stack |
-| [`docs/migration.md`](docs/migration.md) | CMS migration plan and runbook |
-| [`docs/backlog.md`](docs/backlog.md)     | Engineering backlog            |
 
 ## License
 

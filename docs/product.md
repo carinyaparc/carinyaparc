@@ -12,6 +12,16 @@ The Carinya Parc website is the primary digital touchpoint for guests, partners,
 
 This document describes the product vision for Carinya Parc as expressed through the website, so that product, engineering, and AI agents can make consistent decisions.
 
+| Doc | Role |
+| --- | --- |
+| **This document** | What and why — vision, scope, features, non-goals |
+| [`product/roadmap.md`](product/roadmap.md) | When — phased delivery |
+| [`solution.md`](solution.md) | How — architecture; risks and debt in §10 only |
+| [`structure.md`](structure.md) | Where — routes and folders |
+| [`principles.md`](principles.md) | Engineering rules |
+
+---
+
 ## Purpose & Vision
 
 The purpose of Carinya Parc is to:
@@ -143,6 +153,10 @@ The website brings this value to life by:
   - Simple email subscription form.
   - Positioning of the newsletter as the primary ongoing relationship channel.
 
+- **Contact**
+  - Contact form for enquiries and collaborations.
+  - Validated and sanitised server-side.
+
 ### Near-future feature ideas (staged rollout)
 
 - **Stay information**
@@ -201,7 +215,7 @@ Any new content should be checked against these tone expectations.
   - Scroll depth and time-on-page for key narrative posts.
 
 - **Acquisition**
-  - Enquiry form submissions (once implemented).
+  - Contact and subscribe form submissions.
   - Proportion of guests who discovered Carinya Parc through the website.
 
 - **Content performance**
@@ -227,4 +241,4 @@ These metrics should be reviewed regularly and adjusted as new offerings (e.g., 
 - **Honest representation**: Marketing language must align with on-the-ground reality (seasonality, weather, work-in-progress areas).
 - **Regenerative values**: Decisions about features and content should reinforce transparency, care for land, and realistic expectations, not over-promising.
 
-Where these assumptions change (e.g., full booking engine or online courses), this document should be updated and the impacted features clearly marked with ✓ (new commitments) or ✗ (retired approaches).
+Where these assumptions change (e.g., full booking engine or online courses), update this document and the affected features list.

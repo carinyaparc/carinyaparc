@@ -47,6 +47,3 @@ next-env.d.ts
 
 # turbo
 .turbo
-
-# .agents
-.agents/skills/

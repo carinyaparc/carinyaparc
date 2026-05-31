@@ -1,7 +1,17 @@
 # Project Structure
 
-This document describes the structure of the Carinya Parc repository, with a focus on the `apps/site` Next.js v16 App Router application.  
-It explains how routes, components, hooks, and utilities are organised, and provides guidance for adding new features in a consistent way.
+**Where** code and routes live — folder layout, naming, and conventions for `apps/site`.
+
+| Doc | Role |
+| --- | --- |
+| [`product.md`](product.md) | What and why |
+| [`product/roadmap.md`](product/roadmap.md) | When |
+| [`solution.md`](solution.md) | How — architecture; debt in §10 |
+| [`principles.md`](principles.md) | Engineering rules |
+
+This document describes the repository layout and how to add features consistently. It does not track technical debt.
+
+---
 
 ## High-level Repository Layout
 
@@ -39,7 +49,7 @@ At a high level, the monorepo is structured as:
 └── package.json              # Monorepo scripts and dev dependencies
 ```
 
-The `docs/` directory contains this file plus product and agent-focused documentation that should be updated alongside code changes.
+The `docs/` directory contains [`product.md`](product.md), [`solution.md`](solution.md), [`principles.md`](principles.md), [`product/roadmap.md`](product/roadmap.md), and this file. Update the relevant doc alongside code changes.
 
 ## Site App Structure (`apps/site`)
 
@@ -62,6 +72,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
     - `regenerate/` – regeneration overview.
     - `legal/[slug]/page.tsx` – legal pages resolved by slug.
     - `subscribe/page.tsx` – subscription / newsletter flows.
+    - `contact/page.tsx` – contact form.
 
   - `(blog)/` – routing group for blog content (shared site root layout):
     - `blog/page.tsx` – blog index at `/blog`.
@@ -79,14 +90,14 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 - `src/collections/` – Payload CMS collection configs:
   - `Users.ts` – admin authentication.
   - `Authors.ts`, `Categories.ts`, `Tags.ts` – blog supporting entities.
-  - `Posts.ts` – blog posts (title, slug, date, author, excerpt, body, tags, featured, image).
+  - `Posts.ts` – blog posts (title, slug, date, author, category, excerpt, body, tags, featured, image).
   - `Recipes.ts` – recipes (title, slug, times, servings, ingredients, instructions, tags, difficulty, SEO fields).
 
 - `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
 
 - `src/components/`
   - `sections/` – larger page sections (hero blocks, feature sections, etc.).
-  - `forms/` – reusable form components (e.g., subscribe form).
+  - `forms/` under `sections/` for reusable form UI (e.g. `ContactFormSection`, subscribe flows).
   - `layouts/` – layout-level components.
   - `rich-text/` – Lexical rich-text renderer for Payload post bodies.
   - `posts/`, `pages/`, `ui/` – post components, page-specific extras, and shared UI wrappers.
@@ -106,14 +117,14 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `metadata/` – helper functions for route metadata.
   - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).
   - `consent/` – cookie-consent server actions (httpOnly `cp_consent` cookie).
-  - `session/` – JWT session management (httpOnly `cp_session` cookie; server-only).
+  - `session/` – JWT helpers for a future `cp_session` cookie (scaffold only; not used by routes today).
   - `security/` – security utilities (CSP, headers, caching).
   - Other cross-cutting library code.
 
 - `src/styles/`
   - `globals.css`, `components.css`, typography, and page-level overrides.
 
-- `vitest.config.mjs`, `vitest.setup.ts` – minimal test config (API routes and form validation only)
+- `vitest.config.mjs`, `vitest.setup.ts` – Vitest config; tests colocated under `src/`
 
 ## Routing & Layout (Next.js App Router)
 
@@ -145,54 +156,44 @@ Each route or route group MAY also define:
 
 The current route structure includes (not exhaustive):
 
-- `/` → `src/app/page.tsx` (home).
-- `/about` → `src/app/about/page.tsx`.
-- `/about/the-property` → `src/app/about/the-property/page.tsx`.
-- `/about/jonathan` → `src/app/about/jonathan/page.tsx`.
-- `/regenerate` → `src/app/regenerate/page.tsx`.
-- `/blog` → `src/app/blog/page.tsx`.
+- `/` → `src/app/(www)/page.tsx` (home).
+- `/about` → `src/app/(www)/about/page.tsx`.
+- `/about/the-property` → `src/app/(www)/about/the-property/page.tsx`.
+- `/about/jonathan` → `src/app/(www)/about/jonathan/page.tsx`.
+- `/regenerate` → `src/app/(www)/regenerate/page.tsx`.
+- `/blog` → `src/app/(blog)/blog/page.tsx`.
 - `/blog/[slug]` → `src/app/(blog)/blog/[slug]/page.tsx`.
 - `/recipes/[slug]` → `src/app/(recipes)/recipes/[slug]/page.tsx`.
-- `/legal/[slug]` → `src/app/legal/[slug]/page.tsx`.
-- `/subscribe` → `src/app/subscribe/page.tsx`.
-- `/contact` → `src/app/(www)/contact/page.tsx` (✓ new).
+- `/legal/[slug]` → `src/app/(www)/legal/[slug]/page.tsx`.
+- `/subscribe` → `src/app/(www)/subscribe/page.tsx`.
+- `/contact` → `src/app/(www)/contact/page.tsx`.
 
 API routes:
 
 - `/api/subscribe` → `src/app/api/subscribe/route.ts`.
-- `/api/contact` → `src/app/api/contact/route.ts` (✓ new).
+- `/api/contact` → `src/app/api/contact/route.ts`.
 - `/api/sentry` → `src/app/api/sentry/route.ts`.
 - `/api/cron` → `src/app/api/cron/route.ts`.
 
-Cookie consent is **not** an API route. It uses the server action `setConsent` in `src/lib/consent/actions.ts`, called from `src/components/ui/Policy.tsx`. The root layout reads the httpOnly `cp_consent` cookie to gate analytics and banner visibility (✓). ✗ Retired: `/api/cookie`.
+Cookie consent is not an API route. It uses the server action `setConsent` in `src/lib/consent/actions.ts`, called from `src/components/ui/Policy.tsx`. The root layout reads the httpOnly `cp_consent` cookie to gate analytics and banner visibility.
 
-### Route groups & segmentation (assumption)
+### Route groups
 
-As the site grows, we may introduce route groups such as:
+Route groups are structural only (they do not change URLs):
 
-- `(marketing)` – for marketing and storytelling pages.
-- `(functional)` – for subscribe, booking, and forms.
+- `(www)/` – marketing, legal, contact, subscribe.
+- `(blog)/` – blog index and posts.
+- `(recipes)/` – recipe detail pages.
+- `(payload)/` – Payload admin and CMS API (separate root layout).
 
-If used, route groups should:
+If additional groups are introduced (e.g. `(functional)` for booking flows), document them here.
 
-- Be purely structural (do not change URLs).
-- Be documented here with examples when introduced.
+### Marketing vs functional pages
 
-### Marketing vs functional / booking pages
+- **Marketing and storytelling:** `/`, `/about`, `/about/the-property`, `/regenerate`, `/blog`, `/recipes/*`.
+- **Functional:** `/contact`, `/subscribe`, and API endpoints.
 
-- **Marketing & storytelling pages (✓)**:
-  - `/`, `/about`, `/about/the-property`, `/regenerate`, `/blog`, `/recipes/*`.
-  - Focused on narrative, photography, and context-setting.
-
-- **Functional / utility pages (✓)**:
-  - `/subscribe`, API endpoints, and future enquiry/booking flows.
-
-- **Future booking pages (assumption)**:
-  - If/when an enquiries or booking flow is introduced, it should live under:
-    - `/stay` or `/visit` for guest information.
-    - `/stay/enquire` or similar for enquiry forms.
-
-Any structural shift (e.g., introducing route groups like `(marketing)` or `(app)`) should be updated here and reflected in imports and tests.
+Future booking flows may live under `/stay` or `/visit` (see [`product.md`](product.md)).
 
 ## Components, Hooks & Utilities
 
@@ -200,10 +201,9 @@ Any structural shift (e.g., introducing route groups like `(marketing)` or `(app
 
 - Live under `src/components/` with subfolders by concern:
   - `sections/` for large page sections (hero, story grids, etc.).
-  - `forms/` for reusable form elements:
-    - `SubscribeForm.tsx` - newsletter subscription form
-    - `ContactForm.tsx` - contact inquiry form (✓ new)
-    - `SubscribeModal.tsx` - modal wrapper for subscription
+  - `forms/` for reusable form sections:
+    - `ContactFormSection.tsx` – contact inquiry form
+    - `SubscribeSection.tsx` – newsletter subscription
   - `ui/` for wrappers around shared UI primitives from `@repo/ui`.
   - `pages/` and `posts/` for page-specific and post-specific components.
 
@@ -237,7 +237,7 @@ Any structural shift (e.g., introducing route groups like `(marketing)` or `(app
   - Data-fetching helpers: `getX`, `listX`, `fetchX`.
   - Parsing/formatting helpers: `parseX`, `formatX`.
 
-- **Module organisation (✓)**:
+- **Module organisation:**
   - **Single files** (e.g., `cn.ts`, `posts.ts`) for focused utilities.
   - **Folders** (e.g., `metadata/`, `schema/`, `consent/`, `session/`, `security/`) for related functionality with:
     - Multiple implementation files
@@ -249,32 +249,30 @@ Examples of established folder patterns:
 
 - `src/lib/metadata/` – metadata generation helpers with barrel export.
 - `src/lib/security/` – CSP, headers, and cache control utilities.
-- `src/lib/validation/` – Zod schemas and sanitization (✓ new):
-  - `contact-schema.ts` - Contact form validation schema
-  - `contact-schema.test.ts` - Colocated unit tests
-  - `sanitize.ts` - DOMPurify wrapper utilities
-  - `sanitize.test.ts` - Colocated unit tests
-- `src/lib/email/` – Email service integration (✓ new):
+- `src/lib/validation/` – Zod schemas and sanitization:
+  - `contact-schema.ts` – contact form validation schema
+  - `sanitize.ts` – plain-Node strip/escape utilities (no DOMPurify)
+- `src/lib/email/` – email service integration:
   - `send-contact-notification.ts` - Resend SDK integration
   - `templates/contact-notification.ts` - Email HTML templates
 - `src/lib/schema/` – schema generators (article, breadcrumb, recipe) with tests.
 - `src/lib/consent/` – cookie-consent server actions:
   - `actions.ts` – `setConsent('accepted' | 'rejected')`; sets httpOnly `cp_consent` (defined in `constants.ts`).
-- `src/lib/session/` – JWT session management (server-only):
-  - `server.ts` – `getSession`, `setSession`, `updateSession`, `clearSession`; signs httpOnly `cp_session`.
-  - `types.ts`, `index.ts` – types and barrel export.
+- `src/lib/session/` – JWT helpers for future `cp_session` (scaffold; not wired to routes):
+  - `server.ts` – `getSession`, `setSession`, `updateSession`, `clearSession`
+  - `types.ts`, `index.ts` – types and barrel export
 - `src/lib/security/` – security utilities (CSP, headers, caching) with types and tests.
 
-### Cookies (✓)
+### Cookies
 
 Cookie names live in `src/lib/constants.ts`:
 
-| Cookie       | Constant              | Purpose              | Set by                                  | Read by                    |
-| ------------ | --------------------- | -------------------- | --------------------------------------- | -------------------------- |
-| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | `setConsent` server action              | `SiteRootLayout`           |
-| `cp_session` | `SESSION_COOKIE_NAME` | Auth session (JWT)   | `setSession` in `lib/session/server.ts` | `getSession` (server-only) |
+| Cookie | Constant | Purpose | In use |
+| --- | --- | --- | --- |
+| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | Yes — `setConsent` server action; read in site layout |
+| `cp_session` | `SESSION_COOKIE_NAME` | Future public-site auth (JWT) | No — helpers in `lib/session/` only; Payload admin uses Payload auth |
 
-Both cookies are httpOnly and set only on the server. Consent and session are separate cookies with different lifetimes and concerns.
+Both cookies are httpOnly and set only on the server.
 
 ## Naming Conventions
 
@@ -289,8 +287,9 @@ Both cookies are httpOnly and set only on the server. Consent and session are se
   - `useSomething` naming with strong, focused purpose.
 
 - **Tests**:
-  - Colocated with source using `.test.ts` / `.test.tsx` — limited to API routes and input validation (forms, sanitisation)
-  - Run with `pnpm test` from the repo root
+  - Colocated as `.test.ts` / `.test.tsx` under `src/`.
+  - Current coverage: Payload mapping, collection config, recipe duration formatting; expand to API routes and validation per [`principles.md`](principles.md).
+  - Run with `pnpm test` from the repo root.
 
 ## Import Aliases & Examples
 
@@ -306,18 +305,15 @@ From `apps/site/tsconfig.json`, the primary aliases are:
 - `@/types/*` → `./src/types/*`
 - `@repo/ui/*` → `../packages/ui/src/*`
 
-**Examples (✓):**
+**Examples:**
 
 ```ts
 // Importing a section component
 import { RegenerateSection } from '@/components/sections/regenerate-section';
 
 // Importing a data helper
-import { getAllPosts } from '@/lib/posts';
+import { getBlogPosts } from '@/lib/posts';
 
-// Importing from modular lib folders (via barrel exports)
-import { getSession, setSession } from '@/lib/session';
-import type { SessionPayload } from '@/lib/session';
 import { setConsent } from '@/lib/consent/actions';
 
 // Importing a hook
@@ -327,20 +323,19 @@ import { useMobile } from '@/hooks/use-mobile';
 import { Button } from '@repo/ui/button';
 ```
 
-Prefer these aliases over complex relative paths (✗ `../../../components/...`).
+Prefer these aliases over deep relative paths (e.g. `../../../components/...`).
 
 ## Guidelines for Adding New Features
 
 When adding a new feature (page, component, or flow):
 
-1. **Decide where it belongs in the URL space (✓)**
+1. **Decide where it belongs in the URL space**
    - Is it mainly marketing/storytelling? Place routes under a top-level path like `/regenerate`, `/about`, `/stay`, etc.
    - Is it functional (forms, preferences, profile)? Use more app-like top-level paths (e.g., `/profile`, `/subscribe`, `/stay/enquire`).
 
-2. **Add the route under `src/app/`**
-   - Create `src/app/<route>/page.tsx` for a new page.
-   - If dynamic, create folders like `src/app/posts/[slug]/page.tsx`.
-   - If the route has multiple visual components, keep the page component light and delegate layout to `src/components/sections/`.
+2. **Add the route under `src/app/`** — use the appropriate route group, e.g. `(www)/`, `(blog)/`, or `(recipes)/`.
+   - Create `page.tsx` for a new page.
+   - Keep the page component light; delegate UI to `src/components/sections/`.
 
 3. **Create or reuse components**
    - Add page sections to `src/components/sections/`.
@@ -359,18 +354,17 @@ When adding a new feature (page, component, or flow):
    - Add or update metadata helpers in `apps/site/src/lib/metadata/` or inline `export const metadata` as per current patterns.
 
 7. **Update docs where relevant**
-   - If you add or significantly change a user-visible feature, update:
-     - `docs/product.md` (product implications).
-     - `docs/structure.md` (if routing, stack choices, or organisational conventions change).
-
-   - Mark new decisions or constraints with ✓ and any retired patterns with ✗.
+   - `docs/product.md` — user-visible feature or scope change.
+   - `docs/solution.md` — architecture, data model, or integration change (debt only in §10).
+   - `docs/structure.md` — routing or folder convention change.
+   - `docs/product/roadmap.md` — delivery phasing change.
 
 ## Worked Example: Adding a New “Experiences” Page
 
 Goal: Add `/experiences` as a marketing page that introduces on-farm experiences (present or upcoming).
 
 1. **Create the route**
-   - File: `apps/site/src/app/experiences/page.tsx`
+   - File: `apps/site/src/app/(www)/experiences/page.tsx`
 
    Basic structure (sketch):
 
@@ -415,4 +409,4 @@ Goal: Add `/experiences` as a marketing page that introduces on-farm experiences
      pnpm build
      ```
 
-   - All checks should pass (✓) before merging or shipping.
+   - All checks should pass before merging or shipping.

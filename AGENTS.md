@@ -11,7 +11,7 @@ Carinya Parc ([carinyaparc.com.au](https://carinyaparc.com.au)) is a working rur
 - **Shared packages:** `@repo/ui` (component library), `@repo/eslint-config`, `@repo/tailwind-config`, `@repo/typescript-config`.
 - **Deployment:** Vercel (production). Payload admin at `/admin`; public marketing site, blog, and recipes share a common site root layout.
 
-For product context and feature intent, read `docs/product.md`. For routing and folder conventions, read `docs/structure.md`. For architecture rules, read `docs/principles.md`.
+For product context and feature intent, read `docs/product.md` (what and why). For delivery phasing, read `docs/product/roadmap.md` (when). For architecture and debt, read `docs/solution.md` (how; §10). For routing and folders, read `docs/structure.md` (where). For engineering rules, read `docs/principles.md`.
 
 ## Project structure
 
@@ -38,7 +38,7 @@ For product context and feature intent, read `docs/product.md`. For routing and 
 │   ├── eslint-config/
 │   ├── tailwind-config/
 │   └── typescript-config/
-└── docs/                     # Product, structure, and migration docs
+└── docs/                     # Product, solution, structure, roadmap, principles
 ```
 
 **Import aliases** (from `apps/site/tsconfig.json`):
@@ -81,6 +81,8 @@ pnpm generate:types   # regenerate Payload types after schema changes
 ```
 
 ### Quality checks (run from repo root before finishing work)
+
+GitHub Actions CI is not yet configured ([`product/roadmap.md`](product/roadmap.md) Phase 1). Run locally before merge:
 
 ```bash
 pnpm lint             # ESLint across the monorepo
@@ -133,7 +135,7 @@ pnpm turbo run build --filter=site
 **What to test:**
 
 - API route handlers and input validation (Zod schemas, sanitisation)
-- Non-trivial library logic (MDX migration, Payload helpers, schema generators)
+- Non-trivial library logic (Payload helpers, schema generators, validation)
 - Shared UI primitives in `packages/ui`
 
 **What not to test by default:** presentational pages and static marketing sections unless they contain meaningful logic.
@@ -158,8 +160,8 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 
 **Authentication and cookies:**
 
-- Session JWT in httpOnly `cp_session` cookie — set/read only via `src/lib/session/` (server-only).
 - Analytics consent in httpOnly `cp_consent` cookie — set via `setConsent` server action in `src/lib/consent/`.
+- `cp_session` JWT helpers live in `src/lib/session/` (scaffold only; not wired to routes). Payload admin uses Payload Users authentication, not `cp_session`.
 - Cookie name constants live in `src/lib/constants.ts`.
 
 **HTTP security:**
@@ -171,8 +173,8 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 **Input handling:**
 
 - Validate all external input with Zod schemas in `src/lib/validation/`.
-- Sanitise user-provided HTML/text via utilities in `src/lib/validation/sanitize.ts` (DOMPurify).
-- Contact and subscribe endpoints support rate limiting via env-configured limits.
+- Sanitise user-provided HTML/text via utilities in `src/lib/validation/sanitize.ts` (plain-Node strip/escape; no DOMPurify).
+- Contact and subscribe endpoints use in-memory rate limiting today; see `docs/solution.md` §10 for current debt and `docs/product/roadmap.md` Phase 1 for the fix.
 
 **Payload CMS:**
 
@@ -188,12 +190,13 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 
 ## Additional resources
 
-| Document                 | Purpose                                                   |
-| ------------------------ | --------------------------------------------------------- |
-| `docs/structure.md`      | Routes, layouts, naming, and how to add features          |
-| `docs/product.md`        | Product vision, personas, and feature scope               |
-| `docs/principles.md`     | Architecture rules (server/client split, metadata, types) |
-| `docs/backlog.md`        | Current work items and priorities                         |
-| `apps/site/.env.example` | Required environment variables                            |
+| Document | Role |
+| --- | --- |
+| `docs/product.md` | What and why |
+| `docs/product/roadmap.md` | When |
+| `docs/solution.md` | How — architecture; debt in §10 only |
+| `docs/structure.md` | Where — routes and folders |
+| `docs/principles.md` | Engineering rules |
+| `apps/site/.env.example` | Required environment variables |
 
-When adding or changing user-visible features, update the relevant doc in `docs/` alongside code changes.
+When adding or changing user-visible features, update the relevant doc in `docs/` alongside code changes. Track technical debt only in `docs/solution.md` §10.

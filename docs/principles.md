@@ -1,5 +1,14 @@
 # Architecture Guiding Principles
 
+Engineering rules for the Carinya Parc website.
+
+| Doc | Role |
+| --- | --- |
+| [`product.md`](product.md) | What and why |
+| [`product/roadmap.md`](product/roadmap.md) | When |
+| [`solution.md`](solution.md) | How — architecture; debt in §10 |
+| [`structure.md`](structure.md) | Where — routes and folders |
+
 1. **Separation of Concerns:** Modules **SHALL** adhere to the single‑responsibility principle. UI components **SHALL NOT** contain side‑effects such as data fetching or business logic.
 
 2. **Reusability:** Shared logic and UI elements **MUST** reside in dedicated folders (`components/`, `hooks/`, `lib/`) to avoid duplication and encourage reuse.
