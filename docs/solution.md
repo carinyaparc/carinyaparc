@@ -129,7 +129,7 @@ Ordered by priority for architectural trade-offs.
 | Text-path image fields (interim) | Fast migration, static `public/` assets | No media library, alt enforcement, or upload workflow yet |
 | `map-content.ts` mapping layer | Stable UI types decoupled from Payload shapes | Extra indirection when schema changes |
 | Security via `proxy.ts` + nonce CSP | Trust goal | Admin UI must be verified under production CSP |
-| `@repo/ui` monorepo package | Shared Radix primitives | Extra build layer until repo consolidation |
+| Base UI + inline `src/components/ui/` | No external primitive package; leaner dependency graph | Primitive API differs from Radix (`render` prop vs `asChild`) |
 
 ### 3.3 Principles applied
 
@@ -167,7 +167,7 @@ From [`principles.md`](principles.md): separation of concerns (data in server ro
                     └──────────────────────┘
 
 ┌──────────────────┐
-│ packages/ui      │  ← shared UI primitives (Radix wrappers)
+│ packages/ui      │  ← retained for production verification; no longer imported by site
 └──────────────────┘
 ```
 
@@ -420,7 +420,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 | ADR-003 | Keep legal content in git MDX, not Payload | _(Not yet written)_ |
 | ADR-004 | Static generation for blog/recipe detail at build time | _(Not yet written)_ — revisit when revalidation ships |
 | ADR-005 | Interim text-path images instead of Media uploads | _(Not yet written)_ — time-bounded; supersede when Media lands |
-| ADR-006 | Monorepo with `@repo/ui` until flat-repo consolidation | _(Not yet written)_ |
+| ADR-006 | Inline UI components into `apps/site`; adopt Base UI + Sonner | _(Not yet written)_ — `@repo/ui` removed from site dependencies; package retained pending flat-repo consolidation |
 | ADR-007 | Nonce-based strict CSP on all non-static routes including `/admin` | _(Not yet written)_ — production verification pending |
 
 ---

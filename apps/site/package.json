@@ -37,7 +37,6 @@
     "@payloadcms/db-postgres": "^3.85.0",
     "@payloadcms/next": "^3.85.0",
     "@payloadcms/richtext-lexical": "^3.85.0",
-    "@repo/ui": "workspace:*",
     "@sentry/nextjs": "^10.55.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-query": "^5.100.14",
