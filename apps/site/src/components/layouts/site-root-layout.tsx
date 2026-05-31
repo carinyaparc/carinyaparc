@@ -11,7 +11,7 @@ import { Header } from '@/src/components/sections/header';
 import Newsletter from '@/src/components/ui/Newsletter';
 import { Footer } from '@/src/components/sections/footer';
 import CookiePolicy from '@/src/components/ui/Policy';
-import { Toaster } from '@repo/ui/toaster';
+import { Toaster } from '@/components/ui/toaster';
 import { Providers } from '@/providers/Providers';
 
 import { GoogleTagManager } from '@next/third-parties/google';

@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from '@repo/ui/dialog';
+} from '@/components/ui/dialog';
 import { cn } from '@/src/lib/cn';
 import SubscribeSection from '@/src/components/sections/forms/SubscribeSection';
 

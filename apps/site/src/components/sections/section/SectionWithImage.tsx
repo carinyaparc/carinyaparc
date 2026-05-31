@@ -11,7 +11,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { cn } from '@/src/lib/cn';
-import { Button } from '@repo/ui/button';
+import { Button } from '@/components/ui/button';
 
 // Types
 interface SectionWithImageProps {
@@ -132,8 +132,8 @@ export function SectionButton({
       : 'bg-eucalyptus-600 text-white hover:bg-eucalyptus-700';
 
   return (
-    <Button asChild className={buttonClasses}>
-      <Link href={href}>{children}</Link>
+    <Button render={<Link href={href} />} className={buttonClasses}>
+      {children}
     </Button>
   );
 }

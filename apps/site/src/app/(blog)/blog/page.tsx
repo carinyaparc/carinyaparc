@@ -1,7 +1,7 @@
 import { PageHeader } from '@/src/components/sections/page-header';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@repo/ui/button';
+import { Button } from '@/components/ui/button';
 import { LatestPosts, FeaturedPosts } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
@@ -33,13 +33,15 @@ export default async function BlogPage() {
           {/* Breadcrumb navigation */}
           <Breadcrumb />
 
-          <Button asChild variant="ghost" className="text-green-600 hover:text-green-700">
-            <Link href="/">
-              <span className="flex items-center">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Home
-              </span>
-            </Link>
+          <Button
+            render={<Link href="/" />}
+            variant="ghost"
+            className="text-green-600 hover:text-green-700"
+          >
+            <span className="flex items-center">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </span>
           </Button>
         </div>
 

@@ -10,11 +10,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { AlertCircle, CheckCircle } from 'lucide-react';
-import { Button } from '@repo/ui/button';
-import { Input } from '@repo/ui/input';
-import { Select } from '@repo/ui/select-native';
-import { FormField } from '@repo/ui/form-field';
-import { Alert } from '@repo/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select-native';
+import { FormField } from '@/components/ui/form-field';
+import { Alert } from '@/components/ui/alert';
 
 export interface SubscribeFormData {
   email: string;
