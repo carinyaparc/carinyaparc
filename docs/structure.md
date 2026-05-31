@@ -11,7 +11,7 @@ At a high level, the monorepo is structured as:
 .
 ├── apps/
 │   └── site/                 # Next.js App Router app. for the Carinya Parc website
-│       ├── content/          # MDX content (blog, recipes, legal)
+│       ├── content/          # MDX: legal pages; archived posts/recipes MDX
 │       ├── public/           # Static assets (images, favicon, logo)
 │       ├── src/
 │       │   ├── app/          # App Router routes, layouts, and route-level files
@@ -19,7 +19,6 @@ At a high level, the monorepo is structured as:
 │       │   ├── components/   # Shared React components
 │       │   ├── collections/  # Payload CMS collection configs
 │       │   ├── fields/       # Reusable Payload field definitions
-│       │   ├── seed/         # Payload seed scripts (e.g. pnpm seed:blog)
 │       │   ├── hooks/        # Reusable hooks
 │       │   ├── providers/    # App-wide React context providers
 │       │   ├── lib/          # Utilities, metadata, schema, session helpers
@@ -40,38 +39,37 @@ At a high level, the monorepo is structured as:
 └── package.json              # Monorepo scripts and dev dependencies
 ```
 
-The `docs/` directory contains this file plus product, tech, and agent-focused documentation that should be updated alongside code changes.
+The `docs/` directory contains this file plus product and agent-focused documentation that should be updated alongside code changes.
 
 ## Site App Structure (`apps/site`)
 
 Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `content/`
-  - `posts/` – long-form blog posts in MDX.
-  - `recipes/` – recipes in MDX.
-  - `legal/` – legal pages (privacy, terms) in MDX.
+  - `posts/` – archived MDX (production blog reads Payload).
+  - `recipes/` – archived MDX (production recipes read Payload).
+  - `legal/` – legal pages (privacy, terms) in MDX; served at runtime.
 
 - `public/`
   - `images/` – photography and UI placeholders. Use kebab-case, subject-descriptor names (e.g. `hero-home.jpg`, `farm-track-gate.jpg`); keep `404.jpg` for the not-found page.
   - `favicon/` – favicon.ico and PNG sizes; `logo.png`, `robots.txt`, `site.webmanifest`, etc.
 
 - `src/app/`
-  - `(payload)/` – Payload CMS admin (`/admin`) and API routes (`/api/*` for Payload collections).
-  - `layout.tsx` – root layout for the app.
-  - `(www)/` – routing group for main marketing site:
+  - `(payload)/` – Payload CMS admin (`/admin`) and API routes (`/api/*` for Payload collections). Own root layout (no site header/footer).
+  - `(www)/` – main marketing site (shared site root layout):
     - `page.tsx` – home page.
     - `about/` with nested routes (e.g., `the-property`, `jonathan`).
     - `regenerate/` – regeneration overview.
     - `legal/[slug]/page.tsx` – legal pages resolved by slug.
     - `subscribe/page.tsx` – subscription / newsletter flows.
 
-  - `(blog)/` – routing group for blog content:
+  - `(blog)/` – routing group for blog content (shared site root layout):
     - `blog/page.tsx` – blog index at `/blog`.
-    - `[post]/page.tsx` – individual post route at `/[post]` (root level).
+    - `blog/[slug]/page.tsx` – individual post at `/blog/{slug}` (Payload-backed).
     - Future: `blog/category/[slug]/page.tsx`, `blog/tag/[tag]/page.tsx`.
 
-  - `(recipes)/` – routing group for recipe content:
-    - `[recipe]/page.tsx` – individual recipe route at `/[recipe]` (root level).
+  - `(recipes)/` – routing group for recipe content (shared site root layout):
+    - `recipes/[slug]/page.tsx` – individual recipe at `/recipes/{slug}` (Payload-backed).
     - Future: `recipes/page.tsx`, `recipes/category/[slug]/page.tsx`, `recipes/tag/[tag]/page.tsx`.
 
   - `api/` – API route handlers (`subscribe`, `contact`, `sentry`, `cron`).
@@ -86,12 +84,11 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
 
-- `src/seed/` – idempotent seed and migration scripts (`pnpm seed:blog`, `pnpm seed:recipes`, `pnpm migrate:mdx` from `apps/site` with Postgres running).
-
 - `src/components/`
   - `sections/` – larger page sections (hero blocks, feature sections, etc.).
   - `forms/` – reusable form components (e.g., subscribe form).
   - `layouts/` – layout-level components.
+  - `rich-text/` – Lexical rich-text renderer for Payload post bodies.
   - `posts/`, `pages/`, `ui/` – post components, page-specific extras, and shared UI wrappers.
 
 - `src/hooks/`
@@ -99,9 +96,13 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/lib/`
   - `cn.ts` – class name utility.
-  - `payload/` – Payload helpers (access control, slugify, lexical utilities, markdown conversion, MDX migration).
-  - `mdx/` – MDX content loading, slug map, and migration parsers (used by `pnpm migrate:mdx`).
-  - `mdx.ts` – MDX loading/rendering utilities.
+  - `payload/` – Payload client, queries, content mappers, access control, slugify.
+    - `client.ts` – cached `getPayloadClient()` (server-only).
+    - `queries/` – `posts.ts`, `recipes.ts`, `sitemap-posts.ts` for route and sitemap data.
+    - `map-content.ts` – maps Payload documents to list/detail shapes.
+    - `urls.ts` – `/blog/{slug}` and `/recipes/{slug}` path helpers.
+  - `posts.ts` – `Post` type; re-exports blog query functions from `payload/queries/posts`.
+  - `recipes/` – recipe display helpers (e.g. `format-duration.ts`).
   - `metadata/` – helper functions for route metadata.
   - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).
   - `consent/` – cookie-consent server actions (httpOnly `cp_consent` cookie).
@@ -118,8 +119,10 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 ### Layout and error boundaries
 
-- `src/app/layout.tsx`
-  - Defines the root HTML structure, global providers, and shared navigation.
+- `src/components/layouts/site-root-layout.tsx`
+  - Shared site root layout (HTML shell, providers, header, footer). Used by `(www)/layout.tsx`, `(blog)/layout.tsx`, and `(recipes)/layout.tsx`.
+- `(payload)/layout.tsx`
+  - Payload admin root layout — separate from the public site so `/admin` does not nest two `<html>` documents.
 
 - `src/app/global-error.tsx`
   - Handles rendering for uncaught errors across the app.
@@ -148,8 +151,8 @@ The current route structure includes (not exhaustive):
 - `/about/jonathan` → `src/app/about/jonathan/page.tsx`.
 - `/regenerate` → `src/app/regenerate/page.tsx`.
 - `/blog` → `src/app/blog/page.tsx`.
-- `/blog/[post]` → `src/app/blog/[post]/page.tsx`.
-- `/recipes/[recipe]` → `src/app/recipes/[recipe]/page.tsx`.
+- `/blog/[slug]` → `src/app/(blog)/blog/[slug]/page.tsx`.
+- `/recipes/[slug]` → `src/app/(recipes)/recipes/[slug]/page.tsx`.
 - `/legal/[slug]` → `src/app/legal/[slug]/page.tsx`.
 - `/subscribe` → `src/app/subscribe/page.tsx`.
 - `/contact` → `src/app/(www)/contact/page.tsx` (✓ new).
@@ -227,14 +230,15 @@ Any structural shift (e.g., introducing route groups like `(marketing)` or `(app
 
 - Live under `src/lib/`.
 - **Data-fetching and content utilities**:
-  - Functions like `getAllPosts`, `getPostBySlug`, `getRecipes` live in `src/lib/` (often with MDX helpers).
+  - Blog and recipe data: `getBlogPosts`, `getBlogPostBySlug`, `getRecipeDetailBySlug` in `src/lib/payload/queries/` (re-exported from `posts.ts` where applicable).
+  - Legal pages: loaded from `content/legal/` MDX in route handlers.
 
 - **Naming convention**:
   - Data-fetching helpers: `getX`, `listX`, `fetchX`.
   - Parsing/formatting helpers: `parseX`, `formatX`.
 
 - **Module organisation (✓)**:
-  - **Single files** (e.g., `cn.ts`, `mdx.ts`, `posts.ts`) for focused utilities.
+  - **Single files** (e.g., `cn.ts`, `posts.ts`) for focused utilities.
   - **Folders** (e.g., `metadata/`, `schema/`, `consent/`, `session/`, `security/`) for related functionality with:
     - Multiple implementation files
     - Separate type definitions
@@ -267,7 +271,7 @@ Cookie names live in `src/lib/constants.ts`:
 
 | Cookie       | Constant              | Purpose              | Set by                                  | Read by                    |
 | ------------ | --------------------- | -------------------- | --------------------------------------- | -------------------------- |
-| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | `setConsent` server action              | Root `layout.tsx`          |
+| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | `setConsent` server action              | `SiteRootLayout`           |
 | `cp_session` | `SESSION_COOKIE_NAME` | Auth session (JWT)   | `setSession` in `lib/session/server.ts` | `getSession` (server-only) |
 
 Both cookies are httpOnly and set only on the server. Consent and session are separate cookies with different lifetimes and concerns.
@@ -345,7 +349,7 @@ When adding a new feature (page, component, or flow):
 
 4. **Add hooks or utilities if needed**
    - Place new hooks in `src/hooks/` (e.g., `use-experiences-filter.ts`).
-   - Place content or data helpers in `src/lib/` (e.g., `experiences.ts` for MDX loaders).
+   - Place content or data helpers in `src/lib/` (e.g., Payload queries under `lib/payload/queries/`).
 
 5. **Add tests (when behaviour is non-trivial)**
    - Prefer tests for API routes and validation logic only (e.g. `route.test.ts` next to `route.ts`).
@@ -357,8 +361,7 @@ When adding a new feature (page, component, or flow):
 7. **Update docs where relevant**
    - If you add or significantly change a user-visible feature, update:
      - `docs/product.md` (product implications).
-     - `docs/tech.md` (if stack choices or integrations change).
-     - `docs/structure.md` (if routing or organisational conventions change).
+     - `docs/structure.md` (if routing, stack choices, or organisational conventions change).
 
    - Mark new decisions or constraints with ✓ and any retired patterns with ✗.
 
@@ -393,9 +396,8 @@ Goal: Add `/experiences` as a marketing page that introduces on-farm experiences
    Use Tailwind classes and `@repo/ui` components to match existing visual language.
 
 3. **Add content (optional but encouraged)**
-   - If there is richer long-form content:
-     - Add `apps/site/content/posts/20YYMMDD-experiences-at-carinya-parc.mdx`.
-     - Use `getAllPosts` or similar utilities to surface it on `/experiences` and `/blog`.
+   - For blog posts or recipes, create content in Payload admin at `/admin`.
+   - For legal or static MDX pages, add files under `apps/site/content/legal/` or route-specific MDX as needed.
 
 4. **Wire navigation and metadata**
    - Update `apps/site/src/app/navigation.tsx` to include an `/experiences` link where appropriate.

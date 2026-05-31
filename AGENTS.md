@@ -6,7 +6,8 @@ Guidance for AI coding agents working on the Carinya Parc website monorepo.
 
 Carinya Parc ([carinyaparc.com.au](https://carinyaparc.com.au)) is a working rural property in New South Wales. This repository is a **pnpm + Turborepo monorepo** that powers the public website and CMS.
 
-- **Primary app:** `apps/site` — Next.js 16 (App Router) with Payload CMS 3, Postgres, MDX content, Tailwind CSS 4, and React 19.
+- **Primary app:** `apps/site` — Next.js 16 (App Router) with Payload CMS 3, Postgres, Tailwind CSS 4, and React 19.
+- **Content:** Blog posts and recipes from Payload (Postgres); legal pages from MDX in `content/legal/`.
 - **Shared packages:** `@repo/ui` (component library), `@repo/eslint-config`, `@repo/tailwind-config`, `@repo/typescript-config`.
 - **Deployment:** Vercel (production). Payload admin at `/admin`; public marketing site, blog, and recipes share a common site root layout.
 
@@ -18,7 +19,7 @@ For product context and feature intent, read `docs/product.md`. For routing and 
 .
 ├── apps/
 │   └── site/                 # Next.js App Router app (main work happens here)
-│       ├── content/          # MDX: blog posts, recipes, legal pages
+│       ├── content/          # MDX: legal pages; archived posts/recipes MDX
 │       ├── public/           # Static assets (images, favicon, manifest)
 │       └── src/
 │           ├── app/          # Routes and layouts
@@ -76,9 +77,6 @@ pnpm site:dev         # site app only (Next.js + Turbopack)
 Site-only scripts from `apps/site`:
 
 ```bash
-pnpm seed:blog        # seed blog content (Postgres must be running)
-pnpm seed:recipes     # seed recipe content
-pnpm migrate:mdx      # migrate MDX content into Payload
 pnpm generate:types   # regenerate Payload types after schema changes
 ```
 
@@ -190,12 +188,12 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 
 ## Additional resources
 
-| Document | Purpose |
-| --- | --- |
-| `docs/structure.md` | Routes, layouts, naming, and how to add features |
-| `docs/product.md` | Product vision, personas, and feature scope |
-| `docs/principles.md` | Architecture rules (server/client split, metadata, types) |
-| `docs/backlog.md` | Current work items and priorities |
-| `apps/site/.env.example` | Required environment variables |
+| Document                 | Purpose                                                   |
+| ------------------------ | --------------------------------------------------------- |
+| `docs/structure.md`      | Routes, layouts, naming, and how to add features          |
+| `docs/product.md`        | Product vision, personas, and feature scope               |
+| `docs/principles.md`     | Architecture rules (server/client split, metadata, types) |
+| `docs/backlog.md`        | Current work items and priorities                         |
+| `apps/site/.env.example` | Required environment variables                            |
 
 When adding or changing user-visible features, update the relevant doc in `docs/` alongside code changes.

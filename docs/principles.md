@@ -14,7 +14,7 @@
 
 7. **Type Safety:** TypeScript strict mode is **REQUIRED**. Global/shared types **MUST** live under `types/` (or adjacent to related modules). Use of `any` **SHOULD NOT** be permitted.
 
-8. **Testing:** Automated tests are **REQUIRED**. Test suites **SHALL** be organised under `tests/` with `unit/`, `integration/`, and `e2e/` subfolders. Test filenames **SHOULD** mirror the source directory structure.
+8. **Testing:** Automated tests are **REQUIRED** for non-trivial logic. Test suites **SHOULD** be colocated with source as `*.test.ts` / `*.test.tsx` under `src/` (API routes, validation, Payload helpers, schema generators).
 
 9. **Styling:** Global CSS or Tailwind imports **SHALL** live in `styles/`. Component‑level styles **MAY** use CSS modules or utility classes. All dynamic class merging **MUST** use a central util (e.g. `cn()`).
 
