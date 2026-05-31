@@ -24,9 +24,6 @@
     "generate:importmap": "payload generate:importmap",
     "generate:types": "payload generate:types",
     "payload": "payload",
-    "seed:blog": "payload seed:blog",
-    "seed:recipes": "payload seed:recipes",
-    "migrate:mdx": "payload migrate:mdx",
     "test": "vitest run"
   },
   "dependencies": {

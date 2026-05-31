@@ -3,7 +3,7 @@ import 'server-only';
 import { getPayloadClient } from '@/lib/payload/client';
 import { mapPayloadDocToRoute } from '@/lib/payload/map-content';
 import type { ContentRouteEntry } from '@/lib/payload/map-content';
-import { postUrl } from '@/lib/mdx/slugs';
+import { postUrl } from '@/lib/payload/urls';
 
 export async function getPostSitemapEntries(): Promise<ContentRouteEntry[]> {
   const payload = await getPayloadClient();

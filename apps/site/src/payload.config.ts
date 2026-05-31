@@ -38,18 +38,4 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
-  bin: [
-    {
-      key: 'seed:blog',
-      scriptPath: path.resolve(dirname, 'seed/blog-bin.ts'),
-    },
-    {
-      key: 'seed:recipes',
-      scriptPath: path.resolve(dirname, 'seed/recipes-bin.ts'),
-    },
-    {
-      key: 'migrate:mdx',
-      scriptPath: path.resolve(dirname, 'seed/migrate-mdx-bin.ts'),
-    },
-  ],
 });

@@ -4,7 +4,7 @@ import type { Recipe as PayloadRecipe } from '@/payload-types';
 import { getPayloadClient } from '@/lib/payload/client';
 import { mapPayloadDocToRoute, mapPayloadRecipeToDetail } from '@/lib/payload/map-content';
 import type { ContentRouteEntry } from '@/lib/payload/map-content';
-import { recipeUrl } from '@/lib/mdx/slugs';
+import { recipeUrl } from '@/lib/payload/urls';
 
 export async function getRecipeBySlug(slug: string): Promise<PayloadRecipe | null> {
   const payload = await getPayloadClient();
