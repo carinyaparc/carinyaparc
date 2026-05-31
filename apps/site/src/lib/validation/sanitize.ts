@@ -13,7 +13,10 @@ const HTML_ENTITY_MAP: Record<string, string> = {
 };
 
 function decodeHtmlEntities(input: string): string {
-  return input.replace(/&(?:amp|lt|gt|quot|#39|#x27);/g, (entity) => HTML_ENTITY_MAP[entity] ?? entity);
+  return input.replace(
+    /&(?:amp|lt|gt|quot|#39|#x27);/g,
+    (entity) => HTML_ENTITY_MAP[entity] ?? entity,
+  );
 }
 
 function stripHtmlTags(input: string): string {
