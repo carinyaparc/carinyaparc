@@ -97,8 +97,8 @@ Portfolio backlog for **Phase 1 — Production readiness** only. Stories use Ghe
 
 #### Stories
 
-- [ ] **[CP01-001] CI workflow scaffold and trigger rules**
-  - **Status:** Not started | **Priority:** P0 | **Estimate:** 2
+- [x] **[CP01-001] CI workflow scaffold and trigger rules**
+  - **Status:** Done | **Priority:** P0 | **Estimate:** 2
   - **Epic:** CP01 | **Labels:** type:infra, area:ci
   - **Depends on:** —
   - **Deliverable:** GitHub Actions workflow file triggered on `pull_request` and `push` to `main`; Node 24.x and pnpm 10.26.0 aligned with root `package.json`.
