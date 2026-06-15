@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "postcss": "^8.5.15",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.1"
   }
 }
