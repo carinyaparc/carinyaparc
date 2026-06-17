@@ -6,7 +6,6 @@ import createMDX from '@next/mdx';
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   trailingSlash: true,
-  transpilePackages: ['@repo/ui'],
 
   async redirects() {
     return [{ source: '/favicon.ico', destination: '/favicon/favicon.ico', permanent: true }];

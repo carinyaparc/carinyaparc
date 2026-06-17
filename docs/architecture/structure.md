@@ -38,7 +38,6 @@ At a high level, the monorepo is structured as:
 │       ├── tailwind.config.ts
 │       └── vitest.config.mjs
 ├── packages/
-│   ├── ui/                   # Shared UI component library
 │   ├── eslint-config/        # Shared ESLint configuration
 │   ├── tailwind-config/      # Shared Tailwind configuration
 │   └── typescript-config/    # Shared TypeScript configs
@@ -204,7 +203,7 @@ Future booking flows may live under `/stay` or `/visit` (see [`product.md`](prod
   - `forms/` for reusable form sections:
     - `ContactFormSection.tsx` – contact inquiry form
     - `SubscribeSection.tsx` – newsletter subscription
-  - `ui/` for wrappers around shared UI primitives from `@repo/ui`.
+  - `ui/` for low-level UI primitives and wrappers (built on Base UI), e.g. `button.tsx`, `card.tsx`, `input.tsx`.
   - `pages/` and `posts/` for page-specific and post-specific components.
 
 ### Providers
@@ -303,7 +302,6 @@ From `apps/site/tsconfig.json`, the primary aliases are:
 - `@/lib/*` → `./src/lib/*`
 - `@/styles/*` → `./src/styles/*`
 - `@/types/*` → `./src/types/*`
-- `@repo/ui/*` → `../packages/ui/src/*`
 
 **Examples:**
 
@@ -319,8 +317,8 @@ import { setConsent } from '@/lib/consent/actions';
 // Importing a hook
 import { useMobile } from '@/hooks/use-mobile';
 
-// Importing a shared UI component
-import { Button } from '@repo/ui/button';
+// Importing a UI primitive
+import { Button } from '@/components/ui/button';
 ```
 
 Prefer these aliases over deep relative paths (e.g. `../../../components/...`).
@@ -339,7 +337,7 @@ When adding a new feature (page, component, or flow):
 
 3. **Create or reuse components**
    - Add page sections to `src/components/sections/`.
-   - Reuse primitives from `@repo/ui` and wrappers in `src/components/ui/`.
+   - Reuse primitives and wrappers in `src/components/ui/`.
    - Avoid duplicating patterns already present in `sections`, `forms`, or `ui`.
 
 4. **Add hooks or utilities if needed**
@@ -387,7 +385,7 @@ Goal: Add `/experiences` as a marketing page that introduces on-farm experiences
      - `apps/site/src/components/sections/experiences-hero.tsx`
      - `apps/site/src/components/sections/experiences-list.tsx`
 
-   Use Tailwind classes and `@repo/ui` components to match existing visual language.
+   Use Tailwind classes and `@/components/ui` components to match existing visual language.
 
 3. **Add content (optional but encouraged)**
    - For blog posts or recipes, create content in Payload admin at `/admin`.

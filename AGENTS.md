@@ -8,7 +8,7 @@ Carinya Parc ([carinyaparc.com.au](https://carinyaparc.com.au)) is a working rur
 
 - **Primary app:** `apps/site` — Next.js 16 (App Router) with Payload CMS 3, Postgres, Tailwind CSS 4, and React 19.
 - **Content:** Blog posts and recipes from Payload (Postgres); legal pages from MDX in `content/legal/`.
-- **Shared packages:** `@repo/ui` (component library), `@repo/eslint-config`, `@repo/tailwind-config`, `@repo/typescript-config`.
+- **Shared packages:** `@repo/eslint-config`, `@repo/tailwind-config`, `@repo/typescript-config`. UI primitives live in the app at `apps/site/src/components/ui/` (built on Base UI).
 - **Deployment:** Vercel (production). Payload admin at `/admin`; public marketing site, blog, and recipes share a common site root layout.
 
 For product context and feature intent, read `docs/product.md` (what and why). For delivery phasing, read `docs/product/roadmap.md` (when). For architecture and debt, read `docs/architecture/solution.md` (how; §10). For routing and folders, read `docs/architecture/structure.md` (where). For engineering rules, read `docs/architecture/principles.md`.
@@ -34,7 +34,6 @@ For product context and feature intent, read `docs/product.md` (what and why). F
 │           ├── providers/    # App-wide React providers
 │           └── styles/       # Global CSS
 ├── packages/
-│   ├── ui/                   # Shared UI primitives
 │   ├── eslint-config/
 │   ├── tailwind-config/
 │   └── typescript-config/
@@ -44,7 +43,6 @@ For product context and feature intent, read `docs/product.md` (what and why). F
 **Import aliases** (from `apps/site/tsconfig.json`):
 
 - `@/*` → `./src/*`
-- `@repo/ui/*` → shared UI package
 
 Prefer aliases over deep relative paths (`../../../…`).
 
@@ -114,7 +112,7 @@ pnpm turbo run build --filter=site
 - Client components must not import server-only modules (database, session helpers, etc.).
 - Data fetching belongs in server components or route handlers — not in UI components.
 - Use `cn()` from `@/lib/cn` for conditional Tailwind classes.
-- Reuse primitives from `@repo/ui` before adding new low-level UI.
+- Reuse primitives from `@/components/ui` before adding new low-level UI.
 
 **Styling:** Tailwind CSS 4 with shared config from `@repo/tailwind-config`. Global styles in `src/styles/`.
 
@@ -136,7 +134,7 @@ pnpm turbo run build --filter=site
 
 - API route handlers and input validation (Zod schemas, sanitisation)
 - Non-trivial library logic (Payload helpers, schema generators, validation)
-- Shared UI primitives in `packages/ui`
+- UI primitives in `apps/site/src/components/ui/`
 
 **What not to test by default:** presentational pages and static marketing sections unless they contain meaningful logic.
 

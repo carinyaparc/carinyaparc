@@ -165,10 +165,6 @@ From [`principles.md`](principles.md): separation of concerns (data in server ro
                     ┌───────────v──────────┐
                     │ Neon Postgres        │
                     └──────────────────────┘
-
-┌──────────────────┐
-│ packages/ui      │  ← retained for production verification; no longer imported by site
-└──────────────────┘
 ```
 
 ### 4.2 Components (selected Level 3)
@@ -420,7 +416,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 | ADR-003 | Keep legal content in git MDX, not Payload | _(Not yet written)_ |
 | ADR-004 | Static generation for blog/recipe detail at build time | _(Not yet written)_ — revisit when revalidation ships |
 | ADR-005 | Interim text-path images instead of Media uploads | _(Not yet written)_ — time-bounded; supersede when Media lands |
-| ADR-006 | Inline UI components into `apps/site`; adopt Base UI + Sonner | _(Not yet written)_ — `@repo/ui` removed from site dependencies; package retained pending flat-repo consolidation |
+| ADR-006 | Inline UI components into `apps/site`; adopt Base UI + Sonner | _(Not yet written)_ — `@repo/ui` removed from site dependencies; `packages/ui` deleted during flat-repo consolidation |
 | ADR-007 | Nonce-based strict CSP on all non-static routes including `/admin` | _(Not yet written)_ — production verification pending |
 
 ---

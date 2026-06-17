@@ -25,8 +25,7 @@
       "@/types/*": ["./src/types/*"],
       "@/src/types/*": ["./src/types/*"],
       "@/styles/*": ["./src/styles/*"],
-      "@/src/styles/*": ["./src/styles/*"],
-      "@repo/ui/*": ["../packages/ui/src/*"]
+      "@/src/styles/*": ["./src/styles/*"]
     },
     "skipLibCheck": true
   },
