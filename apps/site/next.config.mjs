@@ -12,7 +12,9 @@ const nextConfig = {
   },
 
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    // Strip verbose debug/log output in production but preserve error and warn
+    // so Sentry breadcrumbs and server logs stay useful for incident diagnosis.
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
 
   images: {
