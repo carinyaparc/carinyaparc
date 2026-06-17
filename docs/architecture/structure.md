@@ -2,12 +2,12 @@
 
 **Where** code and routes live — folder layout, naming, and conventions for `apps/site`.
 
-| Doc | Role |
-| --- | --- |
-| [`product/product.md`](../product/product.md) | What and why |
-| [`product/roadmap.md`](../product/roadmap.md) | When |
-| [`solution.md`](solution.md) | How — architecture; debt in §10 |
-| [`principles.md`](principles.md) | Engineering rules |
+| Doc                                           | Role                            |
+| --------------------------------------------- | ------------------------------- |
+| [`product/product.md`](../product/product.md) | What and why                    |
+| [`product/roadmap.md`](../product/roadmap.md) | When                            |
+| [`solution.md`](solution.md)                  | How — architecture; debt in §10 |
+| [`principles.md`](principles.md)              | Engineering rules               |
 
 This document describes the repository layout and how to add features consistently. It does not track technical debt.
 
@@ -265,9 +265,9 @@ Examples of established folder patterns:
 
 Cookie names live in `src/lib/constants.ts`:
 
-| Cookie | Constant | Purpose | In use |
-| --- | --- | --- | --- |
-| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out | Yes — `setConsent` server action; read in site layout |
+| Cookie       | Constant              | Purpose                       | In use                                                               |
+| ------------ | --------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| `cp_consent` | `CONSENT_COOKIE_NAME` | Analytics opt-in/out          | Yes — `setConsent` server action; read in site layout                |
 | `cp_session` | `SESSION_COOKIE_NAME` | Future public-site auth (JWT) | No — helpers in `lib/session/` only; Payload admin uses Payload auth |
 
 Both cookies are httpOnly and set only on the server.

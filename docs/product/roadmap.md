@@ -16,12 +16,12 @@ related:
 
 **When** work ships. Defines phased objectives, exit criteria, and milestones.
 
-| Doc | Role |
-| --- | --- |
-| [`product.md`](../product.md) | What and why |
-| **This document** | When — sequencing and phase gates |
-| [`solution.md`](../architecture/solution.md) | How — architecture; current debt in §10 |
-| [`structure.md`](../architecture/structure.md) | Where — routes and folders |
+| Doc                                            | Role                                    |
+| ---------------------------------------------- | --------------------------------------- |
+| [`product.md`](../product.md)                  | What and why                            |
+| **This document**                              | When — sequencing and phase gates       |
+| [`solution.md`](../architecture/solution.md)   | How — architecture; current debt in §10 |
+| [`structure.md`](../architecture/structure.md) | Where — routes and folders              |
 
 This document does not list technical debt — see [`solution.md`](../architecture/solution.md) §10. Stories and acceptance criteria are scoped when a phase starts.
 
@@ -178,33 +178,33 @@ Each phase unlocks the next without stacking risky changes.
 
 ## 4. Milestones
 
-| Milestone | Phase | Customer-visible? | Notes |
-| --- | --- | --- | --- |
-| Live content updates without redeploy | 1 | Yes | Core editor experience |
-| Media uploads in admin | 1 | Yes | Alt text and asset management |
-| SEO controls on posts and recipes | 1 | Partial | Better search and social snippets |
-| Editable homepage and footer copy | 1 | Yes | Routine copy without deploys |
-| Stay information pages live | 1 | Yes | Guest pipeline and pre-qualification |
-| CI green on every PR | 1 | Internal only | Woven hardening — safe merges during CMS work |
-| Production admin verified | 2 | Internal only | Security headers + env checklist |
-| Shared form rate limiting | 2 | Internal only | Reliable abuse resistance |
-| Flat single-app repository | 3 | No | Reduced maintenance overhead |
-| RSS feed live | 4 | Yes | New distribution channel |
-| Rich social previews | 4 | Yes | When links are shared |
-| Experiences and partner pages | 4 | Yes | Marketing scaffolding for future offers |
+| Milestone                             | Phase | Customer-visible? | Notes                                         |
+| ------------------------------------- | ----- | ----------------- | --------------------------------------------- |
+| Live content updates without redeploy | 1     | Yes               | Core editor experience                        |
+| Media uploads in admin                | 1     | Yes               | Alt text and asset management                 |
+| SEO controls on posts and recipes     | 1     | Partial           | Better search and social snippets             |
+| Editable homepage and footer copy     | 1     | Yes               | Routine copy without deploys                  |
+| Stay information pages live           | 1     | Yes               | Guest pipeline and pre-qualification          |
+| CI green on every PR                  | 1     | Internal only     | Woven hardening — safe merges during CMS work |
+| Production admin verified             | 2     | Internal only     | Security headers + env checklist              |
+| Shared form rate limiting             | 2     | Internal only     | Reliable abuse resistance                     |
+| Flat single-app repository            | 3     | No                | Reduced maintenance overhead                  |
+| RSS feed live                         | 4     | Yes               | New distribution channel                      |
+| Rich social previews                  | 4     | Yes               | When links are shared                         |
+| Experiences and partner pages         | 4     | Yes               | Marketing scaffolding for future offers       |
 
 ---
 
 ## 5. Cross-domain dependencies
 
-| Dependency | Owner | Gates | Status |
-| --- | --- | --- | --- |
-| Managed Postgres | Engineering / hosting | Admin, static generation, CI build | Active |
-| Vercel deployment and secrets | Engineering / hosting | Production and CI | Active |
-| On-demand revalidation (Next.js + Payload) | Engineering | Phase 1 — live editorial workflow | Not started |
-| SEO plugin (Payload) | Engineering | Phase 1 — per-document SEO | Not started |
-| Shared rate-limit store | Engineering | Phase 2 — reliable form protection | Not started |
-| Vercel project root change | Engineering / hosting | Phase 3 — flat repo deploy | Not started |
+| Dependency                                 | Owner                 | Gates                              | Status      |
+| ------------------------------------------ | --------------------- | ---------------------------------- | ----------- |
+| Managed Postgres                           | Engineering / hosting | Admin, static generation, CI build | Active      |
+| Vercel deployment and secrets              | Engineering / hosting | Production and CI                  | Active      |
+| On-demand revalidation (Next.js + Payload) | Engineering           | Phase 1 — live editorial workflow  | Not started |
+| SEO plugin (Payload)                       | Engineering           | Phase 1 — per-document SEO         | Not started |
+| Shared rate-limit store                    | Engineering           | Phase 2 — reliable form protection | Not started |
+| Vercel project root change                 | Engineering / hosting | Phase 3 — flat repo deploy         | Not started |
 
 ---
 

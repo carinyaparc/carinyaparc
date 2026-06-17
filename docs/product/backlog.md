@@ -45,28 +45,28 @@ related:
 
 ## 2. Conventions
 
-| Convention | Value |
-| ---------- | ----- |
-| Epic ID | `CP{nn}` (e.g. `CP01`) |
+| Convention     | Value                                                                     |
+| -------------- | ------------------------------------------------------------------------- |
+| Epic ID        | `CP{nn}` (e.g. `CP01`)                                                    |
 | Epic work path | `docs/work/{epic}/` — kebab-case from title or short title, max two words |
-| Task ID | `CP{nn}-{nn}` in `docs/work/{epic}/tasks.md` |
-| Status | Not started · In progress · In review · Done · Blocked |
-| Priority | P0 must-have · P1 should-have · P2 defer |
-| Estimation | Fibonacci story points (1, 2, 3, 5, 8, 13, 21) |
+| Task ID        | `CP{nn}-{nn}` in `docs/work/{epic}/tasks.md`                              |
+| Status         | Not started · In progress · In review · Done · Blocked                    |
+| Priority       | P0 must-have · P1 should-have · P2 defer                                  |
+| Estimation     | Fibonacci story points (1, 2, 3, 5, 8, 13, 21)                            |
 
 ---
 
 ## 3. Epic breakdown
 
-| Epic ID | Title | Phase | Priority | Deps | Points | Work path | Status |
-| ------- | ----- | ----- | -------- | ---- | ------ | --------- | ------ |
-| CP01 | CI pipeline | 1 | P0 | — | 8 | `docs/work/ci-pipeline/` | In progress |
-| CP02 | Content revalidation | 1 | P0 | CP01 | 13 | `docs/work/content-revalidation/` | Not started |
-| CP03 | Media library | 1 | P0 | CP01 | 21 | `docs/work/media-library/` | Not started |
-| CP04 | SEO metadata | 1 | P0 | CP03 | 8 | `docs/work/seo-metadata/` | Not started |
-| CP05 | Editor tooling | 1 | P0 | CP03 | 13 | `docs/work/editor-tooling/` | Not started |
-| CP06 | Site globals | 1 | P0 | CP02, CP03 | 13 | `docs/work/site-globals/` | Not started |
-| CP07 | Stay information | 1 | P0 | CP03 | 13 | `docs/work/stay-information/` | Not started |
+| Epic ID | Title                | Phase | Priority | Deps       | Points | Work path                         | Status      |
+| ------- | -------------------- | ----- | -------- | ---------- | ------ | --------------------------------- | ----------- |
+| CP01    | CI pipeline          | 1     | P0       | —          | 8      | `docs/work/ci-pipeline/`          | In progress |
+| CP02    | Content revalidation | 1     | P0       | CP01       | 13     | `docs/work/content-revalidation/` | Not started |
+| CP03    | Media library        | 1     | P0       | CP01       | 21     | `docs/work/media-library/`        | Not started |
+| CP04    | SEO metadata         | 1     | P0       | CP03       | 8      | `docs/work/seo-metadata/`         | Not started |
+| CP05    | Editor tooling       | 1     | P0       | CP03       | 13     | `docs/work/editor-tooling/`       | Not started |
+| CP06    | Site globals         | 1     | P0       | CP02, CP03 | 13     | `docs/work/site-globals/`         | Not started |
+| CP07    | Stay information     | 1     | P0       | CP03       | 13     | `docs/work/stay-information/`     | Not started |
 
 **Phase 1 total:** 89 points across 7 epics.
 
@@ -249,13 +249,13 @@ related:
 
 ## 6. Parallelisation
 
-| Track | Epics | Notes |
-| ----- | ----- | ----- |
-| A | CP01 | Finish quality and build jobs first; unblocks all CMS work |
-| B | CP02 + CP03 | After CP01; independent of each other until CP06 |
-| C | CP04 + CP05 | After CP03; independent of each other |
-| D | CP06 | After CP02 and CP03 |
-| E | CP07 | After CP03; content copy can be drafted in parallel |
+| Track | Epics       | Notes                                                      |
+| ----- | ----------- | ---------------------------------------------------------- |
+| A     | CP01        | Finish quality and build jobs first; unblocks all CMS work |
+| B     | CP02 + CP03 | After CP01; independent of each other until CP06           |
+| C     | CP04 + CP05 | After CP03; independent of each other                      |
+| D     | CP06        | After CP02 and CP03                                        |
+| E     | CP07        | After CP03; content copy can be drafted in parallel        |
 
 ---
 
@@ -283,15 +283,15 @@ Defer CP06, CP07, and full SEO until the slice above is verified in production. 
 
 ## 9. Risks
 
-| ID | Risk | Likelihood | Impact | Mitigation |
-| -- | ---- | ---------- | ------ | ---------- |
-| R1 | CI secret provisioning delayed | Medium | High | Document minimal secret set; use Neon branch for CI builds |
-| R2 | Media migration breaks existing image URLs | Medium | High | Backfill script with fallback; verify all published posts/recipes in staging |
-| R3 | Revalidation scope creep (tags, ISR intervals) | Medium | Medium | Ship path-based revalidation first; document in CP02 sign-off |
-| R4 | Rich-text allow-list disagreements | Low | Medium | Agree toolbar list before CP05 implementation; document in structure.md |
-| R5 | Stay copy not ready from owners | Medium | Medium | Ship page structure with placeholder sections; block exit until copy verified |
-| R6 | Globals schema churn delays home page | Low | Medium | Start with minimal fields (hero, tagline, footer); expand in Phase 2 if needed |
-| R7 | Phase 1 scope expands into Phase 2 items | Medium | Medium | Hold to roadmap exit criteria; defer rate limiting and prod verification to Phase 2 |
+| ID  | Risk                                           | Likelihood | Impact | Mitigation                                                                          |
+| --- | ---------------------------------------------- | ---------- | ------ | ----------------------------------------------------------------------------------- |
+| R1  | CI secret provisioning delayed                 | Medium     | High   | Document minimal secret set; use Neon branch for CI builds                          |
+| R2  | Media migration breaks existing image URLs     | Medium     | High   | Backfill script with fallback; verify all published posts/recipes in staging        |
+| R3  | Revalidation scope creep (tags, ISR intervals) | Medium     | Medium | Ship path-based revalidation first; document in CP02 sign-off                       |
+| R4  | Rich-text allow-list disagreements             | Low        | Medium | Agree toolbar list before CP05 implementation; document in structure.md             |
+| R5  | Stay copy not ready from owners                | Medium     | Medium | Ship page structure with placeholder sections; block exit until copy verified       |
+| R6  | Globals schema churn delays home page          | Low        | Medium | Start with minimal fields (hero, tagline, footer); expand in Phase 2 if needed      |
+| R7  | Phase 1 scope expands into Phase 2 items       | Medium     | Medium | Hold to roadmap exit criteria; defer rate limiting and prod verification to Phase 2 |
 
 Technical risks (stale content, CSP, draft leakage, build failures) are tracked in [`solution.md` §10.1](../architecture/solution.md) — not duplicated here.
 

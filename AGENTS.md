@@ -187,13 +187,13 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 
 ## Additional resources
 
-| Document | Role |
-| --- | --- |
-| `docs/product.md` | What and why |
-| `docs/product/roadmap.md` | When |
-| `docs/architecture/solution.md` | How — architecture; debt in §10 only |
-| `docs/architecture/structure.md` | Where — routes and folders |
-| `docs/architecture/principles.md` | Engineering rules |
-| `apps/site/.env.example` | Required environment variables |
+| Document                          | Role                                 |
+| --------------------------------- | ------------------------------------ |
+| `docs/product.md`                 | What and why                         |
+| `docs/product/roadmap.md`         | When                                 |
+| `docs/architecture/solution.md`   | How — architecture; debt in §10 only |
+| `docs/architecture/structure.md`  | Where — routes and folders           |
+| `docs/architecture/principles.md` | Engineering rules                    |
+| `apps/site/.env.example`          | Required environment variables       |
 
 When adding or changing user-visible features, update the relevant doc in `docs/` alongside code changes. Track technical debt only in `docs/architecture/solution.md` §10.

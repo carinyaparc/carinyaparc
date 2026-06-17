@@ -16,13 +16,13 @@ related:
 
 **How** the Carinya Parc website is built and behaves — architecture, runtime, data model, and integration boundaries.
 
-| Doc | Role |
-| --- | --- |
-| [`product/product.md`](../product/product.md) | What and why |
-| [`product/roadmap.md`](../product/roadmap.md) | When |
-| **This document** | How — plus risks, technical debt, and open questions (**§10 only**) |
-| [`structure.md`](structure.md) | Where — routes and folders |
-| [`principles.md`](principles.md) | Engineering rules |
+| Doc                                           | Role                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------- |
+| [`product/product.md`](../product/product.md) | What and why                                                        |
+| [`product/roadmap.md`](../product/roadmap.md) | When                                                                |
+| **This document**                             | How — plus risks, technical debt, and open questions (**§10 only**) |
+| [`structure.md`](structure.md)                | Where — routes and folders                                          |
+| [`principles.md`](principles.md)              | Engineering rules                                                   |
 
 ---
 
@@ -78,13 +78,13 @@ related:
 
 **Upstream / downstream**
 
-| System | Relationship |
-| --- | --- |
-| Neon Postgres | System of record for CMS content and admin users |
-| Vercel | Hosting, serverless execution, build pipeline |
-| MailerLite | Downstream — newsletter subscriptions |
-| Sentry | Downstream — error and performance telemetry |
-| Google Tag Manager / Vercel Analytics | Downstream — usage analytics (consent-gated) |
+| System                                | Relationship                                     |
+| ------------------------------------- | ------------------------------------------------ |
+| Neon Postgres                         | System of record for CMS content and admin users |
+| Vercel                                | Hosting, serverless execution, build pipeline    |
+| MailerLite                            | Downstream — newsletter subscriptions            |
+| Sentry                                | Downstream — error and performance telemetry     |
+| Google Tag Manager / Vercel Analytics | Downstream — usage analytics (consent-gated)     |
 
 ---
 
@@ -92,13 +92,13 @@ related:
 
 Ordered by priority for architectural trade-offs.
 
-| Priority | Quality goal | Implication |
-| --- | --- | --- |
-| 1 | **Trust and security** | Strict CSP, validated env secrets, sanitised form input, httpOnly cookies for session/consent; no secrets in client bundles |
-| 2 | **Editorial reliability** | Payload as single source of truth for blog/recipes; draft/publish separation; preview URLs from admin |
-| 3 | **Performance on regional mobile** | Server Components by default; static generation for content detail pages; optimised images; lean client JS |
-| 4 | **Maintainability for a small team** | Thin route files; shared `lib/` helpers; colocated tests for non-trivial logic; generated Payload types |
-| 5 | **Ownable content** | No dependency on third-party CMS for core narrative content; git-retained legal MDX |
+| Priority | Quality goal                         | Implication                                                                                                                 |
+| -------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| 1        | **Trust and security**               | Strict CSP, validated env secrets, sanitised form input, httpOnly cookies for session/consent; no secrets in client bundles |
+| 2        | **Editorial reliability**            | Payload as single source of truth for blog/recipes; draft/publish separation; preview URLs from admin                       |
+| 3        | **Performance on regional mobile**   | Server Components by default; static generation for content detail pages; optimised images; lean client JS                  |
+| 4        | **Maintainability for a small team** | Thin route files; shared `lib/` helpers; colocated tests for non-trivial logic; generated Payload types                     |
+| 5        | **Ownable content**                  | No dependency on third-party CMS for core narrative content; git-retained legal MDX                                         |
 
 **Constraints**
 
@@ -120,16 +120,16 @@ Ordered by priority for architectural trade-offs.
 
 ### 3.2 Key decisions and trade-offs
 
-| Choice | Satisfies | Trade-off accepted |
-| --- | --- | --- |
-| Payload 3 + Postgres | Editorial reliability, structured recipes, drafts | Operational dependency on Neon; build-time DB access |
-| Server Components + cached Payload client | Performance, type safety | Client interactivity pushed to leaf components (forms, motion) |
-| SSG for blog/recipe `[slug]` routes | Fast TTFB, CDN-friendly HTML | Content stale until revalidation or redeploy (known gap) |
-| MDX for legal only | Git-reviewed legal text, no CMS scope creep | Two content pipelines to document and test |
-| Text-path image fields (interim) | Fast migration, static `public/` assets | No media library, alt enforcement, or upload workflow yet |
-| `map-content.ts` mapping layer | Stable UI types decoupled from Payload shapes | Extra indirection when schema changes |
-| Security via `proxy.ts` + nonce CSP | Trust goal | Admin UI must be verified under production CSP |
-| Base UI + inline `src/components/ui/` | No external primitive package; leaner dependency graph | Primitive API differs from Radix (`render` prop vs `asChild`) |
+| Choice                                    | Satisfies                                              | Trade-off accepted                                             |
+| ----------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------- |
+| Payload 3 + Postgres                      | Editorial reliability, structured recipes, drafts      | Operational dependency on Neon; build-time DB access           |
+| Server Components + cached Payload client | Performance, type safety                               | Client interactivity pushed to leaf components (forms, motion) |
+| SSG for blog/recipe `[slug]` routes       | Fast TTFB, CDN-friendly HTML                           | Content stale until revalidation or redeploy (known gap)       |
+| MDX for legal only                        | Git-reviewed legal text, no CMS scope creep            | Two content pipelines to document and test                     |
+| Text-path image fields (interim)          | Fast migration, static `public/` assets                | No media library, alt enforcement, or upload workflow yet      |
+| `map-content.ts` mapping layer            | Stable UI types decoupled from Payload shapes          | Extra indirection when schema changes                          |
+| Security via `proxy.ts` + nonce CSP       | Trust goal                                             | Admin UI must be verified under production CSP                 |
+| Base UI + inline `src/components/ui/`     | No external primitive package; leaner dependency graph | Primitive API differs from Radix (`render` prop vs `asChild`)  |
 
 ### 3.3 Principles applied
 
@@ -169,17 +169,17 @@ From [`principles.md`](principles.md): separation of concerns (data in server ro
 
 ### 4.2 Components (selected Level 3)
 
-| Block | Responsibility | Location |
-| --- | --- | --- |
-| **Query layer** | Payload `find` / `findByID`; sort, depth, featured filters | `src/lib/payload/queries/` |
-| **Content mapper** | Payload document → list/detail DTOs for UI and metadata | `src/lib/payload/map-content.ts` |
-| **Payload client** | Singleton `getPayload()` per request (`React.cache`) | `src/lib/payload/client.ts` |
-| **Collections** | Schema, access, drafts, admin columns | `src/collections/` |
-| **Rich text renderer** | Lexical JSON → React | `src/components/rich-text/` |
-| **Metadata composers** | Title, OG, canonical helpers | `src/lib/metadata/` |
-| **Schema generators** | Article, Recipe, Breadcrumb, LocalBusiness JSON-LD | `src/lib/schema/` |
-| **Form APIs** | Zod validation, sanitise, rate limit, upstream email APIs | `src/app/api/contact`, `subscribe` |
-| **Access control** | `publicReadPublished` hides drafts from anonymous reads | `src/lib/payload/access.ts` |
+| Block                  | Responsibility                                             | Location                           |
+| ---------------------- | ---------------------------------------------------------- | ---------------------------------- |
+| **Query layer**        | Payload `find` / `findByID`; sort, depth, featured filters | `src/lib/payload/queries/`         |
+| **Content mapper**     | Payload document → list/detail DTOs for UI and metadata    | `src/lib/payload/map-content.ts`   |
+| **Payload client**     | Singleton `getPayload()` per request (`React.cache`)       | `src/lib/payload/client.ts`        |
+| **Collections**        | Schema, access, drafts, admin columns                      | `src/collections/`                 |
+| **Rich text renderer** | Lexical JSON → React                                       | `src/components/rich-text/`        |
+| **Metadata composers** | Title, OG, canonical helpers                               | `src/lib/metadata/`                |
+| **Schema generators**  | Article, Recipe, Breadcrumb, LocalBusiness JSON-LD         | `src/lib/schema/`                  |
+| **Form APIs**          | Zod validation, sanitise, rate limit, upstream email APIs  | `src/app/api/contact`, `subscribe` |
+| **Access control**     | `publicReadPublished` hides drafts from anonymous reads    | `src/lib/payload/access.ts`        |
 
 ### 4.3 Repository layout
 
@@ -263,15 +263,15 @@ Incoming request
 
 ### 6.1 Core entities
 
-| Entity | Meaning | Storage |
-| --- | --- | --- |
-| **Post** | Long-form blog article | Payload `posts` |
-| **Recipe** | Structured cooking content with ingredients and instructions | Payload `recipes` |
-| **Author** | Byline identity for posts/recipes | Payload `authors` |
-| **Category** | Primary taxonomy for posts | Payload `categories` |
-| **Tag** | Cross-cutting labels for posts and recipes | Payload `tags` |
-| **User** | Payload admin account | Payload `users` |
-| **Legal page** | Privacy policy, terms of service | MDX + frontmatter in git |
+| Entity         | Meaning                                                      | Storage                  |
+| -------------- | ------------------------------------------------------------ | ------------------------ |
+| **Post**       | Long-form blog article                                       | Payload `posts`          |
+| **Recipe**     | Structured cooking content with ingredients and instructions | Payload `recipes`        |
+| **Author**     | Byline identity for posts/recipes                            | Payload `authors`        |
+| **Category**   | Primary taxonomy for posts                                   | Payload `categories`     |
+| **Tag**        | Cross-cutting labels for posts and recipes                   | Payload `tags`           |
+| **User**       | Payload admin account                                        | Payload `users`          |
+| **Legal page** | Privacy policy, terms of service                             | MDX + frontmatter in git |
 
 ### 6.2 Relationships
 
@@ -296,12 +296,12 @@ User (standalone; auth only)
 
 ### 6.4 Glossary
 
-| Term | Definition |
-| --- | --- |
-| **Lexical body** | Rich text stored as JSON from `@payloadcms/richtext-lexical` |
-| **Featured post** | Boolean on Post; drives home page highlights |
-| **ISO duration** | Recipe time fields stored as text (e.g. `PT20M`); formatted for display via `format-duration` |
-| **List item vs detail** | Mapper produces lighter shapes for cards/indexes vs full document for `[slug]` pages |
+| Term                    | Definition                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| **Lexical body**        | Rich text stored as JSON from `@payloadcms/richtext-lexical`                                  |
+| **Featured post**       | Boolean on Post; drives home page highlights                                                  |
+| **ISO duration**        | Recipe time fields stored as text (e.g. `PT20M`); formatted for display via `format-duration` |
+| **List item vs detail** | Mapper produces lighter shapes for cards/indexes vs full document for `[slug]` pages          |
 
 ---
 
@@ -351,12 +351,12 @@ User (standalone; auth only)
 
 Public route handlers (distinct from Payload's admin REST/GraphQL under `(payload)/`):
 
-| Route | Method | Purpose |
-| --- | --- | --- |
-| `/api/contact` | POST | Contact form submission |
-| `/api/subscribe` | POST | Newsletter subscription |
-| `/api/sentry` | POST | Sentry tunnel |
-| `/api/cron` | GET | Scheduled tasks (protected) |
+| Route            | Method | Purpose                     |
+| ---------------- | ------ | --------------------------- |
+| `/api/contact`   | POST   | Contact form submission     |
+| `/api/subscribe` | POST   | Newsletter subscription     |
+| `/api/sentry`    | POST   | Sentry tunnel               |
+| `/api/cron`      | GET    | Scheduled tasks (protected) |
 
 Request and response shapes are defined by Zod schemas in `lib/validation/` and inline route handlers.
 
@@ -366,10 +366,10 @@ Request and response shapes are defined by Zod schemas in `lib/validation/` and 
 
 ### 8.1 Topology
 
-| Environment | Hosting | Database | Notes |
-| --- | --- | --- | --- |
-| **Local dev** | `pnpm site:dev` (Turbopack) | Docker Compose Postgres or Neon dev branch | `.env.local` from `.env.example` |
-| **Production** | Vercel project → `apps/site` | Neon pooled connection string | Secrets in Vercel env |
+| Environment    | Hosting                      | Database                                   | Notes                            |
+| -------------- | ---------------------------- | ------------------------------------------ | -------------------------------- |
+| **Local dev**  | `pnpm site:dev` (Turbopack)  | Docker Compose Postgres or Neon dev branch | `.env.local` from `.env.example` |
+| **Production** | Vercel project → `apps/site` | Neon pooled connection string              | Secrets in Vercel env            |
 
 ### 8.2 Build and release
 
@@ -409,15 +409,15 @@ Key env vars (non-exhaustive; see `apps/site/.env.example` and `turbo.json`):
 
 Formal ADR files are not yet authored. Candidate decisions recorded here; bodies marked pending.
 
-| ID | Decision | Status |
-| --- | --- | --- |
-| ADR-001 | Embed Payload in Next.js rather than standalone CMS | _(Not yet written)_ — reflects shipped state |
-| ADR-002 | Postgres (Neon) as CMS database | _(Not yet written)_ |
-| ADR-003 | Keep legal content in git MDX, not Payload | _(Not yet written)_ |
-| ADR-004 | Static generation for blog/recipe detail at build time | _(Not yet written)_ — revisit when revalidation ships |
-| ADR-005 | Interim text-path images instead of Media uploads | _(Not yet written)_ — time-bounded; supersede when Media lands |
-| ADR-006 | Inline UI components into `apps/site`; adopt Base UI + Sonner | _(Not yet written)_ — `@repo/ui` removed from site dependencies; `packages/ui` deleted during flat-repo consolidation |
-| ADR-007 | Nonce-based strict CSP on all non-static routes including `/admin` | _(Not yet written)_ — production verification pending |
+| ID      | Decision                                                           | Status                                                                                                                |
+| ------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| ADR-001 | Embed Payload in Next.js rather than standalone CMS                | _(Not yet written)_ — reflects shipped state                                                                          |
+| ADR-002 | Postgres (Neon) as CMS database                                    | _(Not yet written)_                                                                                                   |
+| ADR-003 | Keep legal content in git MDX, not Payload                         | _(Not yet written)_                                                                                                   |
+| ADR-004 | Static generation for blog/recipe detail at build time             | _(Not yet written)_ — revisit when revalidation ships                                                                 |
+| ADR-005 | Interim text-path images instead of Media uploads                  | _(Not yet written)_ — time-bounded; supersede when Media lands                                                        |
+| ADR-006 | Inline UI components into `apps/site`; adopt Base UI + Sonner      | _(Not yet written)_ — `@repo/ui` removed from site dependencies; `packages/ui` deleted during flat-repo consolidation |
+| ADR-007 | Nonce-based strict CSP on all non-static routes including `/admin` | _(Not yet written)_ — production verification pending                                                                 |
 
 ---
 
@@ -425,13 +425,13 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 
 ### 10.1 Risks
 
-| Risk | Likelihood | Impact | Mitigation direction |
-| --- | --- | --- | --- |
-| Static content stale after CMS edit | High (today) | Medium | Payload `afterChange` + `revalidatePath` / tags |
-| Rate limit bypass on serverless | Medium | Medium | Shared KV/Redis store |
-| CSP breaks Payload admin in production | Medium | High | Verify prod-like build; admin CSP exception if required |
-| Build fails when DB unreachable | Medium | High | CI secrets + Neon availability; optional build-time fallback policy |
-| Draft leakage to public site | Low | High | Access tests; smoke-test after schema changes |
+| Risk                                   | Likelihood   | Impact | Mitigation direction                                                |
+| -------------------------------------- | ------------ | ------ | ------------------------------------------------------------------- |
+| Static content stale after CMS edit    | High (today) | Medium | Payload `afterChange` + `revalidatePath` / tags                     |
+| Rate limit bypass on serverless        | Medium       | Medium | Shared KV/Redis store                                               |
+| CSP breaks Payload admin in production | Medium       | High   | Verify prod-like build; admin CSP exception if required             |
+| Build fails when DB unreachable        | Medium       | High   | CI secrets + Neon availability; optional build-time fallback policy |
+| Draft leakage to public site           | Low          | High   | Access tests; smoke-test after schema changes                       |
 
 ### 10.2 Technical debt
 
@@ -466,12 +466,12 @@ Mitigation timing is in [`product/roadmap.md`](product/roadmap.md). Do not track
 
 Patterns that may lift to shared `architecture/patterns/` if a second product or domain adopts them.
 
-| Pattern | Trigger for graduation |
-| --- | --- |
-| **Cached Payload client wrapper** (`getPayloadClient` + `server-only`) | Second Next.js + Payload app in the portfolio |
-| **Public published access helper** (`publicReadPublished`) | Reused across multiple Payload collections/projects |
-| **Content mapper layer** (CMS DTO → UI types) | Second content type or second CMS backend |
-| **Nonce CSP proxy module** | Standard security baseline for all public Next.js apps in org |
-| **Metadata + JSON-LD composer split** | Third site requiring the same SEO structure |
+| Pattern                                                                | Trigger for graduation                                        |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **Cached Payload client wrapper** (`getPayloadClient` + `server-only`) | Second Next.js + Payload app in the portfolio                 |
+| **Public published access helper** (`publicReadPublished`)             | Reused across multiple Payload collections/projects           |
+| **Content mapper layer** (CMS DTO → UI types)                          | Second content type or second CMS backend                     |
+| **Nonce CSP proxy module**                                             | Standard security baseline for all public Next.js apps in org |
+| **Metadata + JSON-LD composer split**                                  | Third site requiring the same SEO structure                   |
 
 Until then, these remain conventions inside `apps/site` documented in [`structure.md`](structure.md) and [`AGENTS.md`](../../AGENTS.md).
