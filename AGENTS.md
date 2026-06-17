@@ -11,7 +11,7 @@ Carinya Parc ([carinyaparc.com.au](https://carinyaparc.com.au)) is a working rur
 - **Shared packages:** `@repo/ui` (component library), `@repo/eslint-config`, `@repo/tailwind-config`, `@repo/typescript-config`.
 - **Deployment:** Vercel (production). Payload admin at `/admin`; public marketing site, blog, and recipes share a common site root layout.
 
-For product context and feature intent, read `docs/product.md` (what and why). For delivery phasing, read `docs/product/roadmap.md` (when). For architecture and debt, read `docs/solution.md` (how; §10). For routing and folders, read `docs/structure.md` (where). For engineering rules, read `docs/principles.md`.
+For product context and feature intent, read `docs/product.md` (what and why). For delivery phasing, read `docs/product/roadmap.md` (when). For architecture and debt, read `docs/architecture/solution.md` (how; §10). For routing and folders, read `docs/architecture/structure.md` (where). For engineering rules, read `docs/architecture/principles.md`.
 
 ## Project structure
 
@@ -38,7 +38,7 @@ For product context and feature intent, read `docs/product.md` (what and why). F
 │   ├── eslint-config/
 │   ├── tailwind-config/
 │   └── typescript-config/
-└── docs/                     # Product, solution, structure, roadmap, principles
+└── docs/                     # product/, architecture/, work/
 ```
 
 **Import aliases** (from `apps/site/tsconfig.json`):
@@ -118,7 +118,7 @@ pnpm turbo run build --filter=site
 
 **Styling:** Tailwind CSS 4 with shared config from `@repo/tailwind-config`. Global styles in `src/styles/`.
 
-**Architecture (from `docs/principles.md`):**
+**Architecture (from `docs/architecture/principles.md`):**
 
 - Separation of concerns: UI components must not contain side effects or business logic.
 - Metadata: compose small helpers in `lib/metadata/`; JSON-LD via discrete functions in `lib/schema/`.
@@ -174,7 +174,7 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 
 - Validate all external input with Zod schemas in `src/lib/validation/`.
 - Sanitise user-provided HTML/text via utilities in `src/lib/validation/sanitize.ts` (plain-Node strip/escape; no DOMPurify).
-- Contact and subscribe endpoints use in-memory rate limiting today; see `docs/solution.md` §10 for current debt and `docs/product/roadmap.md` Phase 1 for the fix.
+- Contact and subscribe endpoints use in-memory rate limiting today; see `docs/architecture/solution.md` §10 for current debt and `docs/product/roadmap.md` Phase 1 for the fix.
 
 **Payload CMS:**
 
@@ -194,9 +194,9 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 | --- | --- |
 | `docs/product.md` | What and why |
 | `docs/product/roadmap.md` | When |
-| `docs/solution.md` | How — architecture; debt in §10 only |
-| `docs/structure.md` | Where — routes and folders |
-| `docs/principles.md` | Engineering rules |
+| `docs/architecture/solution.md` | How — architecture; debt in §10 only |
+| `docs/architecture/structure.md` | Where — routes and folders |
+| `docs/architecture/principles.md` | Engineering rules |
 | `apps/site/.env.example` | Required environment variables |
 
-When adding or changing user-visible features, update the relevant doc in `docs/` alongside code changes. Track technical debt only in `docs/solution.md` §10.
+When adding or changing user-visible features, update the relevant doc in `docs/` alongside code changes. Track technical debt only in `docs/architecture/solution.md` §10.
