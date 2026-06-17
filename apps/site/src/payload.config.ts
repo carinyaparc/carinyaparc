@@ -34,6 +34,11 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: getNeonDatabaseUrl(),
+      // Neon serverless: limit concurrent connections per Lambda instance and
+      // set explicit timeouts so cold-start connection resets don't linger.
+      max: 3,
+      idleTimeoutMillis: 30_000,
+      connectionTimeoutMillis: 10_000,
     },
   }),
   sharp,
