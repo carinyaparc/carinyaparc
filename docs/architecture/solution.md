@@ -6,9 +6,9 @@ owner: engineering
 status: Draft
 last_updated: 2026-05-31
 related:
-  - docs/product.md
-  - docs/principles.md
-  - docs/structure.md
+  - docs/product/product.md
+  - docs/architecture/principles.md
+  - docs/architecture/structure.md
   - docs/product/roadmap.md
 ---
 
@@ -18,8 +18,8 @@ related:
 
 | Doc | Role |
 | --- | --- |
-| [`product.md`](product.md) | What and why |
-| [`product/roadmap.md`](product/roadmap.md) | When |
+| [`product/product.md`](../product/product.md) | What and why |
+| [`product/roadmap.md`](../product/roadmap.md) | When |
 | **This document** | How — plus risks, technical debt, and open questions (**§10 only**) |
 | [`structure.md`](structure.md) | Where — routes and folders |
 | [`principles.md`](principles.md) | Engineering rules |
@@ -478,4 +478,4 @@ Patterns that may lift to shared `architecture/patterns/` if a second product or
 | **Nonce CSP proxy module** | Standard security baseline for all public Next.js apps in org |
 | **Metadata + JSON-LD composer split** | Third site requiring the same SEO structure |
 
-Until then, these remain conventions inside `apps/site` documented in [`structure.md`](structure.md) and [`AGENTS.md`](../AGENTS.md).
+Until then, these remain conventions inside `apps/site` documented in [`structure.md`](structure.md) and [`AGENTS.md`](../../AGENTS.md).

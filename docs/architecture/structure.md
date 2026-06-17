@@ -4,8 +4,8 @@
 
 | Doc | Role |
 | --- | --- |
-| [`product.md`](product.md) | What and why |
-| [`product/roadmap.md`](product/roadmap.md) | When |
+| [`product/product.md`](../product/product.md) | What and why |
+| [`product/roadmap.md`](../product/roadmap.md) | When |
 | [`solution.md`](solution.md) | How — architecture; debt in §10 |
 | [`principles.md`](principles.md) | Engineering rules |
 
@@ -42,14 +42,14 @@ At a high level, the monorepo is structured as:
 │   ├── eslint-config/        # Shared ESLint configuration
 │   ├── tailwind-config/      # Shared Tailwind configuration
 │   └── typescript-config/    # Shared TypeScript configs
-├── docs/                     # Documentation for the repo
+├── docs/                     # Documentation (product/, architecture/, work/)
 ├── pnpm-workspace.yaml
 ├── pnpm-lock.yaml
 ├── turbo.json
 └── package.json              # Monorepo scripts and dev dependencies
 ```
 
-The `docs/` directory contains [`product.md`](product.md), [`solution.md`](solution.md), [`principles.md`](principles.md), [`product/roadmap.md`](product/roadmap.md), and this file. Update the relevant doc alongside code changes.
+The `docs/` directory contains [`product/product.md`](../product/product.md), architecture docs in [`architecture/`](.) ([`solution.md`](solution.md), [`principles.md`](principles.md)), [`product/roadmap.md`](../product/roadmap.md), and this file. Update the relevant doc alongside code changes.
 
 ## Site App Structure (`apps/site`)
 
@@ -354,9 +354,9 @@ When adding a new feature (page, component, or flow):
    - Add or update metadata helpers in `apps/site/src/lib/metadata/` or inline `export const metadata` as per current patterns.
 
 7. **Update docs where relevant**
-   - `docs/product.md` — user-visible feature or scope change.
-   - `docs/solution.md` — architecture, data model, or integration change (debt only in §10).
-   - `docs/structure.md` — routing or folder convention change.
+   - `docs/product/product.md` — user-visible feature or scope change.
+   - `docs/architecture/solution.md` — architecture, data model, or integration change (debt only in §10).
+   - `docs/architecture/structure.md` — routing or folder convention change.
    - `docs/product/roadmap.md` — delivery phasing change.
 
 ## Worked Example: Adding a New “Experiences” Page

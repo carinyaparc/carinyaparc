@@ -4,8 +4,8 @@ Engineering rules for the Carinya Parc website.
 
 | Doc | Role |
 | --- | --- |
-| [`product.md`](product.md) | What and why |
-| [`product/roadmap.md`](product/roadmap.md) | When |
+| [`product/product.md`](../product/product.md) | What and why |
+| [`product/roadmap.md`](../product/roadmap.md) | When |
 | [`solution.md`](solution.md) | How — architecture; debt in §10 |
 | [`structure.md`](structure.md) | Where — routes and folders |
 
