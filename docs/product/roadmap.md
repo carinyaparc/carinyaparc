@@ -125,7 +125,7 @@ Each phase unlocks the next without stacking risky changes.
 **In scope:**
 
 - Move shared UI into the application.
-- Inline lint, TypeScript, and Tailwind configuration at the repository root.
+- Inline lint and TypeScript configuration at the repository root. (Tailwind inlined in `apps/site`.)
 - Promote the site app to repo root; remove workspace orchestration and the packages folder.
 - Update deployment configuration and normalise import paths.
 

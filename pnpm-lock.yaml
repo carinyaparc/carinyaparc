@@ -265,15 +265,6 @@ importers:
         specifier: ^8.61.0
         version: 8.61.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)
 
-  packages/tailwind-config:
-    devDependencies:
-      postcss:
-        specifier: ^8.5.15
-        version: 8.5.15
-      tailwindcss:
-        specifier: ^4.3.1
-        version: 4.3.1
-
   packages/typescript-config: {}
 
 packages:

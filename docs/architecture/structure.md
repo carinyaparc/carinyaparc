@@ -39,7 +39,6 @@ At a high level, the monorepo is structured as:
 │       └── vitest.config.mjs
 ├── packages/
 │   ├── eslint-config/        # Shared ESLint configuration
-│   ├── tailwind-config/      # Shared Tailwind configuration
 │   └── typescript-config/    # Shared TypeScript configs
 ├── docs/                     # Documentation (product/, architecture/, work/)
 ├── pnpm-workspace.yaml

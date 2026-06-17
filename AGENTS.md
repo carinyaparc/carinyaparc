@@ -8,7 +8,7 @@ Carinya Parc ([carinyaparc.com.au](https://carinyaparc.com.au)) is a working rur
 
 - **Primary app:** `apps/site` — Next.js 16 (App Router) with Payload CMS 3, Postgres, Tailwind CSS 4, and React 19.
 - **Content:** Blog posts and recipes from Payload (Postgres); legal pages from MDX in `content/legal/`.
-- **Shared packages:** `@repo/eslint-config`, `@repo/tailwind-config`, `@repo/typescript-config`. UI primitives live in the app at `apps/site/src/components/ui/` (built on Base UI).
+- **Shared packages:** `@repo/eslint-config`, `@repo/typescript-config`. UI primitives live in the app at `apps/site/src/components/ui/` (built on Base UI).
 - **Deployment:** Vercel (production). Payload admin at `/admin`; public marketing site, blog, and recipes share a common site root layout.
 
 For product context and feature intent, read `docs/product.md` (what and why). For delivery phasing, read `docs/product/roadmap.md` (when). For architecture and debt, read `docs/architecture/solution.md` (how; §10). For routing and folders, read `docs/architecture/structure.md` (where). For engineering rules, read `docs/architecture/principles.md`.
@@ -35,7 +35,6 @@ For product context and feature intent, read `docs/product.md` (what and why). F
 │           └── styles/       # Global CSS
 ├── packages/
 │   ├── eslint-config/
-│   ├── tailwind-config/
 │   └── typescript-config/
 └── docs/                     # product/, architecture/, work/
 ```
@@ -114,7 +113,7 @@ pnpm turbo run build --filter=site
 - Use `cn()` from `@/lib/cn` for conditional Tailwind classes.
 - Reuse primitives from `@/components/ui` before adding new low-level UI.
 
-**Styling:** Tailwind CSS 4 with shared config from `@repo/tailwind-config`. Global styles in `src/styles/`.
+**Styling:** Tailwind CSS 4 — `tailwind.config.ts`, `postcss.config.mjs`, and theme tokens in `src/styles/globals.css`.
 
 **Architecture (from `docs/architecture/principles.md`):**
 
