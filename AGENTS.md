@@ -57,7 +57,7 @@ Prefer aliases over deep relative paths (`../../../…`).
 
 ## Build and test commands
 
-**Requirements:** Node `^24.10.0`, pnpm `10.26.0` (see root `package.json`).
+**Requirements:** Node `24.16.0` (see `.nvmrc`), pnpm `10.26.0` (see root `package.json`).
 
 ### Setup
 

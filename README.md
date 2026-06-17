@@ -14,7 +14,7 @@ For project documentation, see [`docs/`](docs/).
 
 ## Getting started
 
-**Requirements:** Node `^24.10.0`, pnpm `10.26.0`, Docker (for local Postgres).
+**Requirements:** Node `24.16.0` (see `.nvmrc`), pnpm `10.26.0`, Docker (for local Postgres).
 
 ```bash
 pnpm install
