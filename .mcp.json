@@ -13,6 +13,10 @@
     },
     "sentry": {
       "url": "https://mcp.sentry.dev/mcp/carinya-parc/carinyaparc"
+    },
+    "neon": {
+      "type": "http",
+      "url": "https://mcp.neon.tech/mcp"
     }
   }
 }
