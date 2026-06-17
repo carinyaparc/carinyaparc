@@ -14,6 +14,44 @@ export function shouldEnableSentry(): boolean {
 
 const tracesSampleRate = process.env.NODE_ENV === 'production' ? 0.1 : 1;
 
+/**
+ * Minimal shape of the parts of a Sentry event that this filter inspects.
+ * Kept loose so it doesn't conflict with the DOM `ErrorEvent` global and
+ * remains assignable from the real Sentry `Event` type passed to beforeSend.
+ */
+interface SentryEventShape {
+  exception?: {
+    values?: Array<{
+      mechanism?: { type?: string | null };
+      value?: string | null;
+      stacktrace?: { frames?: Array<{ in_app?: boolean | null }> | null } | null;
+    } | null>;
+  } | null;
+}
+
+/**
+ * Returns true for undefined unhandled rejections that originate entirely
+ * inside node_modules (no in_app frames). These come from the pg pool during
+ * Neon serverless cold-start connection resets and produce noise without
+ * actionable signal. They started being captured when @sentry/nextjs was
+ * updated to 10.56.0 which broadened the onUnhandledRejection handler.
+ */
+export function isPgPoolNoiseEvent(event: SentryEventShape): boolean {
+  const firstException = event.exception?.values?.[0];
+
+  if (
+    firstException?.mechanism?.type !== 'onunhandledrejection' ||
+    firstException?.value !== 'undefined'
+  ) {
+    return false;
+  }
+
+  const frames = firstException.stacktrace?.frames ?? [];
+  const hasAppFrame = frames.some((f) => f.in_app === true);
+
+  return !hasAppFrame;
+}
+
 export function getServerSentryOptions(): NodeOptions {
   return {
     dsn: getServerSentryDsn(),
@@ -22,6 +60,9 @@ export function getServerSentryOptions(): NodeOptions {
     includeLocalVariables: true,
     enableLogs: true,
     debug: false,
+    beforeSend(event) {
+      return isPgPoolNoiseEvent(event) ? null : event;
+    },
   };
 }
 
