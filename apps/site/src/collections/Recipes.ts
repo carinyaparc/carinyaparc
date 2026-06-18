@@ -1,5 +1,9 @@
 import type { CollectionConfig } from 'payload';
 
+import {
+  createRevalidateAfterChange,
+  createRevalidateAfterDelete,
+} from '@/collections/hooks/revalidate-content';
 import { recipeIngredientFields, recipeInstructionFields } from '@/fields/recipeIngredient';
 import { authenticated, publicReadPublished } from '@/lib/payload/access';
 import { slugField } from '@/fields/slugField';
@@ -33,6 +37,10 @@ export const Recipes: CollectionConfig = {
     read: publicReadPublished,
     update: authenticated,
     delete: authenticated,
+  },
+  hooks: {
+    afterChange: [createRevalidateAfterChange('recipes')],
+    afterDelete: [createRevalidateAfterDelete('recipes')],
   },
   fields: [
     {
