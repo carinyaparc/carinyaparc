@@ -25,8 +25,12 @@ export async function LatestPosts({
   featured = false,
   viewAllLink = '/blog',
 }: LatestPostsProps) {
-  // Fetch posts dynamically at runtime
-  const posts = await getBlogPosts({ limit, featured });
+  let posts: Awaited<ReturnType<typeof getBlogPosts>>;
+  try {
+    posts = await getBlogPosts({ limit, featured });
+  } catch {
+    return null;
+  }
 
   return (
     <div className="">
