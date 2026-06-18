@@ -1,10 +1,19 @@
 import type { CollectionConfig, Field } from 'payload';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/payload/revalidate', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/payload/revalidate')>();
+  return {
+    ...actual,
+    revalidatePaths: vi.fn().mockResolvedValue(undefined),
+  };
+});
 
 import { Authors } from '@/collections/Authors';
 import { Categories } from '@/collections/Categories';
 import { Posts } from '@/collections/Posts';
 import { Tags } from '@/collections/Tags';
+import { revalidatePaths } from '@/lib/payload/revalidate';
 
 function fieldNames(collection: CollectionConfig): string[] {
   return (collection.fields ?? [])
@@ -90,5 +99,59 @@ describe('blog collections', () => {
         _status: { equals: 'published' },
       });
     }
+  });
+
+  describe('revalidation hooks', () => {
+    beforeEach(() => {
+      vi.mocked(revalidatePaths).mockReset();
+      vi.mocked(revalidatePaths).mockResolvedValue(undefined);
+    });
+
+    it('registers afterChange and afterDelete revalidation hooks', () => {
+      expect(Posts.hooks?.afterChange?.length).toBeGreaterThanOrEqual(1);
+      expect(Posts.hooks?.afterDelete?.length).toBeGreaterThanOrEqual(1);
+
+      for (const hook of Posts.hooks?.afterChange ?? []) {
+        expect(typeof hook).toBe('function');
+      }
+
+      for (const hook of Posts.hooks?.afterDelete ?? []) {
+        expect(typeof hook).toBe('function');
+      }
+    });
+
+    it('revalidates blog paths when a published post is updated', async () => {
+      const afterChange = Posts.hooks?.afterChange?.[0];
+      expect(typeof afterChange).toBe('function');
+
+      if (typeof afterChange !== 'function') {
+        return;
+      }
+
+      await afterChange({
+        doc: {
+          slug: 'my-post',
+          title: 'Updated title',
+          featured: false,
+          _status: 'published',
+        },
+        previousDoc: {
+          slug: 'my-post',
+          title: 'Original title',
+          featured: false,
+          _status: 'published',
+        },
+        operation: 'update',
+        collection: { slug: 'posts' } as never,
+        context: {} as never,
+        data: {},
+        req: { user: { id: 1 } } as never,
+      });
+
+      expect(revalidatePaths).toHaveBeenCalledOnce();
+      const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
+      expect(paths).toContain('/blog/');
+      expect(paths).toContain('/blog/my-post/');
+    });
   });
 });
