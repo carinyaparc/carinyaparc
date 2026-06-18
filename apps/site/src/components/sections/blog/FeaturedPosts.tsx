@@ -19,8 +19,12 @@ interface FeaturedPostsProps {
 }
 
 export default async function FeaturedPosts({ limit = 1 }: FeaturedPostsProps) {
-  // Fetch featured posts dynamically at runtime
-  const featuredPosts = await getBlogPosts({ featured: true, limit });
+  let featuredPosts: Awaited<ReturnType<typeof getBlogPosts>>;
+  try {
+    featuredPosts = await getBlogPosts({ featured: true, limit });
+  } catch {
+    return null;
+  }
 
   if (!featuredPosts || featuredPosts.length === 0) {
     return null;
