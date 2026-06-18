@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isPgPoolNoiseEvent } from './options';
+import { isPgPoolNoiseEvent, isRscConnectionClosedNoise } from './options';
 
 interface TestEventException {
   type?: string;
@@ -84,5 +84,80 @@ describe('isPgPoolNoiseEvent', () => {
 
   it('returns false when exception is missing', () => {
     expect(isPgPoolNoiseEvent({})).toBe(false);
+  });
+});
+
+describe('isRscConnectionClosedNoise', () => {
+  function makeRscEvent(overrides: Partial<TestEventException> = {}): TestEvent {
+    return {
+      exception: {
+        values: [
+          {
+            type: 'Error',
+            value: 'Connection closed.',
+            mechanism: { type: 'onunhandledrejection', handled: false },
+            stacktrace: {
+              frames: [
+                {
+                  filename:
+                    'node_modules/.pnpm/next@16.2.7_.../react-server-dom-turbopack-client.browser.production.js',
+                  in_app: false,
+                },
+                {
+                  filename:
+                    'node_modules/.pnpm/next@16.2.7_.../react-server-dom-turbopack-client.browser.production.js',
+                  in_app: false,
+                },
+              ],
+            },
+            ...overrides,
+          },
+        ],
+      },
+    };
+  }
+
+  it('returns true for Connection closed. rejection with no in-app frames', () => {
+    expect(isRscConnectionClosedNoise(makeRscEvent())).toBe(true);
+  });
+
+  it('returns false when the error message is different', () => {
+    expect(isRscConnectionClosedNoise(makeRscEvent({ value: 'Network request failed' }))).toBe(
+      false,
+    );
+  });
+
+  it('returns false when the mechanism is not onunhandledrejection', () => {
+    expect(
+      isRscConnectionClosedNoise(makeRscEvent({ mechanism: { type: 'generic', handled: false } })),
+    ).toBe(false);
+  });
+
+  it('returns false when at least one frame is in-app', () => {
+    const event = makeRscEvent();
+    firstEx(event).stacktrace!.frames = [
+      {
+        filename:
+          'node_modules/.pnpm/next@16.2.7_.../react-server-dom-turbopack-client.browser.production.js',
+        in_app: false,
+      },
+      { filename: '/app/.next/static/chunks/app/products/page.js', in_app: true },
+    ];
+    expect(isRscConnectionClosedNoise(event)).toBe(false);
+  });
+
+  it('returns true when there are no frames', () => {
+    const event = makeRscEvent();
+    firstEx(event).stacktrace = { frames: [] };
+    expect(isRscConnectionClosedNoise(event)).toBe(true);
+  });
+
+  it('returns true when stacktrace is missing', () => {
+    const event = makeRscEvent({ stacktrace: undefined });
+    expect(isRscConnectionClosedNoise(event)).toBe(true);
+  });
+
+  it('returns false when exception is missing', () => {
+    expect(isRscConnectionClosedNoise({})).toBe(false);
   });
 });
