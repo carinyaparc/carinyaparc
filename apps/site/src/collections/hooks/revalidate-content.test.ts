@@ -38,6 +38,10 @@ describe('createRevalidateAfterChange', () => {
     const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
     expect(paths).toContain('/blog/');
     expect(paths).toContain('/blog/my-post/');
+    expect(vi.mocked(revalidatePaths).mock.lastCall![1]).toEqual({
+      collection: 'posts',
+      slug: 'my-post',
+    });
   });
 
   it('includes home path when post is featured', async () => {
@@ -116,6 +120,10 @@ describe('createRevalidateAfterDelete', () => {
     const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
     expect(paths).toContain('/recipes/flatbread/');
     expect(paths).toContain('/recipes/');
+    expect(vi.mocked(revalidatePaths).mock.lastCall![1]).toEqual({
+      collection: 'recipes',
+      slug: 'flatbread',
+    });
   });
 
   it('calls revalidatePaths with post paths for a post afterDelete hook', async () => {
