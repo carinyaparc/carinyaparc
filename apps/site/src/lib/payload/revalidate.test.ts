@@ -105,4 +105,21 @@ describe('revalidatePaths', () => {
       }),
     );
   });
+
+  it('includes collection and slug in the error log when ctx is provided', async () => {
+    vi.mocked(revalidatePath).mockImplementation(() => {
+      throw new Error('revalidate failed');
+    });
+
+    await revalidatePaths(['/blog/my-post/'], { collection: 'posts', slug: 'my-post' });
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: 'content_revalidate',
+        collection: 'posts',
+        slug: 'my-post',
+        paths: ['/blog/my-post/'],
+      }),
+    );
+  });
 });

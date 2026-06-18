@@ -58,7 +58,12 @@ export function getRecipeRevalidationPaths(ctx: RevalidationContext): string[] {
   return uniqueNormalizedPaths(paths);
 }
 
-export async function revalidatePaths(paths: string[]): Promise<void> {
+type RevalidateLogContext = {
+  collection?: string;
+  slug?: string;
+};
+
+export async function revalidatePaths(paths: string[], ctx?: RevalidateLogContext): Promise<void> {
   const normalizedPaths = uniqueNormalizedPaths(paths);
 
   if (normalizedPaths.length === 0) {
@@ -75,6 +80,7 @@ export async function revalidatePaths(paths: string[]): Promise<void> {
     if (process.env.NODE_ENV === 'production') {
       console.info({
         event: 'content_revalidate',
+        ...ctx,
         paths: normalizedPaths,
         durationMs: Date.now() - start,
       });
@@ -82,6 +88,7 @@ export async function revalidatePaths(paths: string[]): Promise<void> {
   } catch (error) {
     console.error({
       event: 'content_revalidate',
+      ...ctx,
       paths: normalizedPaths,
       durationMs: Date.now() - start,
       error: error instanceof Error ? error.message : String(error),

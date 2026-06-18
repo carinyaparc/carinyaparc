@@ -42,7 +42,10 @@ export function createRevalidateAfterChange(
       operation,
     });
 
-    await revalidatePaths(paths);
+    await revalidatePaths(paths, {
+      collection,
+      slug: typeof doc?.slug === 'string' ? doc.slug : undefined,
+    });
 
     return doc;
   };
@@ -64,6 +67,9 @@ export function createRevalidateAfterDelete(
       operation: 'delete',
     });
 
-    await revalidatePaths(paths);
+    await revalidatePaths(paths, {
+      collection,
+      slug: typeof doc?.slug === 'string' ? doc.slug : undefined,
+    });
   };
 }
