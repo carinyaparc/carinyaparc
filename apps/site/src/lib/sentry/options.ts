@@ -52,6 +52,30 @@ export function isPgPoolNoiseEvent(event: SentryEventShape): boolean {
   return !hasAppFrame;
 }
 
+/**
+ * Returns true for "Connection closed." unhandled rejections thrown by
+ * React's RSC streaming client (react-server-dom-turbopack-client) when the
+ * server-side RSC response stream closes before the browser finishes reading
+ * it. This typically occurs on 404 pages or after transient network drops and
+ * produces no actionable signal because all stack frames are inside Next.js
+ * internals — there is no application code on the path.
+ */
+export function isRscConnectionClosedNoise(event: SentryEventShape): boolean {
+  const firstException = event.exception?.values?.[0];
+
+  if (
+    firstException?.mechanism?.type !== 'onunhandledrejection' ||
+    firstException?.value !== 'Connection closed.'
+  ) {
+    return false;
+  }
+
+  const frames = firstException.stacktrace?.frames ?? [];
+  const hasAppFrame = frames.some((f) => f.in_app === true);
+
+  return !hasAppFrame;
+}
+
 export function getServerSentryOptions(): NodeOptions {
   return {
     dsn: getServerSentryDsn(),
@@ -86,5 +110,8 @@ export function getClientSentryOptions(): BrowserOptions {
     replaysOnErrorSampleRate: 1,
     enableLogs: true,
     debug: false,
+    beforeSend(event) {
+      return isRscConnectionClosedNoise(event) ? null : event;
+    },
   };
 }
