@@ -1,5 +1,9 @@
 import type { CollectionConfig } from 'payload';
 
+import {
+  createRevalidateAfterChange,
+  createRevalidateAfterDelete,
+} from '@/collections/hooks/revalidate-content';
 import { authenticated, publicReadPublished } from '@/lib/payload/access';
 import { slugField } from '@/fields/slugField';
 
@@ -26,6 +30,10 @@ export const Posts: CollectionConfig = {
     read: publicReadPublished,
     update: authenticated,
     delete: authenticated,
+  },
+  hooks: {
+    afterChange: [createRevalidateAfterChange('posts')],
+    afterDelete: [createRevalidateAfterDelete('posts')],
   },
   fields: [
     {
