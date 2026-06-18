@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+import { subscribeFormSchema } from '@/src/lib/validation/subscribe-schema';
+import { isSpamEmail } from '@/src/lib/validation/spam-email';
+
 // Simple in-memory rate limiting
 // In production, you should use a Redis or other persistent store
 interface RateLimitRecord {
@@ -65,30 +68,26 @@ function checkRateLimit(
   return { limited, remainingRequests, resetTime };
 }
 
-// Email validation regex
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Common spam patterns
-const SPAM_EMAIL_PATTERNS = [
-  /test@test/i,
-  /example@/i,
-  /\d{8,}@/i, // emails with 8+ consecutive digits
-  /@(example|test|temp|fake)/i,
-  /[a-z0-9]{20,}@/i, // extremely long email local parts
-];
-
-// Name validation regex - letters, spaces, hyphens, and apostrophes
-const NAME_REGEX = /^[a-zA-Z\s'-]{0,50}$/;
-
-// Check if an email matches common spam patterns
-function isSpamEmail(email: string): boolean {
-  return SPAM_EMAIL_PATTERNS.some((pattern) => pattern.test(email));
-}
-
 export async function POST(req: Request) {
   try {
-    // Parse form data from request
-    const { email, name, interests, website, submissionTime } = await req.json();
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'Failed to process request' }, { status: 400 });
+    }
+
+    const validation = subscribeFormSchema.safeParse(body);
+    if (!validation.success) {
+      const nameError = validation.error.issues.find((issue) => issue.path[0] === 'name');
+      if (nameError) {
+        return NextResponse.json({ error: nameError.message }, { status: 400 });
+      }
+
+      return NextResponse.json({ error: 'Please provide a valid email address' }, { status: 400 });
+    }
+
+    const { email, name, interests, website, submissionTime } = validation.data;
 
     // 1. Check for honeypot field (should be empty)
     if (website) {
@@ -101,26 +100,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
-    // 3. Validate email format
-    if (!email || !EMAIL_REGEX.test(email)) {
-      return NextResponse.json({ error: 'Please provide a valid email address' }, { status: 400 });
-    }
-
-    // 4. Check for spam email patterns
+    // 3. Check for spam email patterns
     if (isSpamEmail(email)) {
       // Silently reject but report success
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
-    // 5. Validate name (if provided)
-    if (name && !NAME_REGEX.test(name)) {
-      return NextResponse.json(
-        { error: 'Please provide a valid name (letters, spaces, hyphens, and apostrophes only)' },
-        { status: 400 },
-      );
-    }
-
-    // 7. Check email rate limit
+    // 4. Check email rate limit
     const emailLimitResult = checkRateLimit(
       emailRateLimits,
       email,
