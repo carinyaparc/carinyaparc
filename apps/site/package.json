@@ -51,7 +51,6 @@
     "framer-motion": "latest",
     "fs": "0.0.1-security",
     "graphql": "^17.0.1",
-    "gray-matter": "^4.0.3",
     "import-in-the-middle": "^3.0.2",
     "jose": "^6.2.3",
     "lucide-react": "^1.20.0",
@@ -94,6 +93,7 @@
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.9",
+    "webpack": "5.104.1"
   }
 }
