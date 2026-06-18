@@ -19,11 +19,8 @@ function decodeHtmlEntities(input: string): string {
   );
 }
 
-function stripHtmlTags(input: string): string {
-  return input
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
-    .replace(/<[^>]*>/g, '');
+function stripAngleBrackets(input: string): string {
+  return input.replace(/[<>]/g, '');
 }
 
 function removeControlCharacters(input: string): string {
@@ -63,7 +60,13 @@ function sanitizeEmailHtml(input: string): string {
 export function sanitizePlainText(input: string | null | undefined): string {
   if (!input) return '';
 
-  return removeControlCharacters(decodeHtmlEntities(stripHtmlTags(input))).trim();
+  return removeControlCharacters(stripAngleBrackets(decodeHtmlEntities(input))).trim();
+}
+
+function sanitizePlainTextForHtml(input: string | null | undefined): string {
+  if (!input) return '';
+
+  return escapeHtml(removeControlCharacters(decodeHtmlEntities(input))).trim();
 }
 
 /**
@@ -111,11 +114,11 @@ export function sanitizeContactFormData(data: ContactFormInput): ContactFormInpu
  */
 export function sanitizeForEmailGeneration(data: ContactFormInput): ContactFormInput {
   return {
-    firstName: sanitizePlainText(data.firstName),
-    lastName: sanitizePlainText(data.lastName),
-    email: sanitizePlainText(data.email),
-    phone: data.phone ? sanitizePlainText(data.phone) : undefined,
-    inquiryType: sanitizePlainText(data.inquiryType),
+    firstName: sanitizePlainTextForHtml(data.firstName),
+    lastName: sanitizePlainTextForHtml(data.lastName),
+    email: sanitizePlainTextForHtml(data.email),
+    phone: data.phone ? sanitizePlainTextForHtml(data.phone) : undefined,
+    inquiryType: sanitizePlainTextForHtml(data.inquiryType),
     message: sanitizeForEmail(data.message), // Preserve line breaks in email
   };
 }
