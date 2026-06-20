@@ -12,6 +12,10 @@ vi.mock('@next/third-parties/google', () => ({
   ),
 }));
 
+vi.mock('@vercel/analytics/next', () => ({
+  Analytics: () => <div data-testid="vercel-analytics" />,
+}));
+
 vi.mock('@/lib/consent/actions', () => ({
   setConsent: vi.fn(),
 }));
@@ -56,9 +60,10 @@ describe('ConsentGate', () => {
     });
 
     expect(container.querySelector('[data-testid="google-tag-manager"]')).toBeNull();
+    expect(container.querySelector('[data-testid="vercel-analytics"]')).toBeNull();
   });
 
-  it('loads GTM after accepted consent', async () => {
+  it('loads GTM and Analytics after accepted consent', async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
       json: async () => ({ choice: 'accepted' }),
@@ -70,6 +75,7 @@ describe('ConsentGate', () => {
 
     await vi.waitFor(() => {
       expect(container.querySelector('[data-testid="google-tag-manager"]')).not.toBeNull();
+      expect(container.querySelector('[data-testid="vercel-analytics"]')).not.toBeNull();
     });
 
     const gtm = container.querySelector('[data-testid="google-tag-manager"]');

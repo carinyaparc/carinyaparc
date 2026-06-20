@@ -7,9 +7,6 @@ import Link from 'next/link';
 import { getBlogPosts } from '@/src/lib/posts';
 import PostCard from './PostCard';
 
-// Force this component to be dynamic
-export const dynamic = 'force-dynamic';
-
 interface LatestPostsProps {
   title: string;
   subtitle: string;
