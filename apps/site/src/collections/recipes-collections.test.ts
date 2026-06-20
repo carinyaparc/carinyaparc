@@ -32,16 +32,26 @@ describe('Recipes collection', () => {
     );
   });
 
-  it('restricts anonymous reads to published recipes', () => {
+  describe('draft access regression', () => {
     const read = Recipes.access?.read;
-    expect(typeof read).toBe('function');
 
-    if (typeof read === 'function') {
-      expect(read({ req: { user: { id: 1 } } } as never)).toBe(true);
-      expect(read({ req: { user: null } } as never)).toEqual({
-        _status: { equals: 'published' },
-      });
-    }
+    it('restricts anonymous reads to published recipes only', () => {
+      expect(typeof read).toBe('function');
+
+      if (typeof read === 'function') {
+        expect(read({ req: { user: null } } as never)).toEqual({
+          _status: { equals: 'published' },
+        });
+      }
+    });
+
+    it('allows authenticated editors to read draft recipes', () => {
+      expect(typeof read).toBe('function');
+
+      if (typeof read === 'function') {
+        expect(read({ req: { user: { id: 1 } } } as never)).toBe(true);
+      }
+    });
   });
 
   describe('revalidation hooks', () => {
