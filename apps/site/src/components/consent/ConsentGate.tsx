@@ -6,7 +6,7 @@ import { GoogleTagManager } from '@next/third-parties/google';
 
 import { ConsentBanner } from '@/components/ui/Policy';
 import { setConsent, type ConsentChoice } from '@/lib/consent/actions';
-import type { ConsentStatusResponse } from '@/lib/consent/types';
+import { normalizeConsentChoice, type ConsentStatusResponse } from '@/lib/consent/types';
 
 type ConsentState = ConsentStatusResponse['choice'] | 'loading';
 
@@ -30,7 +30,7 @@ export function ConsentGate() {
         const data = (await response.json()) as ConsentStatusResponse;
 
         if (!cancelled) {
-          setChoice(data.choice);
+          setChoice(normalizeConsentChoice(data.choice));
         }
       } catch {
         if (!cancelled) {

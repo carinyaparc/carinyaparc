@@ -76,4 +76,38 @@ describe('ConsentGate', () => {
 
     expect(gtm?.getAttribute('data-gtm-id')).toBe('GTM-TEST123');
   });
+
+  it('shows the banner when the consent API fails', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: false,
+      json: async () => ({ choice: 'accepted' }),
+    } as Response);
+
+    await act(async () => {
+      root.render(<ConsentGate />);
+    });
+
+    await vi.waitFor(() => {
+      expect(container.textContent).toContain('Accept all');
+    });
+
+    expect(container.querySelector('[data-testid="google-tag-manager"]')).toBeNull();
+  });
+
+  it('shows the banner when the consent API returns an unknown choice', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({ choice: 'maybe' }),
+    } as Response);
+
+    await act(async () => {
+      root.render(<ConsentGate />);
+    });
+
+    await vi.waitFor(() => {
+      expect(container.textContent).toContain('Accept all');
+    });
+
+    expect(container.querySelector('[data-testid="google-tag-manager"]')).toBeNull();
+  });
 });
