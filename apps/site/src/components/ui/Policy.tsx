@@ -1,9 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { setConsent, type ConsentChoice } from '@/lib/consent/actions';
 
 interface ConsentBannerProps {
   onAccept: () => void;
@@ -41,38 +38,5 @@ export function ConsentBanner({ onAccept, onReject }: ConsentBannerProps) {
         </div>
       </div>
     </div>
-  );
-}
-
-interface CookiePolicyProps {
-  showBanner: boolean;
-}
-
-export default function CookiePolicy({ showBanner }: CookiePolicyProps) {
-  const [isVisible, setIsVisible] = useState(showBanner);
-  const router = useRouter();
-
-  const handleConsent = async (consent: ConsentChoice) => {
-    try {
-      const result = await setConsent(consent);
-
-      if (result.success) {
-        setIsVisible(false);
-        router.refresh();
-      }
-    } catch (error) {
-      console.error('Failed to set cookie consent:', error);
-    }
-  };
-
-  if (!isVisible) {
-    return null;
-  }
-
-  return (
-    <ConsentBanner
-      onAccept={() => void handleConsent('accepted')}
-      onReject={() => void handleConsent('rejected')}
-    />
   );
 }
