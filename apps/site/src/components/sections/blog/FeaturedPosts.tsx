@@ -11,9 +11,6 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Tag, ArrowRight } from 'lucide-react';
 import { getBlogPosts } from '@/src/lib/posts';
 
-// Force this component to be dynamic
-export const dynamic = 'force-dynamic';
-
 interface FeaturedPostsProps {
   limit?: number;
 }

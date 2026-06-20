@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { GoogleTagManager } from '@next/third-parties/google';
+import { Analytics } from '@vercel/analytics/next';
 
 import { ConsentBanner } from '@/components/ui/Policy';
 import { setConsent, type ConsentChoice } from '@/lib/consent/actions';
@@ -65,6 +66,7 @@ export function ConsentGate() {
   return (
     <>
       {hasAcceptedAnalytics && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+      {hasAcceptedAnalytics ? <Analytics /> : null}
       {showBanner ? (
         <ConsentBanner
           onAccept={() => void handleConsent('accepted')}
