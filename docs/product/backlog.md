@@ -4,7 +4,7 @@ level: epic
 version: '0.2'
 owner: product
 status: Draft
-last_updated: 2026-06-17
+last_updated: 2026-06-20
 related:
   - docs/product/product.md
   - docs/product/roadmap.md
@@ -21,7 +21,7 @@ related:
 
 **Objective.** Deliver Phase 1 — Marketing and content management: enable daily editorial work (publish stories and recipes, maintain key site copy, present honest Stay information) with CMS changes visible on the public site without redeploy.
 
-**Delivery approach.** Seven epics sequenced for marketing value first, with CI landed early so schema and route changes merge safely. Revalidation unlocks the core editor experience immediately after CI. Media library and SEO foundations follow, then editor tooling (rich text, reading time, structured recipe data), site globals, and Stay pages. Production verification and shared rate limiting are Phase 2 — not in this backlog.
+**Delivery approach.** Seven Phase 1 epics sequenced for marketing value first, with CI landed early so schema and route changes merge safely. Revalidation unlocks the core editor experience immediately after CI. Media library and SEO foundations follow, then editor tooling (rich text, reading time, structured recipe data), site globals, and Stay pages. **CP08 (performance)** is the first Phase 2 epic: restore static/ISR rendering, cross-request Payload caching, and Core Web Vitals targets — image compression (CP08-01) may start once CP02 hooks are stable; remaining Phase 2 scope (production admin verification, shared rate limiting) to be epiced when Phase 1 exits.
 
 **Prerequisites (complete).**
 
@@ -61,14 +61,15 @@ related:
 | Epic ID | Title                | Phase | Priority | Deps       | Points | Work path                         | Status      |
 | ------- | -------------------- | ----- | -------- | ---------- | ------ | --------------------------------- | ----------- |
 | CP01    | CI pipeline          | 1     | P0       | —          | 8      | `docs/work/ci-pipeline/`          | In progress |
-| CP02    | Content revalidation | 1     | P0       | CP01       | 13     | `docs/work/content-revalidation/` | Not started |
+| CP02    | Content revalidation | 1     | P0       | CP01       | 13     | `docs/work/content-revalidation/` | In progress |
 | CP03    | Media library        | 1     | P0       | CP01       | 21     | `docs/work/media-library/`        | Not started |
 | CP04    | SEO metadata         | 1     | P0       | CP03       | 8      | `docs/work/seo-metadata/`         | Not started |
 | CP05    | Editor tooling       | 1     | P0       | CP03       | 13     | `docs/work/editor-tooling/`       | Not started |
 | CP06    | Site globals         | 1     | P0       | CP02, CP03 | 13     | `docs/work/site-globals/`         | Not started |
 | CP07    | Stay information     | 1     | P0       | CP03       | 13     | `docs/work/stay-information/`     | Not started |
+| CP08    | Performance          | 2     | P0       | CP02       | 30     | `docs/work/performance/`          | Not started |
 
-**Phase 1 total:** 89 points across 7 epics.
+**Phase 1 total:** 89 points across 7 epics. **Phase 2 (started):** 30 points — CP08.
 
 ---
 
@@ -109,7 +110,7 @@ related:
 
 **Downstream consumers.** CP06 (globals must revalidate public layout); daily editorial workflow.
 
-**Status.** Not started.
+**Status.** In progress (CP02-01–06 done; CP02-07 unpublish→404 deferred — query-layer draft filter follow-up).
 
 **Work path:** `docs/work/content-revalidation/`
 
@@ -218,6 +219,34 @@ related:
 
 ---
 
+## 4b. Epic detail (Phase 2)
+
+### CP08 — Performance
+
+**Scope.** Improve Core Web Vitals on the public site: remove request-time dynamic APIs from the public root layout; eliminate erroneous `force-dynamic` exports; add cross-request Payload caching with tag invalidation aligned to CP02 hooks; compress and right-size `public/images/` sources; reduce above-the-fold client JS (Framer Motion, React Query scope); verify mobile p75 LCP, INP, CLS, and TTFB in production via Speed Insights — without weakening consent, CSP, or draft/publish safety.
+
+**Key deliverables.**
+
+- Compressed photography under `public/images/` (hero ≤ 300 KB; route-referenced assets ≤ 500 KB).
+- Static public root layout with consent bootstrap via `/api/consent` and `ConsentGate` (httpOnly `cp_consent` unchanged).
+- `lib/payload/cache.ts` with `unstable_cache` wrappers and `PAYLOAD_CACHE_TAGS`; `revalidateTag` in existing CP02 revalidation hooks.
+- ISR `revalidate` exports on `/`, `/blog/`, `/blog/[slug]/`, `/recipes/`, and `/recipes/[slug]/`.
+- Server-rendered hero and page-header shells; deferred Framer Motion; narrowed React Query scope.
+- Caching strategy documented in `solution.md` §7.4; resolved `force-dynamic` debt removed from §10.2.
+- Production CWV verification record (Speed Insights before/after).
+
+**Dependencies.** CP02 (revalidation hooks stable before cache tag invalidation — CP08-05). CP08-01 (image compression) has no epic dependencies and can land once CP02 is verified.
+
+**Downstream consumers.** CP03 (Media upload variants extend cache tags and LCP paths); CP06 (globals paths added to invalidation lists).
+
+**Explicit out of scope.** Payload Media collection (CP03); site globals CMS hero (CP06); PPR / `use cache` migration; admin `/admin` performance; GTM container edits.
+
+**Status.** Not started (design and tasks approved at `docs/work/performance/`).
+
+**Work path:** `docs/work/performance/`
+
+---
+
 ## 5. Dependency graph
 
 ```text
@@ -240,10 +269,16 @@ related:
 ┌──────────┐     ┌──────────────┐
 │  CP02   │────>│    CP06      │
 │revalidate│     │site globals  │
-└──────────┘     └──────────────┘
+└────┬─────┘     └──────────────┘
+     │
+     v
+┌──────────┐
+│  CP08   │  Performance (Phase 2; CP08-01 images parallel after CP02)
+│   perf   │
+└──────────┘
 ```
 
-**Critical path:** CP01 → CP03 → CP06 (media + globals on home) and CP01 → CP02 → CP06 (live globals). CP02 can start in parallel with CP03 after CP01. CP04 and CP05 parallel after CP03. CP07 can start once CP03 lands.
+**Critical path:** CP01 → CP03 → CP06 (media + globals on home) and CP01 → CP02 → CP06 (live globals). CP02 can start in parallel with CP03 after CP01. CP04 and CP05 parallel after CP03. CP07 can start once CP03 lands. CP08 cache and static unlock (CP08-03–06) follow CP02; CP08-01 (images) can start in parallel once CP02 hooks are verified.
 
 ---
 
@@ -256,6 +291,7 @@ related:
 | C     | CP04 + CP05 | After CP03; independent of each other                      |
 | D     | CP06        | After CP02 and CP03                                        |
 | E     | CP07        | After CP03; content copy can be drafted in parallel        |
+| F     | CP08        | After CP02 verification; CP08-01 (images) can start early    |
 
 ---
 
@@ -292,6 +328,7 @@ Defer CP06, CP07, and full SEO until the slice above is verified in production. 
 | R5  | Stay copy not ready from owners                | Medium     | Medium | Ship page structure with placeholder sections; block exit until copy verified       |
 | R6  | Globals schema churn delays home page          | Low        | Medium | Start with minimal fields (hero, tagline, footer); expand in Phase 2 if needed      |
 | R7  | Phase 1 scope expands into Phase 2 items       | Medium     | Medium | Hold to roadmap exit criteria; defer rate limiting and prod verification to Phase 2 |
+| R8  | CWV targets not met after CP08 Slices A–D      | Medium     | Medium | Document residual gap in CP08-10; evaluate PPR follow-up; do not weaken CSP or consent |
 
 Technical risks (stale content, CSP, draft leakage, build failures) are tracked in [`solution.md` §10.1](../architecture/solution.md) — not duplicated here.
 
@@ -308,9 +345,10 @@ Technical risks (stale content, CSP, draft leakage, build failures) are tracked 
 - Rich-text allow-list, reading time on posts, structured recipe ingredients in JSON-LD.
 - Stay information pages live with verified copy.
 
-**What comes next:** Phase 2 — Production hardening and cleanup ([`roadmap.md` Phase 2](roadmap.md)): production admin verification under CSP, shared form rate limiting, post-migration repository cleanup. Scope Phase 2 epics when Phase 1 exit criteria are met.
+**What comes next:** Phase 2 — Production hardening and cleanup ([`roadmap.md` Phase 2](roadmap.md)): **CP08 (performance)** first; then production admin verification under CSP, shared form rate limiting, and post-migration repository cleanup. Scope remaining Phase 2 epics when Phase 1 exit criteria are met.
 
 **Next steps for delivery:**
 
 1. `design write ci-pipeline` (or epic ID `CP01`) — then `tasks write ci-pipeline`
 2. Repeat for CP02–CP07 in dependency order, or parallelise CP02 and CP03 after CP01 design is approved.
+3. CP08 — design and tasks at `docs/work/performance/`; start **CP08-01** (image compression) once CP02 hooks are verified; land static unlock and cache layers (CP08-03–06) before Phase 1 exit or early Phase 2 deploy.

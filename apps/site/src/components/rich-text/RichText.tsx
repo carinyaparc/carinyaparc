@@ -1,5 +1,6 @@
 import { RichText as PayloadRichText } from '@payloadcms/richtext-lexical/react';
 
+import { richTextJsxConverters } from '@/lib/rich-text/jsx-converters';
 import type { Post } from '@/payload-types';
 
 type RichTextProps = {
@@ -8,5 +9,5 @@ type RichTextProps = {
 };
 
 export function RichText({ data, className }: RichTextProps) {
-  return <PayloadRichText className={className} data={data} />;
+  return <PayloadRichText className={className} converters={richTextJsxConverters} data={data} />;
 }

@@ -459,7 +459,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 
 ### 10.3 Open questions
 
-- **Revalidation strategy:** _Resolved (CP02)._ Path-based on-demand revalidation via Payload `afterChange` and `afterDelete` hooks on `posts` and `recipes`, calling `revalidatePath` through `lib/payload/revalidate.ts`. No cache tags and no time-based ISR fallback on page modules. Globals revalidation deferred to CP06.
+- **Revalidation strategy:** _Resolved._ Path-based on-demand revalidation via Payload `afterChange` and `afterDelete` hooks on `posts` and `recipes`, calling `revalidatePath` through `lib/payload/revalidate.ts`. No cache tags and no time-based ISR fallback on page modules. Globals revalidation deferred to CP06.
 - **Rate limit store:** Vercel KV vs Upstash vs other?
 - **Media migration:** Backfill strategy for existing public-path images when upload collection is added?
 - **Globals scope:** Which marketing surfaces move to Payload Globals vs remain in code?
