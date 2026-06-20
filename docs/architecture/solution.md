@@ -4,7 +4,7 @@ scope: carinyaparc-website
 version: '0.1'
 owner: engineering
 status: Draft
-last_updated: 2026-05-31
+last_updated: 2026-06-20
 related:
   - docs/product/product.md
   - docs/architecture/principles.md
@@ -218,10 +218,18 @@ Editor → /admin → Payload admin UI
   → edit Post (draft autosave every 120s)
   → transition _status to published
   → persisted to Postgres
+  → hooks.afterChange fires (same Node process)
+  → getPostRevalidationPaths({ doc, previousDoc, operation })
+  → revalidatePaths([...]) → revalidatePath('/blog/{slug}/', 'page') for each path
+  → (Vercel) invalidates Full Route Cache entry for affected routes
 
-Public site (today):
-  → unchanged until rebuild/redeploy OR (planned) revalidation hook
+Next visitor GET /blog/{slug}/
+  → cache miss → Server Component runs
+  → getBlogPostBySlug(slug) with publicReadPublished filter
+  → fresh HTML served (no redeploy required)
 ```
+
+Posts and recipes share the same pattern via `collections/hooks/revalidate-content.ts`. Post paths include `/blog/`, `/blog/{slug}/`, and `/` when the document is or was featured. Recipe paths include `/recipes/{slug}/` and `/recipes/` (index reserved for a future listing page). Slug changes revalidate both old and new detail paths; unpublish and delete revalidate detail and listing paths so the next request returns 404 or an updated listing.
 
 ### 5.3 Contact form submission
 
@@ -436,7 +444,6 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 ### 10.2 Technical debt
 
 - No GitHub Actions CI workflow (quality checks run locally only).
-- Static blog/recipe pages require redeploy for CMS edits (no revalidation hooks).
 - In-memory rate limiting on contact and subscribe APIs (not reliable on serverless).
 - Archived MDX under `content/posts/` and `content/recipes/` (not runtime source).
 - Unused MDX dependencies in `package.json` (`gray-matter`, remark packages).
@@ -452,7 +459,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 
 ### 10.3 Open questions
 
-- **Revalidation strategy:** Tag-based vs path-based; ISR fallback interval?
+- **Revalidation strategy:** _Resolved (CP02)._ Path-based on-demand revalidation via Payload `afterChange` and `afterDelete` hooks on `posts` and `recipes`, calling `revalidatePath` through `lib/payload/revalidate.ts`. No cache tags and no time-based ISR fallback on page modules. Globals revalidation deferred to CP06.
 - **Rate limit store:** Vercel KV vs Upstash vs other?
 - **Media migration:** Backfill strategy for existing public-path images when upload collection is added?
 - **Globals scope:** Which marketing surfaces move to Payload Globals vs remain in code?
