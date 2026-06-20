@@ -112,7 +112,6 @@ export default async function HomePage() {
                 alt="Farm landscape"
                 fill
                 className="object-cover"
-                priority
                 quality={80}
               />
             </SectionImage>
@@ -143,7 +142,6 @@ export default async function HomePage() {
                 alt="Farm gate"
                 fill
                 className="object-cover"
-                priority
                 quality={80}
               />
             </SectionImage>
@@ -198,7 +196,6 @@ export default async function HomePage() {
                 alt="Farm gate"
                 fill
                 className="object-cover"
-                priority
                 quality={80}
               />
             </SectionImage>
