@@ -3,6 +3,12 @@ import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import { postUrl, recipeUrl } from '@/lib/payload/urls';
 import type { Post } from '@/lib/posts';
 
+/**
+ * Subset of PayloadPost fields required to render a post card/list item.
+ * Excludes `body` (rich-text JSONB) so list queries can omit that heavy column.
+ */
+export type PostListInput = Omit<PayloadPost, 'body'>;
+
 const FALLBACK_IMAGES = [
   '/images/hero-home.jpg',
   '/images/highland-cattle-dam.jpg',
@@ -46,7 +52,7 @@ export function resolveTagNames(tags: (number | Tag)[] | null | undefined): stri
     .filter((name): name is string => Boolean(name));
 }
 
-export function mapPayloadPostToListItem(doc: PayloadPost, index = 0): Post {
+export function mapPayloadPostToListItem(doc: PostListInput, index = 0): Post {
   const date = doc.date;
   const fallbackImage = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length] ?? FALLBACK_IMAGES[0];
 
