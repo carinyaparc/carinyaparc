@@ -1,27 +1,20 @@
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
 }));
 
-vi.mock('@/lib/payload/revalidate', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@/lib/payload/revalidate')>();
-  return {
-    ...actual,
-    revalidatePaths: vi.fn().mockResolvedValue(undefined),
-  };
-});
-
-import { revalidatePaths } from '@/lib/payload/revalidate';
 import { createRevalidateAfterChange, createRevalidateAfterDelete } from './revalidate-content';
 
 describe('createRevalidateAfterChange', () => {
   beforeEach(() => {
-    vi.mocked(revalidatePaths).mockReset();
-    vi.mocked(revalidatePaths).mockResolvedValue(undefined);
+    vi.mocked(revalidatePath).mockReset();
+    vi.mocked(revalidateTag).mockReset();
   });
 
-  it('calls revalidatePaths with post paths for a post afterChange hook', async () => {
+  it('calls revalidateTag with post cache tags for a post afterChange hook', async () => {
     const hook = createRevalidateAfterChange('posts');
 
     await hook({
@@ -34,14 +27,10 @@ describe('createRevalidateAfterChange', () => {
       req: {} as never,
     });
 
-    expect(revalidatePaths).toHaveBeenCalledOnce();
-    const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
-    expect(paths).toContain('/blog/');
-    expect(paths).toContain('/blog/my-post/');
-    expect(vi.mocked(revalidatePaths).mock.lastCall![1]).toEqual({
-      collection: 'posts',
-      slug: 'my-post',
-    });
+    expect(revalidateTag).toHaveBeenCalledWith('payload:posts', 'max');
+    expect(revalidateTag).toHaveBeenCalledWith('payload:post:my-post', 'max');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/my-post/', 'page');
   });
 
   it('includes home path when post is featured', async () => {
@@ -57,12 +46,10 @@ describe('createRevalidateAfterChange', () => {
       req: {} as never,
     });
 
-    expect(revalidatePaths).toHaveBeenCalledOnce();
-    const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
-    expect(paths).toContain('/');
+    expect(revalidatePath).toHaveBeenCalledWith('/', 'page');
   });
 
-  it('calls revalidatePaths with recipe paths for a recipe afterChange hook', async () => {
+  it('calls revalidateTag with recipe cache tags for a recipe afterChange hook', async () => {
     const hook = createRevalidateAfterChange('recipes');
 
     await hook({
@@ -75,10 +62,31 @@ describe('createRevalidateAfterChange', () => {
       req: {} as never,
     });
 
-    expect(revalidatePaths).toHaveBeenCalledOnce();
-    const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
-    expect(paths).toContain('/recipes/flatbread/');
-    expect(paths).toContain('/recipes/');
+    expect(revalidateTag).toHaveBeenCalledWith('payload:recipes', 'max');
+    expect(revalidateTag).toHaveBeenCalledWith('payload:recipe:flatbread', 'max');
+    expect(revalidatePath).toHaveBeenCalledWith('/recipes/flatbread/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/recipes/', 'page');
+  });
+
+  it('still revalidates paths when revalidateTag throws', async () => {
+    vi.mocked(revalidateTag).mockImplementation(() => {
+      throw new Error('tag revalidate failed');
+    });
+
+    const hook = createRevalidateAfterChange('posts');
+
+    await hook({
+      doc: { slug: 'my-post', featured: false, _status: 'published' },
+      previousDoc: { slug: 'my-post', featured: false, _status: 'published' },
+      operation: 'update',
+      collection: { slug: 'posts' } as never,
+      context: {} as never,
+      data: {},
+      req: {} as never,
+    });
+
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/my-post/', 'page');
   });
 
   it('returns the doc from the hook', async () => {
@@ -101,11 +109,11 @@ describe('createRevalidateAfterChange', () => {
 
 describe('createRevalidateAfterDelete', () => {
   beforeEach(() => {
-    vi.mocked(revalidatePaths).mockReset();
-    vi.mocked(revalidatePaths).mockResolvedValue(undefined);
+    vi.mocked(revalidatePath).mockReset();
+    vi.mocked(revalidateTag).mockReset();
   });
 
-  it('calls revalidatePaths with recipe paths for a recipe afterDelete hook', async () => {
+  it('calls revalidateTag with recipe cache tags for a recipe afterDelete hook', async () => {
     const hook = createRevalidateAfterDelete('recipes');
 
     await hook({
@@ -116,17 +124,13 @@ describe('createRevalidateAfterDelete', () => {
       id: '1',
     });
 
-    expect(revalidatePaths).toHaveBeenCalledOnce();
-    const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
-    expect(paths).toContain('/recipes/flatbread/');
-    expect(paths).toContain('/recipes/');
-    expect(vi.mocked(revalidatePaths).mock.lastCall![1]).toEqual({
-      collection: 'recipes',
-      slug: 'flatbread',
-    });
+    expect(revalidateTag).toHaveBeenCalledWith('payload:recipes', 'max');
+    expect(revalidateTag).toHaveBeenCalledWith('payload:recipe:flatbread', 'max');
+    expect(revalidatePath).toHaveBeenCalledWith('/recipes/flatbread/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/recipes/', 'page');
   });
 
-  it('calls revalidatePaths with post paths for a post afterDelete hook', async () => {
+  it('calls revalidateTag with post cache tags for a post afterDelete hook', async () => {
     const hook = createRevalidateAfterDelete('posts');
 
     await hook({
@@ -137,9 +141,9 @@ describe('createRevalidateAfterDelete', () => {
       id: '1',
     });
 
-    expect(revalidatePaths).toHaveBeenCalledOnce();
-    const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
-    expect(paths).toContain('/blog/my-post/');
-    expect(paths).toContain('/blog/');
+    expect(revalidateTag).toHaveBeenCalledWith('payload:posts', 'max');
+    expect(revalidateTag).toHaveBeenCalledWith('payload:post:my-post', 'max');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/my-post/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/', 'page');
   });
 });

@@ -1,16 +1,19 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
+  getPayloadRevalidationTags,
   getPostRevalidationPaths,
   getRecipeRevalidationPaths,
   normalizeRevalidatePath,
   revalidatePaths,
+  revalidatePayloadTags,
   type RevalidationContext,
 } from '@/lib/payload/revalidate';
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
 }));
 
 describe('normalizeRevalidatePath', () => {
@@ -115,6 +118,95 @@ describe('getRecipeRevalidationPaths', () => {
 
     expect(paths).toContain('/recipes/flatbread/');
     expect(paths).toContain('/recipes/');
+  });
+});
+
+describe('getPayloadRevalidationTags', () => {
+  it('resolves collection and slug tags for posts', () => {
+    const ctx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'my-post' },
+      operation: 'update',
+    };
+
+    const tags = getPayloadRevalidationTags(ctx);
+
+    expect(tags).toContain('payload:posts');
+    expect(tags).toContain('payload:post:my-post');
+  });
+
+  it('includes previous slug tag when the post slug changes', () => {
+    const ctx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'new-slug' },
+      previousDoc: { slug: 'old-slug' },
+      operation: 'update',
+    };
+
+    const tags = getPayloadRevalidationTags(ctx);
+
+    expect(tags).toContain('payload:post:old-slug');
+    expect(tags).toContain('payload:post:new-slug');
+  });
+
+  it('resolves collection and slug tags for recipes', () => {
+    const ctx: RevalidationContext = {
+      collection: 'recipes',
+      doc: { slug: 'flatbread' },
+      operation: 'delete',
+    };
+
+    const tags = getPayloadRevalidationTags(ctx);
+
+    expect(tags).toContain('payload:recipes');
+    expect(tags).toContain('payload:recipe:flatbread');
+  });
+});
+
+describe('revalidatePayloadTags', () => {
+  const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+  beforeEach(() => {
+    vi.mocked(revalidateTag).mockReset();
+  });
+
+  afterEach(() => {
+    errorSpy.mockClear();
+  });
+
+  it('does not throw when revalidateTag fails and logs the tag list', async () => {
+    vi.mocked(revalidateTag).mockImplementation(() => {
+      throw new Error('revalidate failed');
+    });
+
+    await expect(revalidatePayloadTags(['payload:posts'])).resolves.toBeUndefined();
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: 'content_revalidate',
+        tags: ['payload:posts'],
+      }),
+    );
+  });
+
+  it('includes collection and slug in the error log when ctx is provided', async () => {
+    vi.mocked(revalidateTag).mockImplementation(() => {
+      throw new Error('revalidate failed');
+    });
+
+    await revalidatePayloadTags(['payload:post:my-post'], {
+      collection: 'posts',
+      slug: 'my-post',
+    });
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: 'content_revalidate',
+        collection: 'posts',
+        slug: 'my-post',
+        tags: ['payload:post:my-post'],
+      }),
+    );
   });
 });
 
