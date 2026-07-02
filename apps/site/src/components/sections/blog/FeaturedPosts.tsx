@@ -9,16 +9,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Tag, ArrowRight } from 'lucide-react';
-import { getBlogPosts } from '@/src/lib/posts';
+
+import { getCachedBlogPosts } from '@/lib/payload/cache';
+import type { Post } from '@/lib/posts';
 
 interface FeaturedPostsProps {
   limit?: number;
 }
 
 export default async function FeaturedPosts({ limit = 1 }: FeaturedPostsProps) {
-  let featuredPosts: Awaited<ReturnType<typeof getBlogPosts>>;
+  let featuredPosts: Post[];
   try {
-    featuredPosts = await getBlogPosts({ featured: true, limit });
+    featuredPosts = await getCachedBlogPosts({ featured: true, limit });
   } catch {
     return null;
   }

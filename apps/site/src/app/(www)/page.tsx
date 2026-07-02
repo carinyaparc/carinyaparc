@@ -27,6 +27,8 @@ import {
 import { LatestPosts } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 
+export const revalidate = 86_400;
+
 export default async function HomePage() {
   return (
     <>

@@ -8,8 +8,8 @@ import { RichText } from '@/src/components/rich-text/RichText';
 import { BASE_URL } from '@/src/lib/constants';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
+import { getCachedBlogPostBySlug, getCachedBlogPostSlugs } from '@/lib/payload/cache';
 import { resolveAuthorName, resolveTagNames } from '@/lib/payload/map-content';
-import { getBlogPostBySlug, getBlogPostSlugs } from '@/lib/posts';
 
 export async function generateMetadata({
   params,
@@ -17,7 +17,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const post = await getCachedBlogPostBySlug(slug);
 
   if (!post) {
     return {
@@ -55,14 +55,16 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 86_400;
+
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const slugs = await getBlogPostSlugs();
+  const slugs = await getCachedBlogPostSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const post = await getCachedBlogPostBySlug(slug);
 
   if (!post) {
     notFound();

@@ -21,6 +21,8 @@ const pageHeaderProps = {
 // Available post categories
 const categories = ['All', 'Soil Health', 'Biodiversity', 'Water Systems', 'Education', 'Wildlife'];
 
+export const revalidate = 86_400;
+
 export default async function BlogPage() {
   return (
     <>

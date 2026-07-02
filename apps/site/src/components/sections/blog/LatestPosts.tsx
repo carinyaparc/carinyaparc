@@ -4,7 +4,10 @@
  */
 
 import Link from 'next/link';
-import { getBlogPosts } from '@/src/lib/posts';
+
+import { getCachedBlogPosts } from '@/lib/payload/cache';
+import type { Post } from '@/lib/posts';
+
 import PostCard from './PostCard';
 
 interface LatestPostsProps {
@@ -22,9 +25,9 @@ export async function LatestPosts({
   featured = false,
   viewAllLink = '/blog',
 }: LatestPostsProps) {
-  let posts: Awaited<ReturnType<typeof getBlogPosts>>;
+  let posts: Post[];
   try {
-    posts = await getBlogPosts({ limit, featured });
+    posts = await getCachedBlogPosts({ limit, featured });
   } catch {
     return null;
   }
