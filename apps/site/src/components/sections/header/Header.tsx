@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { NavItem } from '@/src/app/navigation';
 import SubscribeModal from '@/src/components/forms/SubscribeModal';
 import MobileMenu from './MobileMenu';
@@ -76,17 +76,13 @@ export default function Header({ navigation }: HeaderProps) {
           className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
         >
           <div className="flex lg:flex-1">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center space-x-2"
-            >
+            <div className="flex items-center space-x-2">
               <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
                 <span className="text-2xl font-bold text-eucalyptus-600 transition-colors duration-300">
                   Carinya Parc
                 </span>
               </Link>
-            </motion.div>
+            </div>
           </div>
 
           {/* Mobile menu button */}
