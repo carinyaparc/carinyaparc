@@ -25,6 +25,8 @@ export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
       "'strict-dynamic'",
       // Next.js RSC / hydration inline bootstrap (stable for a given Next build)
       "'sha256-mjAPvJKRBATPwtDkDe1t+tw2mbmVjgXVfYImJfeAdz8='",
+      // Site-wide Organization JSON-LD in the public layout shell
+      "'sha256-MAYHmAgp9szqC9iYA0JbHfsQnLabVS8yaUOhlc2vEFY='",
     ],
     'script-src-elem': [
       "'self'",
@@ -34,6 +36,7 @@ export const CSP_DIRECTIVES: Record<string, Record<string, string[]>> = {
       'https://*.vercel-scripts.com',
       'https://vercel.live',
       "'sha256-mjAPvJKRBATPwtDkDe1t+tw2mbmVjgXVfYImJfeAdz8='",
+      "'sha256-MAYHmAgp9szqC9iYA0JbHfsQnLabVS8yaUOhlc2vEFY='",
     ],
     'style-src': ["'self'", 'https://fonts.googleapis.com'],
     'img-src': [
