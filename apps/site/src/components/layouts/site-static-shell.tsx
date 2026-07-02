@@ -49,8 +49,6 @@ export function SiteStaticShell({ children }: Readonly<{ children: React.ReactNo
   return (
     <html lang="en" className={fontClassNames} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <style dangerouslySetInnerHTML={{ __html: criticalCSS }} suppressHydrationWarning />
         <SiteHeadNonceScripts />
       </head>
