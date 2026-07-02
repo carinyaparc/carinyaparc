@@ -15,7 +15,7 @@ import {
 const SITE_ROOT = path.resolve(import.meta.dirname, '../../..');
 const BUILD_MANIFEST_PATH = path.join(SITE_ROOT, '.next/prerender-manifest.json');
 
-const KEY_CONTENT_ROUTES = ['/', '/blog/', '/blog/[slug]'] as const;
+const KEY_CONTENT_ROUTES = ['/', '/blog/', '/blog/[slug]', '/recipes/[slug]'] as const;
 
 const SAMPLE_BUILD_OUTPUT = `
 Route (app)                                                 Revalidate  Expire

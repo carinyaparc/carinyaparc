@@ -345,7 +345,7 @@ User (standalone; auth only)
   (`site-static-shell`) that does not call `cookies()`, `headers()`, or `draftMode()`. Consent and
   analytics load from a client island (`ConsentGate` → `GET /api/consent`) so the HTML shell can
   be CDN-cached.
-- **ISR fallback:** Home, blog listing, blog detail, recipe listing, and recipe detail routes export
+- **ISR fallback:** Home, blog listing, blog detail, and recipe detail routes export
   `revalidate = 86400` (24 hours). On-demand invalidation from Payload hooks is the primary
   freshness mechanism; the interval is a safety net if tag or path revalidation fails.
 - **Payload cross-request cache:** Public page data goes through `unstable_cache` wrappers in
