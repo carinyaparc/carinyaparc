@@ -21,6 +21,7 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
     sort: '-date',
     select: {
       body: false,
+      tags: false,
     },
     ...(featured
       ? {
