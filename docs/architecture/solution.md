@@ -4,7 +4,7 @@ scope: carinyaparc-website
 version: '0.1'
 owner: engineering
 status: Draft
-last_updated: 2026-06-20
+last_updated: 2026-07-02
 related:
   - docs/product/product.md
   - docs/architecture/principles.md
@@ -124,7 +124,7 @@ Ordered by priority for architectural trade-offs.
 | ----------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------- |
 | Payload 3 + Postgres                      | Editorial reliability, structured recipes, drafts      | Operational dependency on Neon; build-time DB access           |
 | Server Components + cached Payload client | Performance, type safety                               | Client interactivity pushed to leaf components (forms, motion) |
-| SSG for blog/recipe `[slug]` routes       | Fast TTFB, CDN-friendly HTML                           | Content stale until revalidation or redeploy (known gap)       |
+| SSG for blog/recipe `[slug]` routes       | Fast TTFB, CDN-friendly HTML                           | ISR `revalidate` + on-demand invalidation on publish           |
 | MDX for legal only                        | Git-reviewed legal text, no CMS scope creep            | Two content pipelines to document and test                     |
 | Text-path image fields (interim)          | Fast migration, static `public/` assets                | No media library, alt enforcement, or upload workflow yet      |
 | `map-content.ts` mapping layer            | Stable UI types decoupled from Payload shapes          | Extra indirection when schema changes                          |
@@ -174,6 +174,7 @@ From [`principles.md`](principles.md): separation of concerns (data in server ro
 | **Query layer**        | Payload `find` / `findByID`; sort, depth, featured filters | `src/lib/payload/queries/`         |
 | **Content mapper**     | Payload document → list/detail DTOs for UI and metadata    | `src/lib/payload/map-content.ts`   |
 | **Payload client**     | Singleton `getPayload()` per request (`React.cache`)       | `src/lib/payload/client.ts`        |
+| **Payload cache**      | Cross-request `unstable_cache` wrappers and tag constants  | `src/lib/payload/cache.ts`         |
 | **Collections**        | Schema, access, drafts, admin columns                      | `src/collections/`                 |
 | **Rich text renderer** | Lexical JSON → React                                       | `src/components/rich-text/`        |
 | **Metadata composers** | Title, OG, canonical helpers                               | `src/lib/metadata/`                |
@@ -193,8 +194,8 @@ See [`structure.md`](structure.md) for the canonical directory map. Architectura
 
 ```text
 CDN / Vercel edge
-  → serve pre-rendered HTML for /blog/{slug} (from last build)
-  → (future) on-demand revalidation after Payload publish
+  → serve pre-rendered or ISR-cached HTML for /blog/{slug}
+  → on-demand revalidation after Payload publish (path + cache tags)
 
 At build time (generateStaticParams + page render):
   getBlogPostSlugs()
@@ -208,7 +209,8 @@ At build time (generateStaticParams + page render):
     → RichText body, SchemaMarkup, Breadcrumb
 ```
 
-**Static behaviour:** Without `revalidatePath` / Payload `afterChange` hooks, pages stay static until the next deploy (see §10).
+**Static behaviour:** Pages use ISR (`revalidate = 86400`) with on-demand `revalidatePath` and
+`revalidateTag` on CMS publish; see §7.4.
 
 ### 5.2 Editor publishes a post
 
@@ -220,12 +222,14 @@ Editor → /admin → Payload admin UI
   → persisted to Postgres
   → hooks.afterChange fires (same Node process)
   → getPostRevalidationPaths({ doc, previousDoc, operation })
+  → getPayloadRevalidationTags({ collection, doc, previousDoc, operation })
   → revalidatePaths([...]) → revalidatePath('/blog/{slug}/', 'page') for each path
-  → (Vercel) invalidates Full Route Cache entry for affected routes
+  → revalidatePayloadTags([...]) → revalidateTag('payload:posts', 'max'), revalidateTag('payload:post:{slug}', 'max')
+  → (Vercel) invalidates Full Route Cache and Data Cache entries for affected routes
 
 Next visitor GET /blog/{slug}/
   → cache miss → Server Component runs
-  → getBlogPostBySlug(slug) with publicReadPublished filter
+  → getCachedBlogPostBySlug(slug) with publicReadPublished filter (unstable_cache miss → Neon)
   → fresh HTML served (no redeploy required)
 ```
 
@@ -337,9 +341,23 @@ User (standalone; auth only)
 
 ### 7.4 Caching and content freshness
 
-- **Static pages:** Blog/recipe detail pre-rendered at build; no `revalidate` export today.
+- **Public layout:** Marketing, blog, and recipe route groups share a static root layout
+  (`site-static-shell`) that does not call `cookies()`, `headers()`, or `draftMode()`. Consent and
+  analytics load from a client island (`ConsentGate` → `GET /api/consent`) so the HTML shell can
+  be CDN-cached.
+- **ISR fallback:** Home, blog listing, blog detail, recipe listing, and recipe detail routes export
+  `revalidate = 86400` (24 hours). On-demand invalidation from Payload hooks is the primary
+  freshness mechanism; the interval is a safety net if tag or path revalidation fails.
+- **Payload cross-request cache:** Public page data goes through `unstable_cache` wrappers in
+  `lib/payload/cache.ts`, keyed per query (list filters, slug). Tags:
+  `payload:posts`, `payload:post:{slug}`, `payload:recipes`, `payload:recipe:{slug}`. Wrapper
+  `revalidate` matches the ISR fallback (`86400` seconds).
+- **Cache invalidation on publish:** Payload `afterChange` and `afterDelete` hooks call
+  `revalidatePath` and `revalidateTag` for affected collection and slug tags via
+  `lib/payload/revalidate.ts`. Tag failures are logged and do not block path revalidation.
+- **Request-scoped dedup:** `getPayloadClient()` remains wrapped in `React.cache` for per-request
+  memoisation within a single render.
 - **Image optimisation:** Next.js `minimumCacheTTL` one day in `next.config.mjs`.
-- **Payload client:** Request-scoped memoisation via `React.cache` — not a cross-request cache.
 
 ### 7.5 Metadata and structured data
 
@@ -408,7 +426,8 @@ Key env vars (non-exhaustive; see `apps/site/.env.example` and `turbo.json`):
 ### 8.4 Rollout pattern
 
 - Trunk-based deploys to Vercel on merge to main (no blue/green today).
-- Content changes today require redeploy for public static pages until revalidation is implemented.
+- CMS publish triggers on-demand path and tag revalidation; redeploy is not required for public
+  content updates.
 - Schema migrations rely on Payload/Postgres adapter migrations (`payload-migrations` collection).
 
 ---
@@ -433,13 +452,13 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 
 ### 10.1 Risks
 
-| Risk                                   | Likelihood   | Impact | Mitigation direction                                                |
-| -------------------------------------- | ------------ | ------ | ------------------------------------------------------------------- |
-| Static content stale after CMS edit    | High (today) | Medium | Payload `afterChange` + `revalidatePath` / tags                     |
-| Rate limit bypass on serverless        | Medium       | Medium | Shared KV/Redis store                                               |
-| CSP breaks Payload admin in production | Medium       | High   | Verify prod-like build; admin CSP exception if required             |
-| Build fails when DB unreachable        | Medium       | High   | CI secrets + Neon availability; optional build-time fallback policy |
-| Draft leakage to public site           | Low          | High   | Access tests; smoke-test after schema changes                       |
+| Risk                                   | Likelihood | Impact | Mitigation direction                                                     |
+| -------------------------------------- | ---------- | ------ | ------------------------------------------------------------------------ |
+| Static content stale after CMS edit    | Low        | Medium | Payload hooks + `revalidatePath` / `revalidateTag`; ISR fallback `86400` |
+| Rate limit bypass on serverless        | Medium     | Medium | Shared KV/Redis store                                                    |
+| CSP breaks Payload admin in production | Medium     | High   | Verify prod-like build; admin CSP exception if required                  |
+| Build fails when DB unreachable        | Medium     | High   | CI secrets + Neon availability; optional build-time fallback policy      |
+| Draft leakage to public site           | Low        | High   | Access tests; smoke-test after schema changes                            |
 
 ### 10.2 Technical debt
 
@@ -448,7 +467,8 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - Archived MDX under `content/posts/` and `content/recipes/` (not runtime source).
 - Unused MDX dependencies in `package.json` (`gray-matter`, remark packages).
 - Non-functional blog category filter UI vs Payload categories.
-- No-op `dynamic = 'force-dynamic'` on section components.
+- Public consent and analytics bootstrap via `GET /api/consent` and client `ConsentGate` (replaces
+  dynamic layout `cookies()` reads for GTM).
 - Unused `/api/media/file/**` rewrite without Media collection.
 - Import alias duplication (`@/*` vs `@/src/*`).
 - `lib/session/` scaffold (`cp_session`) — module present, not wired to routes.
@@ -460,7 +480,10 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 
 ### 10.3 Open questions
 
-- **Revalidation strategy:** _Resolved._ Path-based on-demand revalidation via Payload `afterChange` and `afterDelete` hooks on `posts` and `recipes`, calling `revalidatePath` through `lib/payload/revalidate.ts`. No cache tags and no time-based ISR fallback on page modules. Globals revalidation deferred to CP06.
+- **Revalidation strategy:** _Resolved._ Path-based on-demand revalidation plus `revalidateTag` for
+  Payload cache tags via `afterChange` and `afterDelete` hooks on `posts` and `recipes`
+  (`lib/payload/revalidate.ts`). Public content routes also export ISR `revalidate = 86400` as a
+  fallback. Globals revalidation deferred to CP06.
 - **Rate limit store:** Vercel KV vs Upstash vs other?
 - **Media migration:** Backfill strategy for existing public-path images when upload collection is added?
 - **Globals scope:** Which marketing surfaces move to Payload Globals vs remain in code?
