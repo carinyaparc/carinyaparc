@@ -1,11 +1,16 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload';
 
+import { POSTS_CACHE_TAG } from '@/lib/constants';
 import {
   getPostRevalidationPaths,
   getRecipeRevalidationPaths,
   revalidatePaths,
 } from '@/lib/payload/revalidate';
 import type { RevalidatableCollection } from '@/lib/payload/revalidate';
+
+const cacheTags: Partial<Record<RevalidatableCollection, string[]>> = {
+  posts: [POSTS_CACHE_TAG],
+};
 
 type PathResolver = (ctx: {
   collection: RevalidatableCollection;
@@ -42,10 +47,11 @@ export function createRevalidateAfterChange(
       operation,
     });
 
-    await revalidatePaths(paths, {
-      collection,
-      slug: typeof doc?.slug === 'string' ? doc.slug : undefined,
-    });
+    await revalidatePaths(
+      paths,
+      { collection, slug: typeof doc?.slug === 'string' ? doc.slug : undefined },
+      cacheTags[collection],
+    );
 
     return doc;
   };
@@ -67,9 +73,10 @@ export function createRevalidateAfterDelete(
       operation: 'delete',
     });
 
-    await revalidatePaths(paths, {
-      collection,
-      slug: typeof doc?.slug === 'string' ? doc.slug : undefined,
-    });
+    await revalidatePaths(
+      paths,
+      { collection, slug: typeof doc?.slug === 'string' ? doc.slug : undefined },
+      cacheTags[collection],
+    );
   };
 }

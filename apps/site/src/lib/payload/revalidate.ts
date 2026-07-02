@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export type RevalidatableCollection = 'posts' | 'recipes';
 
@@ -36,12 +36,7 @@ export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
     paths.push(`/blog/${ctx.previousDoc.slug}/`);
   }
 
-  const isPublished = ctx.doc._status === 'published';
-  const wasPublished = ctx.previousDoc?._status === 'published';
-
-  if (ctx.doc.featured || ctx.previousDoc?.featured || isPublished || wasPublished) {
-    paths.push('/');
-  }
+  paths.push('/');
 
   return uniqueNormalizedPaths(paths);
 }
@@ -66,10 +61,15 @@ type RevalidateLogContext = {
   slug?: string;
 };
 
-export async function revalidatePaths(paths: string[], ctx?: RevalidateLogContext): Promise<void> {
+export async function revalidatePaths(
+  paths: string[],
+  ctx?: RevalidateLogContext,
+  tags?: string[],
+): Promise<void> {
   const normalizedPaths = uniqueNormalizedPaths(paths);
+  const normalizedTags = tags ?? [];
 
-  if (normalizedPaths.length === 0) {
+  if (normalizedPaths.length === 0 && normalizedTags.length === 0) {
     return;
   }
 
@@ -80,11 +80,16 @@ export async function revalidatePaths(paths: string[], ctx?: RevalidateLogContex
       revalidatePath(path, 'page');
     }
 
+    for (const tag of normalizedTags) {
+      revalidateTag(tag, 'max');
+    }
+
     if (process.env.NODE_ENV === 'production') {
       console.info({
         event: 'content_revalidate',
         ...ctx,
         paths: normalizedPaths,
+        tags: normalizedTags,
         durationMs: Date.now() - start,
       });
     }
@@ -93,6 +98,7 @@ export async function revalidatePaths(paths: string[], ctx?: RevalidateLogContex
       event: 'content_revalidate',
       ...ctx,
       paths: normalizedPaths,
+      tags: normalizedTags,
       durationMs: Date.now() - start,
       error: error instanceof Error ? error.message : String(error),
     });
