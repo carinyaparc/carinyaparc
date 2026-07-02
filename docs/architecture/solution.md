@@ -456,7 +456,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - Placeholder `LOCAL_BUSINESS` geo coordinates in JSON-LD.
 - No skip-navigation link; no route-group error boundaries.
 - Text-path image fields (no Media collection or enforced alt text).
-- `posts.date` and `posts.featured` indexes declared in collection config but not yet applied to production DB — run `pnpm generate:migration` then deploy to materialise indexes (resolves Sentry WEBSITE-F performance regression).
+- `posts.date` and `posts.featured` indexes declared in collection config but not yet applied to production DB — run `pnpm payload migrate:create` from `apps/site`, then deploy to materialise indexes (resolves Sentry WEBSITE-F performance regression).
 
 ### 10.3 Open questions
 
