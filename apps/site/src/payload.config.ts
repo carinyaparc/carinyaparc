@@ -40,6 +40,7 @@ export default buildConfig({
       idleTimeoutMillis: 30_000,
       connectionTimeoutMillis: 10_000,
     },
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   sharp,
   plugins: [],

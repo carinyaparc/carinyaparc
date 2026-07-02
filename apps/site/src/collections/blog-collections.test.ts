@@ -121,7 +121,7 @@ describe('blog collections', () => {
       }
     });
 
-    it('revalidates blog paths when a published post is updated', async () => {
+    it('revalidates blog and home paths when any post is updated', async () => {
       const afterChange = Posts.hooks?.afterChange?.[0];
       expect(typeof afterChange).toBe('function');
 
@@ -153,6 +153,9 @@ describe('blog collections', () => {
       const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
       expect(paths).toContain('/blog/');
       expect(paths).toContain('/blog/my-post/');
+      // Homepage should always be revalidated — LatestPosts shows most recent
+      // posts regardless of featured status.
+      expect(paths).toContain('/');
     });
   });
 });
