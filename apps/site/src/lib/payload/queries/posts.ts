@@ -2,7 +2,7 @@ import 'server-only';
 
 import type { Post as PayloadPost } from '@/payload-types';
 import { getPayloadClient } from '@/lib/payload/client';
-import { mapPayloadPostToListItem } from '@/lib/payload/map-content';
+import { mapPayloadPostToListItem, type PostListInput } from '@/lib/payload/map-content';
 import type { Post } from '@/lib/posts';
 
 type BlogPostsOptions = {
@@ -19,6 +19,9 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
     depth: 1,
     limit: limit ?? 100,
     sort: '-date',
+    select: {
+      body: false,
+    },
     ...(featured
       ? {
           where: {
@@ -30,7 +33,9 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
       : {}),
   });
 
-  return result.docs.map((doc, index) => mapPayloadPostToListItem(doc, index));
+  return result.docs.map((doc, index) =>
+    mapPayloadPostToListItem(doc as PostListInput, index),
+  );
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<PayloadPost | null> {

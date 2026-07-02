@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import type { Author, Post as PayloadPost, Recipe as PayloadRecipe, Tag } from '@/payload-types';
+import type { Author, Recipe as PayloadRecipe, Tag } from '@/payload-types';
 import {
   formatContentDate,
   mapPayloadPostToListItem,
   mapPayloadRecipeToDetail,
   resolveAuthorName,
   resolveTagNames,
+  type PostListInput,
 } from '@/lib/payload/map-content';
 
 const author: Author = {
@@ -26,17 +27,6 @@ const tag: Tag = {
   createdAt: '2026-01-01T00:00:00.000Z',
 };
 
-const postBody: PayloadPost['body'] = {
-  root: {
-    type: 'root',
-    children: [],
-    direction: 'ltr',
-    format: '',
-    indent: 0,
-    version: 1,
-  },
-};
-
 describe('map-content', () => {
   it('formats content dates for display', () => {
     expect(formatContentDate('2026-03-15')).toMatch(/March 15, 2026/);
@@ -48,7 +38,7 @@ describe('map-content', () => {
   });
 
   it('maps payload posts to list cards with blog URLs', () => {
-    const doc: PayloadPost = {
+    const doc: PostListInput = {
       id: 7,
       title: 'Restoring 42 Hectares',
       slug: 'restoring-42-ha-land',
@@ -59,7 +49,6 @@ describe('map-content', () => {
       description: 'SEO description',
       image: '/images/farm-track-gate.jpg',
       tags: [tag],
-      body: postBody,
       updatedAt: '2026-03-16T00:00:00.000Z',
       createdAt: '2026-03-15T00:00:00.000Z',
       _status: 'published',
