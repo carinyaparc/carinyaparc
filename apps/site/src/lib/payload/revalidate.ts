@@ -36,7 +36,10 @@ export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
     paths.push(`/blog/${ctx.previousDoc.slug}/`);
   }
 
-  if (ctx.doc.featured || ctx.previousDoc?.featured) {
+  const isPublished = ctx.doc._status === 'published';
+  const wasPublished = ctx.previousDoc?._status === 'published';
+
+  if (ctx.doc.featured || ctx.previousDoc?.featured || isPublished || wasPublished) {
     paths.push('/');
   }
 
