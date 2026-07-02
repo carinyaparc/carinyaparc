@@ -47,6 +47,7 @@ export const Posts: CollectionConfig = {
       name: 'date',
       type: 'date',
       required: true,
+      index: true,
       admin: {
         position: 'sidebar',
         date: {
@@ -75,6 +76,7 @@ export const Posts: CollectionConfig = {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
+      index: true,
       admin: {
         position: 'sidebar',
       },

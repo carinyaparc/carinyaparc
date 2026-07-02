@@ -19,8 +19,18 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
     depth: 1,
     limit: limit ?? 100,
     sort: '-date',
+    // Positive projection — only request fields consumed by mapPayloadPostToListItem.
+    // Excludes body (heavy JSONB), category (unused in card), and audit timestamps.
     select: {
-      body: false,
+      title: true,
+      slug: true,
+      date: true,
+      author: true,
+      excerpt: true,
+      description: true,
+      image: true,
+      featured: true,
+      tags: true,
     },
     ...(featured
       ? {
@@ -33,9 +43,7 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
       : {}),
   });
 
-  return result.docs.map((doc, index) =>
-    mapPayloadPostToListItem(doc as PostListInput, index),
-  );
+  return result.docs.map((doc, index) => mapPayloadPostToListItem(doc as PostListInput, index));
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<PayloadPost | null> {
