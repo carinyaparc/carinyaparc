@@ -1,6 +1,6 @@
 import { fontClassNames } from '@/lib/font';
 
-import { SiteHeadNonceScripts } from '@/components/layouts/site-head-nonce-scripts';
+import { SiteOrganizationSchema } from '@/components/layouts/site-organization-schema';
 
 const criticalCSS = `
   /* Essential design tokens for critical styles */
@@ -49,10 +49,8 @@ export function SiteStaticShell({ children }: Readonly<{ children: React.ReactNo
   return (
     <html lang="en" className={fontClassNames} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <style dangerouslySetInnerHTML={{ __html: criticalCSS }} suppressHydrationWarning />
-        <SiteHeadNonceScripts />
+        <SiteOrganizationSchema />
       </head>
       <body className="flex flex-col min-h-screen">{children}</body>
     </html>

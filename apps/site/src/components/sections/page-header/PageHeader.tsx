@@ -2,15 +2,11 @@
  * PageHeader organism - Refactored
  * Maps to: * Task: T3.5
  *
- * Standard page header with title and description
- * Minimal changes, moved to subdirectory for consistency
+ * Server-rendered shell with a static background image (no motion on LCP path).
  */
-
-'use client';
 
 import { cn } from '@/src/lib/cn';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 
 interface PageHeaderProps {
   variant?: 'light' | 'dark';
@@ -51,17 +47,7 @@ export default function PageHeader({
     >
       {backgroundImage && (
         <div className="absolute inset-0 -z-10 size-full overflow-hidden">
-          <motion.div
-            className="relative size-full"
-            initial={{ scale: 1 }}
-            animate={{ scale: 1.1 }}
-            transition={{
-              duration: 40,
-              ease: 'linear',
-              repeat: Infinity,
-              repeatType: 'reverse',
-            }}
-          >
+          <div className="relative size-full">
             <Image
               src={backgroundImage}
               alt={backgroundImageAlt}
@@ -70,7 +56,7 @@ export default function PageHeader({
               className="object-cover object-right md:object-center brightness-75"
               priority={isDark}
             />
-          </motion.div>
+          </div>
 
           {isDark && (
             <>

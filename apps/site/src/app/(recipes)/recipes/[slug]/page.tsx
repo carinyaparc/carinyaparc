@@ -5,12 +5,8 @@ import type { Metadata } from 'next';
 
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
-import { resolveAuthorName } from '@/lib/payload/map-content';
-import {
-  getRecipeBySlug,
-  getRecipeDetailBySlug,
-  getRecipeSlugs,
-} from '@/lib/payload/queries/recipes';
+import { getCachedRecipeBySlug, getCachedRecipeSlugs } from '@/lib/payload/cache';
+import { mapPayloadRecipeToDetail, resolveAuthorName } from '@/lib/payload/map-content';
 import { formatIsoDuration } from '@/lib/recipes/format-duration';
 
 export async function generateMetadata({
@@ -19,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const recipe = await getRecipeBySlug(slug);
+  const recipe = await getCachedRecipeBySlug(slug);
 
   if (!recipe) {
     return {
@@ -44,14 +40,17 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 86_400;
+
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const slugs = await getRecipeSlugs();
+  const slugs = await getCachedRecipeSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const recipe = await getRecipeDetailBySlug(slug);
+  const payloadRecipe = await getCachedRecipeBySlug(slug);
+  const recipe = payloadRecipe ? mapPayloadRecipeToDetail(payloadRecipe) : null;
 
   if (!recipe) {
     notFound();

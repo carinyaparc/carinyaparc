@@ -27,6 +27,7 @@ import {
   type InquiryType,
 } from '@/src/lib/validation/contact-schema';
 import { sanitizeContactFormData } from '@/src/lib/validation/sanitize';
+import { FormQueryProvider } from '@/providers/FormQueryProvider';
 
 // Vercel Analytics tracking (if available)
 const trackEvent = (eventName: string, properties?: Record<string, unknown>) => {
@@ -64,7 +65,15 @@ interface ContactFormSectionProps {
   onError?: (error: Error) => void;
 }
 
-export default function ContactFormSection({ onSuccess, onError }: ContactFormSectionProps = {}) {
+export default function ContactFormSection(props: ContactFormSectionProps = {}) {
+  return (
+    <FormQueryProvider>
+      <ContactFormSectionInner {...props} />
+    </FormQueryProvider>
+  );
+}
+
+function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps = {}) {
   // Track form load time for anti-bot measures
   const formLoadTime = useRef<number>(0);
   const [isFormReady, setIsFormReady] = useState(false);

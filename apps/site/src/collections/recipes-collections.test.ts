@@ -5,6 +5,7 @@ vi.mock('@/lib/payload/revalidate', async (importOriginal) => {
   return {
     ...actual,
     revalidatePaths: vi.fn().mockResolvedValue(undefined),
+    revalidatePayloadTags: vi.fn().mockResolvedValue(undefined),
   };
 });
 

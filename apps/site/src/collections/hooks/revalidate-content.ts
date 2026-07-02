@@ -1,9 +1,11 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload';
 
 import {
+  getPayloadRevalidationTags,
   getPostRevalidationPaths,
   getRecipeRevalidationPaths,
   revalidatePaths,
+  revalidatePayloadTags,
 } from '@/lib/payload/revalidate';
 import type { RevalidatableCollection } from '@/lib/payload/revalidate';
 
@@ -25,7 +27,7 @@ export function createRevalidateAfterChange(
   const resolve = resolvers[collection];
 
   return async ({ doc, previousDoc, operation }) => {
-    const paths = resolve({
+    const revalidationCtx = {
       collection,
       doc: {
         slug: typeof doc?.slug === 'string' ? doc.slug : null,
@@ -40,12 +42,16 @@ export function createRevalidateAfterChange(
           }
         : null,
       operation,
-    });
+    };
 
-    await revalidatePaths(paths, {
+    const paths = resolve(revalidationCtx);
+    const logCtx = {
       collection,
       slug: typeof doc?.slug === 'string' ? doc.slug : undefined,
-    });
+    };
+
+    await revalidatePayloadTags(getPayloadRevalidationTags(revalidationCtx), logCtx);
+    await revalidatePaths(paths, logCtx);
 
     return doc;
   };
@@ -57,19 +63,23 @@ export function createRevalidateAfterDelete(
   const resolve = resolvers[collection];
 
   return async ({ doc }) => {
-    const paths = resolve({
+    const revalidationCtx = {
       collection,
       doc: {
         slug: typeof doc?.slug === 'string' ? doc.slug : null,
         featured: typeof doc?.featured === 'boolean' ? doc.featured : null,
         _status: typeof doc?._status === 'string' ? doc._status : null,
       },
-      operation: 'delete',
-    });
+      operation: 'delete' as const,
+    };
 
-    await revalidatePaths(paths, {
+    const paths = resolve(revalidationCtx);
+    const logCtx = {
       collection,
       slug: typeof doc?.slug === 'string' ? doc.slug : undefined,
-    });
+    };
+
+    await revalidatePayloadTags(getPayloadRevalidationTags(revalidationCtx), logCtx);
+    await revalidatePaths(paths, logCtx);
   };
 }

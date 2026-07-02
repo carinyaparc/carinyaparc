@@ -8,17 +8,19 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Tag, ArrowRight } from 'lucide-react';
-import { getBlogPosts } from '@/src/lib/posts';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
+
+import { getCachedBlogPosts } from '@/lib/payload/cache';
+import type { Post } from '@/lib/posts';
 
 interface FeaturedPostsProps {
   limit?: number;
 }
 
 export default async function FeaturedPosts({ limit = 1 }: FeaturedPostsProps) {
-  let featuredPosts: Awaited<ReturnType<typeof getBlogPosts>>;
+  let featuredPosts: Post[];
   try {
-    featuredPosts = await getBlogPosts({ featured: true, limit });
+    featuredPosts = await getCachedBlogPosts({ featured: true, limit });
   } catch {
     return null;
   }
@@ -55,12 +57,6 @@ export default async function FeaturedPosts({ limit = 1 }: FeaturedPostsProps) {
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-1" />5 min read
                     </div>
-                    {featuredPost.tags && featuredPost.tags.length > 0 && (
-                      <div className="flex items-center">
-                        <Tag className="h-4 w-4 mr-1" />
-                        {featuredPost.tags[0]}
-                      </div>
-                    )}
                   </div>
                   <h2 className="text-2xl lg:text-3xl font-bold text-green-900 mb-4">
                     {featuredPost.title}
