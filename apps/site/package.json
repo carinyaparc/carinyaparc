@@ -15,6 +15,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "postbuild": "vitest run src/lib/performance/static-route-assertion.test.ts -t \"production build route classification\"",
     "start": "next start",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
