@@ -24,8 +24,8 @@ const fetchBlogPosts = async (opts: BlogPostsOptions): Promise<Post[]> => {
     depth: 1,
     limit: limit ?? 100,
     sort: '-date',
-    // Positive projection — only request fields consumed by mapPayloadPostToListItem.
-    // Excludes body (heavy JSONB), category (unused in card), and audit timestamps.
+    // Positive projection for fields consumed by mapPayloadPostToListItem.
+    // Excludes body (heavy JSONB) and tags/category relationships to avoid posts_rels joins.
     select: {
       title: true,
       slug: true,
@@ -35,7 +35,6 @@ const fetchBlogPosts = async (opts: BlogPostsOptions): Promise<Post[]> => {
       description: true,
       image: true,
       featured: true,
-      tags: true,
     },
     ...(featured
       ? {

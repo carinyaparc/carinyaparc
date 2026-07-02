@@ -25,10 +25,10 @@ describe('normalizeRevalidatePath', () => {
 });
 
 describe('getPostRevalidationPaths', () => {
-  it('resolves listing, home, and detail paths with trailing slashes', () => {
+  it('resolves listing, home, and detail paths for published posts with trailing slashes', () => {
     const ctx: RevalidationContext = {
       collection: 'posts',
-      doc: { slug: 'my-post' },
+      doc: { slug: 'my-post', _status: 'published' },
       operation: 'update',
     };
 
@@ -40,10 +40,10 @@ describe('getPostRevalidationPaths', () => {
     expect(paths.every((path) => path.endsWith('/'))).toBe(true);
   });
 
-  it('always includes the home path regardless of featured status', () => {
+  it('includes the home path for published posts regardless of featured status', () => {
     const nonFeaturedCtx: RevalidationContext = {
       collection: 'posts',
-      doc: { slug: 'my-post', featured: false },
+      doc: { slug: 'my-post', featured: false, _status: 'published' },
       operation: 'update',
     };
 
@@ -51,11 +51,49 @@ describe('getPostRevalidationPaths', () => {
 
     const featuredCtx: RevalidationContext = {
       collection: 'posts',
-      doc: { slug: 'my-post', featured: true },
+      doc: { slug: 'my-post', featured: true, _status: 'published' },
       operation: 'update',
     };
 
     expect(getPostRevalidationPaths(featuredCtx)).toContain('/');
+  });
+
+  it('includes the home path when the post is published', () => {
+    const ctx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'my-post', featured: false, _status: 'published' },
+      operation: 'update',
+    };
+
+    const paths = getPostRevalidationPaths(ctx);
+
+    expect(paths).toContain('/');
+  });
+
+  it('includes the home path when a published post is unpublished', () => {
+    const ctx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'my-post', _status: 'draft' },
+      previousDoc: { slug: 'my-post', _status: 'published' },
+      operation: 'update',
+    };
+
+    const paths = getPostRevalidationPaths(ctx);
+
+    expect(paths).toContain('/');
+  });
+
+  it('does not include the home path for a draft-only autosave', () => {
+    const ctx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'my-post', featured: false, _status: 'draft' },
+      previousDoc: { slug: 'my-post', _status: 'draft' },
+      operation: 'update',
+    };
+
+    const paths = getPostRevalidationPaths(ctx);
+
+    expect(paths).not.toContain('/');
   });
 
   it('includes previous and new slug paths when the slug changes', () => {
