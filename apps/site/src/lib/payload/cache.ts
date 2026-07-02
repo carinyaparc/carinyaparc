@@ -4,15 +4,11 @@ import { unstable_cache } from 'next/cache';
 
 import type { Post as PayloadPost, Recipe as PayloadRecipe } from '@/payload-types';
 import type { Post } from '@/lib/posts';
+import { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
 import { getBlogPostBySlug, getBlogPosts, getBlogPostSlugs } from '@/lib/payload/queries/posts';
 import { getRecipeBySlug, getRecipeSlugs } from '@/lib/payload/queries/recipes';
 
-export const PAYLOAD_CACHE_TAGS = {
-  posts: 'payload:posts',
-  post: (slug: string) => `payload:post:${slug}`,
-  recipes: 'payload:recipes',
-  recipe: (slug: string) => `payload:recipe:${slug}`,
-} as const;
+export { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
 
 const CACHE_REVALIDATE_SECONDS = 86_400;
 
