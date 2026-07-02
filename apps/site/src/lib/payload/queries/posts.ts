@@ -34,7 +34,7 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
   });
 
   return result.docs.map((doc, index) =>
-    mapPayloadPostToListItem(doc as unknown as PostListInput, index),
+    mapPayloadPostToListItem(doc as PostListInput, index),
   );
 }
 
