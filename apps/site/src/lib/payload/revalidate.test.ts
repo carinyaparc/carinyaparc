@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -11,6 +11,7 @@ import {
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
 }));
 
 describe('normalizeRevalidatePath', () => {
@@ -24,7 +25,7 @@ describe('normalizeRevalidatePath', () => {
 });
 
 describe('getPostRevalidationPaths', () => {
-  it('resolves listing and detail paths with trailing slashes', () => {
+  it('resolves listing, home, and detail paths with trailing slashes', () => {
     const ctx: RevalidationContext = {
       collection: 'posts',
       doc: { slug: 'my-post' },
@@ -34,20 +35,27 @@ describe('getPostRevalidationPaths', () => {
     const paths = getPostRevalidationPaths(ctx);
 
     expect(paths).toContain('/blog/');
+    expect(paths).toContain('/');
     expect(paths).toContain('/blog/my-post/');
     expect(paths.every((path) => path.endsWith('/'))).toBe(true);
   });
 
-  it('includes the home path when the post is featured', () => {
-    const ctx: RevalidationContext = {
+  it('always includes the home path regardless of featured status', () => {
+    const nonFeaturedCtx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'my-post', featured: false },
+      operation: 'update',
+    };
+
+    expect(getPostRevalidationPaths(nonFeaturedCtx)).toContain('/');
+
+    const featuredCtx: RevalidationContext = {
       collection: 'posts',
       doc: { slug: 'my-post', featured: true },
       operation: 'update',
     };
 
-    const paths = getPostRevalidationPaths(ctx);
-
-    expect(paths).toContain('/');
+    expect(getPostRevalidationPaths(featuredCtx)).toContain('/');
   });
 
   it('includes previous and new slug paths when the slug changes', () => {
@@ -85,6 +93,7 @@ describe('revalidatePaths', () => {
 
   beforeEach(() => {
     vi.mocked(revalidatePath).mockReset();
+    vi.mocked(revalidateTag).mockReset();
   });
 
   afterEach(() => {
@@ -121,5 +130,18 @@ describe('revalidatePaths', () => {
         paths: ['/blog/my-post/'],
       }),
     );
+  });
+
+  it('calls revalidateTag for each provided tag', async () => {
+    await revalidatePaths(['/blog/'], undefined, ['posts']);
+
+    expect(vi.mocked(revalidateTag)).toHaveBeenCalledWith('posts', 'max');
+  });
+
+  it('handles no-op gracefully when paths and tags are both empty', async () => {
+    await expect(revalidatePaths([], undefined, [])).resolves.toBeUndefined();
+
+    expect(vi.mocked(revalidatePath)).not.toHaveBeenCalled();
+    expect(vi.mocked(revalidateTag)).not.toHaveBeenCalled();
   });
 });
