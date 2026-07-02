@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export type RevalidatableCollection = 'posts' | 'recipes';
 
@@ -25,7 +25,9 @@ function uniqueNormalizedPaths(paths: string[]): string[] {
 }
 
 export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
-  const paths: string[] = ['/blog/'];
+  // Always revalidate the blog index and homepage — the "Latest Posts" section
+  // on the homepage shows the 3 most recent posts regardless of featured status.
+  const paths: string[] = ['/blog/', '/'];
   const slug = ctx.doc.slug;
 
   if (slug) {
@@ -34,10 +36,6 @@ export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
 
   if (ctx.previousDoc?.slug && ctx.previousDoc.slug !== slug) {
     paths.push(`/blog/${ctx.previousDoc.slug}/`);
-  }
-
-  if (ctx.doc.featured || ctx.previousDoc?.featured) {
-    paths.push('/');
   }
 
   return uniqueNormalizedPaths(paths);
@@ -63,10 +61,14 @@ type RevalidateLogContext = {
   slug?: string;
 };
 
-export async function revalidatePaths(paths: string[], ctx?: RevalidateLogContext): Promise<void> {
+export async function revalidatePaths(
+  paths: string[],
+  ctx?: RevalidateLogContext,
+  tags?: string[],
+): Promise<void> {
   const normalizedPaths = uniqueNormalizedPaths(paths);
 
-  if (normalizedPaths.length === 0) {
+  if (normalizedPaths.length === 0 && !tags?.length) {
     return;
   }
 
@@ -77,11 +79,18 @@ export async function revalidatePaths(paths: string[], ctx?: RevalidateLogContex
       revalidatePath(path, 'page');
     }
 
+    for (const tag of tags ?? []) {
+      // 'max' tells Next.js 16 to keep re-fetched entries in the cache as long
+      // as possible; the important effect is invalidating existing entries.
+      revalidateTag(tag, 'max');
+    }
+
     if (process.env.NODE_ENV === 'production') {
       console.info({
         event: 'content_revalidate',
         ...ctx,
         paths: normalizedPaths,
+        tags: tags ?? [],
         durationMs: Date.now() - start,
       });
     }
@@ -90,6 +99,7 @@ export async function revalidatePaths(paths: string[], ctx?: RevalidateLogContex
       event: 'content_revalidate',
       ...ctx,
       paths: normalizedPaths,
+      tags: tags ?? [],
       durationMs: Date.now() - start,
       error: error instanceof Error ? error.message : String(error),
     });
