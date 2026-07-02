@@ -87,8 +87,9 @@ export async function revalidatePaths(
     }
 
     for (const tag of tags ?? []) {
-      // 'max' tells Next.js 16 to keep re-fetched entries in the cache as long
-      // as possible; the important effect is invalidating existing entries.
+      // Next.js 16 requires a cache-life profile. 'max' marks data stale with
+      // stale-while-revalidate semantics:
+      // https://nextjs.org/docs/app/api-reference/functions/revalidateTag
       revalidateTag(tag, 'max');
     }
 

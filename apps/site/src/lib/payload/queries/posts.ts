@@ -15,6 +15,8 @@ type BlogPostsOptions = {
   featured?: boolean;
 };
 
+const BLOG_POSTS_CACHE_REVALIDATE_SECONDS = 60 * 60;
+
 const fetchBlogPosts = async (opts: BlogPostsOptions): Promise<Post[]> => {
   const { limit, featured = false } = opts;
   const payload = await getPayloadClient();
@@ -52,7 +54,8 @@ const fetchBlogPosts = async (opts: BlogPostsOptions): Promise<Post[]> => {
 
 const getCachedBlogPosts = unstable_cache(fetchBlogPosts, [POSTS_CACHE_TAG], {
   tags: [POSTS_CACHE_TAG],
-  revalidate: false,
+  // Safety net if on-demand tag invalidation fails or is missed.
+  revalidate: BLOG_POSTS_CACHE_REVALIDATE_SECONDS,
 });
 
 export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]> {
