@@ -41,7 +41,7 @@ describe('getPostRevalidationPaths', () => {
     expect(paths.every((path) => path.endsWith('/'))).toBe(true);
   });
 
-  it('includes the home path when the post is featured', () => {
+  it('always includes the home path for any post change', () => {
     const ctx: RevalidationContext = {
       collection: 'posts',
       doc: { slug: 'my-post', featured: true },
@@ -53,32 +53,9 @@ describe('getPostRevalidationPaths', () => {
     expect(paths).toContain('/');
   });
 
-  it('includes the home path when the post is published', () => {
-    const ctx: RevalidationContext = {
-      collection: 'posts',
-      doc: { slug: 'my-post', featured: false, _status: 'published' },
-      operation: 'update',
-    };
-
-    const paths = getPostRevalidationPaths(ctx);
-
-    expect(paths).toContain('/');
-  });
-
-  it('includes the home path when a published post is unpublished', () => {
-    const ctx: RevalidationContext = {
-      collection: 'posts',
-      doc: { slug: 'my-post', _status: 'draft' },
-      previousDoc: { slug: 'my-post', _status: 'published' },
-      operation: 'update',
-    };
-
-    const paths = getPostRevalidationPaths(ctx);
-
-    expect(paths).toContain('/');
-  });
-
-  it('does not include the home path for a draft-only autosave', () => {
+  it('includes the home path even for a draft-only autosave', () => {
+    // Homepage always shows the latest posts — revalidate unconditionally so
+    // the unstable_cache data cache is always fresh after any post mutation.
     const ctx: RevalidationContext = {
       collection: 'posts',
       doc: { slug: 'my-post', featured: false, _status: 'draft' },
@@ -88,7 +65,7 @@ describe('getPostRevalidationPaths', () => {
 
     const paths = getPostRevalidationPaths(ctx);
 
-    expect(paths).not.toContain('/');
+    expect(paths).toContain('/');
   });
 
   it('includes previous and new slug paths when the slug changes', () => {

@@ -27,7 +27,9 @@ function uniqueNormalizedPaths(paths: string[]): string[] {
 }
 
 export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
-  const paths: string[] = ['/blog/'];
+  // Always revalidate the blog index and homepage — the "Latest Posts" section
+  // on the homepage shows the most recent posts regardless of featured status.
+  const paths: string[] = ['/blog/', '/'];
   const slug = ctx.doc.slug;
 
   if (slug) {
@@ -36,13 +38,6 @@ export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
 
   if (ctx.previousDoc?.slug && ctx.previousDoc.slug !== slug) {
     paths.push(`/blog/${ctx.previousDoc.slug}/`);
-  }
-
-  const isPublished = ctx.doc._status === 'published';
-  const wasPublished = ctx.previousDoc?._status === 'published';
-
-  if (ctx.doc.featured || ctx.previousDoc?.featured || isPublished || wasPublished) {
-    paths.push('/');
   }
 
   return uniqueNormalizedPaths(paths);
