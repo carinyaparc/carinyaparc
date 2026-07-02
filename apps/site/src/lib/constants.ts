@@ -60,6 +60,9 @@ export const ARTICLE_ABOUT_TOPIC = {
 export const BLOG_NAME = `${SITE_TITLE} Blog`;
 export const BLOG_URL_PATH = '/blog';
 
+// Next.js data-cache tags — used for unstable_cache and revalidateTag
+export const POSTS_CACHE_TAG = 'posts';
+
 // Breadcrumb defaults
 export const DEFAULT_BREADCRUMB_HOME = { name: 'Home', url: BASE_URL, position: 1 };
 
