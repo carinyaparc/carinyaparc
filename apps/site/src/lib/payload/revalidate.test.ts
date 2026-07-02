@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -11,6 +11,7 @@ import {
 
 vi.mock('next/cache', () => ({
   revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
 }));
 
 describe('normalizeRevalidatePath', () => {
@@ -38,44 +39,7 @@ describe('getPostRevalidationPaths', () => {
     expect(paths.every((path) => path.endsWith('/'))).toBe(true);
   });
 
-  it('includes the home path when the post is featured', () => {
-    const ctx: RevalidationContext = {
-      collection: 'posts',
-      doc: { slug: 'my-post', featured: true },
-      operation: 'update',
-    };
-
-    const paths = getPostRevalidationPaths(ctx);
-
-    expect(paths).toContain('/');
-  });
-
-  it('includes the home path when the post is published', () => {
-    const ctx: RevalidationContext = {
-      collection: 'posts',
-      doc: { slug: 'my-post', featured: false, _status: 'published' },
-      operation: 'update',
-    };
-
-    const paths = getPostRevalidationPaths(ctx);
-
-    expect(paths).toContain('/');
-  });
-
-  it('includes the home path when a published post is unpublished', () => {
-    const ctx: RevalidationContext = {
-      collection: 'posts',
-      doc: { slug: 'my-post', _status: 'draft' },
-      previousDoc: { slug: 'my-post', _status: 'published' },
-      operation: 'update',
-    };
-
-    const paths = getPostRevalidationPaths(ctx);
-
-    expect(paths).toContain('/');
-  });
-
-  it('does not include the home path for a draft-only autosave', () => {
+  it('always includes the home path (homepage shows recent posts, not just featured)', () => {
     const ctx: RevalidationContext = {
       collection: 'posts',
       doc: { slug: 'my-post', featured: false, _status: 'draft' },
@@ -85,7 +49,7 @@ describe('getPostRevalidationPaths', () => {
 
     const paths = getPostRevalidationPaths(ctx);
 
-    expect(paths).not.toContain('/');
+    expect(paths).toContain('/');
   });
 
   it('includes previous and new slug paths when the slug changes', () => {
@@ -123,6 +87,7 @@ describe('revalidatePaths', () => {
 
   beforeEach(() => {
     vi.mocked(revalidatePath).mockReset();
+    vi.mocked(revalidateTag).mockReset();
   });
 
   afterEach(() => {
@@ -159,5 +124,18 @@ describe('revalidatePaths', () => {
         paths: ['/blog/my-post/'],
       }),
     );
+  });
+
+  it('calls revalidateTag with (tag, "max") for each provided tag', async () => {
+    await revalidatePaths(['/blog/'], undefined, ['posts']);
+
+    expect(vi.mocked(revalidateTag)).toHaveBeenCalledWith('posts', 'max');
+  });
+
+  it('is a no-op when both paths and tags arrays are empty', async () => {
+    await revalidatePaths([], undefined, []);
+
+    expect(vi.mocked(revalidatePath)).not.toHaveBeenCalled();
+    expect(vi.mocked(revalidateTag)).not.toHaveBeenCalled();
   });
 });

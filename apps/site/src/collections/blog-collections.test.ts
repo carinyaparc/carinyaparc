@@ -152,6 +152,7 @@ describe('blog collections', () => {
       const paths = vi.mocked(revalidatePaths).mock.lastCall![0];
       expect(paths).toContain('/blog/');
       expect(paths).toContain('/blog/my-post/');
+      expect(paths).toContain('/');
     });
   });
 });
