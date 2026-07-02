@@ -456,11 +456,11 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - Placeholder `LOCAL_BUSINESS` geo coordinates in JSON-LD.
 - No skip-navigation link; no route-group error boundaries.
 - Text-path image fields (no Media collection or enforced alt text).
-- `posts.date` and `posts.featured` indexes declared in collection config but not yet applied to production DB — run `pnpm payload migrate:create` from `apps/site`, then deploy to materialise indexes (resolves Sentry WEBSITE-F performance regression).
+- Composite index on `posts (_status, date DESC)` and `(created_at DESC)` added via migration `20260702_add_posts_perf_indexes.ts` — must run `pnpm payload migrate` in production to materialise.
 
 ### 10.3 Open questions
 
-- **Revalidation strategy:** _Resolved._ Path-based on-demand revalidation via Payload `afterChange` and `afterDelete` hooks on `posts` and `recipes`, calling `revalidatePath` through `lib/payload/revalidate.ts`. No cache tags and no time-based ISR fallback on page modules. Globals revalidation deferred to CP06.
+- **Revalidation strategy:** _Resolved._ Dual-layer on-demand invalidation via Payload `afterChange` and `afterDelete` hooks: `revalidatePath` (page cache) + `revalidateTag` (data cache, tagged `'posts'`). `getBlogPosts` is wrapped in `unstable_cache` so DB hits only occur on cache misses. Globals revalidation deferred to CP06.
 - **Rate limit store:** Vercel KV vs Upstash vs other?
 - **Media migration:** Backfill strategy for existing public-path images when upload collection is added?
 - **Globals scope:** Which marketing surfaces move to Payload Globals vs remain in code?
