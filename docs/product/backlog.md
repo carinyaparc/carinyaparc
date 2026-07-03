@@ -291,7 +291,7 @@ related:
 | C     | CP04 + CP05 | After CP03; independent of each other                      |
 | D     | CP06        | After CP02 and CP03                                        |
 | E     | CP07        | After CP03; content copy can be drafted in parallel        |
-| F     | CP08        | After CP02 verification; CP08-01 (images) can start early    |
+| F     | CP08        | After CP02 verification; CP08-01 (images) can start early  |
 
 ---
 
@@ -319,15 +319,15 @@ Defer CP06, CP07, and full SEO until the slice above is verified in production. 
 
 ## 9. Risks
 
-| ID  | Risk                                           | Likelihood | Impact | Mitigation                                                                          |
-| --- | ---------------------------------------------- | ---------- | ------ | ----------------------------------------------------------------------------------- |
-| R1  | CI secret provisioning delayed                 | Medium     | High   | Document minimal secret set; use Neon branch for CI builds                          |
-| R2  | Media migration breaks existing image URLs     | Medium     | High   | Backfill script with fallback; verify all published posts/recipes in staging        |
-| R3  | Revalidation scope creep (tags, ISR intervals) | Medium     | Medium | Ship path-based revalidation first; document in CP02 sign-off                       |
-| R4  | Rich-text allow-list disagreements             | Low        | Medium | Agree toolbar list before CP05 implementation; document in structure.md             |
-| R5  | Stay copy not ready from owners                | Medium     | Medium | Ship page structure with placeholder sections; block exit until copy verified       |
-| R6  | Globals schema churn delays home page          | Low        | Medium | Start with minimal fields (hero, tagline, footer); expand in Phase 2 if needed      |
-| R7  | Phase 1 scope expands into Phase 2 items       | Medium     | Medium | Hold to roadmap exit criteria; defer rate limiting and prod verification to Phase 2 |
+| ID  | Risk                                           | Likelihood | Impact | Mitigation                                                                             |
+| --- | ---------------------------------------------- | ---------- | ------ | -------------------------------------------------------------------------------------- |
+| R1  | CI secret provisioning delayed                 | Medium     | High   | Document minimal secret set; use Neon branch for CI builds                             |
+| R2  | Media migration breaks existing image URLs     | Medium     | High   | Backfill script with fallback; verify all published posts/recipes in staging           |
+| R3  | Revalidation scope creep (tags, ISR intervals) | Medium     | Medium | Ship path-based revalidation first; document in CP02 sign-off                          |
+| R4  | Rich-text allow-list disagreements             | Low        | Medium | Agree toolbar list before CP05 implementation; document in structure.md                |
+| R5  | Stay copy not ready from owners                | Medium     | Medium | Ship page structure with placeholder sections; block exit until copy verified          |
+| R6  | Globals schema churn delays home page          | Low        | Medium | Start with minimal fields (hero, tagline, footer); expand in Phase 2 if needed         |
+| R7  | Phase 1 scope expands into Phase 2 items       | Medium     | Medium | Hold to roadmap exit criteria; defer rate limiting and prod verification to Phase 2    |
 | R8  | CWV targets not met after CP08 Slices A–D      | Medium     | Medium | Document residual gap in CP08-10; evaluate PPR follow-up; do not weaken CSP or consent |
 
 Technical risks (stale content, CSP, draft leakage, build failures) are tracked in [`solution.md` §10.1](../architecture/solution.md) — not duplicated here.

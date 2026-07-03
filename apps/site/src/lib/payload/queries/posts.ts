@@ -16,6 +16,9 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
 
   const result = await payload.find({
     collection: 'posts',
+    // Local API bypasses access control by default; enforce publicReadPublished
+    // so drafts never reach public surfaces.
+    overrideAccess: false,
     depth: 1,
     limit: limit ?? 100,
     sort: '-date',
@@ -50,6 +53,7 @@ export async function getBlogPostBySlug(slug: string): Promise<PayloadPost | nul
 
   const result = await payload.find({
     collection: 'posts',
+    overrideAccess: false,
     depth: 1,
     limit: 1,
     where: {
@@ -67,6 +71,7 @@ export async function getBlogPostSlugs(): Promise<string[]> {
 
   const result = await payload.find({
     collection: 'posts',
+    overrideAccess: false,
     depth: 0,
     limit: 100,
     select: {

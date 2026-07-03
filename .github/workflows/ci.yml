@@ -14,8 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  scaffold:
-    name: Toolchain
+  quality:
+    name: Quality checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,7 +35,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Verify toolchain
-        run: |
-          node --version
-          pnpm --version
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Test
+        run: pnpm test

@@ -51,7 +51,7 @@ export default async function HomePage() {
               </HeroText>
               <HeroLocation>The Branch NSW 2425</HeroLocation>
               <HeroActions>
-                <HeroButton href="/our-farm">Learn Our Story →</HeroButton>
+                <HeroButton href="/about">Learn Our Story →</HeroButton>
               </HeroActions>
             </HeroContent>
           </Hero>
@@ -141,7 +141,7 @@ export default async function HomePage() {
             <SectionImage imagePosition="left">
               <Image
                 src="/images/river-valley-aerial.jpg"
-                alt="Farm gate"
+                alt="Aerial view of the river valley at Carinya Parc"
                 fill
                 className="object-cover"
                 quality={80}
@@ -181,7 +181,7 @@ export default async function HomePage() {
                 </ul>
               </SectionText>
               <SectionActions>
-                <SectionButton href="/regeneration" variant="light">
+                <SectionButton href="/regenerate" variant="light">
                   Get Involved →
                 </SectionButton>
               </SectionActions>
@@ -195,7 +195,7 @@ export default async function HomePage() {
             <SectionImage imagePosition="right">
               <Image
                 src="/images/highland-cattle-paddock.jpg"
-                alt="Farm gate"
+                alt="Highland cattle grazing in a paddock at Carinya Parc"
                 fill
                 className="object-cover"
                 quality={80}
@@ -207,7 +207,7 @@ export default async function HomePage() {
                 Explore Regenerative Farming, Reconnect with Nature
               </SectionTitle>
               <SectionText variant="dark">
-                Discover regerative farming. Immerse yourself through guided tours, hands-on
+                Discover regenerative farming. Immerse yourself through guided tours, hands-on
                 workshops and eco-stays. Explore our permaculture gardens, syntropic food forest and
                 wildlife corridors.
                 <ul role="list" className="mt-8 space-y-6">
