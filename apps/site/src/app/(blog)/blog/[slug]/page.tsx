@@ -10,6 +10,7 @@ import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
 import { getCachedBlogPostBySlug, getCachedBlogPostSlugs } from '@/lib/payload/cache';
 import { resolveAuthorName, resolveTagNames } from '@/lib/payload/map-content';
+import { postUrl } from '@/lib/payload/urls';
 
 export async function generateMetadata({
   params,
@@ -50,7 +51,7 @@ export async function generateMetadata({
       images: image ? [`${BASE_URL}${image}`] : undefined,
     },
     alternates: {
-      canonical: `${BASE_URL}/blog/${slug}`,
+      canonical: `${BASE_URL}${postUrl(slug)}`,
     },
   };
 }

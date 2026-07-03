@@ -64,7 +64,7 @@ describe('map-content', () => {
       authorImageUrl: '/images/authors/jonathan.jpg',
       imageUrl: '/images/farm-track-gate.jpg',
       featured: true,
-      href: '/blog/restoring-42-ha-land',
+      href: '/blog/restoring-42-ha-land/',
       tags: ['Soil Health'],
       description: 'SEO description',
     });
@@ -105,7 +105,7 @@ describe('map-content', () => {
       ingredients: ['500 g flour'],
       instructions: ['Mix the dough.'],
       tags: ['Soil Health'],
-      href: '/recipes/rustic-farm-style-flatbread',
+      href: '/recipes/rustic-farm-style-flatbread/',
     });
   });
 });

@@ -7,6 +7,8 @@ import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
 import { getCachedRecipeBySlug, getCachedRecipeSlugs } from '@/lib/payload/cache';
 import { mapPayloadRecipeToDetail, resolveAuthorName } from '@/lib/payload/map-content';
+import { recipeUrl } from '@/lib/payload/urls';
+import { BASE_URL } from '@/src/lib/constants';
 import { formatIsoDuration } from '@/lib/recipes/format-duration';
 
 export async function generateMetadata({
@@ -30,6 +32,9 @@ export async function generateMetadata({
   return {
     title: `${recipe.title} - Recipe - Carinya Parc`,
     description,
+    alternates: {
+      canonical: `${BASE_URL}${recipeUrl(slug)}`,
+    },
     openGraph: {
       title: recipe.title,
       description,

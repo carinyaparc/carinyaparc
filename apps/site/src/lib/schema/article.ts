@@ -15,6 +15,7 @@ import {
   BLOG_NAME,
   BLOG_URL_PATH,
 } from '@/lib/constants';
+import { postUrl } from '@/lib/payload/urls';
 
 export interface ArticleSchema {
   '@context': string;
@@ -77,7 +78,7 @@ export function generateArticleSchema(data: {
   wordCount?: number;
   content?: string;
 }): ArticleSchema {
-  const fullUrl = data.url || `${BASE_URL}/blog/${data.slug}`;
+  const fullUrl = data.url || `${BASE_URL}${postUrl(data.slug)}`;
   const authorName = data.author || DEFAULT_AUTHOR_NAME;
   const authorUrl = data.authorUrl || `${BASE_URL}${DEFAULT_AUTHOR_URL_PATH}`;
 

@@ -63,7 +63,7 @@ related:
 - Blog and recipe surfaces backed by Payload collections in Postgres.
 - Embedded Payload admin at `/admin` and Payload REST/GraphQL API routes under `(payload)/`.
 - Legal pages compiled from MDX in `content/legal/`.
-- Public API routes: contact, subscribe, cookie consent, Sentry tunnel, cron.
+- Public API routes: contact, subscribe, cookie consent, CSP violation reports.
 - Security middleware (`proxy.ts`): CSP with nonces, HSTS, security headers.
 - SEO metadata and JSON-LD generation for public routes.
 - Static assets in `public/` (photography, favicons, manifest).
@@ -328,7 +328,7 @@ User (standalone; auth only)
 
 ### 7.2 Observability
 
-- **Sentry** — client and server error capture; tunnel route under `/api/sentry`.
+- **Sentry** — client and server error capture; tunnel route at `/monitoring` (Sentry build config).
 - **Analytics** — GTM and Vercel Analytics loaded subject to consent cookie.
 - **Logging** — form rejections (honeypot, validation) at API layer; avoid logging PII or secrets.
 
@@ -377,12 +377,11 @@ User (standalone; auth only)
 
 Public route handlers (distinct from Payload's admin REST/GraphQL under `(payload)/`):
 
-| Route            | Method | Purpose                     |
-| ---------------- | ------ | --------------------------- |
-| `/api/contact`   | POST   | Contact form submission     |
-| `/api/subscribe` | POST   | Newsletter subscription     |
-| `/api/sentry`    | POST   | Sentry tunnel               |
-| `/api/cron`      | GET    | Scheduled tasks (protected) |
+| Route             | Method | Purpose                                              |
+| ----------------- | ------ | ---------------------------------------------------- |
+| `/api/contact`    | POST   | Contact form submission                              |
+| `/api/subscribe`  | POST   | Newsletter subscription                              |
+| `/api/csp-report` | POST   | CSP violation reports (logged + forwarded to Sentry) |
 
 Request and response shapes are defined by Zod schemas in `lib/validation/` and inline route handlers.
 

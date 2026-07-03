@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { BASE_URL } from '../lib/constants';
+import { withTrailingSlash } from '@/lib/metadata/canonical';
 import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
 import { getRecipeSitemapEntries } from '@/lib/payload/queries/recipes';
 import type { ContentRouteEntry } from '@/lib/payload/map-content';
@@ -115,7 +116,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = combineRoutes(getAppRoutes(), getLegalContentRoutes(), postRoutes, recipeRoutes);
 
   return routes.map(({ route, lastModified, priority, changeFrequency }) => ({
-    url: `${BASE_URL}${route}`,
+    // Trailing slash matches next.config trailingSlash: true, so crawlers are
+    // never sent through a 308 redirect.
+    url: `${BASE_URL}${withTrailingSlash(route)}`,
     lastModified,
     priority,
     changeFrequency,

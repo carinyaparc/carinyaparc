@@ -15,7 +15,7 @@ export const Posts: CollectionConfig = {
     preview: (doc) => {
       const slug = typeof doc?.slug === 'string' ? doc.slug : '';
       const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-      return `${baseUrl}/blog/${slug}`;
+      return `${baseUrl}/blog/${slug}/`;
     },
   },
   versions: {

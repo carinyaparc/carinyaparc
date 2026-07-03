@@ -170,8 +170,7 @@ API routes:
 
 - `/api/subscribe` → `src/app/api/subscribe/route.ts`.
 - `/api/contact` → `src/app/api/contact/route.ts`.
-- `/api/sentry` → `src/app/api/sentry/route.ts`.
-- `/api/cron` → `src/app/api/cron/route.ts`.
+- `/api/csp-report` → `src/app/api/csp-report/route.ts`.
 
 Cookie consent is not an API route. It uses the server action `setConsent` in `src/lib/consent/actions.ts`, called from `src/components/ui/Policy.tsx`. The root layout reads the httpOnly `cp_consent` cookie to gate analytics and banner visibility.
 
