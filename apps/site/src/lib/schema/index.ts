@@ -9,11 +9,7 @@ export type PageType = 'page' | 'blog' | 'recipe' | 'ancillary';
 
 // Union type for all possible schema objects
 type SchemaObject =
-  | OrganizationSchema
-  | BreadcrumbSchema
-  | ArticleSchema
-  | RecipeSchema
-  | LocalBusinessSchema;
+  OrganizationSchema | BreadcrumbSchema | ArticleSchema | RecipeSchema | LocalBusinessSchema;
 
 export function generateJsonLd(
   type: PageType,

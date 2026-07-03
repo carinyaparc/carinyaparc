@@ -11,6 +11,9 @@ export async function getRecipeBySlug(slug: string): Promise<PayloadRecipe | nul
 
   const result = await payload.find({
     collection: 'recipes',
+    // Local API bypasses access control by default; enforce publicReadPublished
+    // so drafts never reach public surfaces.
+    overrideAccess: false,
     depth: 1,
     limit: 1,
     where: {
@@ -33,6 +36,7 @@ export async function getRecipeSlugs(): Promise<string[]> {
 
   const result = await payload.find({
     collection: 'recipes',
+    overrideAccess: false,
     depth: 0,
     limit: 100,
     select: {
@@ -49,6 +53,7 @@ export async function getRecipeSitemapEntries(): Promise<ContentRouteEntry[]> {
 
   const result = await payload.find({
     collection: 'recipes',
+    overrideAccess: false,
     depth: 0,
     limit: 100,
     select: {

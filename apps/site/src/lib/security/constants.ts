@@ -3,7 +3,7 @@
  * Implements: T1.2, SEC-004, SEC-006
  */
 
-import type { SecurityHeadersConfig, CacheControlConfig } from './types';
+import type { SecurityHeadersConfig } from './types';
 
 /**
  * Balanced CSP directives preset
@@ -85,20 +85,4 @@ export const SECURITY_HEADER_PRESETS: Record<string, SecurityHeadersConfig> = {
       geolocation: [],
     },
   },
-};
-
-/**
- * Default cache control patterns
- */
-export const DEFAULT_CACHE_PATTERNS: CacheControlConfig = {
-  sensitivePatterns: ['/api/subscribe', '/contact', '/api/auth/*'],
-  authPatterns: ['/admin/*', '/api/auth/*'],
-  publicPatterns: [
-    '/blog/*',
-    '/recipes/*',
-    '/_next/static/*',
-    '/_next/image/*',
-    '/images/*',
-    '/fonts/*',
-  ],
 };

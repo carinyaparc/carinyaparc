@@ -10,6 +10,9 @@ export async function getPostSitemapEntries(): Promise<ContentRouteEntry[]> {
 
   const result = await payload.find({
     collection: 'posts',
+    // Local API bypasses access control by default; enforce publicReadPublished
+    // so drafts never reach public surfaces.
+    overrideAccess: false,
     depth: 0,
     limit: 100,
     select: {

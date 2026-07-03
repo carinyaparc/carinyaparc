@@ -64,7 +64,7 @@ related:
 - Embedded Payload admin at `/admin` and Payload REST/GraphQL API routes under `(payload)/`.
 - Legal pages compiled from MDX in `content/legal/`.
 - Public API routes: contact, subscribe, cookie consent, Sentry tunnel, cron.
-- Security middleware (`proxy.ts`): CSP with nonces, HSTS, cache-control, security headers.
+- Security middleware (`proxy.ts`): CSP with nonces, HSTS, security headers.
 - SEO metadata and JSON-LD generation for public routes.
 - Static assets in `public/` (photography, favicons, manifest).
 
@@ -264,7 +264,6 @@ GET /legal/{slug}
 Incoming request
   → proxy.ts
   → generate nonce → attach to CSP (strict-dynamic in prod)
-  → cache-control (feature-flagged)
   → HSTS, X-Frame-Options, etc.
   → NextResponse.next() with headers on request for downstream nonce use
 ```
@@ -371,7 +370,8 @@ User (standalone; auth only)
 ### 7.7 Testing strategy
 
 - **Vitest** (Node env) for Payload mapping, collection config, recipe duration formatting.
-- API route integration tests, E2E, and CI automation are not in place (see §10).
+- **CI** (GitHub Actions) runs lint, typecheck, format check, and Vitest on every pull request.
+- API route integration tests and E2E are not in place (see §10).
 
 ### 7.8 Public HTTP API surface
 
@@ -420,7 +420,7 @@ Key env vars (non-exhaustive; see `apps/site/.env.example` and `turbo.json`):
 
 - `NEON_DATABASE_URL`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`
 - `MAILERLITE_API_KEY`, `SESSION_SECRET`
-- `SECURITY_CSP_*`, `SECURITY_CACHE_ENABLED`
+- `SECURITY_CSP_*`
 - Sentry and GTM public/private keys
 
 ### 8.4 Rollout pattern
@@ -462,7 +462,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 
 ### 10.2 Technical debt
 
-- No GitHub Actions CI workflow (quality checks run locally only).
+- CI does not run `pnpm build` (requires database connectivity and secrets); production build is only exercised by Vercel deploys.
 - In-memory rate limiting on contact and subscribe APIs (not reliable on serverless).
 - Archived MDX under `content/posts/` and `content/recipes/` (not runtime source).
 - Unused MDX dependencies in `package.json` (`gray-matter`, remark packages).

@@ -55,18 +55,6 @@ export interface CSPResult {
 }
 
 /**
- * Configuration for route-based cache control
- */
-export interface CacheControlConfig {
-  /** Glob patterns for sensitive routes (e.g., /api/subscribe, /contact) */
-  sensitivePatterns: string[];
-  /** Glob patterns for authenticated routes (e.g., /admin/*, /api/auth/*) */
-  authPatterns: string[];
-  /** Glob patterns for public cacheable routes (e.g., /blog/*, /_next/static/*) */
-  publicPatterns: string[];
-}
-
-/**
  * Configuration for security headers generation
  */
 export interface SecurityHeadersConfig {

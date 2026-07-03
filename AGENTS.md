@@ -79,7 +79,8 @@ pnpm generate:types   # regenerate Payload types after schema changes
 
 ### Quality checks (run from repo root before finishing work)
 
-GitHub Actions CI is not yet configured ([`product/roadmap.md`](product/roadmap.md) Phase 1). Run locally before merge:
+GitHub Actions CI runs lint, typecheck, format check, and tests on every pull request
+(`.github/workflows/ci.yml`). Run the same checks locally before merge:
 
 ```bash
 pnpm lint             # ESLint across the monorepo
@@ -165,7 +166,8 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 
 - CSP, HSTS, and security headers are implemented in `src/lib/security/` and applied per request.
 - CSP uses nonce-based `strict-dynamic` scripting; do not weaken directives without explicit approval.
-- Feature flags: `SECURITY_CSP_ENABLED`, `SECURITY_CSP_REPORT_ONLY`, `SECURITY_CACHE_ENABLED`.
+- Feature flags: `SECURITY_CSP_ENABLED`, `SECURITY_CSP_REPORT_ONLY`.
+- Middleware does not set `Cache-Control`; Next.js/Vercel own caching for HTML and static routes, and sensitive API routes set `no-store` in their handlers.
 
 **Input handling:**
 

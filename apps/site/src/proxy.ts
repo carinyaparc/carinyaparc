@@ -6,14 +6,12 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { generateNonce, buildCSPHeader } from './lib/security/csp';
-import { generateCacheControl, createDefaultCacheConfig } from './lib/security/cache';
 import { generateSecurityHeaders, createSecurityHeadersConfig } from './lib/security/headers';
 import { CSP_DIRECTIVES } from './lib/security/constants';
 
 // Environment configuration
 const SECURITY_CSP_ENABLED = process.env.SECURITY_CSP_ENABLED !== 'false';
 const SECURITY_CSP_REPORT_ONLY = process.env.SECURITY_CSP_REPORT_ONLY === 'true';
-const SECURITY_CACHE_ENABLED = process.env.SECURITY_CACHE_ENABLED !== 'false';
 const SECURITY_CSP_REPORT_URI = process.env.SECURITY_CSP_REPORT_URI || '/api/csp-report';
 const IS_DEV = process.env.NODE_ENV === 'development';
 
@@ -74,13 +72,11 @@ export default function proxy(request: NextRequest) {
       return NextResponse.next();
     }
 
-    const pathname = request.nextUrl.pathname;
-
     // Generate nonce for CSP (T2.1, SEC-001)
     if (!SECURITY_CSP_ENABLED) {
       // CSP disabled, just apply other headers
       const response = NextResponse.next();
-      return applyNonCSPHeaders(response, pathname);
+      return applyNonCSPHeaders(response);
     }
 
     let nonce = '';
@@ -124,7 +120,7 @@ export default function proxy(request: NextRequest) {
       handleError(error, 'CSP generation');
       // Continue without CSP rather than blocking request
       const response = NextResponse.next();
-      return applyNonCSPHeaders(response, pathname);
+      return applyNonCSPHeaders(response);
     }
 
     // Set nonce and CSP on request headers (Next.js v16 pattern)
@@ -142,17 +138,9 @@ export default function proxy(request: NextRequest) {
     // Set CSP on response headers
     response.headers.set(cspHeaderName, cspHeaderValue);
 
-    // Apply cache control headers (T2.6, SEC-003)
-    if (SECURITY_CACHE_ENABLED) {
-      try {
-        const cacheConfig = createDefaultCacheConfig();
-        const cacheControl = generateCacheControl(pathname, cacheConfig);
-        response.headers.set('Cache-Control', cacheControl);
-      } catch (error) {
-        handleError(error, 'Cache control generation');
-        // Continue without cache control header
-      }
-    }
+    // Cache-Control is intentionally not set here: Next.js/Vercel own caching
+    // for HTML and static routes (ISR, on-demand revalidation), and sensitive
+    // API responses set no-store in their own route handlers.
 
     // Apply security headers (T2.1, SEC-004)
     try {
@@ -179,18 +167,7 @@ export default function proxy(request: NextRequest) {
 /**
  * Helper to apply non-CSP headers when CSP is disabled or fails
  */
-function applyNonCSPHeaders(response: NextResponse, pathname: string): NextResponse {
-  // Apply cache control
-  if (SECURITY_CACHE_ENABLED) {
-    try {
-      const cacheConfig = createDefaultCacheConfig();
-      const cacheControl = generateCacheControl(pathname, cacheConfig);
-      response.headers.set('Cache-Control', cacheControl);
-    } catch (error) {
-      handleError(error, 'Cache control generation (fallback)');
-    }
-  }
-
+function applyNonCSPHeaders(response: NextResponse): NextResponse {
   // Apply security headers
   try {
     const securityConfig = createSecurityHeadersConfig();
