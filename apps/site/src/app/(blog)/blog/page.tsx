@@ -1,3 +1,5 @@
+export { metadata } from './metadata';
+
 import { PageHeader } from '@/src/components/sections/page-header';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';

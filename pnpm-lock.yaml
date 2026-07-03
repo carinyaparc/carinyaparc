@@ -39,7 +39,7 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@date-fns/tz@1.5.0)(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@emotion/is-prop-valid':
-        specifier: latest
+        specifier: ^1.4.0
         version: 1.4.0
       '@hookform/resolvers':
         specifier: ^5.4.0
@@ -74,12 +74,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.101.2
         version: 5.101.2(react@19.2.7)
-      '@types/mdx':
-        specifier: ^2.0.14
-        version: 2.0.14
-      '@types/uuid':
-        specifier: ^11.0.0
-        version: 11.0.0
       '@vercel/analytics':
         specifier: ^2.0.1
         version: 2.0.1(next@16.2.9(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)
@@ -95,15 +89,9 @@ importers:
       date-fns:
         specifier: 4.4.0
         version: 4.4.0
-      eslint-plugin-turbo:
-        specifier: ^2.10.0
-        version: 2.10.0(eslint@10.6.0(jiti@2.7.0))(turbo@2.10.0)
       framer-motion:
-        specifier: latest
+        specifier: ^12.42.0
         version: 12.42.0(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      fs:
-        specifier: 0.0.1-security
-        version: 0.0.1-security
       graphql:
         specifier: ^17.0.1
         version: 17.0.1
@@ -119,9 +107,6 @@ importers:
       next:
         specifier: 16.2.9
         version: 16.2.9(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4)
-      path:
-        specifier: ^0.12.7
-        version: 0.12.7
       payload:
         specifier: ^3.85.1
         version: 3.85.1(graphql@17.0.1)(typescript@6.0.3)
@@ -177,6 +162,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.3.1
         version: 4.3.1
+      '@types/mdx':
+        specifier: ^2.0.14
+        version: 2.0.14
       '@types/node':
         specifier: ^26.0.1
         version: 26.0.1
@@ -2266,10 +2254,6 @@ packages:
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
-  '@types/uuid@11.0.0':
-    resolution: {integrity: sha512-HVyk8nj2m+jcFRNazzqyVKiZezyhDKrGUA3jlEcg/nZ6Ms+qHwocba1Y/AaVaznJTAM9xpdFSh+ptbNrhOGvZA==}
-    deprecated: This is a stub types definition. uuid provides its own type definitions, so you do not need this installed.
-
   '@types/whatwg-mimetype@3.0.2':
     resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
 
@@ -3683,9 +3667,6 @@ packages:
       react-dom:
         optional: true
 
-  fs@0.0.1-security:
-    resolution: {integrity: sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w==}
-
   fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -3894,9 +3875,6 @@ packages:
   imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
     engines: {node: '>=0.8.19'}
-
-  inherits@2.0.3:
-    resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
 
   inline-style-parser@0.2.7:
     resolution: {integrity: sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==}
@@ -4664,9 +4642,6 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
-  path@0.12.7:
-    resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==}
-
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
 
@@ -4973,10 +4948,6 @@ packages:
 
   process-warning@5.0.0:
     resolution: {integrity: sha512-a39t9ApHNx2L4+HBnQKqxxHNs1r7KF+Intd8Q/g1bUh6q0WIp9voPXJ/x0j+ZL45KF1pJd9+q2jLIRMfvEshkA==}
-
-  process@0.11.10:
-    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
-    engines: {node: '>= 0.6.0'}
 
   progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
@@ -5763,9 +5734,6 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-
-  util@0.10.4:
-    resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==}
 
   uuid@13.0.2:
     resolution: {integrity: sha512-vzi9uRZ926x4XV73S/4qQaTwPXM2JBj6/6lI/byHH1jOpCzb0zDbfytgA9LcN/hzb2l7WQSQnxITOVx5un/wGw==}
@@ -8046,10 +8014,6 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
-  '@types/uuid@11.0.0':
-    dependencies:
-      uuid: 14.0.1
-
   '@types/whatwg-mimetype@3.0.2': {}
 
   '@types/ws@8.18.1':
@@ -9630,8 +9594,6 @@ snapshots:
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
 
-  fs@0.0.1-security: {}
-
   fsevents@2.3.2:
     optional: true
 
@@ -9879,8 +9841,6 @@ snapshots:
       module-details-from-path: 1.0.4
 
   imurmurhash@0.1.4: {}
-
-  inherits@2.0.3: {}
 
   inline-style-parser@0.2.7: {}
 
@@ -10885,11 +10845,6 @@ snapshots:
 
   path-type@4.0.0: {}
 
-  path@0.12.7:
-    dependencies:
-      process: 0.11.10
-      util: 0.10.4
-
   pathe@2.0.3: {}
 
   payload@3.85.1(graphql@17.0.1)(typescript@6.0.3):
@@ -11221,8 +11176,6 @@ snapshots:
   prismjs@1.30.0: {}
 
   process-warning@5.0.0: {}
-
-  process@0.11.10: {}
 
   progress@2.0.3: {}
 
@@ -12215,10 +12168,6 @@ snapshots:
   utf8-byte-length@1.0.5: {}
 
   util-deprecate@1.0.2: {}
-
-  util@0.10.4:
-    dependencies:
-      inherits: 2.0.3
 
   uuid@13.0.2: {}
 

@@ -85,7 +85,7 @@ describe('blog collections', () => {
 
     if (typeof preview === 'function') {
       expect(preview({ slug: 'restoring-42-ha-land' }, {} as never)).toBe(
-        'http://localhost:3000/blog/restoring-42-ha-land',
+        'http://localhost:3000/blog/restoring-42-ha-land/',
       );
     }
   });
