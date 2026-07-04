@@ -68,8 +68,10 @@ related:
 | CP06    | Site globals         | 1     | P0       | CP02, CP03 | 13     | `docs/work/site-globals/`         | Not started |
 | CP07    | Stay information     | 1     | P0       | CP03       | 13     | `docs/work/stay-information/`     | Not started |
 | CP08    | Performance          | 2     | P0       | CP02       | 30     | `docs/work/performance/`          | In progress |
+| CP09    | Blog section         | 2     | P1       | CP02       | 13     | `docs/work/blog-section/`         | Not started |
+| CP10    | Recipes section      | 2     | P1       | CP02       | 13     | `docs/work/recipes-section/`      | Not started |
 
-**Phase 1 total:** 89 points across 7 epics. **Phase 2 (started):** 30 points — CP08.
+**Phase 1 total:** 89 points across 7 epics. **Phase 2 (started):** 30 points — CP08; **Squad B/C:** 26 points — CP09, CP10.
 
 ---
 
@@ -244,6 +246,48 @@ related:
 **Status.** In progress (CP08-01–09 merged to `main`; CP08-10 post-deploy Speed Insights verification pending).
 
 **Work path:** `docs/work/performance/`
+
+---
+
+### CP09 — Blog section (Squad B)
+
+**Scope.** Blog parity and discoverability beyond core CP02 revalidation: category and tag archive routes, pagination UX, RSS feed hygiene, and navigation integration. Editorial content remains Squad D (Payload seeds).
+
+**Key deliverables.**
+
+- `/blog/category/[slug]/` (and optional `/blog/tag/[tag]/`) listing published posts only
+- Pagination on blog index aligned with Payload query patterns
+- RSS feed valid, linked from `robots.ts`, and covered by smoke tests
+- Tasks tracked in `docs/work/blog-section/tasks.md`; issues labelled `squad:blog`
+
+**Dependencies.** CP02 (published-only public queries verified).
+
+**Downstream consumers.** Squad E SEO recommendations; Phase 4 syndication.
+
+**Status.** Not started (seeded Sprint 3 for Squad B cloud-agent delivery chain).
+
+**Work path:** `docs/work/blog-section/`
+
+---
+
+### CP10 — Recipes section (Squad C)
+
+**Scope.** Recipe index UX, filtering, structured data (JSON-LD), site navigation to `/recipes`, and error boundaries. Editorial recipes remain Squad D (Payload seeds).
+
+**Key deliverables.**
+
+- Recipes index with filtering; navigation `href: '/recipes'` visible in header
+- Recipe detail JSON-LD includes ingredients and images when populated
+- `(recipes)/error.tsx` matching blog/www error boundary pattern
+- Tasks in `docs/work/recipes-section/tasks.md`; issues labelled `squad:recipes`
+
+**Dependencies.** CP02 (revalidation stable); overlaps with `site-hardening` SH-18–SH-21 (dedupe during sprint planning).
+
+**Downstream consumers.** Squad E structured-data audit; content calendar recipe slots.
+
+**Status.** Not started (seeded Sprint 3 for Squad C cloud-agent delivery chain).
+
+**Work path:** `docs/work/recipes-section/`
 
 ---
 
