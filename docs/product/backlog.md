@@ -4,7 +4,7 @@ level: epic
 version: '0.2'
 owner: product
 status: Draft
-last_updated: 2026-06-20
+last_updated: 2026-07-04
 related:
   - docs/product/product.md
   - docs/product/roadmap.md
@@ -67,7 +67,7 @@ related:
 | CP05    | Editor tooling       | 1     | P0       | CP03       | 13     | `docs/work/editor-tooling/`       | Not started |
 | CP06    | Site globals         | 1     | P0       | CP02, CP03 | 13     | `docs/work/site-globals/`         | Not started |
 | CP07    | Stay information     | 1     | P0       | CP03       | 13     | `docs/work/stay-information/`     | Not started |
-| CP08    | Performance          | 2     | P0       | CP02       | 30     | `docs/work/performance/`          | Not started |
+| CP08    | Performance          | 2     | P0       | CP02       | 30     | `docs/work/performance/`          | In progress |
 
 **Phase 1 total:** 89 points across 7 epics. **Phase 2 (started):** 30 points — CP08.
 
@@ -110,7 +110,7 @@ related:
 
 **Downstream consumers.** CP06 (globals must revalidate public layout); daily editorial workflow.
 
-**Status.** In progress (CP02-01–06 done; CP02-07 unpublish→404 deferred — query-layer draft filter follow-up).
+**Status.** In progress (CP02-01–06 done; CP02-07 revalidation verified — unpublish→404 code fix landed via `overrideAccess: false`; production 3.2 re-verify pending).
 
 **Work path:** `docs/work/content-revalidation/`
 
@@ -241,7 +241,7 @@ related:
 
 **Explicit out of scope.** Payload Media collection (CP03); site globals CMS hero (CP06); PPR / `use cache` migration; admin `/admin` performance; GTM container edits.
 
-**Status.** Not started (design and tasks approved at `docs/work/performance/`).
+**Status.** In progress (CP08-01–09 merged to `main`; CP08-10 post-deploy Speed Insights verification pending).
 
 **Work path:** `docs/work/performance/`
 
