@@ -29,6 +29,21 @@ describe('content route ISR config', () => {
     const source = readRouteSource('(recipes)/recipes/[slug]/page.tsx');
     expect(source).toMatch(/export const revalidate = 86[_,]?400/);
   });
+
+  it('exports a 24-hour revalidate interval on the recipes listing page', () => {
+    const source = readRouteSource('(recipes)/recipes/page.tsx');
+    expect(source).toMatch(/export const revalidate = 86[_,]?400/);
+  });
+
+  it('exports a 24-hour revalidate interval on paginated blog pages', () => {
+    const source = readRouteSource('(blog)/blog/page/[page]/page.tsx');
+    expect(source).toMatch(/export const revalidate = 86[_,]?400/);
+  });
+
+  it('exports a 24-hour revalidate interval on the RSS feed route', () => {
+    const source = readRouteSource('feed.xml/route.ts');
+    expect(source).toMatch(/export const revalidate = 86[_,]?400/);
+  });
 });
 
 describe('blog section cached queries', () => {

@@ -4,7 +4,7 @@ import { PageHeader } from '@/src/components/sections/page-header';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LatestPosts, FeaturedPosts } from '@/src/components/sections/blog';
+import { FeaturedPosts, PaginatedPosts } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
 
@@ -19,9 +19,6 @@ const pageHeaderProps = {
   backgroundImage: '/images/farm-track-gate.jpg',
   backgroundImageAlt: 'Carinya Parc landscape',
 };
-
-// Available post categories
-const categories = ['All', 'Soil Health', 'Biodiversity', 'Water Systems', 'Education', 'Wildlife'];
 
 export const revalidate = 86_400;
 
@@ -57,37 +54,12 @@ export default async function BlogPage() {
         {/* Featured Post Section */}
         <FeaturedPosts limit={1} />
 
-        {/* Category Filter */}
-        <section className="py-8 bg-green-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap gap-2 justify-center">
-              {categories.map((category) => (
-                <div key={category}>
-                  <Button
-                    variant={category === 'All' ? 'default' : 'outline'}
-                    size="sm"
-                    className={
-                      category === 'All'
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'border-green-600 text-green-600 hover:bg-green-50'
-                    }
-                  >
-                    {category}
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Blog Posts Grid */}
         <section className="py-20 bg-white">
-          <LatestPosts
+          <PaginatedPosts
             title="Recent Articles"
             subtitle="Explore our latest insights and updates from the farm"
-            limit={6}
-            featured={false}
-            viewAllLink=""
+            page={1}
           />
         </section>
       </div>

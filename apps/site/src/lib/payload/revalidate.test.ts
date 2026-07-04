@@ -24,6 +24,10 @@ describe('normalizeRevalidatePath', () => {
   it('leaves the root path unchanged', () => {
     expect(normalizeRevalidatePath('/')).toBe('/');
   });
+
+  it('leaves file-style routes without a trailing slash', () => {
+    expect(normalizeRevalidatePath('/feed.xml')).toBe('/feed.xml');
+  });
 });
 
 describe('getPostRevalidationPaths', () => {
@@ -38,7 +42,8 @@ describe('getPostRevalidationPaths', () => {
 
     expect(paths).toContain('/blog/');
     expect(paths).toContain('/blog/my-post/');
-    expect(paths.every((path) => path.endsWith('/'))).toBe(true);
+    expect(paths).toContain('/feed.xml');
+    expect(paths.every((path) => path.endsWith('/') || path.includes('.'))).toBe(true);
   });
 
   it('always includes the home path for any post change', () => {

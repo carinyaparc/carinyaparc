@@ -110,6 +110,60 @@ export function mapPayloadRecipeToDetail(doc: PayloadRecipe): RecipeDetail {
   };
 }
 
+/**
+ * Subset of PayloadRecipe fields required to render a recipe card/list item.
+ * Excludes the ingredients and instructions arrays, which only detail needs.
+ */
+export type RecipeListInput = Pick<
+  PayloadRecipe,
+  | 'id'
+  | 'slug'
+  | 'title'
+  | 'date'
+  | 'excerpt'
+  | 'description'
+  | 'image'
+  | 'servings'
+  | 'totalTime'
+  | 'difficulty'
+>;
+
+export type RecipeListItem = {
+  id: number;
+  slug: string;
+  title: string;
+  date: string;
+  formattedDate: string;
+  datetime: string;
+  description: string;
+  excerpt: string;
+  imageUrl: string;
+  servings?: number;
+  totalTime?: string;
+  difficulty?: string;
+  href: string;
+};
+
+export function mapPayloadRecipeToListItem(doc: RecipeListInput, index = 0): RecipeListItem {
+  const fallbackImage = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length] ?? FALLBACK_IMAGES[0];
+
+  return {
+    id: doc.id,
+    slug: doc.slug,
+    title: doc.title,
+    date: doc.date,
+    formattedDate: formatContentDate(doc.date),
+    datetime: doc.date,
+    description: doc.description ?? doc.excerpt,
+    excerpt: doc.excerpt,
+    imageUrl: doc.image ?? fallbackImage,
+    servings: doc.servings ?? undefined,
+    totalTime: doc.totalTime ?? undefined,
+    difficulty: doc.difficulty ?? undefined,
+    href: recipeUrl(doc.slug),
+  };
+}
+
 export type ContentRouteEntry = {
   route: string;
   lastModified: string;

@@ -465,7 +465,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - In-memory rate limiting on contact and subscribe APIs (not reliable on serverless).
 - Archived MDX under `content/posts/` and `content/recipes/` (not runtime source).
 - Unused MDX dependencies in `package.json` (`gray-matter`, remark packages).
-- Non-functional blog category filter UI vs Payload categories.
+- Category/tag archive pages not yet implemented (decorative filter UI removed; Categories and Tags collections exist but drive no public surface).
 - Public consent and analytics bootstrap via `GET /api/consent` and client `ConsentGate` (replaces
   dynamic layout `cookies()` reads for GTM).
 - Unused `/api/media/file/**` rewrite without Media collection.

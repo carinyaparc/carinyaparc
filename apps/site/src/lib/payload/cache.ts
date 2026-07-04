@@ -4,9 +4,17 @@ import { unstable_cache } from 'next/cache';
 
 import type { Post as PayloadPost, Recipe as PayloadRecipe } from '@/payload-types';
 import type { Post } from '@/lib/posts';
+import type { RecipeListItem } from '@/lib/payload/map-content';
 import { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
-import { getBlogPostBySlug, getBlogPosts, getBlogPostSlugs } from '@/lib/payload/queries/posts';
-import { getRecipeBySlug, getRecipeSlugs } from '@/lib/payload/queries/recipes';
+import {
+  getBlogPostBySlug,
+  getBlogPosts,
+  getBlogPostSlugs,
+  getBlogPostsPage,
+  type BlogPostsPage,
+  type BlogPostsPageOptions,
+} from '@/lib/payload/queries/posts';
+import { getRecipeBySlug, getRecipeSlugs, getRecipes } from '@/lib/payload/queries/recipes';
 
 export { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
 
@@ -43,6 +51,31 @@ export async function getCachedBlogPosts(opts?: BlogPostsOptions): Promise<Post[
   const options = opts ?? {};
   const cached = unstable_cache(() => getBlogPosts(options), blogPostsCacheKey(options), {
     tags: [PAYLOAD_CACHE_TAGS.posts],
+    revalidate: CACHE_REVALIDATE_SECONDS,
+  });
+
+  return cached();
+}
+
+export async function getCachedBlogPostsPage(
+  opts: BlogPostsPageOptions = {},
+): Promise<BlogPostsPage> {
+  const { page = 1, perPage = 6 } = opts;
+  const cached = unstable_cache(
+    () => getBlogPostsPage({ page, perPage }),
+    ['payload', 'posts', 'page', String(page), String(perPage)],
+    {
+      tags: [PAYLOAD_CACHE_TAGS.posts],
+      revalidate: CACHE_REVALIDATE_SECONDS,
+    },
+  );
+
+  return cached();
+}
+
+export async function getCachedRecipes(): Promise<RecipeListItem[]> {
+  const cached = unstable_cache(() => getRecipes(), ['payload', 'recipes', 'list'], {
+    tags: [PAYLOAD_CACHE_TAGS.recipes],
     revalidate: CACHE_REVALIDATE_SECONDS,
   });
 

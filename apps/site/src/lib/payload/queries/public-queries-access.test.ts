@@ -8,11 +8,17 @@ vi.mock('@/lib/payload/client', () => ({
   getPayloadClient: vi.fn().mockResolvedValue({ find }),
 }));
 
-import { getBlogPostBySlug, getBlogPosts, getBlogPostSlugs } from '@/lib/payload/queries/posts';
+import {
+  getBlogPostBySlug,
+  getBlogPosts,
+  getBlogPostSlugs,
+  getBlogPostsPage,
+} from '@/lib/payload/queries/posts';
 import {
   getRecipeBySlug,
   getRecipeSitemapEntries,
   getRecipeSlugs,
+  getRecipes,
 } from '@/lib/payload/queries/recipes';
 import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
 
@@ -23,9 +29,11 @@ import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
  */
 const publicQueries: Array<[string, () => Promise<unknown>]> = [
   ['getBlogPosts', () => getBlogPosts({ limit: 3 })],
+  ['getBlogPostsPage', () => getBlogPostsPage({ page: 2 })],
   ['getBlogPostBySlug', () => getBlogPostBySlug('a-post')],
   ['getBlogPostSlugs', () => getBlogPostSlugs()],
   ['getPostSitemapEntries', () => getPostSitemapEntries()],
+  ['getRecipes', () => getRecipes()],
   ['getRecipeBySlug', () => getRecipeBySlug('a-recipe')],
   ['getRecipeSlugs', () => getRecipeSlugs()],
   ['getRecipeSitemapEntries', () => getRecipeSitemapEntries()],
