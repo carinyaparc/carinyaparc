@@ -1,2 +1,4 @@
 work/*
 !work/README.md
+!work/seo/
+!work/seo/**
