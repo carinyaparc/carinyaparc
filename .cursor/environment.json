@@ -1,0 +1,4 @@
+{
+  "install": "corepack enable && pnpm install && cd ../carinyaparc && pnpm install --ignore-scripts 2>/dev/null || true",
+  "verify": "pnpm lint && pnpm typecheck && pnpm test"
+}
