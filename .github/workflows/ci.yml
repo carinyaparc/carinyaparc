@@ -46,3 +46,6 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Validate content seeds
+        run: pnpm --filter site import:content-seeds:validate
