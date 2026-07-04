@@ -66,6 +66,9 @@ export async function generateMetadata(
     keywords: [...DEFAULT_KEYWORDS, ...keywords],
     alternates: {
       canonical,
+      types: {
+        'application/rss+xml': `${BASE_URL}/feed.xml`,
+      },
     },
     openGraph: generateOpenGraph({
       title,

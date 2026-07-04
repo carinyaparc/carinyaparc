@@ -11,11 +11,17 @@ export type RevalidationContext = {
   operation: 'create' | 'update' | 'delete';
 };
 
-/** Normalise to trailing-slash paths for next.config trailingSlash: true */
+/**
+ * Normalise to trailing-slash paths for next.config trailingSlash: true.
+ * Paths whose final segment contains a dot (e.g. /feed.xml) are file-style
+ * routes that Next serves without a trailing slash, so they pass through.
+ */
 export function normalizeRevalidatePath(path: string): string {
   let normalized = path.startsWith('/') ? path : `/${path}`;
 
-  if (normalized !== '/' && !normalized.endsWith('/')) {
+  const lastSegment = normalized.slice(normalized.lastIndexOf('/') + 1);
+
+  if (normalized !== '/' && !normalized.endsWith('/') && !lastSegment.includes('.')) {
     normalized = `${normalized}/`;
   }
 
@@ -27,9 +33,11 @@ function uniqueNormalizedPaths(paths: string[]): string[] {
 }
 
 export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
-  // Always revalidate the blog index and homepage — the "Latest Posts" section
-  // on the homepage shows the most recent posts regardless of featured status.
-  const paths: string[] = ['/blog/', '/'];
+  // Always revalidate the blog index, homepage, and RSS feed — the "Latest
+  // Posts" section on the homepage shows the most recent posts regardless of
+  // featured status. Paginated /blog/page/N/ routes are refreshed via the
+  // payload:posts cache tag rather than enumerating page paths here.
+  const paths: string[] = ['/blog/', '/', '/feed.xml'];
   const slug = ctx.doc.slug;
 
   if (slug) {

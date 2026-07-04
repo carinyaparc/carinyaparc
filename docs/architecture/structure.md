@@ -73,13 +73,15 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
     - `contact/page.tsx` – contact form.
 
   - `(blog)/` – routing group for blog content (shared site root layout):
-    - `blog/page.tsx` – blog index at `/blog`.
+    - `blog/page.tsx` – blog index at `/blog` (page 1 + pagination).
+    - `blog/page/[page]/page.tsx` – paginated archive at `/blog/page/{n}`.
     - `blog/[slug]/page.tsx` – individual post at `/blog/{slug}` (Payload-backed).
     - Future: `blog/category/[slug]/page.tsx`, `blog/tag/[tag]/page.tsx`.
 
   - `(recipes)/` – routing group for recipe content (shared site root layout):
+    - `recipes/page.tsx` – recipes index at `/recipes`.
     - `recipes/[slug]/page.tsx` – individual recipe at `/recipes/{slug}` (Payload-backed).
-    - Future: `recipes/page.tsx`, `recipes/category/[slug]/page.tsx`, `recipes/tag/[tag]/page.tsx`.
+    - Future: `recipes/category/[slug]/page.tsx`, `recipes/tag/[tag]/page.tsx`.
 
   - `api/` – API route handlers (`subscribe`, `contact`, `sentry`, `cron`).
   - `global-error.tsx`, `not-found.tsx`, `sitemap.ts`, and other app-wide files.
@@ -160,8 +162,11 @@ The current route structure includes (not exhaustive):
 - `/about/jonathan` → `src/app/(www)/about/jonathan/page.tsx`.
 - `/regenerate` → `src/app/(www)/regenerate/page.tsx`.
 - `/blog` → `src/app/(blog)/blog/page.tsx`.
+- `/blog/page/[page]` → `src/app/(blog)/blog/page/[page]/page.tsx`.
 - `/blog/[slug]` → `src/app/(blog)/blog/[slug]/page.tsx`.
+- `/recipes` → `src/app/(recipes)/recipes/page.tsx`.
 - `/recipes/[slug]` → `src/app/(recipes)/recipes/[slug]/page.tsx`.
+- `/feed.xml` → `src/app/feed.xml/route.ts` (RSS 2.0 feed of blog posts).
 - `/legal/[slug]` → `src/app/(www)/legal/[slug]/page.tsx`.
 - `/subscribe` → `src/app/(www)/subscribe/page.tsx`.
 - `/contact` → `src/app/(www)/contact/page.tsx`.
@@ -180,7 +185,7 @@ Route groups are structural only (they do not change URLs):
 
 - `(www)/` – marketing, legal, contact, subscribe.
 - `(blog)/` – blog index and posts.
-- `(recipes)/` – recipe detail pages.
+- `(recipes)/` – recipes index and detail pages.
 - `(payload)/` – Payload admin and CMS API (separate root layout).
 
 If additional groups are introduced (e.g. `(functional)` for booking flows), document them here.

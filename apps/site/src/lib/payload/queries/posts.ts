@@ -10,6 +10,31 @@ type BlogPostsOptions = {
   featured?: boolean;
 };
 
+export type BlogPostsPageOptions = {
+  page?: number;
+  perPage?: number;
+};
+
+export type BlogPostsPage = {
+  posts: Post[];
+  page: number;
+  totalPages: number;
+  totalDocs: number;
+};
+
+// Positive projection for fields consumed by mapPayloadPostToListItem.
+// Excludes body (heavy JSONB) and tags/category relationships to avoid posts_rels joins.
+const POST_LIST_SELECT = {
+  title: true,
+  slug: true,
+  date: true,
+  author: true,
+  excerpt: true,
+  description: true,
+  image: true,
+  featured: true,
+} as const;
+
 export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]> {
   const { limit, featured = false } = opts;
   const payload = await getPayloadClient();
@@ -22,18 +47,7 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
     depth: 1,
     limit: limit ?? 100,
     sort: '-date',
-    // Positive projection for fields consumed by mapPayloadPostToListItem.
-    // Excludes body (heavy JSONB) and tags/category relationships to avoid posts_rels joins.
-    select: {
-      title: true,
-      slug: true,
-      date: true,
-      author: true,
-      excerpt: true,
-      description: true,
-      image: true,
-      featured: true,
-    },
+    select: POST_LIST_SELECT,
     ...(featured
       ? {
           where: {
@@ -46,6 +60,30 @@ export async function getBlogPosts(opts: BlogPostsOptions = {}): Promise<Post[]>
   });
 
   return result.docs.map((doc, index) => mapPayloadPostToListItem(doc as PostListInput, index));
+}
+
+export async function getBlogPostsPage(opts: BlogPostsPageOptions = {}): Promise<BlogPostsPage> {
+  const { page = 1, perPage = 6 } = opts;
+  const payload = await getPayloadClient();
+
+  const result = await payload.find({
+    collection: 'posts',
+    // Local API bypasses access control by default; enforce publicReadPublished
+    // so drafts never reach public surfaces.
+    overrideAccess: false,
+    depth: 1,
+    page,
+    limit: perPage,
+    sort: '-date',
+    select: POST_LIST_SELECT,
+  });
+
+  return {
+    posts: result.docs.map((doc, index) => mapPayloadPostToListItem(doc as PostListInput, index)),
+    page: result.page ?? page,
+    totalPages: result.totalPages ?? 1,
+    totalDocs: result.totalDocs ?? result.docs.length,
+  };
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<PayloadPost | null> {
