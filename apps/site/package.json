@@ -27,7 +27,7 @@
     "payload": "payload",
     "test": "vitest run",
     "import:content-seeds": "tsx scripts/import-content-seed.ts",
-    "import:content-seeds:validate": "tsx scripts/import-content-seed.ts --validate-only"
+    "import:content-seeds:validate": "tsx scripts/validate-content-seeds.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

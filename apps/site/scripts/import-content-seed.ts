@@ -3,11 +3,11 @@
  * Import content seed JSON into Payload as drafts.
  *
  * Usage:
- *   pnpm --filter site import:content-seeds [--validate-only] [--file path.json]
+ *   pnpm --filter site import:content-seeds [--file path.json]
  *
- * Requires DATABASE_URL and PAYLOAD_SECRET for import (not for --validate-only).
+ * Requires DATABASE_URL and PAYLOAD_SECRET.
+ * For validation without DB, use import:content-seeds:validate.
  */
-import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -18,37 +18,28 @@ import {
 import config from '@payload-config';
 import { getPayload } from 'payload';
 
-import {
-  parsePostSeed,
-  parseRecipeSeed,
-  type PostSeed,
-  type RecipeSeed,
-} from './lib/content-seed-schema';
+import type { PostSeed, RecipeSeed } from './lib/content-seed-schema';
 import {
   resolveAuthorId,
   resolveCategoryId,
   resolveTagIds,
 } from './lib/resolve-relationships';
-
-const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-const siteRoot = path.resolve(scriptDir, '..');
-const seedsRoot = path.join(siteRoot, 'content', 'seeds');
+import { listSeedFiles, loadSeed } from './lib/validate-seeds';
 
 type CollectionSlug = 'posts' | 'recipes';
 
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const siteRoot = path.resolve(scriptDir, '..');
+
 interface CliOptions {
-  validateOnly: boolean;
   file?: string;
 }
 
 function parseArgs(argv: string[]): CliOptions {
-  const options: CliOptions = { validateOnly: false };
+  const options: CliOptions = {};
 
   for (let i = 0; i < argv.length; i += 1) {
-    const arg = argv[i];
-    if (arg === '--validate-only') {
-      options.validateOnly = true;
-    } else if (arg === '--file') {
+    if (argv[i] === '--file') {
       options.file = argv[i + 1];
       i += 1;
     }
@@ -57,50 +48,11 @@ function parseArgs(argv: string[]): CliOptions {
   return options;
 }
 
-function inferCollection(filePath: string): CollectionSlug {
-  if (filePath.includes(`${path.sep}recipes${path.sep}`)) return 'recipes';
-  return 'posts';
-}
-
-async function listSeedFiles(singleFile?: string): Promise<string[]> {
-  if (singleFile) {
-    return [path.resolve(singleFile)];
-  }
-
-  const collections: CollectionSlug[] = ['posts', 'recipes'];
-  const files: string[] = [];
-
-  for (const collection of collections) {
-    const dir = path.join(seedsRoot, collection);
-    let entries: string[];
-    try {
-      entries = await readdir(dir);
-    } catch {
-      continue;
-    }
-
-    for (const entry of entries) {
-      if (entry.endsWith('.json')) {
-        files.push(path.join(dir, entry));
-      }
-    }
-  }
-
-  return files.sort();
-}
-
-async function loadSeed(filePath: string): Promise<{ collection: CollectionSlug; seed: PostSeed | RecipeSeed }> {
-  const raw = JSON.parse(await readFile(filePath, 'utf8'));
-  const collection = inferCollection(filePath);
-
-  if (collection === 'posts') {
-    return { collection, seed: parsePostSeed(raw) };
-  }
-
-  return { collection, seed: parseRecipeSeed(raw) };
-}
-
-async function findExistingDoc(payload: Awaited<ReturnType<typeof getPayload>>, collection: CollectionSlug, slug: string) {
+async function findExistingDoc(
+  payload: Awaited<ReturnType<typeof getPayload>>,
+  collection: CollectionSlug,
+  slug: string,
+) {
   const result = await payload.find({
     collection,
     where: { slug: { equals: slug } },
@@ -115,7 +67,7 @@ async function importPost(
   payload: Awaited<ReturnType<typeof getPayload>>,
   editorConfig: Awaited<ReturnType<typeof editorConfigFactory.default>>,
   seed: PostSeed,
-): Promise<'created' | 'updated' | 'unchanged'> {
+): Promise<'created' | 'updated'> {
   const body = convertMarkdownToLexical({
     editorConfig,
     markdown: seed.body,
@@ -158,7 +110,7 @@ async function importPost(
 async function importRecipe(
   payload: Awaited<ReturnType<typeof getPayload>>,
   seed: RecipeSeed,
-): Promise<'created' | 'updated' | 'unchanged'> {
+): Promise<'created' | 'updated'> {
   const data = {
     title: seed.title,
     slug: seed.slug,
@@ -203,15 +155,6 @@ async function main(): Promise<void> {
 
   if (files.length === 0) {
     console.log('No seed files found.');
-    return;
-  }
-
-  if (options.validateOnly) {
-    for (const file of files) {
-      await loadSeed(file);
-      console.log(`✓ ${path.relative(siteRoot, file)}`);
-    }
-    console.log(`Validated ${files.length} seed file(s).`);
     return;
   }
 
