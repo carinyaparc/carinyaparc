@@ -12,12 +12,12 @@ and **CP04 SEO metadata epic** work still in backlog. Findings filed as GitHub i
 
 ## Findings summary
 
-| ID | Priority | Finding | Owning squad | Issue |
-| -- | -------- | ------- | ------------ | ----- |
-| SEO-01 | P2 | Recipe/blog OG tags missing `og:image` when hero image set | squad:blog / squad:recipes | #88 |
-| SEO-02 | P2 | Confirm all published posts/recipes appear in `/sitemap.xml` | squad:site | #89 |
-| SEO-03 | P3 | Recipe list page metadata — verify unique title/description vs homepage | squad:recipes | — |
-| SEO-04 | P3 | Add absolute URLs for social preview images | squad:site | — |
+| ID     | Priority | Finding                                                                 | Owning squad               | Issue |
+| ------ | -------- | ----------------------------------------------------------------------- | -------------------------- | ----- |
+| SEO-01 | P2       | Recipe/blog OG tags missing `og:image` when hero image set              | squad:blog / squad:recipes | #88   |
+| SEO-02 | P2       | Confirm all published posts/recipes appear in `/sitemap.xml`            | squad:site                 | #89   |
+| SEO-03 | P3       | Recipe list page metadata — verify unique title/description vs homepage | squad:recipes              | —     |
+| SEO-04 | P3       | Add absolute URLs for social preview images                             | squad:site                 | —     |
 
 ## Detailed findings
 

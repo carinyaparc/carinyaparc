@@ -53,18 +53,30 @@ export function isPgPoolNoiseEvent(event: SentryEventShape): boolean {
 }
 
 /**
+ * Mechanism type strings that indicate an unhandled promise rejection.
+ * The server-side Node SDK uses 'onunhandledrejection'; the browser SDK
+ * (since @sentry/nextjs ≥10.56) uses the longer qualified form.
+ */
+const UNHANDLED_REJECTION_TYPES = new Set([
+  'onunhandledrejection',
+  'auto.browser.global_handlers.onunhandledrejection',
+]);
+
+/**
  * Returns true for "Connection closed." unhandled rejections thrown by
  * React's RSC streaming client (react-server-dom-turbopack-client) when the
  * server-side RSC response stream closes before the browser finishes reading
- * it. This typically occurs on 404 pages or after transient network drops and
- * produces no actionable signal because all stack frames are inside Next.js
- * internals — there is no application code on the path.
+ * it. This typically occurs on 404 pages, rapid client-side navigations, or
+ * after transient network drops (especially on mobile). All stack frames live
+ * inside Next.js internals — there is no application code on the path — so
+ * the event carries no actionable signal.
  */
 export function isRscConnectionClosedNoise(event: SentryEventShape): boolean {
   const firstException = event.exception?.values?.[0];
 
+  const mechanismType = firstException?.mechanism?.type ?? '';
   if (
-    firstException?.mechanism?.type !== 'onunhandledrejection' ||
+    !UNHANDLED_REJECTION_TYPES.has(mechanismType) ||
     firstException?.value !== 'Connection closed.'
   ) {
     return false;

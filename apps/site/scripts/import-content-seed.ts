@@ -11,19 +11,12 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import {
-  convertMarkdownToLexical,
-  editorConfigFactory,
-} from '@payloadcms/richtext-lexical';
+import { convertMarkdownToLexical, editorConfigFactory } from '@payloadcms/richtext-lexical';
 import config from '@payload-config';
 import { getPayload } from 'payload';
 
 import type { PostSeed, RecipeSeed } from './lib/content-seed-schema';
-import {
-  resolveAuthorId,
-  resolveCategoryId,
-  resolveTagIds,
-} from './lib/resolve-relationships';
+import { resolveAuthorId, resolveCategoryId, resolveTagIds } from './lib/resolve-relationships';
 import { listSeedFiles, loadSeed } from './lib/validate-seeds';
 
 type CollectionSlug = 'posts' | 'recipes';
