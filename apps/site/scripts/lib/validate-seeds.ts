@@ -2,7 +2,12 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { parsePostSeed, parseRecipeSeed, type PostSeed, type RecipeSeed } from './content-seed-schema';
+import {
+  parsePostSeed,
+  parseRecipeSeed,
+  type PostSeed,
+  type RecipeSeed,
+} from './content-seed-schema';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const siteRoot = path.resolve(scriptDir, '../..');

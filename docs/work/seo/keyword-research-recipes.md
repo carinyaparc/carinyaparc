@@ -13,19 +13,19 @@ regional, and farm-adjacent terms without overclaiming "farm to table" productio
 
 ## Primary keyword
 
-| Keyword | Intent | Priority | Notes |
-| ------- | ------ | -------- | ----- |
-| winter vegetable stew recipe | Informational | P1 | Strong fit for July content; achievable with quality recipe schema |
+| Keyword                      | Intent        | Priority | Notes                                                              |
+| ---------------------------- | ------------- | -------- | ------------------------------------------------------------------ |
+| winter vegetable stew recipe | Informational | P1       | Strong fit for July content; achievable with quality recipe schema |
 
 ## Secondary keywords
 
-| Keyword | Intent | Priority | Notes |
-| ------- | ------ | -------- | ----- |
-| root vegetable stew australia | Informational | P1 | Regional modifier; matches midwinter produce |
-| easy winter dinner recipe | Informational | P2 | Broader volume; use in excerpt/description |
-| dexter beef recipe | Commercial investigation | P2 | Future content when beef available — avoid claiming now |
-| regenerative farm recipes | Informational | P3 | Brand-aligned; lower volume |
-| mid north coast seasonal cooking | Informational | P3 | Local interest; blog crossover |
+| Keyword                          | Intent                   | Priority | Notes                                                   |
+| -------------------------------- | ------------------------ | -------- | ------------------------------------------------------- |
+| root vegetable stew australia    | Informational            | P1       | Regional modifier; matches midwinter produce            |
+| easy winter dinner recipe        | Informational            | P2       | Broader volume; use in excerpt/description              |
+| dexter beef recipe               | Commercial investigation | P2       | Future content when beef available — avoid claiming now |
+| regenerative farm recipes        | Informational            | P3       | Brand-aligned; lower volume                             |
+| mid north coast seasonal cooking | Informational            | P3       | Local interest; blog crossover                          |
 
 ## Long-tail opportunities
 
@@ -36,11 +36,11 @@ regional, and farm-adjacent terms without overclaiming "farm to table" productio
 
 ## Content recommendations
 
-| Slot | Content type | Target keyword | Squad D slug |
-| ---- | ------------ | -------------- | ------------ |
-| July W3 | Recipe | winter vegetable stew recipe | `winter-root-vegetable-stew` |
-| August | Recipe | native greens recipe (when garden ready) | TBD |
-| September | Post | spring wildflowers + seasonal produce | TBD |
+| Slot      | Content type | Target keyword                           | Squad D slug                 |
+| --------- | ------------ | ---------------------------------------- | ---------------------------- |
+| July W3   | Recipe       | winter vegetable stew recipe             | `winter-root-vegetable-stew` |
+| August    | Recipe       | native greens recipe (when garden ready) | TBD                          |
+| September | Post         | spring wildflowers + seasonal produce    | TBD                          |
 
 Ensure `winter-root-vegetable-stew` seed includes complete Recipe JSON-LD fields (times,
 servings, ingredients) for rich results.

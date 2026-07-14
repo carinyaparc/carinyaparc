@@ -14,23 +14,23 @@ Minimal link from the **website** repo to the Carinya Parc instance.
 
 All instance wiring lives in **`carinyaparc/carinyaparc`**:
 
-| What | Where |
-| ---- | ----- |
-| Instance config | `config/instance.json` |
-| Website artefact paths | `config/targets/website.json` |
-| Plugin set | `config/plugins.json` → `carinyaparc/.claude/settings.json` |
-| Brand | `brand/` |
-| Squad charters | `squads/` |
+| What                   | Where                                                       |
+| ---------------------- | ----------------------------------------------------------- |
+| Instance config        | `config/instance.json`                                      |
+| Website artefact paths | `config/targets/website.json`                               |
+| Plugin set             | `config/plugins.json` → `carinyaparc/.claude/settings.json` |
+| Brand                  | `brand/`                                                    |
+| Squad charters         | `squads/`                                                   |
 
 ## Workspace contract (this repo)
 
-| Doc | Path |
-| --- | ---- |
-| Product | `docs/product/product.md` |
-| Backlog | `docs/product/backlog.md` |
-| Roadmap | `docs/product/roadmap.md` |
-| Solution | `docs/architecture/solution.md` |
-| Epic tasks | `docs/work/{epic}/tasks.md` |
+| Doc         | Path                            |
+| ----------- | ------------------------------- |
+| Product     | `docs/product/product.md`       |
+| Backlog     | `docs/product/backlog.md`       |
+| Roadmap     | `docs/product/roadmap.md`       |
+| Solution    | `docs/architecture/solution.md` |
+| Epic tasks  | `docs/work/{epic}/tasks.md`     |
 | Sprint plan | `docs/work/sprint-{id}/plan.md` |
 
 Brand resolves from `carinyaparc/brand/` — not `docs/brand/` here.

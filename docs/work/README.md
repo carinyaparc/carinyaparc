@@ -41,13 +41,13 @@ Title: `[{TASK-ID}] {short title}`. Labels: `squad:*` + `type:*`.
 
 ## Skill paths
 
-| Skill | Reads / writes |
-| ----- | -------------- |
-| `tasks` | `docs/work/{epic}/tasks.md` |
-| `design` | `docs/work/{epic}/design.md` |
-| `sprint` | `docs/work/sprint-{id}/plan.md`, retrospective |
-| `implement` | `design.md` + `tasks.md` for the task id |
-| `validate` | `tasks.md` AC |
+| Skill       | Reads / writes                                 |
+| ----------- | ---------------------------------------------- |
+| `tasks`     | `docs/work/{epic}/tasks.md`                    |
+| `design`    | `docs/work/{epic}/design.md`                   |
+| `sprint`    | `docs/work/sprint-{id}/plan.md`, retrospective |
+| `implement` | `design.md` + `tasks.md` for the task id       |
+| `validate`  | `tasks.md` AC                                  |
 
 ## Ownership
 
