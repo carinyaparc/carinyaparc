@@ -88,6 +88,11 @@ describe('isPgPoolNoiseEvent', () => {
 });
 
 describe('isRscConnectionClosedNoise', () => {
+  /**
+   * Uses the browser SDK mechanism type that Sentry actually sends for
+   * window.onunhandledrejection events (auto.browser.global_handlers.*).
+   * This is the format seen in production Sentry events.
+   */
   function makeRscEvent(overrides: Partial<TestEventException> = {}): TestEvent {
     return {
       exception: {
@@ -95,17 +100,20 @@ describe('isRscConnectionClosedNoise', () => {
           {
             type: 'Error',
             value: 'Connection closed.',
-            mechanism: { type: 'onunhandledrejection', handled: false },
+            mechanism: {
+              type: 'auto.browser.global_handlers.onunhandledrejection',
+              handled: false,
+            },
             stacktrace: {
               frames: [
                 {
                   filename:
-                    'node_modules/.pnpm/next@16.2.7_.../react-server-dom-turbopack-client.browser.production.js',
+                    'node_modules/.pnpm/next@16.2.10_.../react-server-dom-turbopack-client.browser.production.js',
                   in_app: false,
                 },
                 {
                   filename:
-                    'node_modules/.pnpm/next@16.2.7_.../react-server-dom-turbopack-client.browser.production.js',
+                    'node_modules/.pnpm/next@16.2.10_.../react-server-dom-turbopack-client.browser.production.js',
                   in_app: false,
                 },
               ],
@@ -117,8 +125,16 @@ describe('isRscConnectionClosedNoise', () => {
     };
   }
 
-  it('returns true for Connection closed. rejection with no in-app frames', () => {
+  it('returns true for Connection closed. rejection with browser mechanism type and no in-app frames', () => {
     expect(isRscConnectionClosedNoise(makeRscEvent())).toBe(true);
+  });
+
+  it('returns true for Connection closed. rejection with plain onunhandledrejection mechanism type', () => {
+    expect(
+      isRscConnectionClosedNoise(
+        makeRscEvent({ mechanism: { type: 'onunhandledrejection', handled: false } }),
+      ),
+    ).toBe(true);
   });
 
   it('returns false when the error message is different', () => {
@@ -127,7 +143,7 @@ describe('isRscConnectionClosedNoise', () => {
     );
   });
 
-  it('returns false when the mechanism is not onunhandledrejection', () => {
+  it('returns false when the mechanism is not an unhandled rejection type', () => {
     expect(
       isRscConnectionClosedNoise(makeRscEvent({ mechanism: { type: 'generic', handled: false } })),
     ).toBe(false);
@@ -138,10 +154,10 @@ describe('isRscConnectionClosedNoise', () => {
     firstEx(event).stacktrace!.frames = [
       {
         filename:
-          'node_modules/.pnpm/next@16.2.7_.../react-server-dom-turbopack-client.browser.production.js',
+          'node_modules/.pnpm/next@16.2.10_.../react-server-dom-turbopack-client.browser.production.js',
         in_app: false,
       },
-      { filename: '/app/.next/static/chunks/app/products/page.js', in_app: true },
+      { filename: '/app/.next/static/chunks/app/page.js', in_app: true },
     ];
     expect(isRscConnectionClosedNoise(event)).toBe(false);
   });
@@ -159,5 +175,32 @@ describe('isRscConnectionClosedNoise', () => {
 
   it('returns false when exception is missing', () => {
     expect(isRscConnectionClosedNoise({})).toBe(false);
+  });
+
+  it('matches the exact production event pattern from WEBSITE-E regression (mobile RSC rapid navigation)', () => {
+    const productionEvent: TestEvent = {
+      exception: {
+        values: [
+          {
+            type: 'Error',
+            value: 'Connection closed.',
+            mechanism: {
+              type: 'auto.browser.global_handlers.onunhandledrejection',
+              handled: false,
+            },
+            stacktrace: {
+              frames: [
+                {
+                  filename:
+                    'node_modules/.pnpm/next@16.2.10_@opentelemetry+api@1.9.1_@playwright+test@1.60.0_babel-plugin-react-compil_a3369a2cc9460f5ebb316e67e1fa4964/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js',
+                  in_app: false,
+                },
+              ],
+            },
+          },
+        ],
+      },
+    };
+    expect(isRscConnectionClosedNoise(productionEvent)).toBe(true);
   });
 });
