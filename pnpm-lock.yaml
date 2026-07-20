@@ -8,7 +8,7 @@ overrides:
   dompurify: '>=3.4.11'
   esbuild: '>=0.25.0'
   postcss: '>=8.5.10'
-  webpack: 5.104.1
+  webpack: 5.108.4
 
 importers:
 
@@ -46,13 +46,13 @@ importers:
         version: 5.4.0(react-hook-form@7.82.0(react@19.2.7))
       '@mdx-js/loader':
         specifier: ^3.1.1
-        version: 3.1.1(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
+        version: 3.1.1(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
       '@mdx-js/react':
         specifier: ^3.1.1
         version: 3.1.1(@types/react@19.2.17)(react@19.2.7)
       '@next/mdx':
         specifier: ^16.2.10
-        version: 16.2.10(@mdx-js/loader@3.1.1(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)))(@mdx-js/react@3.1.1(@types/react@19.2.17)(react@19.2.7))
+        version: 16.2.10(@mdx-js/loader@3.1.1(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)))(@mdx-js/react@3.1.1(@types/react@19.2.17)(react@19.2.7))
       '@next/third-parties':
         specifier: ^16.2.10
         version: 16.2.10(next@16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)
@@ -67,7 +67,7 @@ importers:
         version: 3.86.0(@faceless-ui/modal@3.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@payloadcms/next@3.86.0(@types/react@19.2.17)(graphql@17.0.2)(monaco-editor@0.55.1)(next@16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.86.0(graphql@17.0.2)(typescript@7.0.2))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@7.0.2))(@types/react@19.2.17)(monaco-editor@0.55.1)(next@16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(payload@3.86.0(graphql@17.0.2)(typescript@7.0.2))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@7.0.2)(yjs@13.6.31)
       '@sentry/nextjs':
         specifier: ^10.66.0
-        version: 10.66.0(@opentelemetry/core@2.9.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.9.0(@opentelemetry/api@1.9.1))(next@16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
+        version: 10.66.0(@opentelemetry/core@2.9.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.9.0(@opentelemetry/api@1.9.1))(next@16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
       '@tailwindcss/typography':
         specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.3)
@@ -214,8 +214,8 @@ importers:
         specifier: ^4.1.10
         version: 4.1.10(@opentelemetry/api@1.9.1)(@types/node@26.1.1)(happy-dom@20.11.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.1.1)(typescript@7.0.2))(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.77.4)(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0))
       webpack:
-        specifier: 5.104.1
-        version: 5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
+        specifier: 5.108.4
+        version: 5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
 
   packages/eslint-config:
     devDependencies:
@@ -1233,7 +1233,7 @@ packages:
   '@mdx-js/loader@3.1.1':
     resolution: {integrity: sha512-0TTacJyZ9mDmY+VefuthVshaNIyCGZHJG2fMnGaDttCt8HmjUF7SizlHJpaCDoGnN635nK1wpzfpx/Xx5S4WnQ==}
     peerDependencies:
-      webpack: 5.104.1
+      webpack: 5.108.4
     peerDependenciesMeta:
       webpack:
         optional: true
@@ -1740,7 +1740,7 @@ packages:
     engines: {node: '>= 18'}
     peerDependencies:
       rollup: '>=3.2.0'
-      webpack: 5.104.1
+      webpack: 5.108.4
     peerDependenciesMeta:
       rollup:
         optional: true
@@ -1876,7 +1876,7 @@ packages:
     resolution: {integrity: sha512-J3a0BvUZ75Qxy+v/Ap3Hx4ZEcSjlPHZ/jDtxdRhXQCyNeEb8xq0uUBTI9VLtGk2eNeNucOxOEJ5ngqdNjnEH/A==}
     engines: {node: '>= 18'}
     peerDependencies:
-      webpack: 5.104.1
+      webpack: 5.108.4
 
   '@stablelib/base64@1.0.1':
     resolution: {integrity: sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ==}
@@ -2045,9 +2045,6 @@ packages:
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
-
-  '@types/eslint-scope@3.7.7':
-    resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
@@ -3633,9 +3630,6 @@ packages:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
     engines: {node: '>=10.13.0'}
 
-  glob-to-regexp@0.4.1:
-    resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
-
   glob@13.0.6:
     resolution: {integrity: sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==}
     engines: {node: 18 || 20 || >=22}
@@ -4402,12 +4396,8 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
-  mime-db@1.52.0:
-    resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
-    engines: {node: '>= 0.6'}
-
-  mime-types@2.1.35:
-    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
+  mime-db@1.54.0:
+    resolution: {integrity: sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==}
     engines: {node: '>= 0.6'}
 
   minimatch@10.2.5:
@@ -4419,6 +4409,49 @@ packages:
 
   minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
+
+  minimizer-webpack-plugin@5.6.1:
+    resolution: {integrity: sha512-DoeAZz8Q1C1znwsUzej1fdoi4jCf7/+Em27ouLqfK/+3m8G+D7yDhUwrc3CNhjSzGUN1kn7Iv4sWmjflQHenpw==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      '@minify-html/node': '*'
+      '@swc/core': '*'
+      '@swc/css': '*'
+      '@swc/html': '*'
+      clean-css: '*'
+      cssnano: '*'
+      csso: '*'
+      esbuild: '*'
+      html-minifier-terser: '*'
+      lightningcss: '*'
+      postcss: '*'
+      uglify-js: '*'
+      webpack: 5.108.4
+    peerDependenciesMeta:
+      '@minify-html/node':
+        optional: true
+      '@swc/core':
+        optional: true
+      '@swc/css':
+        optional: true
+      '@swc/html':
+        optional: true
+      clean-css:
+        optional: true
+      cssnano:
+        optional: true
+      csso:
+        optional: true
+      esbuild:
+        optional: true
+      html-minifier-terser:
+        optional: true
+      lightningcss:
+        optional: true
+      postcss:
+        optional: true
+      uglify-js:
+        optional: true
 
   minipass@7.1.3:
     resolution: {integrity: sha512-tEBHqDnIoM/1rXME1zgka9g6Q2lcoCkxHLuc7ODJ5BxbP5d4c2Z5cGgtXAku59200Cx7diuHTOYfSBD8n6mm8A==}
@@ -5433,49 +5466,6 @@ packages:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
 
-  terser-webpack-plugin@5.6.1:
-    resolution: {integrity: sha512-201R5j+sJpK8nFWwKVyNfZot8FaJbLZDq5evriVzbV1wDtSXDjRUDRfJzHpAaxFDMEhsZL1QkeqM61wgsS3KaQ==}
-    engines: {node: '>= 10.13.0'}
-    peerDependencies:
-      '@minify-html/node': '*'
-      '@swc/core': '*'
-      '@swc/css': '*'
-      '@swc/html': '*'
-      clean-css: '*'
-      cssnano: '*'
-      csso: '*'
-      esbuild: '*'
-      html-minifier-terser: '*'
-      lightningcss: '*'
-      postcss: '*'
-      uglify-js: '*'
-      webpack: 5.104.1
-    peerDependenciesMeta:
-      '@minify-html/node':
-        optional: true
-      '@swc/core':
-        optional: true
-      '@swc/css':
-        optional: true
-      '@swc/html':
-        optional: true
-      clean-css:
-        optional: true
-      cssnano:
-        optional: true
-      csso:
-        optional: true
-      esbuild:
-        optional: true
-      html-minifier-terser:
-        optional: true
-      lightningcss:
-        optional: true
-      postcss:
-        optional: true
-      uglify-js:
-        optional: true
-
   terser@5.49.0:
     resolution: {integrity: sha512-SNiDnXyHSrxVcIOtVbULzcTmniUiwcV7Nwdyj1twVubeTmbjoa8p69KKDpfkdoOavuM4/GRm1+ykI8qqnavHoA==}
     engines: {node: '>=10'}
@@ -5820,8 +5810,8 @@ packages:
     resolution: {integrity: sha512-jyuiGJdtvY434z5bUZrjz67v76/ePNvFZTp9Mdz29IlH4+GPsgyGjiv0fKI+M7BdkU6ADjulUcKAd3tUK3WlEw==}
     engines: {node: '>=10.13.0'}
 
-  webpack@5.104.1:
-    resolution: {integrity: sha512-Qphch25abbMNtekmEGJmeRUhLDbe+QfiWTiqpKYkpCOWY64v9eyl+KRRLmqOFA2AvKPpc9DC6+u2n76tQLBoaA==}
+  webpack@5.108.4:
+    resolution: {integrity: sha512-yur8LyJoeiWh47dErD+Ok7vlbmDsJ3UbbRPAoxbGJ54WpE2y5yVo5G/inUzujnYgw3tPmBRdn+G7PoxXaYC33w==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -6952,12 +6942,12 @@ snapshots:
       lexical: 0.41.0
       yjs: 13.6.31
 
-  '@mdx-js/loader@3.1.1(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
+  '@mdx-js/loader@3.1.1(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
     dependencies:
       '@mdx-js/mdx': 3.1.1
       source-map: 0.7.6
     optionalDependencies:
-      webpack: 5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
+      webpack: 5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
     transitivePeerDependencies:
       - supports-color
 
@@ -7040,11 +7030,11 @@ snapshots:
     dependencies:
       fast-glob: 3.3.1
 
-  '@next/mdx@16.2.10(@mdx-js/loader@3.1.1(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)))(@mdx-js/react@3.1.1(@types/react@19.2.17)(react@19.2.7))':
+  '@next/mdx@16.2.10(@mdx-js/loader@3.1.1(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)))(@mdx-js/react@3.1.1(@types/react@19.2.17)(react@19.2.7))':
     dependencies:
       source-map: 0.7.6
     optionalDependencies:
-      '@mdx-js/loader': 3.1.1(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
+      '@mdx-js/loader': 3.1.1(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
       '@mdx-js/react': 3.1.1(@types/react@19.2.17)(react@19.2.7)
 
   '@next/swc-darwin-arm64@16.2.10':
@@ -7549,7 +7539,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/bundler-plugins@10.66.0(rollup@4.62.2)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
+  '@sentry/bundler-plugins@10.66.0(rollup@4.62.2)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
     dependencies:
       '@babel/core': 7.29.7
       '@sentry/cli': 2.58.6
@@ -7560,7 +7550,7 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       rollup: 4.62.2
-      webpack: 5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
+      webpack: 5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -7619,7 +7609,7 @@ snapshots:
     dependencies:
       '@sentry/core': 10.66.0
 
-  '@sentry/nextjs@10.66.0(@opentelemetry/core@2.9.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.9.0(@opentelemetry/api@1.9.1))(next@16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
+  '@sentry/nextjs@10.66.0(@opentelemetry/core@2.9.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.9.0(@opentelemetry/api@1.9.1))(next@16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4))(react@19.2.7)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@rollup/plugin-commonjs': 28.0.1(rollup@4.62.2)
@@ -7632,7 +7622,7 @@ snapshots:
       '@sentry/react': 10.66.0(react@19.2.7)
       '@sentry/server-utils': 10.66.0
       '@sentry/vercel-edge': 10.66.0
-      '@sentry/webpack-plugin': 5.4.0(rollup@4.62.2)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
+      '@sentry/webpack-plugin': 5.4.0(rollup@4.62.2)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
       next: 16.2.10(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(sass@1.77.4)
       rollup: 4.62.2
       stacktrace-parser: 0.1.11
@@ -7713,10 +7703,10 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       '@sentry/core': 10.66.0
 
-  '@sentry/webpack-plugin@5.4.0(rollup@4.62.2)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
+  '@sentry/webpack-plugin@5.4.0(rollup@4.62.2)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))':
     dependencies:
-      '@sentry/bundler-plugins': 10.66.0(rollup@4.62.2)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
-      webpack: 5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
+      '@sentry/bundler-plugins': 10.66.0(rollup@4.62.2)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
+      webpack: 5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
     transitivePeerDependencies:
       - encoding
       - rollup
@@ -7864,15 +7854,11 @@ snapshots:
 
   '@types/deep-eql@4.0.2': {}
 
-  '@types/eslint-scope@3.7.7':
-    dependencies:
-      '@types/eslint': 9.6.1
-      '@types/estree': 1.0.9
-
   '@types/eslint@9.6.1':
     dependencies:
       '@types/estree': 1.0.9
       '@types/json-schema': 7.0.15
+    optional: true
 
   '@types/esrecurse@4.3.1': {}
 
@@ -9515,8 +9501,6 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
-  glob-to-regexp@0.4.1: {}
-
   glob@13.0.6:
     dependencies:
       minimatch: 10.2.5
@@ -10507,11 +10491,7 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.2
 
-  mime-db@1.52.0: {}
-
-  mime-types@2.1.35:
-    dependencies:
-      mime-db: 1.52.0
+  mime-db@1.54.0: {}
 
   minimatch@10.2.5:
     dependencies:
@@ -10522,6 +10502,18 @@ snapshots:
       brace-expansion: 1.1.16
 
   minimist@1.2.8: {}
+
+  minimizer-webpack-plugin@5.6.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      jest-worker: 27.5.1
+      schema-utils: 4.3.3
+      terser: 5.49.0
+      webpack: 5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
+    optionalDependencies:
+      cssnano: 8.0.2(postcss@8.5.20)
+      esbuild: 0.28.1
+      postcss: 8.5.20
 
   minipass@7.1.3: {}
 
@@ -11754,18 +11746,6 @@ snapshots:
 
   tapable@2.3.3: {}
 
-  terser-webpack-plugin@5.6.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.31
-      jest-worker: 27.5.1
-      schema-utils: 4.3.3
-      terser: 5.49.0
-      webpack: 5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)
-    optionalDependencies:
-      cssnano: 8.0.2(postcss@8.5.20)
-      esbuild: 0.28.1
-      postcss: 8.5.20
-
   terser@5.49.0:
     dependencies:
       '@jridgewell/source-map': 0.3.11
@@ -12152,9 +12132,8 @@ snapshots:
 
   webpack-sources@3.5.1: {}
 
-  webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20):
+  webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20):
     dependencies:
-      '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.9
       '@types/json-schema': 7.0.15
       '@webassemblyjs/ast': 1.14.1
@@ -12168,15 +12147,13 @@ snapshots:
       es-module-lexer: 2.3.1
       eslint-scope: 5.1.1
       events: 3.3.0
-      glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
       loader-runner: 4.3.2
-      mime-types: 2.1.35
+      mime-db: 1.54.0
+      minimizer-webpack-plugin: 5.6.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)(webpack@5.108.4(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20)(webpack@5.104.1(cssnano@8.0.2(postcss@8.5.20))(esbuild@0.28.1)(postcss@8.5.20))
       watchpack: 2.5.2
       webpack-sources: 3.5.1
     transitivePeerDependencies:
