@@ -37,6 +37,7 @@ Brand resolves from `carinyaparc/brand/` — not `docs/brand/` here.
 
 ## Plugins
 
-Install **`carinyaparc/digital-agency`** in Cursor Settings → Plugins. Enable agents
-via `carinyaparc/config/plugins.json` when working from the instance repo or multi-root
-workspace.
+Install practice plugins from **[carinyaparc/digital-agency-plugins](https://github.com/carinyaparc/digital-agency-plugins)**
+via Cursor Settings → Plugins (or the project `.claude/settings.json` marketplace entry).
+Enable agents via `carinyaparc/config/plugins.json` when working from the instance repo
+or multi-root workspace.

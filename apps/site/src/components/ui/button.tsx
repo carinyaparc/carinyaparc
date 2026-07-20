@@ -46,6 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <BaseButton
         ref={ref}
         render={render}
+        nativeButton={render ? false : undefined}
         className={cn(buttonVariants({ variant, size }), className)}
         disabled={isLoading || disabled}
         {...props}

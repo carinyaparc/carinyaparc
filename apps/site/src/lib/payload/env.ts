@@ -1,8 +1,16 @@
+/** Map legacy pg SSL modes to explicit verify-full before pg v9 libpq semantics change. */
+export function normalizePostgresSslMode(connectionString: string): string {
+  return connectionString.replace(
+    /([?&])sslmode=(prefer|require|verify-ca)(?=(&|$))/gi,
+    '$1sslmode=verify-full',
+  );
+}
+
 export function getNeonDatabaseUrl(): string {
   const url = process.env.NEON_DATABASE_URL?.trim();
 
   if (url) {
-    return url;
+    return normalizePostgresSslMode(url);
   }
 
   throw new Error(
