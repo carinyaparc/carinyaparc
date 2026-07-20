@@ -19,11 +19,6 @@ const HeroDecorations = dynamic(
   { ssr: false },
 );
 
-const HeroContentMotion = dynamic(
-  () => import('./HeroContentMotion').then((mod) => mod.HeroContentMotion),
-  { ssr: false },
-);
-
 interface HeroProps {
   children: ReactNode;
 }
@@ -42,9 +37,7 @@ export function Hero({ children }: HeroProps) {
 export function HeroContent({ children }: { children: ReactNode }) {
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl py-32 sm:py-32 lg:py-36">
-        <HeroContentMotion>{children}</HeroContentMotion>
-      </div>
+      <div className="mx-auto max-w-3xl py-32 text-center sm:py-32 lg:py-36">{children}</div>
     </div>
   );
 }

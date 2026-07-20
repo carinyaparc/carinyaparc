@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 const SITE_ROOT = path.resolve(import.meta.dirname, '../../..');
 const SRC_ROOT = path.join(SITE_ROOT, 'src');
 
+const HERO = path.join(SRC_ROOT, 'components/sections/hero/Hero.tsx');
 const HERO_BACKGROUND_IMAGE = path.join(
   SRC_ROOT,
   'components/sections/hero/HeroBackgroundImage.tsx',
@@ -29,6 +30,12 @@ function hasUseClientDirective(source: string): boolean {
 }
 
 describe('client JavaScript diet', () => {
+  it('renders hero copy in the initial HTML shell', () => {
+    const source = readSource(HERO);
+
+    expect(source).not.toMatch(/HeroContentMotion/);
+  });
+
   it('renders the hero background image from a server module', () => {
     const source = readSource(HERO_BACKGROUND_IMAGE);
 
