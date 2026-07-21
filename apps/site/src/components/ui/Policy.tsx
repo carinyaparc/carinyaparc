@@ -15,7 +15,7 @@ export function ConsentBanner({ onAccept, onReject }: ConsentBannerProps) {
           We use cookies to understand how visitors use this site and to remember your preferences.
           Accepting helps us keep improving Carinya Parc for you. See our{' '}
           <Link href="/legal/privacy-policy" className="font-semibold text-eucalypt-600">
-            cookie policy
+            privacy policy
           </Link>
           .
         </p>
