@@ -15,14 +15,14 @@ const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
   ({ name, label, description, error, required, children, className }, ref) => {
     return (
       <div ref={ref} className={cn('space-y-2', className)}>
-        <label htmlFor={name} className="block text-sm/6 font-semibold text-charcoal-600">
+        <label htmlFor={name} className="block text-[13.5px] font-semibold text-foreground">
           {label}
-          {required && <span className="text-earth-red ml-1">*</span>}
+          {required && <span className="ml-1 text-destructive">*</span>}
         </label>
-        {description && <p className="mt-1 text-sm text-charcoal-400">{description}</p>}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
         {children}
         {error && (
-          <p className="mt-1 text-sm text-earth-red" role="alert">
+          <p className="text-sm text-destructive" role="alert">
             {error}
           </p>
         )}

@@ -15,6 +15,14 @@ const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
 );
 Card.displayName = 'Card';
 
+/** 16/10 media slot (DS Card media) */
+const CardMedia = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn('aspect-[16/10] overflow-hidden', className)} {...props} />
+  ),
+);
+CardMedia.displayName = 'CardMedia';
+
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div ref={ref} className={cn('flex flex-col space-y-1.5 p-7', className)} {...props} />
@@ -22,11 +30,26 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardHeader.displayName = 'CardHeader';
 
+/** Uppercase letterspaced accent kicker (DS Card kicker) */
+const CardKicker = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn('text-[11px] font-semibold uppercase tracking-[0.16em] text-accent', className)}
+      {...props}
+    />
+  ),
+);
+CardKicker.displayName = 'CardKicker';
+
 const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('font-heading text-[23px] font-normal leading-tight tracking-normal', className)}
+      className={cn(
+        'font-heading text-[23px] font-normal leading-tight tracking-normal',
+        className,
+      )}
       {...props}
     />
   ),
@@ -58,4 +81,13 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardFooter.displayName = 'CardFooter';
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+export {
+  Card,
+  CardMedia,
+  CardHeader,
+  CardKicker,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+};
