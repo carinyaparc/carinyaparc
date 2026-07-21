@@ -1,0 +1,44 @@
+:root {
+  --color-background: var(--paperbark);
+  --color-foreground: var(--bark);
+  --color-card: var(--fleece);
+  --color-card-foreground: var(--bark);
+
+  --color-primary: var(--eucalypt-600);
+  --color-primary-foreground: #F3ECDB;
+  --color-secondary: var(--kangaroo-500);
+  --color-secondary-foreground: var(--kangaroo-900);
+  --color-accent: var(--bracken-500);
+  --color-accent-foreground: #F7E7DC;
+
+  --color-muted: var(--eucalypt-50);
+  --color-muted-foreground: var(--stone);
+
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--eucalypt-600);
+
+  --color-info: var(--branch-500);
+  --color-success: var(--eucalypt-600);
+  --color-warning: var(--kangaroo-500);
+  --color-destructive: #A23A28;
+  --color-highlight: var(--wattle);
+}
+
+.dark {
+  --color-background: var(--eucalypt-900);
+  --color-foreground: #F3ECDB;
+  --color-card: var(--eucalypt-800);
+  --color-card-foreground: #F3ECDB;
+  --color-primary: var(--eucalypt-400);
+  --color-primary-foreground: var(--eucalypt-900);
+  --color-secondary: var(--kangaroo-400);
+  --color-secondary-foreground: var(--eucalypt-900);
+  --color-accent: var(--bracken-400);
+  --color-accent-foreground: var(--eucalypt-900);
+  --color-muted: var(--eucalypt-700);
+  --color-muted-foreground: #B7C9B0;
+  --color-border: var(--eucalypt-700);
+  --color-input: var(--eucalypt-700);
+  --color-ring: var(--eucalypt-400);
+}

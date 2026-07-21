@@ -1,0 +1,17 @@
+:root {
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 4px 10px -6px rgba(60,45,20,.45);
+  --shadow-md: 0 18px 40px -30px rgba(60,45,20,.5);
+  --shadow-lg: 0 30px 60px -40px rgba(60,45,20,.6);
+
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px;
+
+  --border-width: 1px;
+}

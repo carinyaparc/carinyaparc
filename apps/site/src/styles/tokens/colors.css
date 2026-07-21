@@ -1,0 +1,28 @@
+:root {
+  /* Eucalypt — hero, foliage green */
+  --eucalypt-50:#EAF0EA; --eucalypt-100:#D3E1D6; --eucalypt-200:#A9C4B0; --eucalypt-300:#7FA789;
+  --eucalypt-400:#4E8B63; --eucalypt-500:#37704A; --eucalypt-600:#2E5D45; --eucalypt-700:#244B37;
+  --eucalypt-800:#1B3928; --eucalypt-900:#12261A;
+
+  /* Kangaroo Grass — secondary, dry pasture gold */
+  --kangaroo-50:#FBF3DF; --kangaroo-100:#F5E6BE; --kangaroo-200:#EDD088; --kangaroo-300:#E4B953;
+  --kangaroo-400:#D6A233; --kangaroo-500:#C6912E; --kangaroo-600:#A9791F; --kangaroo-700:#856016;
+  --kangaroo-800:#614611; --kangaroo-900:#3F2E0B;
+
+  /* Bracken — accent, Highland herd coat */
+  --bracken-50:#F7E7DC; --bracken-100:#EFCBB4; --bracken-200:#E0A882; --bracken-300:#D08A5B;
+  --bracken-400:#C06E3C; --bracken-500:#B25A2B; --bracken-600:#984824; --bracken-700:#7A391D;
+  --bracken-800:#5A2A15; --bracken-900:#3A1B0E;
+
+  /* Branch — support, river & dam */
+  --branch-50:#E6EEEF; --branch-100:#C3D8DC; --branch-200:#9BBEC5; --branch-300:#73A3AC;
+  --branch-400:#548792; --branch-500:#3E6E7A; --branch-600:#345C66; --branch-700:#294851;
+  --branch-800:#1E353C; --branch-900:#132227;
+
+  /* Wattle — highlight, use sparingly */
+  --wattle:#E9B23C;
+
+  /* Warm neutrals */
+  --bark:#241F18; --charcoal:#3A342B; --stone:#8B8272;
+  --line:#E4D9C4; --paperbark:#EFE6D2; --fleece:#FBF7EE; --white:#FFFFFF;
+}

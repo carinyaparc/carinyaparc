@@ -1,19 +1,23 @@
-import { Raleway } from 'next/font/google';
+import { Hanken_Grotesk, Marcellus } from 'next/font/google';
 
-export const raleway = Raleway({
-  weight: ['400', '700'], // 400 for body, 700 for sub-heads
+/** Display / headings / wordmark — Marcellus at weight 400 only. */
+export const marcellus = Marcellus({
+  weight: '400',
   subsets: ['latin'],
-  variable: '--font-raleway',
+  variable: '--font-marcellus',
   display: 'swap',
   preload: true,
-  fallback: [
-    'system-ui',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    'Segoe UI',
-    'Roboto',
-    'sans-serif',
-  ],
+  fallback: ['Georgia', 'Times New Roman', 'serif'],
 });
 
-export const fontClassNames = `${raleway.variable} font-sans`;
+/** Body + UI — Hanken Grotesk. */
+export const hanken = Hanken_Grotesk({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-hanken',
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+});
+
+export const fontClassNames = `${marcellus.variable} ${hanken.variable} font-sans`;

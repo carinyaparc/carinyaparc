@@ -1,0 +1,25 @@
+:root {
+  --font-heading: 'Marcellus', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+
+  /* Type scale */
+  --fs-display: 64px;
+  --fs-h1: 48px;
+  --fs-h2: 34px;
+  --fs-h3: 24px;
+  --fs-body-lg: 19px;
+  --fs-body: 17px;
+  --fs-small: 14px;
+  --fs-eyebrow: 13px;
+
+  --lh-tight: 1.05;
+  --lh-heading: 1.15;
+  --lh-body: 1.6;
+
+  --tracking-eyebrow: 0.24em;
+  --tracking-wordmark: 0.3em;
+  --weight-body: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+}
