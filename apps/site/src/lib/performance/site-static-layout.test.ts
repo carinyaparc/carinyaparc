@@ -19,11 +19,13 @@ describe('static public root layout', () => {
     expect(source).not.toMatch(DYNAMIC_REQUEST_API_PATTERN);
   });
 
-  it('renders ConsentGate from the public root layout', () => {
-    const source = readFileSync(path.join(LAYOUTS_DIR, 'site-root-layout.tsx'), 'utf8');
+  it('renders ConsentGate from the public site chrome', () => {
+    const rootLayout = readFileSync(path.join(LAYOUTS_DIR, 'site-root-layout.tsx'), 'utf8');
+    const chromeFrame = readFileSync(path.join(LAYOUTS_DIR, 'site-chrome-frame.tsx'), 'utf8');
 
-    expect(source).toContain('ConsentGate');
-    expect(source).toMatch(/<ConsentGate\b/);
+    expect(rootLayout).toContain('SiteChromeFrame');
+    expect(chromeFrame).toContain('ConsentGate');
+    expect(chromeFrame).toMatch(/<ConsentGate\b/);
   });
 
   it('delegates html shell rendering to SiteStaticShell', () => {

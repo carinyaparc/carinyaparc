@@ -21,7 +21,6 @@ const navigation = {
       items: [
         { name: 'Regeneration Project', href: '/regenerate' },
         { name: 'Read Life on Pasture', href: '/blog' },
-        { name: 'Future Produce', href: '/products' },
       ],
     },
     {
