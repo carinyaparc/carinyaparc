@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { getCachedBlogPosts } from '@/lib/payload/cache';
+import { estimateReadTimeMinutes } from '@/lib/payload/map-content';
 import type { Post } from '@/lib/posts';
 
 interface FeaturedPostsProps {
@@ -66,7 +67,7 @@ export default async function FeaturedPosts({ limit = 1 }: FeaturedPostsProps) {
                     {authorInitials(featuredPost.author)}
                   </span>
                   <span>
-                    {featuredPost.author} · {featuredPost.formattedDate}
+                    {featuredPost.author} · {estimateReadTimeMinutes(featuredPost.excerpt)} min read
                   </span>
                 </div>
               </div>

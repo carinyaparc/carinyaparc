@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 export function PostCardSkeleton() {
   return (
     <div
-      className="overflow-hidden rounded-lg border border-line bg-paperbark shadow-md"
+      className="overflow-hidden rounded-lg border border-line bg-white shadow-md"
       aria-hidden
     >
       <Skeleton className="aspect-[16/10] w-full rounded-none" />
@@ -59,7 +59,7 @@ export function PaginatedPostsSkeleton({
           {subtitle && <Skeleton className="mx-auto mt-3 h-5 w-80" />}
         </div>
       )}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-[30px] lg:grid-cols-3">
         {Array.from({ length: count }, (_, index) => (
           <PostCardSkeleton key={index} />
         ))}

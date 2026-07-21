@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import type { Author, Recipe as PayloadRecipe, Tag } from '@/payload-types';
 import {
+  estimateReadTimeMinutes,
   formatContentDate,
+  formatJournalListDate,
+  formatJournalMeta,
   mapPayloadPostToListItem,
   mapPayloadRecipeToDetail,
   resolveAuthorName,
@@ -28,6 +31,12 @@ const tag: Tag = {
 };
 
 describe('map-content', () => {
+  it('formats journal list metadata for cards', () => {
+    expect(formatJournalListDate('2026-07-15')).toBe('Jul 2026');
+    expect(estimateReadTimeMinutes('one two three four five')).toBe(1);
+    expect(formatJournalMeta('2026-07-15', 'word '.repeat(400))).toBe('Jul 2026 · 2 min');
+  });
+
   it('formats content dates for display', () => {
     expect(formatContentDate('2026-03-15')).toMatch(/March 15, 2026/);
   });

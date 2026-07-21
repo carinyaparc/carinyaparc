@@ -42,8 +42,8 @@ export function JournalSubscribeBand({ className }: JournalSubscribeBandProps) {
 
   return (
     <section className={className}>
-      <div className="mx-auto max-w-[1240px] px-6 pb-20 lg:px-14">
-        <div className="flex flex-wrap items-center justify-between gap-10 rounded-xl bg-eucalypt-600 px-8 py-12 shadow-lg sm:px-14 sm:py-14">
+      <div className="mx-auto max-w-[1240px] px-6 pb-[90px] lg:px-14">
+        <div className="flex flex-wrap items-center justify-between gap-10 rounded-xl bg-eucalypt-600 px-8 py-12 shadow-lg sm:px-14 sm:py-14 lg:px-14 lg:py-14">
           <div className="max-w-md">
             <h2 className="font-heading text-[32px] font-normal leading-[1.14] text-fleece">
               Never miss a field note

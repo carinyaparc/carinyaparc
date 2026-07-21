@@ -7,6 +7,8 @@ interface PageIntroProps {
   align?: 'center' | 'left';
   className?: string;
   titleAs?: 'h1' | 'h2';
+  titleClassName?: string;
+  descriptionClassName?: string;
 }
 
 export function PageIntro({
@@ -16,6 +18,8 @@ export function PageIntro({
   align = 'center',
   className,
   titleAs: TitleTag = 'h2',
+  titleClassName,
+  descriptionClassName,
 }: PageIntroProps) {
   return (
     <section className={cn('py-16 sm:py-24', className)}>
@@ -30,8 +34,9 @@ export function PageIntro({
         </p>
         <TitleTag
           className={cn(
-            'mt-3.5 font-heading text-[40px] font-normal leading-[1.14] text-eucalypt-600 text-balance sm:text-[44px]',
+            'mt-4 font-heading text-[40px] font-normal leading-[1.14] text-eucalypt-600 text-balance sm:text-[44px]',
             align === 'left' && 'max-w-3xl',
+            titleClassName,
           )}
         >
           {title}
@@ -41,6 +46,7 @@ export function PageIntro({
             'mt-5 text-[19px] leading-[1.7] text-charcoal',
             align === 'center' && 'mx-auto max-w-[720px]',
             align === 'left' && 'max-w-2xl',
+            descriptionClassName,
           )}
         >
           {description}

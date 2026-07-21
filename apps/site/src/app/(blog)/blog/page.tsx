@@ -6,23 +6,33 @@ import { PageIntro } from '@/components/sections/page';
 import {
   FeaturedPosts,
   FeaturedPostsSkeleton,
+  JournalCategoryFilter,
   JournalPostGrid,
   JournalSubscribeBand,
 } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
-import { getCachedBlogCategories, getCachedBlogPosts } from '@/lib/payload/cache';
+import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
 
 export const revalidate = 86_400;
 
-const LIST_LIMIT = 50;
+const POSTS_PER_PAGE = 6;
 
-export default async function BlogPage() {
-  const [categories, posts] = await Promise.all([
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category: categorySlug } = await searchParams;
+
+  const [categories, postsPage] = await Promise.all([
     getCachedBlogCategories(),
-    getCachedBlogPosts({ limit: LIST_LIMIT }),
+    getCachedBlogPostsPage({
+      page: 1,
+      perPage: POSTS_PER_PAGE,
+      excludeFeatured: true,
+      categorySlug,
+    }),
   ]);
-
-  const gridPosts = posts.filter((post) => !post.featured);
 
   return (
     <>
@@ -34,20 +44,26 @@ export default async function BlogPage() {
           title="Field notes from a farm coming back to life"
           description="Follow the regeneration of 42 hectares in real time — the plantings, the setbacks, the soil results and the seasons. Read along, then come get your hands dirty."
           titleAs="h1"
-          className="pb-8 pt-12 sm:pt-16"
+          className="pb-12 pt-16"
+          titleClassName="mx-auto max-w-[880px] text-[40px] leading-[1.06] sm:text-[58px]"
+          descriptionClassName="mx-auto mt-[18px] max-w-[620px] text-stone leading-[1.6]"
         />
 
         <Suspense fallback={<FeaturedPostsSkeleton />}>
           <FeaturedPosts limit={1} />
         </Suspense>
 
-        <section className="py-9 pb-20">
-          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
-            <Suspense fallback={null}>
-              <JournalPostGrid posts={gridPosts} categories={categories} />
-            </Suspense>
-          </div>
-        </section>
+        <Suspense fallback={null}>
+          <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <JournalPostGrid
+            posts={postsPage.posts}
+            totalPages={postsPage.totalPages}
+            categorySlug={categorySlug}
+          />
+        </Suspense>
 
         <JournalSubscribeBand />
       </div>

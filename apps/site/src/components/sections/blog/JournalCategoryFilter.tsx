@@ -43,7 +43,7 @@ export function JournalCategoryFilter({
   ];
 
   return (
-    <section className="pb-1 pt-4">
+    <section className="py-4 pb-1">
       <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-2.5 px-6 lg:px-14">
         <span className="mr-1.5 text-[13px] font-semibold text-stone">Browse:</span>
         {chips.map((chip) => {

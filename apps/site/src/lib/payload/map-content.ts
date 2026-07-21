@@ -32,6 +32,22 @@ export function formatContentDate(dateString: string): string {
   });
 }
 
+export function formatJournalListDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+export function estimateReadTimeMinutes(text: string): number {
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+export function formatJournalMeta(dateString: string, text: string): string {
+  return `${formatJournalListDate(dateString)} · ${estimateReadTimeMinutes(text)} min`;
+}
+
 export function resolveAuthorName(author: number | Author | null | undefined): string {
   if (author && typeof author === 'object') {
     return author.name;

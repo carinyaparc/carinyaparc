@@ -4,11 +4,12 @@ import type { Metadata } from 'next';
 
 import { PageIntro } from '@/components/sections/page';
 import {
+  JournalCategoryFilter,
   JournalSubscribeBand,
   PaginatedPosts,
   PaginatedPostsSkeleton,
 } from '@/src/components/sections/blog';
-import { getCachedBlogPostsPage } from '@/lib/payload/cache';
+import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
 import { BASE_URL } from '@/src/lib/constants';
 
 const POSTS_PER_PAGE = 6;
@@ -46,43 +47,70 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams(): Promise<Array<{ page: string }>> {
-  const { totalPages } = await getCachedBlogPostsPage({ page: 1, perPage: POSTS_PER_PAGE });
+  const { totalPages } = await getCachedBlogPostsPage({
+    page: 1,
+    perPage: POSTS_PER_PAGE,
+    excludeFeatured: true,
+  });
 
   return Array.from({ length: Math.max(totalPages - 1, 0) }, (_, index) => ({
     page: String(index + 2),
   }));
 }
 
-export default async function BlogPageNumber({ params }: { params: Promise<{ page: string }> }) {
+export default async function BlogPageNumber({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ page: string }>;
+  searchParams: Promise<{ category?: string }>;
+}) {
   const { page: rawPage } = await params;
+  const { category: categorySlug } = await searchParams;
   const page = parsePageParam(rawPage);
 
   if (!page) {
     notFound();
   }
 
-  const { totalPages } = await getCachedBlogPostsPage({ page, perPage: POSTS_PER_PAGE });
+  const [{ totalPages }, categories] = await Promise.all([
+    getCachedBlogPostsPage({
+      page,
+      perPage: POSTS_PER_PAGE,
+      excludeFeatured: true,
+      categorySlug,
+    }),
+    getCachedBlogCategories(),
+  ]);
 
   if (page > totalPages) {
     notFound();
   }
-
-  const title = `Articles — Page ${page}`;
-  const subtitle = 'Explore our insights and updates from the farm';
 
   return (
     <div className="min-h-screen bg-paperbark">
       <PageIntro
         eyebrow="Life on pasture · The Branch, NSW"
         title="Field notes from a farm coming back to life"
-        description="Follow the regeneration of 42 hectares in real time — the plantings, the setbacks, the soil results and the seasons."
+        description="Follow the regeneration of 42 hectares in real time — the plantings, the setbacks, the soil results and the seasons. Read along, then come get your hands dirty."
         titleAs="h1"
-        className="pb-8 pt-12 sm:pt-16"
+        className="pb-12 pt-16"
+        titleClassName="mx-auto max-w-[880px] text-[40px] leading-[1.06] sm:text-[58px]"
+        descriptionClassName="mx-auto mt-[18px] max-w-[620px] text-stone leading-[1.6]"
       />
 
-      <section className="py-9 pb-20">
-        <Suspense fallback={<PaginatedPostsSkeleton title={title} subtitle={subtitle} />}>
-          <PaginatedPosts title={title} subtitle={subtitle} page={page} perPage={POSTS_PER_PAGE} />
+      <Suspense fallback={null}>
+        <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
+      </Suspense>
+
+      <section className="py-9 pb-[84px]">
+        <Suspense fallback={<PaginatedPostsSkeleton />}>
+          <PaginatedPosts
+            page={page}
+            perPage={POSTS_PER_PAGE}
+            excludeFeatured
+            categorySlug={categorySlug}
+          />
         </Suspense>
       </section>
 
