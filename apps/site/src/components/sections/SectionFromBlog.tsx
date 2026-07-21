@@ -31,16 +31,16 @@ export function PostsLatest({ title, subtitle, posts, viewAllLink = '/blog' }: P
     <div className="">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-semibold tracking-tight text-balance text-eucalyptus-600 sm:text-5xl">
+          <h2 className="text-4xl font-semibold tracking-tight text-balance text-eucalypt-600 sm:text-5xl">
             {title}
           </h2>
-          <p className="mt-2 text-lg/8 text-eucalyptus-300">{subtitle}</p>
+          <p className="mt-2 text-lg/8 text-eucalypt-300">{subtitle}</p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
             <article
               key={post.id}
-              className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-eucalyptus-600 px-8 pt-80 pb-8 sm:pt-48 lg:pt-80"
+              className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-eucalypt-600 px-8 pt-80 pb-8 sm:pt-48 lg:pt-80"
             >
               <Image
                 alt={post.title}
@@ -51,10 +51,10 @@ export function PostsLatest({ title, subtitle, posts, viewAllLink = '/blog' }: P
                 sizes="(max-width: 768px) 100vw, 33vw"
                 quality={80}
               />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-eucalyptus-600 via-eucalyptus-600/40" />
-              <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-eucalyptus-600/10 ring-inset" />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-eucalypt-600 via-eucalypt-600/40" />
+              <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-eucalypt-600/10 ring-inset" />
 
-              <div className="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm/6 text-eucalyptus-200">
+              <div className="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm/6 text-eucalypt-200">
                 <time dateTime={post.datetime} className="mr-8">
                   {post.date}
                 </time>
@@ -87,7 +87,7 @@ export function PostsLatest({ title, subtitle, posts, viewAllLink = '/blog' }: P
                 </Link>
               </h3>
               {post.description && (
-                <p className="mt-2 line-clamp-2 text-sm/6 text-eucalyptus-100">
+                <p className="mt-2 line-clamp-2 text-sm/6 text-eucalypt-100">
                   {post.description}
                 </p>
               )}
@@ -99,7 +99,7 @@ export function PostsLatest({ title, subtitle, posts, viewAllLink = '/blog' }: P
           <div className="text-center mt-12">
             <Link
               href={viewAllLink}
-              className="inline-flex rounded-md bg-eucalyptus-600 text-white hover:bg-eucalyptus-700 px-3.5 py-2.5 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalyptus-600"
+              className="inline-flex rounded-md bg-eucalypt-600 text-white hover:bg-eucalypt-700 px-3.5 py-2.5 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalypt-600"
             >
               <span>
                 View All Posts

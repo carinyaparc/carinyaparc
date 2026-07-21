@@ -51,8 +51,8 @@ export default function ThePropertyPage() {
             </div>
             <div className="px-6 lg:contents">
               <div className="mx-auto max-w-2xl pt-16 pb-24 sm:pt-20 sm:pb-32 lg:mr-0 lg:ml-8 lg:w-full lg:max-w-lg lg:flex-none lg:pt-32 xl:w-1/2">
-                <p className="text-base/7 font-semibold text-eucalyptus-400">Our Land</p>
-                <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-eucalyptus-600 sm:text-5xl">
+                <p className="text-base/7 font-semibold text-eucalypt-400">Our Land</p>
+                <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-eucalypt-600 sm:text-5xl">
                   The Property
                 </h1>
                 <p className="mt-6 text-xl/8 text-charcoal-700">
@@ -74,7 +74,7 @@ export default function ThePropertyPage() {
                     <li className="flex gap-x-3">
                       <MapPin
                         aria-hidden="true"
-                        className="mt-1 size-5 flex-none text-eucalyptus-600"
+                        className="mt-1 size-5 flex-none text-eucalypt-600"
                       />
                       <span>
                         Located in NSW's mid-north coast, 5 km from Stroud, 70 km to Newcastle, and
@@ -85,7 +85,7 @@ export default function ThePropertyPage() {
                     <li className="flex gap-x-3">
                       <Clock
                         aria-hidden="true"
-                        className="mt-1 size-5 flex-none text-eucalyptus-600"
+                        className="mt-1 size-5 flex-none text-eucalypt-600"
                       />
                       <span>
                         Previously an alpaca farm, Carinya Parc has entered a deliberate rest period
@@ -96,7 +96,7 @@ export default function ThePropertyPage() {
                     <li className="flex gap-x-3">
                       <Droplets
                         aria-hidden="true"
-                        className="mt-1 size-5 flex-none text-eucalyptus-600"
+                        className="mt-1 size-5 flex-none text-eucalypt-600"
                       />
                       <span>
                         The property includes five farm dams across undulating hills, frost-free
@@ -125,7 +125,7 @@ export default function ThePropertyPage() {
                   <div className="mt-10 flex items-center gap-x-6">
                     <Link
                       href="/regenerate/"
-                      className="rounded-md bg-eucalyptus-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-eucalyptus-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalyptus-600"
+                      className="rounded-md bg-eucalypt-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-eucalypt-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalypt-600"
                     >
                       Get Involved
                     </Link>

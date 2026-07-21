@@ -24,12 +24,12 @@ export function SectionHeader({ children }: { children: ReactNode }) {
 }
 
 export function SectionTag({ children }: { children: ReactNode }) {
-  return <div className="text-base/7 font-semibold text-eucalyptus-300">{children}</div>;
+  return <div className="text-base/7 font-semibold text-eucalypt-300">{children}</div>;
 }
 
 export function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-eucalyptus-600 sm:text-5xl">
+    <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-eucalypt-600 sm:text-5xl">
       {children}
     </h1>
   );
@@ -55,7 +55,7 @@ export function TextContent({ children }: { children: ReactNode }) {
 
 export function ContentHeading({ children }: { children: ReactNode }) {
   return (
-    <h2 className="text-2xl font-semibold tracking-tight text-pretty text-eucalyptus-600">
+    <h2 className="text-2xl font-semibold tracking-tight text-pretty text-eucalypt-600">
       {children}
     </h2>
   );
@@ -88,7 +88,7 @@ export function ImageTile({
   return (
     <div
       className={cn(
-        'aspect-square overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-eucalyptus-100/20 relative',
+        'aspect-square overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-eucalypt-100/20 relative',
         { '-mt-8 lg:-mt-40': offset },
       )}
     >
@@ -109,15 +109,15 @@ export function ImageTile({
 export function StatsSection({ children }: { children: ReactNode }) {
   return (
     <div className="max-lg:mt-16 lg:col-span-1">
-      <hr className="my-6 border-t border-eucalyptus-100/30" />
+      <hr className="my-6 border-t border-eucalypt-100/30" />
       {children}
-      <hr className="my-6 border-t border-eucalyptus-100/30" />
+      <hr className="my-6 border-t border-eucalypt-100/30" />
     </div>
   );
 }
 
 export function StatsLabel({ children }: { children: ReactNode }) {
-  return <p className="text-base/7 font-semibold text-eucalyptus-400">{children}</p>;
+  return <p className="text-base/7 font-semibold text-eucalypt-400">{children}</p>;
 }
 
 export function StatsGrid({ children }: { children: ReactNode }) {
@@ -138,13 +138,13 @@ export function StatItem({
   return (
     <div
       className={cn('flex flex-col gap-y-2', {
-        'border-b border-dotted border-eucalyptus-100/30 pb-4': !lastInRow,
-        'max-sm:border-b max-sm:border-dotted max-sm:border-eucalyptus-100/30 max-sm:pb-4':
+        'border-b border-dotted border-eucalypt-100/30 pb-4': !lastInRow,
+        'max-sm:border-b max-sm:border-dotted max-sm:border-eucalypt-100/30 max-sm:pb-4':
           lastInRow && !suffix,
       })}
     >
       <dt className="text-sm/6 text-gray-600">{label}</dt>
-      <dd className="order-first text-6xl font-semibold tracking-tight text-eucalyptus-600">
+      <dd className="order-first text-6xl font-semibold tracking-tight text-eucalypt-600">
         {suffix && suffix.startsWith('$') && '$'}
         <span>{value}</span>
         {suffix && !suffix.startsWith('$') ? suffix : ''}

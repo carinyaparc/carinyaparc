@@ -26,7 +26,7 @@ export default function SubscribeModal({ open, onOpenChange }: SubscribeModalPro
           <span className="sr-only">Close</span>
         </DialogClose>
         <DialogHeader>
-          <DialogTitle className="text-4xl font-bold text-eucalyptus-600 m-6">
+          <DialogTitle className="text-4xl font-bold text-eucalypt-600 m-6">
             Stay Connected to The Land
           </DialogTitle>
           <DialogDescription className="px-6 mt-6 text-base/7 text-left text-charcoal-600">
@@ -35,21 +35,21 @@ export default function SubscribeModal({ open, onOpenChange }: SubscribeModalPro
           <div className="px-6 text-left">
             <ul role="list" className="mt-6 space-y-4">
               <li className="flex gap-x-3">
-                <Shovel className="h-5 w-5 text-eucalyptus-300 mt-0.5" />
+                <Shovel className="h-5 w-5 text-eucalypt-300 mt-0.5" />
                 <span className="text-sm">
                   <strong className="font-semibold">Invitations to participate</strong> in planting
                   days, workshops and other opportunities
                 </span>
               </li>
               <li className="flex gap-x-3">
-                <Sprout className="h-5 w-5 text-eucalyptus-300 mt-0.5" />
+                <Sprout className="h-5 w-5 text-eucalypt-300 mt-0.5" />
                 <span className="text-sm">
                   <strong className="font-semibold">Seasonal recipes</strong> that follow the rhythm
                   of our developing gardens
                 </span>
               </li>
               <li className="flex gap-x-3">
-                <Newspaper className="h-5 w-5 text-eucalyptus-300 mt-0.5" />
+                <Newspaper className="h-5 w-5 text-eucalypt-300 mt-0.5" />
                 <span className="text-sm">
                   <strong className="font-semibold">Inspiring stories</strong> of regeneration and
                   transformation of our landscape

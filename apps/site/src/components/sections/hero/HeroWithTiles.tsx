@@ -48,16 +48,16 @@ export default function HeroWithTiles({
 }: HeroWithTilesProps) {
   const isDark = variant === 'dark';
 
-  const textColorClass = isDark ? 'text-white' : 'text-eucalyptus-600';
-  const subtitleColorClass = isDark ? 'text-eucalyptus-300' : 'text-eucalyptus-400';
-  const descriptionColorClass = isDark ? 'text-eucalyptus-100' : 'text-charcoal-500';
+  const textColorClass = isDark ? 'text-white' : 'text-eucalypt-600';
+  const subtitleColorClass = isDark ? 'text-eucalypt-300' : 'text-eucalypt-400';
+  const descriptionColorClass = isDark ? 'text-eucalypt-100' : 'text-charcoal-500';
   const primaryButtonClass = isDark
-    ? 'bg-eucalyptus-600 text-white hover:bg-eucalyptus-500'
-    : 'bg-eucalyptus-600 text-white hover:bg-eucalyptus-500';
+    ? 'bg-eucalypt-600 text-white hover:bg-eucalypt-500'
+    : 'bg-eucalypt-600 text-white hover:bg-eucalypt-500';
   const secondaryButtonClass = isDark ? 'text-white' : 'text-charcoal-900';
   const backgroundClass = isDark
-    ? 'from-eucalyptus-600 to-eucalyptus-800'
-    : 'from-eucalyptus-100 to-eucalyptus-300';
+    ? 'from-eucalypt-600 to-eucalypt-800'
+    : 'from-eucalypt-100 to-eucalypt-300';
 
   return (
     <div className={cn('relative isolate', className)}>

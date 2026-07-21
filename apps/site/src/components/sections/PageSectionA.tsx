@@ -12,7 +12,7 @@ interface PageSectionAProps {
 
 export function PageSectionA({ children, className = '' }: PageSectionAProps) {
   return (
-    <div className={cn('overflow-hidden bg-eucalyptus-600 py-24 sm:py-32', className)}>
+    <div className={cn('overflow-hidden bg-eucalypt-600 py-24 sm:py-32', className)}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           {children}

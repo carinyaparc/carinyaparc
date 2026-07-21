@@ -77,21 +77,21 @@ export default function SubscribePage() {
               When you join our mailing list, you'll be the first to receive:
               <ul role="list" className="mt-8 space-y-6">
                 <li className="flex gap-x-3">
-                  <Shovel className="h-6 w-6 text-eucalyptus-300" />
+                  <Shovel className="h-6 w-6 text-eucalypt-300" />
                   <span>
                     <strong className="font-semibold">Invitations to Participate:</strong> Early
                     notifications about planting days, workshops and volunteer opportunities
                   </span>
                 </li>
                 <li className="flex gap-x-3">
-                  <Sprout className="h-6 w-6 text-eucalyptus-300" />
+                  <Sprout className="h-6 w-6 text-eucalypt-300" />
                   <span>
                     <strong className="font-semibold">Seasonal Inspiration:</strong> Recipes and
                     cooking tips that follow the rhythm of our developing gardens
                   </span>
                 </li>
                 <li className="flex gap-x-3">
-                  <Newspaper className="h-6 w-6 text-eucalyptus-300" />
+                  <Newspaper className="h-6 w-6 text-eucalypt-300" />
                   <span>
                     <strong className="font-semibold">Regeneration Stories:</strong> Photo-rich
                     updates showing the transformation of our landscape over time
@@ -106,10 +106,10 @@ export default function SubscribePage() {
         <div className="bg-white py-16">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:text-center">
-              <h2 className="text-xl font-semibold leading-7 text-eucalyptus-300">
+              <h2 className="text-xl font-semibold leading-7 text-eucalypt-300">
                 What Can You Expect?
               </h2>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-eucalyptus-600 sm:text-4xl">
+              <p className="mt-2 text-3xl font-bold tracking-tight text-eucalypt-600 sm:text-4xl">
                 Authentic Stories
               </p>
               <p className="mt-6 text-lg leading-8 text-charcoal-600">
@@ -121,7 +121,7 @@ export default function SubscribePage() {
             <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
               <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
                 <div className="flex flex-col">
-                  <dt className="text-base font-semibold leading-7 text-eucalyptus-600">
+                  <dt className="text-base font-semibold leading-7 text-eucalypt-600">
                     Seasonal Rhythm
                   </dt>
                   <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal-600">
@@ -133,7 +133,7 @@ export default function SubscribePage() {
                   </dd>
                 </div>
                 <div className="flex flex-col">
-                  <dt className="text-base font-semibold leading-7 text-eucalyptus-600">
+                  <dt className="text-base font-semibold leading-7 text-eucalypt-600">
                     Practical Value
                   </dt>
                   <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal-600">
@@ -145,7 +145,7 @@ export default function SubscribePage() {
                   </dd>
                 </div>
                 <div className="flex flex-col">
-                  <dt className="text-base font-semibold leading-7 text-eucalyptus-600">
+                  <dt className="text-base font-semibold leading-7 text-eucalypt-600">
                     Privacy Commitment
                   </dt>
                   <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal-600">

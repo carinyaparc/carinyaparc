@@ -4,7 +4,7 @@ export function NavLink({ href, children }: { href: string; children: React.Reac
   return (
     <Link
       href={href}
-      className="inline-block rounded-lg px-2 py-1 text-sm text-eucalyptus-600 hover:bg-eucalyptus-100 hover:text-eucalyptus-600"
+      className="inline-block rounded-lg px-2 py-1 text-sm text-eucalypt-600 hover:bg-eucalypt-100 hover:text-eucalypt-600"
     >
       {children}
     </Link>

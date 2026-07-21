@@ -38,7 +38,7 @@
 
   .recipe-ingredients li::before {
     content: '•';
-    color: var(--color-eucalyptus-600);
+    color: var(--color-eucalypt-600);
     font-weight: 700; /* font-bold */
     margin-right: 0.5rem; /* mr-2 */
     font-size: 1.25rem; /* text-xl */

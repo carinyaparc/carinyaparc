@@ -15,7 +15,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
   ].filter(Boolean);
 
   return (
-    <article className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-eucalyptus-600 px-8 pt-80 pb-8 sm:pt-48 lg:pt-80">
+    <article className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-eucalypt-600 px-8 pt-80 pb-8 sm:pt-48 lg:pt-80">
       <Image
         alt={recipe.title}
         src={recipe.imageUrl}
@@ -25,10 +25,10 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
         sizes="(max-width: 768px) 100vw, 33vw"
         quality={80}
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-eucalyptus-600 via-eucalyptus-600/40" />
-      <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-eucalyptus-600/10 ring-inset" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-eucalypt-600 via-eucalypt-600/40" />
+      <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-eucalypt-600/10 ring-inset" />
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 overflow-hidden text-sm/6 text-eucalyptus-200">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 overflow-hidden text-sm/6 text-eucalypt-200">
         <time dateTime={recipe.datetime}>{recipe.formattedDate}</time>
         {meta.length > 0 && <span>{meta.join(' • ')}</span>}
       </div>
@@ -41,7 +41,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
         </Link>
       </h3>
       {recipe.description && (
-        <p className="mt-2 line-clamp-2 text-sm/6 text-eucalyptus-100">{recipe.description}</p>
+        <p className="mt-2 line-clamp-2 text-sm/6 text-eucalypt-100">{recipe.description}</p>
       )}
     </article>
   );

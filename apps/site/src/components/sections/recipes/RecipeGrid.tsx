@@ -18,10 +18,10 @@ export async function RecipeGrid({ title, subtitle }: RecipeGridProps) {
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-4xl font-semibold tracking-tight text-balance text-eucalyptus-600 sm:text-5xl">
+        <h2 className="text-4xl font-semibold tracking-tight text-balance text-eucalypt-600 sm:text-5xl">
           {title}
         </h2>
-        <p className="mt-2 text-lg/8 text-eucalyptus-300">{subtitle}</p>
+        <p className="mt-2 text-lg/8 text-eucalypt-300">{subtitle}</p>
       </div>
 
       {recipes.length > 0 ? (
