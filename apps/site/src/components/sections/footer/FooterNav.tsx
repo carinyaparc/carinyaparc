@@ -1,6 +1,5 @@
 /**
  * FooterNav sub-component - Extracted from Footer
- * Maps to: * Task: T4.2
  */
 
 import Link from 'next/link';
@@ -30,7 +29,7 @@ export default function FooterNav({ sections }: FooterNavProps) {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className="text-sm text-footer-foreground hover:opacity-70 transition-opacity"
+                  className="text-sm text-footer-foreground hover:text-wattle transition-opacity"
                 >
                   {item.name}
                 </Link>
