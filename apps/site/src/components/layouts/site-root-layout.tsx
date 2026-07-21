@@ -13,15 +13,22 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export default function SiteRootLayout({
   children,
+  showNewsletter = true,
 }: Readonly<{
   children: React.ReactNode;
+  /**
+   * Render the global Newsletter band. Disabled on Journal (blog) routes,
+   * which supply their own JournalSubscribeBand and must not stack a second,
+   * near-identical email-capture band before the footer.
+   */
+  showNewsletter?: boolean;
 }>) {
   return (
     <SiteStaticShell>
       <Providers>
         <Header navigation={navigation} />
         <main className="flex-1">{children}</main>
-        <Newsletter />
+        {showNewsletter && <Newsletter />}
         <Footer />
         <ConsentGate />
         <Toaster />
