@@ -5,6 +5,10 @@ content/
 public/
 coverage/
 
+# Payload-generated files (emitted unformatted by `payload generate:*`)
+apps/site/src/payload-types.ts
+**/importMap.js
+
 # Build output
 .next/
 out/
