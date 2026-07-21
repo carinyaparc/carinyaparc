@@ -98,6 +98,7 @@ export default function Footer() {
                 A regenerative farm focused on restoring the land and sustainable agricultural
                 practices.
               </p>
+              <SocialLinks links={socialLinks} />
               <p className="text-sm text-footer-muted max-w-xs">
                 <span>
                   Made with &nbsp;
@@ -127,7 +128,6 @@ export default function Footer() {
               </Link>
             </div>
           </div>
-          <SocialLinks links={socialLinks} />
         </div>
       </div>
 
