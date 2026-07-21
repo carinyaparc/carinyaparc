@@ -131,7 +131,7 @@ export default function SubscribeSection({
       <div className="mx-auto max-w-xl lg:max-w-lg">
         {status === 'error' && (
           <Alert variant="destructive" className="mb-6">
-            <AlertCircle className="h-5 w-5 text-red-500 mr-2 mt-0.5 shrink-0" />
+            <AlertCircle className="h-5 w-5 text-destructive mr-2 mt-0.5 shrink-0" />
             <div>
               <p className="text-sm font-semibold">Unable to subscribe</p>
               <p className="text-sm mt-1">{errorMessage}</p>
@@ -143,7 +143,7 @@ export default function SubscribeSection({
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             {/* Honeypot field - hidden from humans */}
             <div className="sm:col-span-2" aria-hidden="true" style={{ display: 'none' }}>
-              <label htmlFor="website" className="block text-sm/6 font-semibold text-charcoal-600">
+              <label htmlFor="website" className="block text-sm/6 font-semibold text-charcoal">
                 Website
               </label>
               <div className="mt-2.5">
@@ -228,11 +228,11 @@ export default function SubscribeSection({
               Subscribe to Our Newsletter
             </Button>
 
-            <p className="mt-4 text-sm/6 text-gray-500 text-center">
+            <p className="mt-4 text-sm/6 text-stone text-center">
               We promise to respect your privacy and your inbox. Read our{' '}
               <Link
                 href="/legal/privacy-policy"
-                className="font-semibold text-eucalypt-600 hover:text-eucalypt-500"
+                className="font-semibold text-eucalypt-600 hover:opacity-70"
               >
                 Privacy Policy
               </Link>

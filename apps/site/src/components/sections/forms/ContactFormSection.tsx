@@ -186,7 +186,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
       {/* Error state UI */}
       {isError && (
         <Alert variant="destructive" className="mb-6">
-          <AlertCircle className="h-5 w-5 text-red-500 mr-2 mt-0.5 shrink-0" />
+          <AlertCircle className="h-5 w-5 text-destructive mr-2 mt-0.5 shrink-0" />
           <div>
             <p className="text-sm font-semibold">Unable to send message</p>
             <p className="text-sm mt-1">

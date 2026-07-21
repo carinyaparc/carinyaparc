@@ -34,23 +34,21 @@ export function Breadcrumb({ items, className, showOnHome = false }: BreadcrumbP
 
   return (
     <nav aria-label="Breadcrumb" className={cn('mb-6', className)}>
-      <ol className="flex items-center space-x-2 text-sm text-gray-600">
+      <ol className="flex items-center space-x-2 text-sm text-stone">
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1;
 
           return (
             <li key={item.url} className="flex items-center">
-              {index > 0 && (
-                <ChevronRight className="mx-2 h-4 w-4 text-gray-400" aria-hidden="true" />
-              )}
+              {index > 0 && <ChevronRight className="mx-2 h-4 w-4 text-stone" aria-hidden="true" />}
               {isLast ? (
-                <span className="font-medium text-gray-900" aria-current="page">
+                <span className="font-medium text-bark" aria-current="page">
                   {item.name}
                 </span>
               ) : (
                 <Link
                   href={item.url.replace(/^https?:\/\/[^/]+/, '')} // Convert absolute to relative
-                  className="hover:text-gray-900 transition-colors"
+                  className="hover:text-bark transition-colors"
                 >
                   {item.name}
                 </Link>
