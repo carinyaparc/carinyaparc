@@ -235,10 +235,10 @@ export default async function HomePage() {
         {/* Journal */}
         <section>
           <LatestPosts
-            title="From the journal"
+            title="Life on Pasture"
             limit={3}
             viewAllLink="/blog"
-            eyebrow="Life on pasture"
+            eyebrow="Our journal"
           />
         </section>
       </div>
