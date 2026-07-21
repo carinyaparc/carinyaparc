@@ -1,82 +1,64 @@
 export { metadata } from './metadata';
 
 import { Suspense } from 'react';
-import { PageHeader } from '@/src/components/sections/page-header';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
+
+import { PageIntro } from '@/components/sections/page';
 import {
   FeaturedPosts,
   FeaturedPostsSkeleton,
+  JournalCategoryFilter,
+  JournalSubscribeBand,
   PaginatedPosts,
   PaginatedPostsSkeleton,
 } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
-import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
-
-// Page header configuration
-const pageHeaderProps = {
-  variant: 'dark' as const,
-  align: 'center' as const,
-  title: 'Life on Pasture',
-  subtitle: 'Our Blog',
-  description:
-    'Follow our regeneration journey through detailed updates, insights, and lessons learned as we transform Carinya Parc into a thriving ecosystem.',
-  backgroundImage: '/images/farm-track-gate.jpg',
-  backgroundImageAlt: 'Carinya Parc landscape',
-};
+import { getCachedBlogCategories } from '@/lib/payload/cache';
 
 export const revalidate = 86_400;
 
-export default async function BlogPage() {
+const POSTS_PER_PAGE = 6;
+
+interface BlogPageProps {
+  searchParams: Promise<{ category?: string }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  const { category: categorySlug } = await searchParams;
+  const categories = await getCachedBlogCategories();
+
   return (
     <>
-      {/* Schema markup for blog listing */}
       <SchemaMarkup type="page" />
 
-      <div className="min-h-screen">
-        {/* Back Button */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          {/* Breadcrumb navigation */}
-          <Breadcrumb />
+      <div className="min-h-screen bg-paperbark">
+        <PageIntro
+          eyebrow="Life on pasture · The Branch, NSW"
+          title="Field notes from a farm coming back to life"
+          description="Follow the regeneration of 42 hectares in real time — the plantings, the setbacks, the soil results and the seasons. Read along, then come get your hands dirty."
+          titleAs="h1"
+          className="pb-8 pt-12 sm:pt-16"
+        />
 
-          <Button
-            render={<Link href="/" />}
-            variant="ghost"
-            className="text-green-600 hover:text-green-700"
-          >
-            <span className="flex items-center">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
-            </span>
-          </Button>
-        </div>
+        {!categorySlug && (
+          <Suspense fallback={<FeaturedPostsSkeleton />}>
+            <FeaturedPosts limit={1} />
+          </Suspense>
+        )}
 
-        {/* Page Header */}
-        <section>
-          <PageHeader {...pageHeaderProps} />
-        </section>
+        <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
 
-        <Suspense fallback={<FeaturedPostsSkeleton />}>
-          <FeaturedPosts limit={1} />
-        </Suspense>
-
-        <section className="py-20 bg-white">
-          <Suspense
-            fallback={
-              <PaginatedPostsSkeleton
-                title="Recent Articles"
-                subtitle="Explore our latest insights and updates from the farm"
-              />
-            }
-          >
+        <section className="py-9 pb-20">
+          <Suspense fallback={<PaginatedPostsSkeleton count={POSTS_PER_PAGE} />}>
             <PaginatedPosts
-              title="Recent Articles"
-              subtitle="Explore our latest insights and updates from the farm"
               page={1}
+              perPage={POSTS_PER_PAGE}
+              excludeFeatured={!categorySlug}
+              categorySlug={categorySlug}
             />
           </Suspense>
         </section>
+
+        <JournalSubscribeBand />
       </div>
     </>
   );

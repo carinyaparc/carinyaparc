@@ -2,24 +2,17 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import { PageHeader } from '@/src/components/sections/page-header';
-import { PaginatedPosts, PaginatedPostsSkeleton } from '@/src/components/sections/blog';
-import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
-import { getCachedBlogPostsPage } from '@/lib/payload/cache';
+import { PageIntro } from '@/components/sections/page';
+import {
+  JournalCategoryFilter,
+  JournalSubscribeBand,
+  PaginatedPosts,
+  PaginatedPostsSkeleton,
+} from '@/src/components/sections/blog';
+import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
 import { BASE_URL } from '@/src/lib/constants';
 
 const POSTS_PER_PAGE = 6;
-
-const pageHeaderProps = {
-  variant: 'dark' as const,
-  align: 'center' as const,
-  title: 'Life on Pasture',
-  subtitle: 'Our Blog',
-  description:
-    'Follow our regeneration journey through detailed updates, insights, and lessons learned as we transform Carinya Parc into a thriving ecosystem.',
-  backgroundImage: '/images/farm-track-gate.jpg',
-  backgroundImageAlt: 'Carinya Parc landscape',
-};
 
 export const revalidate = 86_400;
 
@@ -29,7 +22,6 @@ function parsePageParam(raw: string): number | null {
   }
 
   const page = Number.parseInt(raw, 10);
-  // Page 1 lives at /blog/ — only deeper pages render here.
   return page >= 2 ? page : null;
 }
 
@@ -62,38 +54,55 @@ export async function generateStaticParams(): Promise<Array<{ page: string }>> {
   }));
 }
 
-export default async function BlogPageNumber({ params }: { params: Promise<{ page: string }> }) {
+interface BlogPageNumberProps {
+  params: Promise<{ page: string }>;
+  searchParams: Promise<{ category?: string }>;
+}
+
+export default async function BlogPageNumber({ params, searchParams }: BlogPageNumberProps) {
   const { page: rawPage } = await params;
+  const { category: categorySlug } = await searchParams;
   const page = parsePageParam(rawPage);
 
   if (!page) {
     notFound();
   }
 
-  const { totalPages } = await getCachedBlogPostsPage({ page, perPage: POSTS_PER_PAGE });
+  const { totalPages } = await getCachedBlogPostsPage({
+    page,
+    perPage: POSTS_PER_PAGE,
+    categorySlug,
+  });
 
   if (page > totalPages) {
     notFound();
   }
 
-  const title = `Articles — Page ${page}`;
-  const subtitle = 'Explore our insights and updates from the farm';
+  const categories = await getCachedBlogCategories();
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <Breadcrumb />
-      </div>
+    <div className="min-h-screen bg-paperbark">
+      <PageIntro
+        eyebrow="Life on pasture · The Branch, NSW"
+        title="Field notes from a farm coming back to life"
+        description="Follow the regeneration of 42 hectares in real time — the plantings, the setbacks, the soil results and the seasons."
+        titleAs="h1"
+        className="pb-8 pt-12 sm:pt-16"
+      />
 
-      <section>
-        <PageHeader {...pageHeaderProps} />
-      </section>
+      <JournalCategoryFilter
+        categories={categories}
+        activeSlug={categorySlug}
+        basePath={`/blog/page/${page}/`}
+      />
 
-      <section className="py-20 bg-white">
-        <Suspense fallback={<PaginatedPostsSkeleton title={title} subtitle={subtitle} />}>
-          <PaginatedPosts title={title} subtitle={subtitle} page={page} perPage={POSTS_PER_PAGE} />
+      <section className="py-9 pb-20">
+        <Suspense fallback={<PaginatedPostsSkeleton count={POSTS_PER_PAGE} />}>
+          <PaginatedPosts page={page} perPage={POSTS_PER_PAGE} categorySlug={categorySlug} />
         </Suspense>
       </section>
+
+      <JournalSubscribeBand />
     </div>
   );
 }

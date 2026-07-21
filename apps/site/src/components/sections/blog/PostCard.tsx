@@ -8,16 +8,23 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Post } from '@/src/lib/posts';
+import { cn } from '@/lib/cn';
 
 interface PostCardProps {
   post: Post;
+  variant?: 'default' | 'related';
 }
 
-export default function PostCard({ post }: PostCardProps) {
-  const category = post.tags?.[0] ?? 'Journal';
+export default function PostCard({ post, variant = 'default' }: PostCardProps) {
+  const category = post.category ?? post.tags?.[0] ?? 'Journal';
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-lg border border-line bg-paperbark shadow-md transition-all duration-150 hover:-translate-y-1 hover:shadow-lg">
+    <article
+      className={cn(
+        'group relative flex flex-col overflow-hidden rounded-lg border border-line shadow-md transition-all duration-150 hover:-translate-y-1 hover:shadow-lg',
+        variant === 'related' ? 'bg-paperbark' : 'bg-paperbark',
+      )}
+    >
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           alt={post.title}
@@ -39,10 +46,13 @@ export default function PostCard({ post }: PostCardProps) {
             {post.title}
           </Link>
         </h3>
-        {post.description && (
+        {post.description && variant === 'default' && (
           <p className="mt-2.5 line-clamp-2 text-[14.5px] leading-[1.55] text-stone">
             {post.description}
           </p>
+        )}
+        {variant === 'default' && (
+          <p className="mt-4 text-[13px] text-stone">{post.formattedDate}</p>
         )}
       </div>
     </article>

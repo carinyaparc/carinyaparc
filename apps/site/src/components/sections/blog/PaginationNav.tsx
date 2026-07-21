@@ -5,13 +5,20 @@ import { cn } from '@/lib/cn';
 interface PaginationNavProps {
   currentPage: number;
   totalPages: number;
+  categorySlug?: string;
 }
 
-function pageHref(page: number): string {
-  return page <= 1 ? '/blog/' : `/blog/page/${page}/`;
+function pageHref(page: number, categorySlug?: string): string {
+  const base = page <= 1 ? '/blog/' : `/blog/page/${page}/`;
+  if (!categorySlug) {
+    return base;
+  }
+
+  const separator = base.includes('?') ? '&' : '?';
+  return `${base}${separator}category=${encodeURIComponent(categorySlug)}`;
 }
 
-export default function PaginationNav({ currentPage, totalPages }: PaginationNavProps) {
+export default function PaginationNav({ currentPage, totalPages, categorySlug }: PaginationNavProps) {
   if (totalPages <= 1) {
     return null;
   }
@@ -19,12 +26,12 @@ export default function PaginationNav({ currentPage, totalPages }: PaginationNav
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <nav aria-label="Blog pages" className="mt-16 flex items-center justify-center gap-2">
+    <nav aria-label="Blog pages" className="mt-14 flex flex-wrap items-center justify-center gap-2">
       {currentPage > 1 && (
         <Link
-          href={pageHref(currentPage - 1)}
+          href={pageHref(currentPage - 1, categorySlug)}
           rel="prev"
-          className="rounded-md px-3 py-2 text-sm font-semibold text-eucalyptus-600 hover:bg-eucalyptus-100"
+          className="rounded-pill px-4 py-2 text-sm font-semibold text-eucalypt-600 transition-colors hover:bg-eucalypt-50"
         >
           ← Previous
         </Link>
@@ -33,13 +40,13 @@ export default function PaginationNav({ currentPage, totalPages }: PaginationNav
       {pages.map((page) => (
         <Link
           key={page}
-          href={pageHref(page)}
+          href={pageHref(page, categorySlug)}
           aria-current={page === currentPage ? 'page' : undefined}
           className={cn(
-            'rounded-md px-3.5 py-2 text-sm font-semibold',
+            'rounded-pill px-3.5 py-2 text-sm font-semibold transition-colors',
             page === currentPage
-              ? 'bg-eucalyptus-600 text-white'
-              : 'text-eucalyptus-600 hover:bg-eucalyptus-100',
+              ? 'bg-eucalypt-600 text-primary-foreground'
+              : 'text-eucalypt-600 hover:bg-eucalypt-50',
           )}
         >
           {page}
@@ -48,9 +55,9 @@ export default function PaginationNav({ currentPage, totalPages }: PaginationNav
 
       {currentPage < totalPages && (
         <Link
-          href={pageHref(currentPage + 1)}
+          href={pageHref(currentPage + 1, categorySlug)}
           rel="next"
-          className="rounded-md px-3 py-2 text-sm font-semibold text-eucalyptus-600 hover:bg-eucalyptus-100"
+          className="rounded-pill px-4 py-2 text-sm font-semibold text-eucalypt-600 transition-colors hover:bg-eucalypt-50"
         >
           Next →
         </Link>
