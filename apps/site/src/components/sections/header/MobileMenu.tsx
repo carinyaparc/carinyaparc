@@ -31,7 +31,7 @@ export default function MobileMenu({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm lg:hidden"
+      className="fixed inset-0 z-50 bg-[rgba(18,38,26,0.45)] backdrop-blur-sm lg:hidden"
       onClick={onClose}
     >
       <motion.nav
@@ -40,17 +40,17 @@ export default function MobileMenu({
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'tween', duration: 0.3 }}
-        className="fixed right-0 top-0 bottom-0 w-full max-w-xs bg-charcoal-900 shadow-lg p-6 sm:max-w-sm sm:ring-1 sm:ring-white/10"
+        className="fixed right-0 top-0 bottom-0 w-full max-w-xs bg-eucalypt-900 shadow-lg p-6 sm:max-w-sm"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-2">
-            <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
-              <span className="text-xl font-bold text-white">Carinya Parc</span>
-            </Link>
-          </div>
+          <Link href="/" className="hover:opacity-70 transition-opacity duration-150" onClick={onClose}>
+            <span className="font-heading text-lg tracking-[0.3em] uppercase text-primary-foreground">
+              Carinya&nbsp;Parc
+            </span>
+          </Link>
           <button
-            className="-m-2.5 rounded-md p-2.5 text-gray-400"
+            className="-m-2.5 rounded-pill p-2.5 text-[#EDE3C9] hover:opacity-70"
             onClick={onClose}
             aria-label="Close menu"
           >
@@ -59,37 +59,44 @@ export default function MobileMenu({
         </div>
 
         <div className="mt-6 flow-root">
-          <div className="-my-6 divide-y divide-charcoal-100/25">
-            <div className="space-y-2 py-6">
+          <div className="-my-6 divide-y divide-eucalypt-800">
+            <div className="space-y-1 py-6">
               {navigation
                 .filter((item) => item.visible !== false)
                 .map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-gray-800"
+                    className="-mx-3 block rounded-lg px-3 py-3 text-base font-medium text-[#EDE3C9] hover:opacity-70 border-b border-eucalypt-800 last:border-0"
                     onClick={onClose}
                   >
                     {item.label ? (
                       <span>{item.label}</span>
                     ) : (
                       <span className="flex flex-col">
-                        <span className="text-base font-bold text-eucalyptus-400">{item.verb}</span>
-                        <span className="text-sm font-normal">{item.rest}</span>
+                        <span className="text-base font-semibold text-fleece">{item.verb}</span>
+                        <span className="text-sm font-normal text-[#B7C9B0]">{item.rest}</span>
                       </span>
                     )}
                   </Link>
                 ))}
             </div>
-            <div className="py-6">
+            <div className="py-6 space-y-3">
+              <Link
+                href="/regenerate"
+                onClick={onClose}
+                className="block w-full rounded-pill bg-wattle px-5 py-3.5 text-center text-sm font-semibold text-kangaroo-900 hover:bg-kangaroo-400 transition-colors"
+              >
+                Get involved
+              </Link>
               <button
                 onClick={() => {
                   onClose();
                   onSubscribeClick();
                 }}
-                className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800 w-full text-left"
+                className="block w-full rounded-pill border border-fleece/40 px-5 py-3 text-center text-sm font-semibold text-[#EDE3C9] hover:bg-fleece/10 transition-colors"
               >
-                Follow our Journey
+                Subscribe
               </button>
             </div>
           </div>

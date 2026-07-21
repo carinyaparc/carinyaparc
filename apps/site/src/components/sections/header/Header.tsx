@@ -34,14 +34,16 @@ export default function Header({ navigation }: HeaderProps) {
 
   // Detect scroll position to change header background
   useEffect(() => {
+    if (!isHomePage) {
+      setIsScrolled(true);
+      return;
+    }
+
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 50);
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -60,35 +62,41 @@ export default function Header({ navigation }: HeaderProps) {
     };
   }, [mobileMenuOpen]);
 
-  // Apply styles based on scroll position or page
-  const headerClass =
-    isScrolled || !isHomePage
-      ? 'fixed top-4 left-0 right-0 bg-white text-charcoal-300 shadow-md'
-      : 'absolute top-4 left-0 right-0 bg-transparent text-white';
+  const isSolid = isScrolled || !isHomePage;
 
-  const hoverClass = 'hover:bg-eucalyptus-100 rounded-lg';
+  const headerClass = isSolid
+    ? 'sticky top-0 bg-fleece text-charcoal border-b border-line'
+    : 'absolute top-0 left-0 right-0 bg-transparent text-fleece';
 
   return (
     <>
       <header className={cn('z-40 transition-all duration-300', headerClass)}>
         <nav
           aria-label="Main navigation"
-          className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
+          className="mx-auto flex max-w-[1240px] items-center justify-between gap-5 px-6 py-[22px] lg:px-14"
         >
-          <div className="flex lg:flex-1">
-            <div className="flex items-center space-x-2">
-              <Link href="/" className="hover:opacity-80 transition-opacity duration-300">
-                <span className="text-2xl font-bold text-eucalyptus-600 transition-colors duration-300">
-                  Carinya Parc
-                </span>
-              </Link>
-            </div>
+          <div className="flex flex-1">
+            <Link href="/" className="hover:opacity-70 transition-opacity duration-150">
+              <span
+                className={cn(
+                  'font-heading text-xl tracking-[0.3em] uppercase',
+                  isSolid ? 'text-eucalypt-600' : 'text-fleece',
+                )}
+              >
+                Carinya&nbsp;Parc
+              </span>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
           <div className="flex lg:hidden">
             <button
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white transition-colors duration-300"
+              className={cn(
+                '-m-2.5 inline-flex items-center justify-center rounded-pill border px-3 py-2.5 transition-colors duration-150',
+                isSolid
+                  ? 'border-line text-bark bg-fleece'
+                  : 'border-fleece/50 text-fleece bg-fleece/14',
+              )}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -99,7 +107,12 @@ export default function Header({ navigation }: HeaderProps) {
           </div>
 
           {/* Desktop navigation */}
-          <div className="hidden lg:flex flex-1 justify-evenly max-w-3xl mx-auto">
+          <div
+            className={cn(
+              'hidden lg:flex flex-1 justify-end items-center gap-8 text-[15px] font-medium',
+              isSolid ? 'text-charcoal' : 'text-fleece',
+            )}
+          >
             {navigation
               .filter((item) => item.visible !== false)
               .map((item) => (
@@ -107,31 +120,40 @@ export default function Header({ navigation }: HeaderProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'transition-colors duration-300 flex flex-col items-start text-left px-2 py-1',
-                    hoverClass,
-                    { 'text-eucalyptus-100': pathname === item.href },
+                    'transition-opacity duration-150 hover:opacity-70',
+                    pathname === item.href && 'opacity-70',
                   )}
                 >
                   {item.label ? (
                     <span>{item.label}</span>
                   ) : (
-                    <span className="flex flex-col items-start">
-                      <span className="text-base font-bold text-eucalyptus-400">{item.verb}</span>
-                      <span className="text-xs font-normal mt-1 whitespace-nowrap">
+                    <span className="flex flex-col items-start leading-tight">
+                      <span
+                        className={cn(
+                          'text-[15px] font-medium',
+                          isSolid ? 'text-eucalypt-600' : 'text-fleece',
+                        )}
+                      >
+                        {item.verb}
+                      </span>
+                      <span className="text-xs font-normal mt-0.5 whitespace-nowrap opacity-80">
                         {item.rest}
                       </span>
                     </span>
                   )}
                 </Link>
               ))}
-          </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <button
-              onClick={() => setSubscribeModalOpen(true)}
-              className={`rounded-md bg-eucalyptus-600 text-white hover:bg-eucalyptus-200 hover:text-eucalyptus-600 px-3 py-2 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalyptus-600 transition-colors duration-300`}
+            <Link
+              href="/regenerate"
+              className={cn(
+                'rounded-pill px-[22px] py-[11px] text-sm font-semibold transition-colors duration-150',
+                isSolid
+                  ? 'bg-eucalypt-600 text-primary-foreground hover:bg-eucalypt-700'
+                  : 'bg-wattle text-kangaroo-900 hover:bg-kangaroo-400',
+              )}
             >
-              Follow our Journey
-            </button>
+              Get involved
+            </Link>
           </div>
         </nav>
 

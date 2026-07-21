@@ -7,22 +7,33 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold shadow-xs transition-colors focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalyptus-600 disabled:pointer-events-none disabled:opacity-70 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-pill text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-45 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        default: 'bg-eucalyptus-600 text-white hover:bg-eucalyptus-500',
-        destructive: 'bg-earth-red text-white hover:bg-earth-red/90',
-        outline: 'border border-charcoal-300 bg-white text-charcoal-600 hover:bg-charcoal-50',
-        secondary: 'bg-harvest-600 text-charcoal-600 hover:bg-harvest-500',
-        ghost: 'hover:bg-eucalyptus-50 hover:text-eucalyptus-600',
-        link: 'text-eucalyptus-600 underline-offset-4 hover:underline shadow-none',
+        /** Eucalypt primary */
+        default:
+          'bg-eucalypt-600 text-primary-foreground hover:bg-eucalypt-700 shadow-none',
+        /** Wattle / kangaroo — high-emphasis CTAs */
+        secondary:
+          'bg-wattle text-kangaroo-900 hover:bg-kangaroo-400 shadow-none',
+        outline:
+          'border-[1.5px] border-eucalypt-600 bg-transparent text-eucalypt-600 hover:bg-eucalypt-50',
+        /** Ghost for on-photo / secondary paths */
+        ghost:
+          'bg-transparent text-bracken-500 hover:bg-bracken-50 border-[1.5px] border-transparent',
+        /** Glass outline for photo overlays */
+        'ghost-light':
+          'bg-fleece/12 border border-fleece/55 text-fleece hover:bg-fleece/22 shadow-none',
+        destructive:
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        link: 'text-eucalypt-600 underline-offset-4 hover:underline shadow-none',
       },
       size: {
-        default: 'h-10 px-3.5 py-2.5',
-        sm: 'h-9 rounded-md px-3 py-2 text-xs',
-        lg: 'h-11 rounded-md px-4 py-2.5 text-base',
-        icon: 'h-10 w-10',
+        default: 'px-7 py-3.5 text-[15px] leading-none',
+        sm: 'px-5 py-2.5 text-[13px] leading-none',
+        lg: 'px-[34px] py-4 text-[17px] leading-none',
+        icon: 'size-10',
       },
     },
     defaultVariants: {

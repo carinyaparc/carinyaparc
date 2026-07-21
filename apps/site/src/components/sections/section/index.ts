@@ -9,6 +9,7 @@ export {
   SectionTitle,
   SectionSubtitle,
   SectionText,
+  SectionTag,
   SectionActions,
   SectionButton,
   SectionLink,

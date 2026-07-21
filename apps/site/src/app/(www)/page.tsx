@@ -9,7 +9,7 @@ import {
   HeroBackgroundImage,
   HeroTitle,
   HeroText,
-  HeroLocation,
+  HeroEyebrow,
   HeroActions,
   HeroButton,
 } from '@/src/components/sections/hero';
@@ -20,10 +20,12 @@ import {
   SectionTitle,
   SectionSubtitle,
   SectionText,
+  SectionTag,
   SectionActions,
   SectionButton,
   SectionLink,
 } from '@/src/components/sections/section';
+import { ImpactStats } from '@/src/components/sections/stats/ImpactStats';
 import { LatestPosts } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 
@@ -35,42 +37,51 @@ export default async function HomePage() {
       {/* Schema markup for home page */}
       <SchemaMarkup type="page" includeLocalBusiness={true} />
 
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-paperbark">
         {/* Hero Section */}
         <section>
           <Hero>
             <HeroBackgroundImage src="/images/hero-home.jpg" alt="Carinya Parc Hero" priority />
             <HeroContent>
+              <HeroEyebrow>The Branch · Upper Hunter, NSW</HeroEyebrow>
               <HeroTitle>
-                Restoring the Land,
-                <span className="text-eucalyptus-600"> Nurturing the Future</span>
+                Restoring the land,
+                <br />
+                nurturing the future
               </HeroTitle>
               <HeroText>
-                Welcome to Carinya Parc. We're creating a living example of how we can heal the
-                land, grow nutrient-dense food and build community through regenerative agriculture.
+                A peaceful home for land, food &amp; community. We&apos;re healing 42 hectares of
+                degraded country and growing nutrient-dense food through regenerative agriculture —
+                and we&apos;d love your help.
               </HeroText>
-              <HeroLocation>The Branch NSW 2425</HeroLocation>
               <HeroActions>
-                <HeroButton href="/about">Learn Our Story →</HeroButton>
+                <HeroButton href="/regenerate" variant="secondary">
+                  Support our work →
+                </HeroButton>
+                <HeroButton href="/#stay" variant="ghost-light">
+                  Join the journey
+                </HeroButton>
               </HeroActions>
             </HeroContent>
           </Hero>
         </section>
 
+        <ImpactStats />
+
         {/* Features Section */}
-        <section className="bg-white py-12 sm:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl lg:text-4xl font-bold text-eucalyptus-600 mb-4">
+        <section className="bg-paperbark py-12 sm:py-16">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+            <div className="mb-16 text-center">
+              <h2 className="mb-4 font-heading text-3xl font-normal text-eucalypt-600 lg:text-4xl">
                 Our Mission
               </h2>
-              <p className="text-xl text-eucalyptus-500 max-w-3xl mx-auto">
+              <p className="mx-auto max-w-3xl text-xl text-charcoal">
                 To heal land and food systems through hands-on ecological restoration, delivering
                 nutrient-dense produce, and inspiring collective action.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid gap-8 md:grid-cols-3">
               {[
                 {
                   icon: Trees,
@@ -90,23 +101,23 @@ export default async function HomePage() {
                   description:
                     'True transformation requires many hands and open sharing. We partner with communities - inviting everyone to learn from our successes and setbacks.',
                 },
-              ].map((feature, index) => (
-                <div key={index}>
-                  <Card className="h-full bg-eucalyptus-600 border-eucalyptus-100 hover:shadow-xl transition-shadow">
-                    <CardContent className="p-8 text-center">
-                      <feature.icon className="h-12 w-12 text-eucalyptus-100 mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-white mb-4">{feature.title}</h3>
-                      <p className="text-eucalyptus-100">{feature.description}</p>
-                    </CardContent>
-                  </Card>
-                </div>
+              ].map((feature) => (
+                <Card key={feature.title} className="h-full bg-eucalypt-800 border-eucalypt-700 hover:shadow-lg">
+                  <CardContent className="p-8 text-center">
+                    <feature.icon className="mx-auto mb-4 h-12 w-12 text-primary-foreground" />
+                    <h3 className="mb-4 font-heading text-xl font-normal text-fleece">
+                      {feature.title}
+                    </h3>
+                    <p className="text-[#CFDAC7]">{feature.description}</p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
 
         {/*Our Story Section*/}
-        <section className="bg-eucalyptus-600 py-8 sm:py-12">
+        <section className="py-8 sm:py-12">
           <SectionWithImage variant="dark" imagePosition="right">
             <SectionImage imagePosition="right">
               <Image
@@ -121,10 +132,10 @@ export default async function HomePage() {
               <SectionSubtitle variant="dark">Our Story</SectionSubtitle>
               <SectionTitle variant="dark">Regenerating Land, Growing Community</SectionTitle>
               <SectionText variant="dark">
-                We're transforming 42 hectares (104 acres) of previously degraded land into thriving
-                woodland, diverse habitat corridors, and productive agroforestry systems. Founded by
-                Jonathan Daddia — strategic leader turned regenerative farmer — our approach
-                combines evidence-based ecological practices with community engagement.
+                We&apos;re transforming 42 hectares (104 acres) of previously degraded land into
+                thriving woodland, diverse habitat corridors, and productive agroforestry systems.
+                Founded by Jonathan Daddia — strategic leader turned regenerative farmer — our
+                approach combines evidence-based ecological practices with community engagement.
               </SectionText>
               <SectionActions>
                 <SectionButton href="/about" variant="dark">
@@ -136,7 +147,7 @@ export default async function HomePage() {
         </section>
 
         {/*Regenerate Section*/}
-        <section className="bg-white py-8 sm:py-12">
+        <section className="bg-fleece py-8 sm:py-12">
           <SectionWithImage variant="light" imagePosition="left">
             <SectionImage imagePosition="left">
               <Image
@@ -156,23 +167,28 @@ export default async function HomePage() {
                 How are we restoring biodiversity? Through planting 30,000+ native trees, enhancing
                 waterways and creating wildlife corridors spanning our Branch River frontage. You
                 can help:
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <SectionTag tone="eucalypt">Planting days</SectionTag>
+                  <SectionTag tone="kangaroo">Open reports</SectionTag>
+                  <SectionTag tone="bracken">Wildlife corridors</SectionTag>
+                </div>
                 <ul role="list" className="mt-8 space-y-6">
                   <li className="flex gap-x-3">
-                    <Shovel className="h-6 w-6 text-eucalyptus-300" />
+                    <Shovel className="h-6 w-6 text-eucalypt-500" />
                     <span>
                       <strong className="font-semibold">Join a planting day.</strong> Get your hands
                       dirty at an upcoming planting events.
                     </span>
                   </li>
                   <li className="flex gap-x-3">
-                    <Sprout className="h-6 w-6 text-eucalyptus-300" />
+                    <Sprout className="h-6 w-6 text-kangaroo-500" />
                     <span>
                       <strong className="font-semibold">Support regeneration.</strong> Provide
                       seedlings, fencing and ecological monitoring equipment.
                     </span>
                   </li>
                   <li className="flex gap-x-3">
-                    <Newspaper className="h-6 w-6 text-eucalyptus-300" />
+                    <Newspaper className="h-6 w-6 text-branch-500" />
                     <span>
                       <strong className="font-semibold">Follow our progress.</strong> Access open
                       reports tracking soil health, water quality and biodiversity improvements.
@@ -190,7 +206,7 @@ export default async function HomePage() {
         </section>
 
         {/*Experience Section*/}
-        <section className="bg-eucalyptus-600 py-8 sm:py-12">
+        <section className="py-8 sm:py-12">
           <SectionWithImage variant="dark" imagePosition="right">
             <SectionImage imagePosition="right">
               <Image
@@ -212,24 +228,24 @@ export default async function HomePage() {
                 wildlife corridors.
                 <ul role="list" className="mt-8 space-y-6">
                   <li className="flex gap-x-3">
-                    <Ticket className="h-6 w-6 text-eucalyptus-300" />
+                    <Ticket className="h-6 w-6 text-wattle" />
                     <span>
-                      <strong className="font-semibold">Book a tour.</strong> Small-group
+                      <strong className="font-semibold text-fleece">Book a tour.</strong> Small-group
                       experiences led by Jonno.
                     </span>
                   </li>
                   <li className="flex gap-x-3">
-                    <Trees className="h-6 w-6 text-eucalyptus-300" />
+                    <Trees className="h-6 w-6 text-wattle" />
                     <span>
-                      <strong className="font-semibold">Join a workshop.</strong> Learn practical
-                      skills in seed saving, soil building and food preservation
+                      <strong className="font-semibold text-fleece">Join a workshop.</strong> Learn
+                      practical skills in seed saving, soil building and food preservation
                     </span>
                   </li>
                   <li className="flex gap-x-3">
-                    <TentTree className="h-6 w-6 text-eucalyptus-300" />
+                    <TentTree className="h-6 w-6 text-wattle" />
                     <span>
-                      <strong className="font-semibold">Stay on the land.</strong> Connect deeply
-                      with the land through our rustic accommodation options.
+                      <strong className="font-semibold text-fleece">Stay on the land.</strong> Connect
+                      deeply with the land through our rustic accommodation options.
                     </span>
                   </li>
                 </ul>
@@ -238,7 +254,7 @@ export default async function HomePage() {
                 <SectionButton href="#" variant="dark">
                   Coming Soon!
                 </SectionButton>
-                <SectionLink href="#" variant="dark">
+                <SectionLink href="/#stay" variant="dark">
                   Sign Up! Be the first to know
                 </SectionLink>
               </SectionActions>
@@ -247,12 +263,13 @@ export default async function HomePage() {
         </section>
 
         {/*Blog Section */}
-        <section className="bg-white py-8 sm:py-12">
+        <section>
           <LatestPosts
-            title="Life on Pasture"
+            title="From the journal"
             subtitle="What's happening on the farm? Follow our journey as we transform Carinya Parc into a thriving regenerative farm."
             limit={3}
             viewAllLink="/blog"
+            eyebrow="Life on pasture"
           />
         </section>
       </div>

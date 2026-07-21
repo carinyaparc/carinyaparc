@@ -17,16 +17,23 @@ export function HeroBackgroundImage({
   priority?: boolean;
 }) {
   return (
-    <Image
-      src={src}
-      alt={alt}
-      fill
-      priority={priority}
-      sizes="100vw"
-      quality={85}
-      placeholder="blur"
-      blurDataURL={HERO_BLUR_DATA_URL}
-      className={cn('absolute inset-0 -z-10 object-cover opacity-80 brightness-50', className)}
-    />
+    <>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        sizes="100vw"
+        quality={85}
+        placeholder="blur"
+        blurDataURL={HERO_BLUR_DATA_URL}
+        className={cn('absolute inset-0 -z-20 object-cover', className)}
+      />
+      {/* Warm eucalypt-900 protection gradient (not black) */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(18,38,26,0.18)_0%,rgba(18,38,26,0.30)_45%,rgba(18,38,26,0.82)_100%)]"
+      />
+    </>
   );
 }

@@ -22,7 +22,7 @@ export default function SocialLinks({ links }: SocialLinksProps) {
         <a
           key={item.name}
           href={item.href}
-          className="text-charcoal-400 hover:text-eucalyptus-600 mx-2 transition-colors"
+          className="text-[#8CA085] hover:text-wattle mx-2 transition-colors"
           aria-label={`${item.name} social link`}
           target="_blank"
           rel="noopener noreferrer"

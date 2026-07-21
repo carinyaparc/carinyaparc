@@ -5,6 +5,7 @@
 
 'use client';
 
+import * as React from 'react';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import FooterNav from './FooterNav';
@@ -100,20 +101,20 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer>
+    <footer className="bg-eucalypt-900 text-[#C7D3BF]">
       {/* Main Footer */}
-      <div className="bg-charcoal-50 text-charcoal-600">
-        <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16 lg:px-8 lg:py-24">
+      <div className="px-6 pt-[70px] pb-10 sm:px-8 lg:px-14">
+        <div className="mx-auto max-w-[1240px]">
           <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-            <div className="space-y-6">
-              <div className="flex items-center space-x-2">
-                <h3 className="text-xl font-semibold text-eucalyptus-600">Carinya Parc</h3>
-              </div>
-              <p className="text-sm text-charcoal-400 max-w-xs">
+            <div className="space-y-5">
+              <h3 className="font-heading text-[22px] font-normal tracking-[0.3em] uppercase text-primary-foreground">
+                Carinya&nbsp;Parc
+              </h3>
+              <p className="text-sm text-[#9DB097] max-w-xs">
                 A regenerative farm focused on restoring the land and sustainable agricultural
                 practices.
               </p>
-              <p className="text-sm text-charcoal-400 max-w-xs">
+              <p className="text-sm text-[#9DB097] max-w-xs">
                 <span>
                   Made with &nbsp;
                   <Heart className="inline-block h-4 w-4" />
@@ -127,23 +128,17 @@ export default function Footer() {
       </div>
 
       {/* SubFooter */}
-      <div className="bg-charcoal-50 text-charcoal-400">
-        <div className="mx-auto max-w-7xl px-6 py-8 md:flex md:items-center md:justify-between lg:px-8 border-t border-charcoal-100">
-          <div className="md:flex md:items-center md:order-1">
-            <p className="text-center text-sm text-charcoal-400 md:text-left">
+      <div className="border-t border-eucalypt-700">
+        <div className="mx-auto flex max-w-[1240px] flex-col gap-4 px-6 py-8 md:flex-row md:items-center md:justify-between lg:px-14">
+          <div className="md:flex md:items-center">
+            <p className="text-center text-sm text-[#8CA085] md:text-left">
               &copy; {currentYear} Carinya Parc. All rights reserved.
             </p>
             <div className="ml-0 mt-4 md:ml-6 md:mt-0 flex justify-center md:justify-start space-x-4 text-sm">
-              <Link
-                href="/legal/privacy-policy"
-                className="text-charcoal-400 hover:text-eucalyptus-600"
-              >
+              <Link href="/legal/privacy-policy" className="text-[#8CA085] hover:text-wattle">
                 Privacy
               </Link>
-              <Link
-                href="/legal/terms-of-service"
-                className="text-charcoal-400 hover:text-eucalyptus-600"
-              >
+              <Link href="/legal/terms-of-service" className="text-[#8CA085] hover:text-wattle">
                 Terms
               </Link>
             </div>
@@ -153,16 +148,14 @@ export default function Footer() {
       </div>
 
       {/* Acknowledgement */}
-      <div className="bg-charcoal-400 text-charcoal-100">
-        <div className="mx-auto max-w-7xl px-6 py-8 md:flex md:items-center md:justify-between lg:px-8">
-          <div className="md:flex md:items-center md:order-1">
-            <p className="text-center text-sm md:text-left">
-              Carinya Parc acknowledges the Traditional Owners and Custodians of Country across
-              Australia. We recognise their enduring connection to land, waterways and community. We
-              pay our respects to Elders past, present and emerging, and celebrate the enduring
-              cultures, knowledge and resilience of Aboriginal and Torres Strait Islander peoples.
-            </p>
-          </div>
+      <div className="border-t border-eucalypt-700">
+        <div className="mx-auto max-w-[1240px] px-6 py-8 lg:px-14">
+          <p className="text-center text-[13px] text-[#8CA085] md:text-left">
+            Carinya Parc acknowledges the Traditional Owners and Custodians of Country across
+            Australia. We recognise their enduring connection to land, waterways and community. We
+            pay our respects to Elders past, present and emerging, and celebrate the enduring
+            cultures, knowledge and resilience of Aboriginal and Torres Strait Islander peoples.
+          </p>
         </div>
       </div>
     </footer>

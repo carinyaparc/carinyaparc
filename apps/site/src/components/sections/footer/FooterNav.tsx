@@ -23,13 +23,15 @@ export default function FooterNav({ sections }: FooterNavProps) {
       {sections.map((section, idx) => (
         <div key={section.title} className={idx % 2 === 0 ? 'md:grid md:grid-cols-2 md:gap-8' : ''}>
           <div className={idx % 2 === 0 && idx < sections.length - 1 ? '' : 'mt-10 md:mt-0'}>
-            <h3 className="text-sm font-semibold text-charcoal-600">{section.title}</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-wattle">
+              {section.title}
+            </h3>
             <ul role="list" className="mt-4 space-y-3">
               {section.items.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-charcoal-400 hover:text-eucalyptus-600 dark:text-charcoal-400 dark:hover:text-charcoal-100"
+                    className="text-sm text-[#C7D3BF] hover:opacity-70 transition-opacity"
                   >
                     {item.name}
                   </Link>

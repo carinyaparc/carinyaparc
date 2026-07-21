@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function Newsletter() {
   const [email, setEmail] = useState('');
@@ -38,90 +39,65 @@ export default function Newsletter() {
   };
 
   return (
-    <div className="bg-white py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="relative isolate flex flex-col gap-10 overflow-hidden bg-eucalyptus-600 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:flex-row xl:items-center xl:py-32">
-          <div className="flex-1 max-w-xl">
-            <h2 className="text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
-              Stay Connected to Us
+    <div id="stay" className="bg-paperbark py-16 sm:py-24">
+      <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+        <div className="relative isolate grid gap-10 overflow-hidden rounded-xl bg-eucalypt-600 px-7 py-11 shadow-lg sm:px-16 sm:py-[72px] lg:grid-cols-2 lg:items-center">
+          <div className="max-w-xl">
+            <h2 className="font-heading text-4xl font-normal tracking-tight text-balance text-fleece sm:text-5xl">
+              Stay connected to the land
             </h2>
-            <p className="mt-4 text-lg text-eucalyptus-100">
-              Stay updated with our regeneration progress, farm events or product announcements from
-              Carinya Parc.
+            <p className="mt-4 text-lg text-[#CFDAC7]">
+              Progress reports, planting days and produce news from Carinya Parc. We respect your
+              inbox.
             </p>
           </div>
-          <div className="flex-1 flex justify-center xl:justify-end">
-            <form
-              onSubmit={handleSubmit}
-              className="w-full max-w-md"
-              suppressHydrationWarning={true}
-            >
-              <div className="flex gap-x-4" suppressHydrationWarning={true}>
-                <label htmlFor="email-address" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={status === 'loading'}
-                  placeholder="Enter your email address"
-                  autoComplete="email"
-                  className="min-w-0 flex-auto rounded-md bg-white/10 px-3.5 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-white/75 focus:outline-2 focus:-outline-offset-2 focus:outline-white sm:text-sm/6"
-                  suppressHydrationWarning={true}
-                />
-                <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="flex-none rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-eucalyptus-600 shadow-xs hover:bg-eucalyptus-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:opacity-70"
-                  suppressHydrationWarning={true}
-                >
-                  {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-                </button>
-              </div>
 
-              {status === 'success' && (
-                <p className="mt-3 text-sm font-medium text-green-100">
-                  Thank you for subscribing! You'll receive our updates soon.
+          <div className="flex justify-center lg:justify-end">
+            {status === 'success' ? (
+              <div className="w-full max-w-md rounded-[18px] border border-fleece/30 bg-fleece/12 px-[26px] py-6">
+                <p className="font-heading text-[22px] text-fleece">Thanks for joining us</p>
+                <p className="mt-2 text-[15px] text-[#CFDAC7]">
+                  You&apos;re on the list. We&apos;ll be in touch soon with news from the paddock.
                 </p>
-              )}
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="w-full max-w-md" suppressHydrationWarning>
+                <div className="flex flex-col gap-3 sm:flex-row sm:gap-x-3" suppressHydrationWarning>
+                  <label htmlFor="email-address" className="sr-only">
+                    Email address
+                  </label>
+                  <input
+                    id="email-address"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={status === 'loading'}
+                    placeholder="Enter your email address"
+                    autoComplete="email"
+                    className="min-w-0 flex-auto rounded-pill border border-fleece/35 bg-fleece/10 px-5 py-3.5 text-base text-fleece outline-none placeholder:text-fleece/60 focus:border-fleece/70 disabled:opacity-70 sm:text-sm"
+                    suppressHydrationWarning
+                  />
+                  <Button type="submit" variant="secondary" disabled={status === 'loading'} size="default">
+                    {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                  </Button>
+                </div>
 
-              {status === 'error' && (
-                <p className="mt-3 text-sm font-medium text-red-300">{errorMessage}</p>
-              )}
+                {status === 'error' && (
+                  <p className="mt-3 text-sm font-medium text-bracken-200">{errorMessage}</p>
+                )}
 
-              <p className="mt-4 text-sm/6 text-eucalyptus-100">
-                We promise to respect your privacy and your inbox. Read our{' '}
-                <Link href="/legal/privacy-policy" className="font-semibold hover:text-white">
-                  privacy&nbsp;policy
-                </Link>
-                .
-              </p>
-            </form>
+                <p className="mt-4 text-sm/6 text-[#B7C9B0]">
+                  Join a growing community of supporters. Unsubscribe anytime. Read our{' '}
+                  <Link href="/legal/privacy-policy" className="font-semibold text-fleece hover:opacity-70">
+                    privacy&nbsp;policy
+                  </Link>
+                  .
+                </p>
+              </form>
+            )}
           </div>
-          <svg
-            viewBox="0 0 1024 1024"
-            aria-hidden="true"
-            className="absolute top-1/2 left-1/2 -z-10 size-256 -translate-x-1/2"
-          >
-            <circle r={512} cx={512} cy={512} fill="url(#newsletter-gradient)" fillOpacity="0.7" />
-            <defs>
-              <radialGradient
-                r={1}
-                cx={0}
-                cy={0}
-                id="newsletter-gradient"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(512 512) rotate(90) scale(512)"
-              >
-                <stop stopColor="#10B981" />
-                <stop offset={1} stopColor="#047857" stopOpacity={0} />
-              </radialGradient>
-            </defs>
-          </svg>
         </div>
       </div>
     </div>

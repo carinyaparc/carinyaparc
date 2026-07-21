@@ -16,6 +16,7 @@ interface LatestPostsProps {
   limit?: number;
   featured?: boolean;
   viewAllLink?: string;
+  eyebrow?: string;
 }
 
 export async function LatestPosts({
@@ -24,6 +25,7 @@ export async function LatestPosts({
   limit = 3,
   featured = false,
   viewAllLink = '/blog',
+  eyebrow = 'Life on pasture',
 }: LatestPostsProps) {
   let posts: Post[];
   try {
@@ -33,33 +35,32 @@ export async function LatestPosts({
   }
 
   return (
-    <div className="">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-semibold tracking-tight text-balance text-eucalyptus-600 sm:text-5xl">
-            {title}
-          </h2>
-          <p className="mt-2 text-lg/8 text-eucalyptus-300">{subtitle}</p>
+    <div className="border-t border-line bg-fleece py-16 sm:py-24">
+      <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+              {eyebrow}
+            </p>
+            <h2 className="mt-3 font-heading text-4xl font-normal tracking-tight text-balance text-eucalypt-600 sm:text-[40px]">
+              {title}
+            </h2>
+            <p className="mt-2 text-lg/8 text-charcoal">{subtitle}</p>
+          </div>
+          {viewAllLink && (
+            <Link
+              href={viewAllLink}
+              className="shrink-0 text-[15px] font-semibold text-eucalypt-600 hover:opacity-70 transition-opacity"
+            >
+              View all posts →
+            </Link>
+          )}
         </div>
-        <div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid max-w-2xl auto-rows-fr grid-cols-1 gap-7 sm:mt-14 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
         </div>
-
-        {viewAllLink && (
-          <div className="text-center mt-12">
-            <Link
-              href={viewAllLink}
-              className="inline-flex rounded-md bg-eucalyptus-600 text-white hover:bg-eucalyptus-700 px-3.5 py-2.5 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalyptus-600"
-            >
-              <span>
-                View All Posts
-                <span className="ml-2">→</span>
-              </span>
-            </Link>
-          </div>
-        )}
       </div>
     </div>
   );
