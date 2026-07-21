@@ -43,7 +43,7 @@ export default async function HomePage() {
           <Hero>
             <HeroBackgroundImage src="/images/hero-home.jpg" alt="Carinya Parc Hero" priority />
             <HeroContent>
-              <HeroEyebrow>The Branch · Upper Hunter, NSW</HeroEyebrow>
+              <HeroEyebrow>Upper Hunter, NSW</HeroEyebrow>
               <HeroTitle>
                 Restoring the land,
                 <br />
