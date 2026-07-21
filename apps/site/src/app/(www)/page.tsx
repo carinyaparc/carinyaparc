@@ -81,8 +81,7 @@ export default async function HomePage() {
               </HeroTitle>
               <HeroText>
                 A peaceful home for land, food &amp; community. We&apos;re healing 42 hectares of
-                degraded country and growing nutrient-dense food through regenerative agriculture —
-                and we&apos;d love your help.
+                degraded country and growing nutrient-dense food through regenerative agriculture, and we&apos;d love your help.
               </HeroText>
               <HeroActions>
                 <HeroButton href="/regenerate" variant="secondary">
@@ -108,8 +107,8 @@ export default async function HomePage() {
               </h2>
               <p className="mt-[18px] text-[19px] leading-relaxed text-stone">
                 Through hands-on ecological restoration, nutrient-dense produce, and inspiring
-                collective action — leaving every acre healthier than we found it.
-              </p>
+                collective action... Leaving every acre healthier than we found it.
+              </p>  
             </div>
 
             <div className="mt-[60px] grid gap-7 md:grid-cols-3">
@@ -161,8 +160,7 @@ export default async function HomePage() {
                 <p className="mt-5 text-[17px] leading-[1.7] text-charcoal">
                   We&apos;re transforming 42 hectares of previously degraded land into thriving
                   woodland, habitat corridors and productive agroforestry. Founded by Jonathan
-                  Daddia — strategic leader turned regenerative farmer — combining evidence-based
-                  ecology with community engagement.
+                  Daddia — strategy consultant turned regenerative farmer — combining evidence-based ecology with community engagement.
                 </p>
                 <div className="mt-[26px] flex flex-wrap gap-2.5">
                   {STORY_TAGS.map((tag) => (
@@ -196,9 +194,7 @@ export default async function HomePage() {
                   Reconnect with nature, hands in the soil
                 </h2>
                 <p className="mt-5 text-[17px] leading-[1.7] text-charcoal">
-                  Be first in line for guided tours, hands-on planting days, seasonal workshops and
-                  eco-stays. Wander the permaculture gardens, syntropic food forest and meet our
-                  Highland herd.
+                  Be first in line for guided tours, hands-on planting days, seasonal workshops and eco-stays. Wander the permaculture gardens, syntropic food forest and meet our herd.
                 </p>
                 <ul role="list" className="mt-[26px] flex flex-col gap-3.5">
                   {EXPERIENCE_ITEMS.map((item) => (
