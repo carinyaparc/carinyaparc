@@ -12,6 +12,8 @@ function makePost(overrides: Partial<Post> = {}): Post {
     formattedDate: 'June 1, 2026',
     datetime: '2026-06-01',
     tags: [],
+    category: null,
+    categorySlug: null,
     excerpt: 'Excerpt text',
     description: 'Description text',
     author: 'Jonathan Daddia',

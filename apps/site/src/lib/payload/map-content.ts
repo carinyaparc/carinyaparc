@@ -1,4 +1,4 @@
-import type { Author, Post as PayloadPost, Recipe as PayloadRecipe, Tag } from '@/payload-types';
+import type { Author, Category, Post as PayloadPost, Recipe as PayloadRecipe, Tag } from '@/payload-types';
 import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import { postUrl, recipeUrl } from '@/lib/payload/urls';
 import type { Post } from '@/lib/posts';
@@ -52,6 +52,22 @@ export function resolveTagNames(tags: (number | Tag)[] | null | undefined): stri
     .filter((name): name is string => Boolean(name));
 }
 
+export function resolveCategoryName(category: number | Category | null | undefined): string | null {
+  if (category && typeof category === 'object') {
+    return category.name;
+  }
+
+  return null;
+}
+
+export function resolveCategorySlug(category: number | Category | null | undefined): string | null {
+  if (category && typeof category === 'object') {
+    return category.slug;
+  }
+
+  return null;
+}
+
 export function mapPayloadPostToListItem(doc: PostListInput, index = 0): Post {
   const date = doc.date;
   const fallbackImage = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length] ?? FALLBACK_IMAGES[0];
@@ -64,6 +80,8 @@ export function mapPayloadPostToListItem(doc: PostListInput, index = 0): Post {
     formattedDate: formatContentDate(date),
     datetime: date,
     tags: resolveTagNames(doc.tags),
+    category: resolveCategoryName(doc.category),
+    categorySlug: resolveCategorySlug(doc.category),
     excerpt: doc.excerpt,
     description: doc.description ?? doc.excerpt,
     author: resolveAuthorName(doc.author),

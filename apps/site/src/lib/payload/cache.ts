@@ -14,6 +14,7 @@ import {
   type BlogPostsPage,
   type BlogPostsPageOptions,
 } from '@/lib/payload/queries/posts';
+import { getBlogCategories } from '@/lib/payload/queries/categories';
 import { getRecipeBySlug, getRecipeSlugs, getRecipes } from '@/lib/payload/queries/recipes';
 
 export { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
@@ -60,15 +61,34 @@ export async function getCachedBlogPosts(opts?: BlogPostsOptions): Promise<Post[
 export async function getCachedBlogPostsPage(
   opts: BlogPostsPageOptions = {},
 ): Promise<BlogPostsPage> {
-  const { page = 1, perPage = 6 } = opts;
+  const { page = 1, perPage = 6, excludeFeatured = false, categorySlug } = opts;
   const cached = unstable_cache(
-    () => getBlogPostsPage({ page, perPage }),
-    ['payload', 'posts', 'page', String(page), String(perPage)],
+    () => getBlogPostsPage({ page, perPage, excludeFeatured, categorySlug }),
+    [
+      'payload',
+      'posts',
+      'page',
+      String(page),
+      String(perPage),
+      excludeFeatured ? 'no-featured' : 'all-featured',
+      categorySlug ?? 'all-categories',
+    ],
     {
       tags: [PAYLOAD_CACHE_TAGS.posts],
       revalidate: CACHE_REVALIDATE_SECONDS,
     },
   );
+
+  return cached();
+}
+
+export async function getCachedBlogCategories(): Promise<
+  Awaited<ReturnType<typeof getBlogCategories>>
+> {
+  const cached = unstable_cache(() => getBlogCategories(), ['payload', 'categories', 'list'], {
+    tags: [PAYLOAD_CACHE_TAGS.posts],
+    revalidate: CACHE_REVALIDATE_SECONDS,
+  });
 
   return cached();
 }

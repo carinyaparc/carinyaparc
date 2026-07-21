@@ -6,6 +6,8 @@ export interface Post {
   formattedDate: string;
   datetime: string;
   tags: string[];
+  category: string | null;
+  categorySlug: string | null;
   excerpt: string;
   description: string;
   author: string;
