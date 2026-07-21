@@ -32,7 +32,7 @@ export function ImpactStats({
         <div className="mt-10 grid grid-cols-2 gap-10 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="font-heading text-5xl leading-none text-primary-foreground lg:text-[56px]">
+              <div className="font-heading text-5xl leading-none text-[#F3ECDB] lg:text-[56px]">
                 {stat.value}
               </div>
               <div className="mt-2.5 text-[15px] text-[#CFDAC7]">{stat.label}</div>
