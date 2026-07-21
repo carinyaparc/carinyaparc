@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Card, CardContent } from '@/components/ui/Card';
-import { Heart, Users, Shovel, Sprout, Newspaper, Ticket, TentTree, Trees } from 'lucide-react';
-
+import { Button } from '@/components/ui/Button';
+import { MotifTile } from '@/components/sections/page/MotifTile';
 import {
   Hero,
   HeroContent,
@@ -13,32 +14,61 @@ import {
   HeroActions,
   HeroButton,
 } from '@/src/components/sections/hero';
-import {
-  SectionWithImage,
-  SectionImage,
-  SectionContent,
-  SectionTitle,
-  SectionSubtitle,
-  SectionText,
-  SectionTag,
-  SectionActions,
-  SectionButton,
-  SectionLink,
-} from '@/src/components/sections/section';
 import { ImpactStats } from '@/src/components/sections/stats/ImpactStats';
 import { LatestPosts } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 
 export const revalidate = 86_400;
 
+const MISSION_FEATURES = [
+  {
+    motif: '/motifs/motif-leaf.svg',
+    title: 'Regeneration over extraction',
+    description:
+      'Practices that rebuild soil, water and biodiversity rather than deplete them. Every action leaves the land healthier.',
+  },
+  {
+    motif: '/motifs/motif-sprout.svg',
+    title: 'Stewardship over ownership',
+    description:
+      "We treat the land as borrowed from our grandkids — cared for with humility, guided by science and nature's own wisdom.",
+  },
+  {
+    motif: '/motifs/motif-hills.svg',
+    title: 'Collaboration & transparency',
+    description:
+      'Many hands, open sharing. We partner with community and publish our wins and setbacks alike.',
+  },
+] as const;
+
+const STORY_TAGS = [
+  { label: '30,000+ native trees', className: 'bg-eucalypt-50 text-eucalypt-700' },
+  { label: 'Branch River frontage', className: 'bg-kangaroo-100 text-kangaroo-700' },
+  { label: 'Wildlife corridors', className: 'bg-bracken-100 text-bracken-700' },
+] as const;
+
+const EXPERIENCE_ITEMS = [
+  {
+    title: 'Join a planting day.',
+    description: 'Get your hands dirty at an upcoming event.',
+  },
+  {
+    title: 'Book a tour.',
+    description: 'Small-group experiences led by Jonno.',
+  },
+  {
+    title: 'Stay on the land.',
+    description: 'Rustic accommodation, coming soon.',
+  },
+] as const;
+
 export default async function HomePage() {
   return (
     <>
-      {/* Schema markup for home page */}
       <SchemaMarkup type="page" includeLocalBusiness={true} />
 
       <div className="min-h-screen bg-paperbark">
-        {/* Hero Section */}
+        {/* Hero */}
         <section>
           <Hero>
             <HeroBackgroundImage src="/images/hero-home.jpg" alt="Carinya Parc Hero" priority />
@@ -66,49 +96,35 @@ export default async function HomePage() {
           </Hero>
         </section>
 
-        <ImpactStats />
-
-        {/* Features Section */}
-        <section className="bg-paperbark py-12 sm:py-16">
+        {/* Mission */}
+        <section className="bg-paperbark py-24">
           <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
-            <div className="mb-16 text-center">
-              <h2 className="mb-4 font-heading text-3xl font-normal text-eucalypt-600 lg:text-4xl">
-                Our Mission
+            <div className="mx-auto max-w-[780px] text-center">
+              <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                Our mission
+              </p>
+              <h2 className="mt-4 font-heading text-3xl font-normal text-balance text-eucalypt-600 sm:text-[44px] sm:leading-[1.12]">
+                Heal land and food systems, together
               </h2>
-              <p className="mx-auto max-w-3xl text-xl text-charcoal">
-                To heal land and food systems through hands-on ecological restoration, delivering
-                nutrient-dense produce, and inspiring collective action.
+              <p className="mt-[18px] text-[19px] leading-relaxed text-stone">
+                Through hands-on ecological restoration, nutrient-dense produce, and inspiring
+                collective action — leaving every acre healthier than we found it.
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-3">
-              {[
-                {
-                  icon: Trees,
-                  title: 'Regeneration over Extraction',
-                  description:
-                    'We prioritise practices that rebuild soil health, biodiversity and water systems rather than deplete them. Ensuring every action leaves the land healthier than we found it.',
-                },
-                {
-                  icon: Heart,
-                  title: 'Stewardship over Ownership',
-                  description:
-                    "We treat the land as borrowed from future generations. Caring for it with respect and humility, guided by both scientific knowledge and nature's own wisdom.",
-                },
-                {
-                  icon: Users,
-                  title: 'Collaboration & Transparency',
-                  description:
-                    'True transformation requires many hands and open sharing. We partner with communities - inviting everyone to learn from our successes and setbacks.',
-                },
-              ].map((feature) => (
-                <Card key={feature.title} className="h-full bg-eucalypt-800 border-eucalypt-700 hover:shadow-lg">
-                  <CardContent className="p-8 text-center">
-                    <feature.icon className="mx-auto mb-4 h-12 w-12 text-primary-foreground" />
-                    <h3 className="mb-4 font-heading text-xl font-normal text-fleece">
+            <div className="mt-[60px] grid gap-7 md:grid-cols-3">
+              {MISSION_FEATURES.map((feature) => (
+                <Card key={feature.title} className="rounded-[24px] bg-fleece">
+                  <CardContent className="p-10 pt-10">
+                    <MotifTile
+                      src={feature.motif}
+                      className="h-16 w-16"
+                      tileClassName="bg-eucalypt-50"
+                    />
+                    <h3 className="mt-[22px] font-heading text-[25px] font-normal text-bark">
                       {feature.title}
                     </h3>
-                    <p className="text-[#CFDAC7]">{feature.description}</p>
+                    <p className="mt-3 text-base leading-relaxed text-stone">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -116,153 +132,106 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/*Our Story Section*/}
-        <section className="py-8 sm:py-12">
-          <SectionWithImage variant="dark" imagePosition="right">
-            <SectionImage imagePosition="right">
-              <Image
-                src="/images/farm-track-gate.jpg"
-                alt="Farm landscape"
-                fill
-                className="object-cover"
-                quality={80}
-              />
-            </SectionImage>
-            <SectionContent imagePosition="right">
-              <SectionSubtitle variant="dark">Our Story</SectionSubtitle>
-              <SectionTitle variant="dark">Regenerating Land, Growing Community</SectionTitle>
-              <SectionText variant="dark">
-                We&apos;re transforming 42 hectares (104 acres) of previously degraded land into
-                thriving woodland, diverse habitat corridors, and productive agroforestry systems.
-                Founded by Jonathan Daddia — strategic leader turned regenerative farmer — our
-                approach combines evidence-based ecological practices with community engagement.
-              </SectionText>
-              <SectionActions>
-                <SectionButton href="/about" variant="dark">
-                  Read Our Story →
-                </SectionButton>
-              </SectionActions>
-            </SectionContent>
-          </SectionWithImage>
-        </section>
-
-        {/*Regenerate Section*/}
-        <section className="bg-fleece py-8 sm:py-12">
-          <SectionWithImage variant="light" imagePosition="left">
-            <SectionImage imagePosition="left">
-              <Image
-                src="/images/river-valley-aerial.jpg"
-                alt="Aerial view of the river valley at Carinya Parc"
-                fill
-                className="object-cover"
-                quality={80}
-              />
-            </SectionImage>
-            <SectionContent imagePosition="left">
-              <SectionSubtitle variant="light">Regenerate with Us</SectionSubtitle>
-              <SectionTitle variant="light">
-                Help Restore Diversity, For our Native Wildlife
-              </SectionTitle>
-              <SectionText variant="light">
-                How are we restoring biodiversity? Through planting 30,000+ native trees, enhancing
-                waterways and creating wildlife corridors spanning our Branch River frontage. You
-                can help:
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <SectionTag tone="eucalypt">Planting days</SectionTag>
-                  <SectionTag tone="kangaroo">Open reports</SectionTag>
-                  <SectionTag tone="bracken">Wildlife corridors</SectionTag>
+        {/* Story */}
+        <section className="bg-paperbark pb-24">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+            <div className="grid items-center gap-[60px] lg:grid-cols-2">
+              <div className="relative order-first aspect-4/3 overflow-hidden rounded-xl shadow-lg lg:order-0">
+                <Image
+                  src="/images/river-valley-aerial.jpg"
+                  alt="Aerial view of the river valley at Carinya Parc"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={80}
+                />
+              </div>
+              <div>
+                <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                  Our story
+                </p>
+                <h2 className="mt-4 font-heading text-[32px] font-normal leading-[1.1] text-eucalypt-600 sm:text-[42px]">
+                  Regenerating land,
+                  <br />
+                  growing community
+                </h2>
+                <p className="mt-5 text-[17px] leading-[1.7] text-charcoal">
+                  We&apos;re transforming 42 hectares of previously degraded land into thriving
+                  woodland, habitat corridors and productive agroforestry. Founded by Jonathan Daddia
+                  — strategic leader turned regenerative farmer — combining evidence-based ecology
+                  with community engagement.
+                </p>
+                <div className="mt-[26px] flex flex-wrap gap-2.5">
+                  {STORY_TAGS.map((tag) => (
+                    <span
+                      key={tag.label}
+                      className={`rounded-pill px-[17px] py-[9px] text-[13.5px] font-semibold ${tag.className}`}
+                    >
+                      {tag.label}
+                    </span>
+                  ))}
                 </div>
-                <ul role="list" className="mt-8 space-y-6">
-                  <li className="flex gap-x-3">
-                    <Shovel className="h-6 w-6 text-eucalypt-500" />
-                    <span>
-                      <strong className="font-semibold">Join a planting day.</strong> Get your hands
-                      dirty at an upcoming planting events.
-                    </span>
-                  </li>
-                  <li className="flex gap-x-3">
-                    <Sprout className="h-6 w-6 text-kangaroo-500" />
-                    <span>
-                      <strong className="font-semibold">Support regeneration.</strong> Provide
-                      seedlings, fencing and ecological monitoring equipment.
-                    </span>
-                  </li>
-                  <li className="flex gap-x-3">
-                    <Newspaper className="h-6 w-6 text-branch-500" />
-                    <span>
-                      <strong className="font-semibold">Follow our progress.</strong> Access open
-                      reports tracking soil health, water quality and biodiversity improvements.
-                    </span>
-                  </li>
-                </ul>
-              </SectionText>
-              <SectionActions>
-                <SectionButton href="/regenerate" variant="light">
-                  Get Involved →
-                </SectionButton>
-              </SectionActions>
-            </SectionContent>
-          </SectionWithImage>
+                <Button render={<Link href="/about" />} variant="primary" className="mt-[30px]">
+                  Read our story →
+                </Button>
+              </div>
+            </div>
+          </div>
         </section>
 
-        {/*Experience Section*/}
-        <section className="py-8 sm:py-12">
-          <SectionWithImage variant="dark" imagePosition="right">
-            <SectionImage imagePosition="right">
-              <Image
-                src="/images/highland-cattle-paddock.jpg"
-                alt="Highland cattle grazing in a paddock at Carinya Parc"
-                fill
-                className="object-cover"
-                quality={80}
-              />
-            </SectionImage>
-            <SectionContent imagePosition="right">
-              <SectionSubtitle variant="dark">Experience the Farm</SectionSubtitle>
-              <SectionTitle variant="dark">
-                Explore Regenerative Farming, Reconnect with Nature
-              </SectionTitle>
-              <SectionText variant="dark">
-                Discover regenerative farming. Immerse yourself through guided tours, hands-on
-                workshops and eco-stays. Explore our permaculture gardens, syntropic food forest and
-                wildlife corridors.
-                <ul role="list" className="mt-8 space-y-6">
-                  <li className="flex gap-x-3">
-                    <Ticket className="h-6 w-6 text-wattle" />
-                    <span>
-                      <strong className="font-semibold text-fleece">Book a tour.</strong> Small-group
-                      experiences led by Jonno.
-                    </span>
-                  </li>
-                  <li className="flex gap-x-3">
-                    <Trees className="h-6 w-6 text-wattle" />
-                    <span>
-                      <strong className="font-semibold text-fleece">Join a workshop.</strong> Learn
-                      practical skills in seed saving, soil building and food preservation
-                    </span>
-                  </li>
-                  <li className="flex gap-x-3">
-                    <TentTree className="h-6 w-6 text-wattle" />
-                    <span>
-                      <strong className="font-semibold text-fleece">Stay on the land.</strong> Connect
-                      deeply with the land through our rustic accommodation options.
-                    </span>
-                  </li>
+        <ImpactStats />
+
+        {/* Experience */}
+        <section id="visit" className="bg-paperbark py-24">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+            <div className="grid items-center gap-[60px] lg:grid-cols-2">
+              <div>
+                <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                  Experience the farm
+                </p>
+                <h2 className="mt-4 font-heading text-[32px] font-normal leading-[1.1] text-eucalypt-600 sm:text-[42px]">
+                  Reconnect with nature, hands in the soil
+                </h2>
+                <p className="mt-5 text-[17px] leading-[1.7] text-charcoal">
+                  Be first in line for guided tours, hands-on planting days, seasonal workshops and
+                  eco-stays. Wander the permaculture gardens, syntropic food forest and meet our
+                  Highland herd.
+                </p>
+                <ul role="list" className="mt-[26px] flex flex-col gap-3.5">
+                  {EXPERIENCE_ITEMS.map((item) => (
+                    <li key={item.title} className="flex items-start gap-3 text-base text-charcoal">
+                      <span className="font-bold text-kangaroo-500" aria-hidden>
+                        ◦
+                      </span>
+                      <span>
+                        <strong className="font-semibold text-bark">{item.title}</strong>{' '}
+                        {item.description}
+                      </span>
+                    </li>
+                  ))}
                 </ul>
-              </SectionText>
-              <SectionActions>
-                <SectionButton href="#" variant="dark">
-                  Coming Soon!
-                </SectionButton>
-                <SectionLink href="/#stay" variant="dark">
-                  Sign Up! Be the first to know
-                </SectionLink>
-              </SectionActions>
-            </SectionContent>
-          </SectionWithImage>
+                <Button
+                  render={<Link href="/#stay" />}
+                  className="mt-[30px] bg-kangaroo-500 text-kangaroo-900 hover:bg-kangaroo-400"
+                >
+                  Be first to know →
+                </Button>
+              </div>
+              <div className="relative aspect-4/3 overflow-hidden rounded-xl shadow-lg">
+                <Image
+                  src="/images/highland-cattle-paddock.jpg"
+                  alt="Highland cattle grazing in a paddock at Carinya Parc"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={80}
+                />
+              </div>
+            </div>
+          </div>
         </section>
 
-        {/*Blog Section */}
+        {/* Journal */}
         <section>
           <LatestPosts
             title="From the journal"
