@@ -140,7 +140,16 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme dark {
+/*
+ * Dark-theme override values. `@theme` always compiles its declarations
+ * onto `:root` regardless of any trailing keyword — Tailwind v4 does not
+ * support scoping a theme block to a variant this way — so this must be a
+ * real `.dark` selector to stay conditional on the custom variant above.
+ * (Previously written as `@theme dark { ... }`, which silently overwrote
+ * every light-theme value below at :root, breaking bg-card/text-foreground
+ * etc. sitewide since nothing ever added a `.dark` class.)
+ */
+.dark {
   --color-background: var(--color-eucalypt-900);
   --color-foreground: #f3ecdb;
   --color-card: var(--color-eucalypt-800);
