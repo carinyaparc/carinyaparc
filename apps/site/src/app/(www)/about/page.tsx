@@ -225,7 +225,7 @@ export default function AboutPage() {
                   are.
                 </p>
                 <div className="mt-8 flex flex-wrap justify-center gap-3.5">
-                  <Button render={<Link href="/regenerate" />} variant="secondary">
+                  <Button render={<Link href="/regenerate" />} variant="bracken">
                     Support our work →
                   </Button>
                   <Button render={<Link href="/contact" />} variant="ghost-light">

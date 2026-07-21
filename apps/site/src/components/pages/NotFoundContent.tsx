@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Button } from '@/components/ui/Button';
+
 const HERO_BLUR_DATA_URL =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
 
@@ -38,12 +40,9 @@ export function NotFoundContent() {
             This track doesn&apos;t lead anywhere
           </h1>
           <div className="mt-8 flex flex-wrap gap-3.5">
-            <Link
-              href="/"
-              className="inline-flex items-center rounded-pill bg-bracken-500 px-7 py-3.5 text-[15px] font-semibold text-fleece transition-colors hover:bg-bracken-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bracken-500"
-            >
+            <Button render={<Link href="/" />} variant="bracken">
               ← Back to home
-            </Link>
+            </Button>
           </div>
         </div>
       </div>
