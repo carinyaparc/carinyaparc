@@ -1,6 +1,5 @@
 /**
  * Header organism - Refactored with extracted MobileMenu
- * Maps to: * Task: T4.1
  */
 
 'use client';

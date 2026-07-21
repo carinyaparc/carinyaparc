@@ -1,6 +1,5 @@
 /**
  * HeaderWithStats organism - Preserved for regenerate page
- * Task: T3.6 (marked N/A but component needed)
  */
 
 'use client';
