@@ -108,26 +108,28 @@ export default function Footer() {
       </div>
 
       {/* SubFooter */}
-      <div className="mx-auto flex max-w-[1240px] border-t border-eucalypt-800 flex-col gap-4 px-6 py-8 sm:px-8 lg:px-14">
-        <div className="md:flex md:items-center">
-          <p className="text-center text-sm text-footer-subtle md:text-left">
-            &copy; {currentYear} Carinya Parc. All rights reserved.
-          </p>
-          <div className="ml-0 mt-4 md:ml-6 md:mt-0 flex justify-center md:justify-start space-x-4 text-sm">
-            <Link href="/legal/privacy-policy" className="text-footer-subtle hover:text-wattle">
-              Privacy
-            </Link>
-            <Link href="/legal/terms-of-service" className="text-footer-subtle hover:text-wattle">
-              Terms
-            </Link>
+      <div className="px-6 sm:px-8 lg:px-14">
+        <div className="mx-auto flex max-w-[1240px] flex-col gap-4 py-8 border-t border-eucalypt-800">
+          <div className="md:flex md:items-center">
+            <p className="text-center text-sm text-footer-subtle md:text-left">
+              &copy; {currentYear} Carinya Parc. All rights reserved.
+            </p>
+            <div className="ml-0 mt-4 md:ml-6 md:mt-0 flex justify-center md:justify-start space-x-4 text-sm">
+              <Link href="/legal/privacy-policy" className="text-footer-subtle hover:text-wattle">
+                Privacy
+              </Link>
+              <Link href="/legal/terms-of-service" className="text-footer-subtle hover:text-wattle">
+                Terms
+              </Link>
+            </div>
           </div>
+          <p className="hidden text-center text-[13px] text-footer-subtle md:block md:text-left">
+            Carinya Parc acknowledges the Traditional Owners and Custodians of Country across
+            Australia. We recognise their enduring connection to land, waterways and community. We
+            pay our respects to Elders past, present and emerging, and celebrate the enduring
+            cultures, knowledge and resilience of Aboriginal and Torres Strait Islander peoples.
+          </p>
         </div>
-        <p className="text-center text-[13px] text-footer-subtle md:text-left">
-          Carinya Parc acknowledges the Traditional Owners and Custodians of Country across
-          Australia. We recognise their enduring connection to land, waterways and community. We pay
-          our respects to Elders past, present and emerging, and celebrate the enduring cultures,
-          knowledge and resilience of Aboriginal and Torres Strait Islander peoples.
-        </p>
       </div>
     </footer>
   );
