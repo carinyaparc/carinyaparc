@@ -98,24 +98,38 @@ export default function SubscribeSection({
     }
   };
 
+  if (status === 'success') {
+    return (
+      <div className="px-6 py-8">
+        <div className="mx-auto max-w-xl text-center lg:max-w-lg">
+          <div className="mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-pill bg-eucalypt-50">
+            <CheckCircle className="h-8 w-8 text-eucalypt-600" aria-hidden />
+          </div>
+          <h2 className="mt-5 font-heading text-[28px] font-normal text-eucalypt-600">
+            You&apos;re in — thank you!
+          </h2>
+          <p className="mx-auto mt-2.5 max-w-md text-base leading-relaxed text-charcoal">
+            We&apos;ve sent a confirmation email to your inbox. Please check your email to complete
+            your subscription.
+          </p>
+          <Button
+            type="button"
+            className="mt-6"
+            onClick={() => {
+              setStatus('idle');
+              setFormData({ email: '', name: '', interests: '', website: '' });
+            }}
+          >
+            Subscribe another email →
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-6 py-8">
       <div className="mx-auto max-w-xl lg:max-w-lg">
-        {/* Success State */}
-        {status === 'success' && (
-          <Alert variant="success" className="mb-6">
-            <CheckCircle className="h-5 w-5 text-eucalyptus-500 mr-2 mt-0.5 shrink-0" />
-            <div>
-              <p className="text-sm font-semibold">Thank you for subscribing!</p>
-              <p className="text-sm mt-1">
-                We've sent a confirmation email to your inbox. Please check your email to complete
-                your subscription.
-              </p>
-            </div>
-          </Alert>
-        )}
-
-        {/* Error State */}
         {status === 'error' && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-5 w-5 text-red-500 mr-2 mt-0.5 shrink-0" />
@@ -157,7 +171,7 @@ export default function SubscribeSection({
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  disabled={status === 'loading' || status === 'success'}
+                  disabled={status === 'loading'}
                   placeholder="you@example.com"
                   autoComplete="email"
                 />
@@ -174,7 +188,7 @@ export default function SubscribeSection({
                     id="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    disabled={status === 'loading' || status === 'success'}
+                    disabled={status === 'loading'}
                     placeholder="Your name"
                     autoComplete="name"
                   />
@@ -191,7 +205,7 @@ export default function SubscribeSection({
                     id="interests"
                     value={formData.interests}
                     onChange={handleInputChange}
-                    disabled={status === 'loading' || status === 'success'}
+                    disabled={status === 'loading'}
                   >
                     <option value="">Select your main interest</option>
                     <option value="regeneration">Ecological restoration</option>
@@ -208,18 +222,18 @@ export default function SubscribeSection({
           <div className="mt-8 flex flex-col">
             <Button
               type="submit"
-              disabled={status === 'loading' || status === 'success'}
+              disabled={status === 'loading'}
               isLoading={status === 'loading'}
               className="w-full"
             >
-              {status === 'success' ? 'Subscribed!' : 'Subscribe to Our Newsletter'}
+              Subscribe to Our Newsletter
             </Button>
 
             <p className="mt-4 text-sm/6 text-gray-500 text-center">
               We promise to respect your privacy and your inbox. Read our{' '}
               <Link
                 href="/legal/privacy-policy"
-                className="font-semibold text-eucalyptus-600 hover:text-eucalyptus-500"
+                className="font-semibold text-eucalypt-600 hover:text-eucalypt-500"
               >
                 Privacy Policy
               </Link>
