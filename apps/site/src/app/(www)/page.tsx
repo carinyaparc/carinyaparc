@@ -120,6 +120,7 @@ export default async function HomePage() {
                       src={feature.motif}
                       className="h-16 w-16"
                       tileClassName="bg-eucalypt-50"
+                      iconSize={34}
                     />
                     <h3 className="mt-[22px] font-heading text-[25px] font-normal text-bark">
                       {feature.title}
@@ -235,7 +236,6 @@ export default async function HomePage() {
         <section>
           <LatestPosts
             title="From the journal"
-            subtitle="What's happening on the farm? Follow our journey as we transform Carinya Parc into a thriving regenerative farm."
             limit={3}
             viewAllLink="/blog"
             eyebrow="Life on pasture"

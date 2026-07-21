@@ -1,7 +1,6 @@
 import '@/src/styles/globals.css';
 
 import { navigation } from '@/app/navigation';
-import Banner from '@/src/components/ui/Banner';
 import { Header } from '@/src/components/sections/header';
 import Newsletter from '@/src/components/ui/Newsletter';
 import { Footer } from '@/src/components/sections/footer';
@@ -20,7 +19,6 @@ export default function SiteRootLayout({
   return (
     <SiteStaticShell>
       <Providers>
-        <Banner />
         <Header navigation={navigation} />
         <main className="flex-1">{children}</main>
         <Newsletter />

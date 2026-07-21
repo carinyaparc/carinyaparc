@@ -6,9 +6,10 @@ interface MotifTileProps {
   src: string;
   className?: string;
   tileClassName?: string;
+  iconSize?: number;
 }
 
-export function MotifTile({ src, className, tileClassName }: MotifTileProps) {
+export function MotifTile({ src, className, tileClassName, iconSize = 32 }: MotifTileProps) {
   return (
     <div
       className={cn(
@@ -17,7 +18,7 @@ export function MotifTile({ src, className, tileClassName }: MotifTileProps) {
         className,
       )}
     >
-      <Image src={src} alt="" width={32} height={32} aria-hidden />
+      <Image src={src} alt="" width={iconSize} height={iconSize} aria-hidden />
     </div>
   );
 }

@@ -12,7 +12,7 @@ import PostCard from './PostCard';
 
 interface LatestPostsProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   limit?: number;
   featured?: boolean;
   viewAllLink?: string;
@@ -45,7 +45,7 @@ export async function LatestPosts({
             <h2 className="mt-3 font-heading text-4xl font-normal tracking-tight text-balance text-eucalypt-600 sm:text-[40px]">
               {title}
             </h2>
-            <p className="mt-2 text-lg/8 text-charcoal">{subtitle}</p>
+            {subtitle ? <p className="mt-2 text-lg/8 text-charcoal">{subtitle}</p> : null}
           </div>
           {viewAllLink && (
             <Link
