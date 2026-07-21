@@ -117,6 +117,18 @@
   --color-destructive-foreground: #f7e7dc;
   --color-highlight: var(--color-wattle);
 
+  /* Text on dark eucalypt surfaces (eucalypt-600 / 800) */
+  --color-inverse: #ede3c9;
+  --color-inverse-light: #dde6d5;
+  --color-inverse-soft: #e4eade;
+  --color-inverse-muted: #cfdac7;
+  --color-inverse-subtle: #b7c9b0;
+
+  /* Text on footer (eucalypt-900) */
+  --color-footer-foreground: #c7d3bf;
+  --color-footer-muted: #9db097;
+  --color-footer-subtle: #8ca085;
+
   /* ---- Charts ---- */
   --color-chart-1: var(--color-eucalypt-600);
   --color-chart-2: var(--color-kangaroo-500);
