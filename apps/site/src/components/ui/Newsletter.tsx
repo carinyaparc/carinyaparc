@@ -79,7 +79,7 @@ export default function Newsletter() {
                     className="min-w-0 flex-auto rounded-pill border border-fleece/35 bg-fleece/10 px-5 py-3.5 text-base text-fleece outline-none placeholder:text-fleece/60 focus:border-fleece/70 disabled:opacity-70 sm:text-sm"
                     suppressHydrationWarning
                   />
-                  <Button type="submit" variant="secondary" disabled={status === 'loading'} size="default">
+                  <Button type="submit" variant="secondary" disabled={status === 'loading'} size="md">
                     {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
                   </Button>
                 </div>
