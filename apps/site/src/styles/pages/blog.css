@@ -1,68 +1,30 @@
 /* Blog Page Custom Styles */
 @reference "../globals.css";
 
-/* Blog Post Meta Styles */
-.blog-meta {
-  @apply mb-6 text-gray-600 flex flex-wrap items-center gap-4;
+.blog-hero-image {
+  @apply relative mx-auto mt-11 aspect-[21/9] max-w-[1040px] overflow-hidden rounded-xl shadow-lg;
 }
 
-.blog-tags {
-  @apply flex flex-wrap gap-2 mt-2;
-}
-
-.blog-tag {
-  @apply inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium;
-}
-
-.blog-excerpt {
-  @apply mb-8 text-lg text-gray-700 border-l-4 border-green-500 pl-4 italic;
-}
-
-/* Enhanced Blog Prose Styles */
 .blog-prose {
-  @apply prose prose-lg max-w-none 
-    prose-headings:text-green-800 
-    prose-a:text-green-600 
-    prose-a:underline
-    prose-strong:text-gray-800
-    prose-blockquote:text-gray-700
-    prose-blockquote:border-l-green-500
-    prose-code:text-green-700
-    prose-code:bg-green-50
-    prose-pre:bg-gray-800
-    prose-pre:text-gray-100;
+  @apply prose prose-lg mx-auto max-w-[720px] px-6 prose-headings:font-heading prose-headings:font-normal prose-headings:text-eucalypt-600 prose-p:text-[17px] prose-p:leading-[1.7] prose-p:text-charcoal prose-a:text-eucalypt-600 prose-a:underline prose-strong:text-bark prose-blockquote:my-10 prose-blockquote:rounded-r-2xl prose-blockquote:border-l-4 prose-blockquote:border-kangaroo-500 prose-blockquote:bg-fleece prose-blockquote:px-8 prose-blockquote:py-7 prose-blockquote:not-italic prose-blockquote:text-eucalypt-700;
 }
 
-.blog-prose h1 {
-  @apply text-4xl font-bold text-green-800 mb-4;
+.blog-prose :where(blockquote p) {
+  @apply m-0 font-heading text-[26px] leading-snug text-eucalypt-700;
 }
 
-.blog-prose h2 {
-  @apply text-3xl font-semibold text-green-700 mt-8 mb-4;
+.blog-prose :where(h2) {
+  @apply mt-10 text-[34px] leading-[1.15];
 }
 
-.blog-prose h3 {
-  @apply text-2xl font-semibold text-green-600 mt-6 mb-3;
+.blog-prose :where(h3) {
+  @apply mt-8 text-2xl;
 }
 
-.blog-prose p {
-  @apply text-gray-700 leading-relaxed mb-4;
+.blog-prose :where(p:first-of-type) {
+  @apply text-[21px] leading-[1.7] text-bark;
 }
 
-.blog-prose ul,
-.blog-prose ol {
-  @apply text-gray-700 mb-4;
-}
-
-.blog-prose li {
-  @apply mb-2;
-}
-
-.blog-prose img {
-  @apply rounded-lg shadow-lg my-8;
-}
-
-/* Blog Header Styles */
-.blog-prose header {
-  @apply border-b border-gray-200 pb-6 mb-8;
+.blog-prose :where(img) {
+  @apply my-10 rounded-[20px] shadow-md;
 }
