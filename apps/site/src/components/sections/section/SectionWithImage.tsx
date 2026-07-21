@@ -164,7 +164,7 @@ export function SectionButton({
   return (
     <Button
       render={<Link href={href} />}
-      variant={variant === 'dark' ? 'secondary' : 'default'}
+      variant={variant === 'dark' ? 'secondary' : 'primary'}
     >
       {children}
     </Button>
