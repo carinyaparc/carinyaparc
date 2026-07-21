@@ -91,7 +91,10 @@ export function InlineSubscribeForm({ className }: InlineSubscribeFormProps) {
 
       <p className="mt-4 text-sm text-stone">
         Read our{' '}
-        <Link href="/legal/privacy-policy" className="font-semibold text-eucalypt-600 hover:opacity-70">
+        <Link
+          href="/legal/privacy-policy"
+          className="font-semibold text-eucalypt-600 hover:opacity-70"
+        >
           privacy policy
         </Link>
         .

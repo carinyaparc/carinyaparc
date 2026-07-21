@@ -79,7 +79,12 @@ export function JournalSubscribeBand({ className }: JournalSubscribeBandProps) {
                 autoComplete="email"
                 className="min-w-0 flex-1 rounded-pill border border-fleece/35 bg-fleece/10 px-5 py-3.5 text-[15px] text-fleece outline-none placeholder:text-fleece/60 focus:border-fleece/70 disabled:opacity-70"
               />
-              <Button type="submit" variant="secondary" disabled={status === 'loading'} className="shrink-0">
+              <Button
+                type="submit"
+                variant="secondary"
+                disabled={status === 'loading'}
+                className="shrink-0"
+              >
                 {status === 'loading' ? 'Joining…' : 'Subscribe'}
               </Button>
               {status === 'error' && (

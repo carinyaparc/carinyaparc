@@ -37,7 +37,10 @@ export function JournalCategoryFilter({
     return null;
   }
 
-  const chips = [{ name: 'All', slug: undefined }, ...categories.map((c) => ({ ...c, slug: c.slug }))];
+  const chips = [
+    { name: 'All', slug: undefined },
+    ...categories.map((c) => ({ ...c, slug: c.slug })),
+  ];
 
   return (
     <section className="pb-1 pt-4">

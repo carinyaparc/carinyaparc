@@ -14,9 +14,9 @@ describe('normalizePostgresSslMode', () => {
       'postgresql://user:pass@host/db?sslmode=verify-full',
     );
 
-    expect(normalizePostgresSslMode('postgresql://user:pass@host/db?foo=bar&sslmode=verify-ca')).toBe(
-      'postgresql://user:pass@host/db?foo=bar&sslmode=verify-full',
-    );
+    expect(
+      normalizePostgresSslMode('postgresql://user:pass@host/db?foo=bar&sslmode=verify-ca'),
+    ).toBe('postgresql://user:pass@host/db?foo=bar&sslmode=verify-full');
   });
 
   it('leaves verify-full and non-ssl URLs unchanged', () => {

@@ -26,7 +26,9 @@ interface HeroProps {
 
 export function Hero({ children, className }: HeroProps) {
   return (
-    <div className={cn('relative isolate min-h-[720px] overflow-hidden bg-eucalypt-900', className)}>
+    <div
+      className={cn('relative isolate min-h-[720px] overflow-hidden bg-eucalypt-900', className)}
+    >
       {children}
       <HeroDecorations />
     </div>

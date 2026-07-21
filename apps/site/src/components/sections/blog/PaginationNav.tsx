@@ -18,7 +18,11 @@ function pageHref(page: number, categorySlug?: string): string {
   return `${base}${separator}category=${encodeURIComponent(categorySlug)}`;
 }
 
-export default function PaginationNav({ currentPage, totalPages, categorySlug }: PaginationNavProps) {
+export default function PaginationNav({
+  currentPage,
+  totalPages,
+  categorySlug,
+}: PaginationNavProps) {
   if (totalPages <= 1) {
     return null;
   }

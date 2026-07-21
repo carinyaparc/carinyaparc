@@ -62,7 +62,10 @@ export default function Newsletter() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="w-full max-w-md" suppressHydrationWarning>
-                <div className="flex flex-col gap-3 sm:flex-row sm:gap-x-3" suppressHydrationWarning>
+                <div
+                  className="flex flex-col gap-3 sm:flex-row sm:gap-x-3"
+                  suppressHydrationWarning
+                >
                   <label htmlFor="email-address" className="sr-only">
                     Email address
                   </label>
@@ -79,7 +82,12 @@ export default function Newsletter() {
                     className="min-w-0 flex-auto rounded-pill border border-fleece/35 bg-fleece/10 px-5 py-3.5 text-base text-fleece outline-none placeholder:text-fleece/60 focus:border-fleece/70 disabled:opacity-70 sm:text-sm"
                     suppressHydrationWarning
                   />
-                  <Button type="submit" variant="secondary" disabled={status === 'loading'} size="md">
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    disabled={status === 'loading'}
+                    size="md"
+                  >
                     {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
                   </Button>
                 </div>
@@ -90,7 +98,10 @@ export default function Newsletter() {
 
                 <p className="mt-4 text-sm/6 text-inverse-subtle">
                   Join a growing community of supporters. Unsubscribe anytime. Read our{' '}
-                  <Link href="/legal/privacy-policy" className="font-semibold text-fleece hover:opacity-70">
+                  <Link
+                    href="/legal/privacy-policy"
+                    className="font-semibold text-fleece hover:opacity-70"
+                  >
                     privacy&nbsp;policy
                   </Link>
                   .

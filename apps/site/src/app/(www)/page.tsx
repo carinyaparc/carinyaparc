@@ -125,7 +125,9 @@ export default async function HomePage() {
                     <h3 className="mt-[22px] font-heading text-[25px] font-normal text-bark">
                       {feature.title}
                     </h3>
-                    <p className="mt-3 text-base leading-relaxed text-stone">{feature.description}</p>
+                    <p className="mt-3 text-base leading-relaxed text-stone">
+                      {feature.description}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
@@ -158,9 +160,9 @@ export default async function HomePage() {
                 </h2>
                 <p className="mt-5 text-[17px] leading-[1.7] text-charcoal">
                   We&apos;re transforming 42 hectares of previously degraded land into thriving
-                  woodland, habitat corridors and productive agroforestry. Founded by Jonathan Daddia
-                  — strategic leader turned regenerative farmer — combining evidence-based ecology
-                  with community engagement.
+                  woodland, habitat corridors and productive agroforestry. Founded by Jonathan
+                  Daddia — strategic leader turned regenerative farmer — combining evidence-based
+                  ecology with community engagement.
                 </p>
                 <div className="mt-[26px] flex flex-wrap gap-2.5">
                   {STORY_TAGS.map((tag) => (

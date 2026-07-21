@@ -1,4 +1,10 @@
-import type { Author, Category, Post as PayloadPost, Recipe as PayloadRecipe, Tag } from '@/payload-types';
+import type {
+  Author,
+  Category,
+  Post as PayloadPost,
+  Recipe as PayloadRecipe,
+  Tag,
+} from '@/payload-types';
 import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import { postUrl, recipeUrl } from '@/lib/payload/urls';
 import type { Post } from '@/lib/posts';

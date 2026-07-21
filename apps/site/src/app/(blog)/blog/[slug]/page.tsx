@@ -10,11 +10,7 @@ import { RichText } from '@/src/components/rich-text/RichText';
 import { BASE_URL } from '@/src/lib/constants';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { getCachedBlogPostBySlug, getCachedBlogPostSlugs } from '@/lib/payload/cache';
-import {
-  resolveAuthorName,
-  resolveCategorySlug,
-  resolveTagNames,
-} from '@/lib/payload/map-content';
+import { resolveAuthorName, resolveCategorySlug, resolveTagNames } from '@/lib/payload/map-content';
 import { getRelatedBlogPosts } from '@/lib/payload/queries/posts';
 import { postUrl } from '@/lib/payload/urls';
 

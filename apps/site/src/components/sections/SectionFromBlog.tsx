@@ -87,9 +87,7 @@ export function PostsLatest({ title, subtitle, posts, viewAllLink = '/blog' }: P
                 </Link>
               </h3>
               {post.description && (
-                <p className="mt-2 line-clamp-2 text-sm/6 text-eucalypt-100">
-                  {post.description}
-                </p>
+                <p className="mt-2 line-clamp-2 text-sm/6 text-eucalypt-100">{post.description}</p>
               )}
             </article>
           ))}

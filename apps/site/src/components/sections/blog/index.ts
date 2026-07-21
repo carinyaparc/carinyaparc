@@ -12,8 +12,4 @@ export { JournalPostGrid } from './JournalPostGrid';
 export { JournalSubscribeBand } from './JournalSubscribeBand';
 export { BlogAuthorCard, BlogPostHeader } from './BlogPostArticle';
 export { RelatedPosts } from './RelatedPosts';
-export {
-  FeaturedPostsSkeleton,
-  PaginatedPostsSkeleton,
-  PostCardSkeleton,
-} from './BlogSkeletons';
+export { FeaturedPostsSkeleton, PaginatedPostsSkeleton, PostCardSkeleton } from './BlogSkeletons';

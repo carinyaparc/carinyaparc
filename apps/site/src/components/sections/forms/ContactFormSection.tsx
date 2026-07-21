@@ -102,7 +102,14 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
   });
 
   // TanStack Query mutation for form submission
-  const { mutate, reset: resetMutation, isPending, isSuccess, isError, error } = useMutation({
+  const {
+    mutate,
+    reset: resetMutation,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+  } = useMutation({
     mutationFn: submitContact,
     onSuccess: () => {
       trackEvent('contact_form_success');
@@ -275,12 +282,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
 
           {/* Message */}
           <div className="sm:col-span-2">
-            <FormField
-              name="message"
-              label="Message"
-              error={errors.message?.message}
-              required
-            >
+            <FormField name="message" label="Message" error={errors.message?.message} required>
               <Textarea
                 id="message"
                 rows={5}

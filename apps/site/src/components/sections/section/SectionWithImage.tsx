@@ -107,12 +107,7 @@ export function SectionSubtitle({
 }) {
   const textColor = variant === 'dark' ? 'text-wattle' : 'text-bracken-500';
   return (
-    <p
-      className={cn(
-        'text-[13px] font-semibold uppercase tracking-[0.24em]',
-        textColor,
-      )}
-    >
+    <p className={cn('text-[13px] font-semibold uppercase tracking-[0.24em]', textColor)}>
       {children}
     </p>
   );
@@ -162,10 +157,7 @@ export function SectionButton({
   variant?: 'dark' | 'light';
 }) {
   return (
-    <Button
-      render={<Link href={href} />}
-      variant={variant === 'dark' ? 'secondary' : 'primary'}
-    >
+    <Button render={<Link href={href} />} variant={variant === 'dark' ? 'secondary' : 'primary'}>
       {children}
     </Button>
   );

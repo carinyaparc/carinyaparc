@@ -48,7 +48,11 @@ export function PaginatedPostsSkeleton({
   count = 6,
 }: PaginatedPostsSkeletonProps) {
   return (
-    <div className="mx-auto max-w-[1240px] px-6 lg:px-14" aria-busy="true" aria-label="Loading articles">
+    <div
+      className="mx-auto max-w-[1240px] px-6 lg:px-14"
+      aria-busy="true"
+      aria-label="Loading articles"
+    >
       {(title || subtitle) && (
         <div className="mx-auto mb-12 max-w-2xl text-center">
           {title && <Skeleton className="mx-auto h-10 w-64" />}

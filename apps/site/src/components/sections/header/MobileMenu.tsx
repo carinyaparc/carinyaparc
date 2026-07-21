@@ -44,7 +44,11 @@ export default function MobileMenu({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-8">
-          <Link href="/" className="hover:opacity-70 transition-opacity duration-150" onClick={onClose}>
+          <Link
+            href="/"
+            className="hover:opacity-70 transition-opacity duration-150"
+            onClick={onClose}
+          >
             <span className="font-heading text-lg tracking-[0.3em] uppercase text-primary-foreground">
               Carinya&nbsp;Parc
             </span>

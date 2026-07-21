@@ -11,13 +11,11 @@ const BENEFITS = [
 const TIERS = [
   {
     title: '$18 plants a tree',
-    description:
-      'Seedling, guard, and the crew to plant and water it through its first summer.',
+    description: 'Seedling, guard, and the crew to plant and water it through its first summer.',
   },
   {
     title: '$2,500 a corridor',
-    description:
-      'Fences, seedlings and monitoring for a 100-metre stretch of wildlife corridor.',
+    description: 'Fences, seedlings and monitoring for a 100-metre stretch of wildlife corridor.',
   },
   {
     title: 'Grants & partnerships',
@@ -65,7 +63,9 @@ export function PartnersSection() {
               <div className="font-heading text-[30px] leading-tight text-primary-foreground">
                 {tier.title}
               </div>
-              <p className="mt-2 text-[14.5px] leading-[1.6] text-inverse-subtle">{tier.description}</p>
+              <p className="mt-2 text-[14.5px] leading-[1.6] text-inverse-subtle">
+                {tier.description}
+              </p>
             </div>
           ))}
         </div>
