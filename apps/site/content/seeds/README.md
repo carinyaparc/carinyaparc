@@ -21,7 +21,7 @@ converts markdown to Lexical JSON.
 # Validate seed JSON (CI — no database required)
 pnpm --filter site import:content-seeds:validate
 
-# Import all seeds as Payload drafts (requires DATABASE_URL + PAYLOAD_SECRET)
+# Import all seeds as Payload drafts (requires NEON_DATABASE_URL + PAYLOAD_SECRET in .env.local)
 pnpm --filter site import:content-seeds
 ```
 

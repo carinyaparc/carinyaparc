@@ -5,7 +5,7 @@
  * Usage:
  *   pnpm --filter site import:content-seeds [--file path.json]
  *
- * Requires DATABASE_URL and PAYLOAD_SECRET.
+ * Requires NEON_DATABASE_URL and PAYLOAD_SECRET in apps/site/.env.local.
  * For validation without DB, use import:content-seeds:validate.
  */
 import path from 'node:path';

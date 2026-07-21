@@ -59,7 +59,8 @@ export async function listSeedFiles(singleFile?: string): Promise<string[]> {
   }
 
   return files.sort((a, b) => {
-    const orderDiff = collectionSortOrder(inferCollection(a)) - collectionSortOrder(inferCollection(b));
+    const orderDiff =
+      collectionSortOrder(inferCollection(a)) - collectionSortOrder(inferCollection(b));
     if (orderDiff !== 0) {
       return orderDiff;
     }

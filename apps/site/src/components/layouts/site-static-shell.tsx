@@ -59,6 +59,7 @@ const criticalCSS = `
 export function SiteStaticShell({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={fontClassNames} suppressHydrationWarning>
+      {/* eslint-disable-next-line @next/next/no-head-element -- inline critical CSS in root layout shell */}
       <head>
         <style dangerouslySetInnerHTML={{ __html: criticalCSS }} suppressHydrationWarning />
         <SiteOrganizationSchema />

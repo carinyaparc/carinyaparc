@@ -4,35 +4,16 @@ import { Suspense } from 'react';
 
 import { PageIntro } from '@/components/sections/page';
 import {
+  BlogIndexPosts,
   FeaturedPosts,
   FeaturedPostsSkeleton,
-  JournalCategoryFilter,
-  JournalPostGrid,
+  PaginatedPostsSkeleton,
 } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
-import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
 
 export const revalidate = 86_400;
 
-const POSTS_PER_PAGE = 6;
-
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string }>;
-}) {
-  const { category: categorySlug } = await searchParams;
-
-  const [categories, postsPage] = await Promise.all([
-    getCachedBlogCategories(),
-    getCachedBlogPostsPage({
-      page: 1,
-      perPage: POSTS_PER_PAGE,
-      excludeFeatured: true,
-      categorySlug,
-    }),
-  ]);
-
+export default function BlogPage() {
   return (
     <>
       <SchemaMarkup type="page" />
@@ -52,13 +33,9 @@ export default async function BlogPage({
           <FeaturedPosts limit={1} />
         </Suspense>
 
-        <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
-
-        <JournalPostGrid
-          posts={postsPage.posts}
-          totalPages={postsPage.totalPages}
-          categorySlug={categorySlug}
-        />
+        <Suspense fallback={<PaginatedPostsSkeleton count={6} />}>
+          <BlogIndexPosts />
+        </Suspense>
       </div>
     </>
   );

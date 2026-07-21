@@ -2,10 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 export function PostCardSkeleton() {
   return (
-    <div
-      className="overflow-hidden rounded-lg border border-line bg-white shadow-md"
-      aria-hidden
-    >
+    <div className="overflow-hidden rounded-lg border border-line bg-white shadow-md" aria-hidden>
       <Skeleton className="aspect-[16/10] w-full rounded-none" />
       <div className="space-y-3 p-6">
         <Skeleton className="h-3 w-24" />

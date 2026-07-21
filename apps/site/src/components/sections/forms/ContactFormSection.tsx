@@ -140,7 +140,6 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
   const onSubmit = (data: ContactFormClientData) => {
     trackEvent('contact_form_submitted', { inquiry_type: data.inquiryType });
 
-    // eslint-disable-next-line react-hooks/purity -- Date.now() in event handler is safe
     const submissionTime = formLoadTime.current > 0 ? Date.now() - formLoadTime.current : 0;
     const sanitizedData = sanitizeContactFormData(data);
 
@@ -199,7 +198,12 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
         </Alert>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form
+        onSubmit={(event) => {
+          void handleSubmit(onSubmit)(event);
+        }}
+        noValidate
+      >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           {/* First Name */}
           <FormField name="firstName" label="First name" error={errors.firstName?.message} required>

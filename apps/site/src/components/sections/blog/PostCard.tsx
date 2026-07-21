@@ -68,9 +68,7 @@ export default function PostCard({ post, variant = 'default' }: PostCardProps) {
         {variant === 'default' && (
           <p className="mt-4 text-[13px] text-stone">{post.formattedDate}</p>
         )}
-        {variant === 'journal' && (
-          <p className="mt-4 text-[13px] text-stone">{metaText}</p>
-        )}
+        {variant === 'journal' && <p className="mt-4 text-[13px] text-stone">{metaText}</p>}
       </div>
     </>
   );

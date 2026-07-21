@@ -58,36 +58,38 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     notFound();
   }
 
+  let Content: React.ComponentType;
+
   try {
     const content = await import(
       /* webpackInclude: /\.mdx$/ */
       /* webpackMode: "eager" */
       `@/content/legal/${slug}.mdx`
     );
-    const Content = content.default;
-
-    return (
-      <>
-        {/* Schema markup for legal pages */}
-        <SchemaMarkup type="legal" />
-
-        <main className="isolate min-h-screen">
-          <div className="relative isolate overflow-hidden py-24 sm:py-32">
-            <div className="container mx-auto max-w-4xl px-4">
-              {/* Breadcrumb navigation */}
-              <Breadcrumb />
-
-              <article className="legal-prose">
-                <Content />
-              </article>
-            </div>
-          </div>
-        </main>
-      </>
-    );
+    Content = content.default;
   } catch {
     notFound();
   }
+
+  return (
+    <>
+      {/* Schema markup for legal pages */}
+      <SchemaMarkup type="legal" />
+
+      <main className="isolate min-h-screen">
+        <div className="relative isolate overflow-hidden py-24 sm:py-32">
+          <div className="container mx-auto max-w-4xl px-4">
+            {/* Breadcrumb navigation */}
+            <Breadcrumb />
+
+            <article className="legal-prose">
+              <Content />
+            </article>
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }
 
 export function generateStaticParams() {
