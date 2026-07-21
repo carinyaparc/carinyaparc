@@ -112,6 +112,30 @@ export function getEdgeSentryOptions(): EdgeOptions {
   };
 }
 
+/**
+ * Returns true for TypeErrors thrown when browser-extension or injected
+ * WKWebView-bridge scripts access `window.webkit.messageHandlers` in a
+ * context where the WebKit native bridge is unavailable. This occurs on
+ * Safari desktop, all iOS browsers, and Chromium with certain extensions —
+ * none of which come from application code (no in-app frames). Suppressing
+ * this event is safe because the property doesn't exist anywhere in the
+ * codebase; any future intentional use would add in-app frames and would
+ * not be filtered.
+ */
+export function isWebkitMessageHandlerNoise(event: SentryEventShape): boolean {
+  const firstException = event.exception?.values?.[0];
+
+  const message = firstException?.value ?? '';
+  if (!message.includes('window.webkit.messageHandlers')) {
+    return false;
+  }
+
+  const frames = firstException?.stacktrace?.frames ?? [];
+  const hasAppFrame = frames.some((f) => f.in_app === true);
+
+  return !hasAppFrame;
+}
+
 export function getClientSentryOptions(): BrowserOptions {
   return {
     dsn: getPublicSentryDsn(),
@@ -123,7 +147,9 @@ export function getClientSentryOptions(): BrowserOptions {
     enableLogs: true,
     debug: false,
     beforeSend(event) {
-      return isRscConnectionClosedNoise(event) ? null : event;
+      if (isRscConnectionClosedNoise(event)) return null;
+      if (isWebkitMessageHandlerNoise(event)) return null;
+      return event;
     },
   };
 }
