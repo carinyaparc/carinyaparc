@@ -82,8 +82,8 @@ export default function Footer() {
   return (
     <footer className="bg-eucalypt-900 text-footer-foreground">
       {/* Main Footer */}
-      <div className="px-6 pt-[70px] pb-10 sm:px-8 lg:px-14">
-        <div className="mx-auto max-w-[1240px]">
+      <div className="pt-[70px] pb-10">
+        <div className="mx-auto max-w-[1240px] px-6 sm:px-8 lg:px-14">
           <div className="flex flex-col gap-8 xl:flex-row xl:justify-between">
             <div className="space-y-5">
               <h3 className="font-heading text-[22px] font-normal tracking-[0.3em] uppercase text-footer-brand">
@@ -108,8 +108,8 @@ export default function Footer() {
       </div>
 
       {/* SubFooter */}
-      <div className="px-6 sm:px-8 lg:px-14">
-        <div className="mx-auto flex max-w-[1240px] flex-col gap-4 py-8 border-t border-eucalypt-800">
+      <div>
+        <div className="mx-auto flex max-w-[1240px] flex-col gap-4 px-6 py-8 sm:px-8 lg:px-14 border-t border-eucalypt-800">
           <div className="md:flex md:items-center">
             <p className="text-center text-sm text-footer-subtle md:text-left">
               &copy; {currentYear} Carinya Parc. All rights reserved.
