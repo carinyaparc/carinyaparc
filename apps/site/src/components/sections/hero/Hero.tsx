@@ -11,7 +11,7 @@
 import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 
 const HeroDecorations = dynamic(

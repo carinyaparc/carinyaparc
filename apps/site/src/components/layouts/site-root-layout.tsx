@@ -5,7 +5,7 @@ import Banner from '@/src/components/ui/Banner';
 import { Header } from '@/src/components/sections/header';
 import Newsletter from '@/src/components/ui/Newsletter';
 import { Footer } from '@/src/components/sections/footer';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/Toaster';
 import { Providers } from '@/providers/Providers';
 import { ConsentGate } from '@/components/consent/ConsentGate';
 import { SiteStaticShell } from '@/components/layouts/site-static-shell';

@@ -1,5 +1,5 @@
 import { PaginatedPostsSkeleton } from '@/src/components/sections/blog';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 /**
  * Instant loading UI for /blog/page/[page] client navigations.

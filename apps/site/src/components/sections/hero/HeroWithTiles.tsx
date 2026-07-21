@@ -12,7 +12,7 @@ import { cn } from '@/src/lib/cn';
 import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 interface TileImage {
   src: string;

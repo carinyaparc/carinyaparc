@@ -11,7 +11,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { cn } from '@/src/lib/cn';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 
 // Types
 interface SectionWithImageProps {

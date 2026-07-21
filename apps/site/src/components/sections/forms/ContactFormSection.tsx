@@ -13,12 +13,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select-native';
-import { Alert } from '@/components/ui/alert';
-import { FormField } from '@/components/ui/form-field';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Textarea } from '@/components/ui/Textarea';
+import { Select } from '@/components/ui/SelectNative';
+import { Alert } from '@/components/ui/Alert';
+import { FormField } from '@/components/ui/FormField';
 import {
   contactFormClientSchema,
   type ContactFormClientData,
