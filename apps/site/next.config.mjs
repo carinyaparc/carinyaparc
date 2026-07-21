@@ -42,6 +42,9 @@ const nextConfig = {
         pathname: '/images/**',
       },
       {
+        pathname: '/motifs/**',
+      },
+      {
         pathname: '/api/media/file/**',
       },
     ],
