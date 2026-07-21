@@ -125,6 +125,7 @@
   --color-inverse-subtle: #b7c9b0;
 
   /* Text on footer (eucalypt-900) */
+  --color-footer-brand: #f3ecdb;
   --color-footer-foreground: #c7d3bf;
   --color-footer-muted: #9db097;
   --color-footer-subtle: #8ca085;

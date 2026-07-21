@@ -31,7 +31,7 @@ export default function MobileMenu({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50 bg-[rgba(18,38,26,0.45)] backdrop-blur-sm lg:hidden"
+      className="fixed inset-0 z-50 bg-eucalypt-900/45 backdrop-blur-sm lg:hidden"
       onClick={onClose}
     >
       <motion.nav
@@ -50,7 +50,7 @@ export default function MobileMenu({
             </span>
           </Link>
           <button
-            className="-m-2.5 rounded-pill p-2.5 text-[#EDE3C9] hover:opacity-70"
+            className="-m-2.5 rounded-pill p-2.5 text-inverse hover:opacity-70"
             onClick={onClose}
             aria-label="Close menu"
           >
@@ -67,7 +67,7 @@ export default function MobileMenu({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-3 text-base font-medium text-[#EDE3C9] hover:opacity-70 border-b border-eucalypt-800 last:border-0"
+                    className="-mx-3 block rounded-lg px-3 py-3 text-base font-medium text-inverse hover:opacity-70 border-b border-eucalypt-800 last:border-0"
                     onClick={onClose}
                   >
                     {item.label ? (
@@ -75,7 +75,7 @@ export default function MobileMenu({
                     ) : (
                       <span className="flex flex-col">
                         <span className="text-base font-semibold text-fleece">{item.verb}</span>
-                        <span className="text-sm font-normal text-[#B7C9B0]">{item.rest}</span>
+                        <span className="text-sm font-normal text-inverse-subtle">{item.rest}</span>
                       </span>
                     )}
                   </Link>
@@ -94,7 +94,7 @@ export default function MobileMenu({
                   onClose();
                   onSubscribeClick();
                 }}
-                className="block w-full rounded-pill border border-fleece/40 px-5 py-3 text-center text-sm font-semibold text-[#EDE3C9] hover:bg-fleece/10 transition-colors"
+                className="block w-full rounded-pill border border-fleece/40 px-5 py-3 text-center text-sm font-semibold text-inverse hover:bg-fleece/10 transition-colors"
               >
                 Subscribe
               </button>

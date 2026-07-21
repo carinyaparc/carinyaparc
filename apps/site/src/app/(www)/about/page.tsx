@@ -214,13 +214,13 @@ export default function AboutPage() {
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,38,26,0.55),rgba(18,38,26,0.78))]"
+                className="absolute inset-0 bg-gradient-to-b from-eucalypt-900/55 to-eucalypt-900/78"
               />
               <div className="relative z-10 mx-auto max-w-[640px]">
                 <h2 className="font-heading text-[40px] font-normal leading-[1.14] text-fleece">
                   Be part of the next chapter
                 </h2>
-                <p className="mx-auto mt-4 max-w-[520px] text-lg leading-[1.6] text-[#E4EADE]">
+                <p className="mx-auto mt-4 max-w-[520px] text-lg leading-[1.6] text-inverse-soft">
                   Support the regeneration, join a planting day, or follow along from wherever you
                   are.
                 </p>

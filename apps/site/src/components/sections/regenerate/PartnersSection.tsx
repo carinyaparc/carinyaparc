@@ -27,23 +27,23 @@ const TIERS = [
 
 export function PartnersSection() {
   return (
-    <section id="support" className="bg-eucalypt-800 py-16 text-[#EDE3C9] sm:py-24">
+    <section id="support" className="bg-eucalypt-800 py-16 text-inverse sm:py-24">
       <div className="mx-auto grid max-w-[1240px] items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-14">
         <div>
           <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-wattle">
             For partners &amp; funders
           </p>
-          <h2 className="mt-3.5 font-heading text-[38px] font-normal leading-[1.14] text-[#F3ECDB]">
+          <h2 className="mt-3.5 font-heading text-[38px] font-normal leading-[1.14] text-primary-foreground">
             Partner with a project that shows its working
           </h2>
-          <p className="mt-[18px] text-[17px] leading-[1.7] text-[#CFDAC7]">
+          <p className="mt-[18px] text-[17px] leading-[1.7] text-inverse-muted">
             We work with government, philanthropy and organisations to fund on-ground restoration at
             scale — and we publish the outcomes. If you&apos;re looking for a regeneration project
             with rigour and transparency, let&apos;s talk.
           </p>
           <ul className="mt-6 flex flex-col gap-3">
             {BENEFITS.map((benefit) => (
-              <li key={benefit} className="flex gap-3 text-base text-[#DDE6D5]">
+              <li key={benefit} className="flex gap-3 text-base text-inverse-light">
                 <span className="font-bold text-wattle" aria-hidden>
                   ◦
                 </span>
@@ -62,10 +62,10 @@ export function PartnersSection() {
               key={tier.title}
               className="rounded-[22px] border border-eucalypt-700 bg-eucalypt-900 px-[30px] py-7"
             >
-              <div className="font-heading text-[30px] leading-tight text-[#F3ECDB]">
+              <div className="font-heading text-[30px] leading-tight text-primary-foreground">
                 {tier.title}
               </div>
-              <p className="mt-2 text-[14.5px] leading-[1.6] text-[#B7C9B0]">{tier.description}</p>
+              <p className="mt-2 text-[14.5px] leading-[1.6] text-inverse-subtle">{tier.description}</p>
             </div>
           ))}
         </div>

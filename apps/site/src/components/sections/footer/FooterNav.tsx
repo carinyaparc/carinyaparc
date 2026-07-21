@@ -30,7 +30,7 @@ export default function FooterNav({ sections }: FooterNavProps) {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className="text-sm text-[#C7D3BF] hover:opacity-70 transition-opacity"
+                  className="text-sm text-footer-foreground hover:opacity-70 transition-opacity"
                 >
                   {item.name}
                 </Link>

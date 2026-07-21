@@ -85,20 +85,20 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-eucalypt-900 text-[#C7D3BF]">
+    <footer className="bg-eucalypt-900 text-footer-foreground">
       {/* Main Footer */}
       <div className="px-6 pt-[70px] pb-10 sm:px-8 lg:px-14">
         <div className="mx-auto max-w-[1240px]">
           <div className="flex flex-col gap-8 xl:flex-row xl:justify-between">
             <div className="space-y-5">
-              <h3 className="font-heading text-[22px] font-normal tracking-[0.3em] uppercase text-primary-foreground">
+              <h3 className="font-heading text-[22px] font-normal tracking-[0.3em] uppercase text-footer-brand">
                 Carinya&nbsp;Parc
               </h3>
-              <p className="text-sm text-[#9DB097] max-w-xs">
+              <p className="text-sm text-footer-muted max-w-xs">
                 A regenerative farm focused on restoring the land and sustainable agricultural
                 practices.
               </p>
-              <p className="text-sm text-[#9DB097] max-w-xs">
+              <p className="text-sm text-footer-muted max-w-xs">
                 <span>
                   Made with &nbsp;
                   <Heart className="inline-block h-4 w-4" />
@@ -115,14 +115,14 @@ export default function Footer() {
       <div className="border-t border-eucalypt-700">
         <div className="mx-auto flex max-w-[1240px] flex-col gap-4 px-6 py-8 md:flex-row md:items-center md:justify-between lg:px-14">
           <div className="md:flex md:items-center">
-            <p className="text-center text-sm text-[#8CA085] md:text-left">
+            <p className="text-center text-sm text-footer-subtle md:text-left">
               &copy; {currentYear} Carinya Parc. All rights reserved.
             </p>
             <div className="ml-0 mt-4 md:ml-6 md:mt-0 flex justify-center md:justify-start space-x-4 text-sm">
-              <Link href="/legal/privacy-policy" className="text-[#8CA085] hover:text-wattle">
+              <Link href="/legal/privacy-policy" className="text-footer-subtle hover:text-wattle">
                 Privacy
               </Link>
-              <Link href="/legal/terms-of-service" className="text-[#8CA085] hover:text-wattle">
+              <Link href="/legal/terms-of-service" className="text-footer-subtle hover:text-wattle">
                 Terms
               </Link>
             </div>
@@ -134,7 +134,7 @@ export default function Footer() {
       {/* Acknowledgement */}
       <div className="border-t border-eucalypt-700">
         <div className="mx-auto max-w-[1240px] px-6 py-8 lg:px-14">
-          <p className="text-center text-[13px] text-[#8CA085] md:text-left">
+          <p className="text-center text-[13px] text-footer-subtle md:text-left">
             Carinya Parc acknowledges the Traditional Owners and Custodians of Country across
             Australia. We recognise their enduring connection to land, waterways and community. We
             pay our respects to Elders past, present and emerging, and celebrate the enduring

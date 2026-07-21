@@ -48,14 +48,14 @@ export function JournalSubscribeBand({ className }: JournalSubscribeBandProps) {
             <h2 className="font-heading text-[32px] font-normal leading-[1.14] text-fleece">
               Never miss a field note
             </h2>
-            <p className="mt-2.5 text-base leading-relaxed text-[#CFDAC7]">
+            <p className="mt-2.5 text-base leading-relaxed text-inverse-muted">
               New posts, planting days and visit dates — straight to your inbox.
             </p>
           </div>
           {status === 'success' ? (
             <div className="min-w-[280px] max-w-[460px] flex-1 rounded-[18px] border border-fleece/30 bg-fleece/12 px-6 py-5">
               <p className="font-heading text-[22px] text-fleece">Thanks for joining us</p>
-              <p className="mt-2 text-[15px] text-[#CFDAC7]">
+              <p className="mt-2 text-[15px] text-inverse-muted">
                 You&apos;re on the list. We&apos;ll be in touch with news from the paddock.
               </p>
             </div>

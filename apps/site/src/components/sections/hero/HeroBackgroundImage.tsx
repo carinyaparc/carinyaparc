@@ -32,7 +32,7 @@ export function HeroBackgroundImage({
       {/* Warm eucalypt-900 protection gradient (not black) */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(18,38,26,0.18)_0%,rgba(18,38,26,0.30)_45%,rgba(18,38,26,0.82)_100%)]"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-eucalypt-900/18 via-eucalypt-900/30 to-eucalypt-900/82"
       />
     </>
   );

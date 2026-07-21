@@ -125,7 +125,7 @@ export function SectionText({
   children: ReactNode;
   variant?: 'dark' | 'light';
 }) {
-  const textColor = variant === 'dark' ? 'text-[#CFDAC7]' : 'text-charcoal';
+  const textColor = variant === 'dark' ? 'text-inverse-muted' : 'text-charcoal';
   return <div className={cn('mt-6 text-base/7', textColor)}>{children}</div>;
 }
 

@@ -46,7 +46,7 @@ export default function Newsletter() {
             <h2 className="font-heading text-4xl font-normal tracking-tight text-balance text-fleece sm:text-5xl">
               Stay connected to the land
             </h2>
-            <p className="mt-4 text-lg text-[#CFDAC7]">
+            <p className="mt-4 text-lg text-inverse-muted">
               Progress reports, planting days and produce news from Carinya Parc. We respect your
               inbox.
             </p>
@@ -56,7 +56,7 @@ export default function Newsletter() {
             {status === 'success' ? (
               <div className="w-full max-w-md rounded-[18px] border border-fleece/30 bg-fleece/12 px-[26px] py-6">
                 <p className="font-heading text-[22px] text-fleece">Thanks for joining us</p>
-                <p className="mt-2 text-[15px] text-[#CFDAC7]">
+                <p className="mt-2 text-[15px] text-inverse-muted">
                   You&apos;re on the list. We&apos;ll be in touch soon with news from the paddock.
                 </p>
               </div>
@@ -88,7 +88,7 @@ export default function Newsletter() {
                   <p className="mt-3 text-sm font-medium text-bracken-200">{errorMessage}</p>
                 )}
 
-                <p className="mt-4 text-sm/6 text-[#B7C9B0]">
+                <p className="mt-4 text-sm/6 text-inverse-subtle">
                   Join a growing community of supporters. Unsubscribe anytime. Read our{' '}
                   <Link href="/legal/privacy-policy" className="font-semibold text-fleece hover:opacity-70">
                     privacy&nbsp;policy
