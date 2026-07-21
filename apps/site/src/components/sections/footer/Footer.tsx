@@ -115,7 +115,10 @@ export default function Footer() {
                 &copy; {currentYear} Carinya Parc. All rights reserved.
               </p>
               <div className="ml-0 mt-4 md:ml-6 md:mt-0 flex justify-center md:justify-start space-x-4 text-sm">
-                <Link href="/legal/terms-of-service" className="text-footer-subtle hover:text-wattle">
+                <Link
+                  href="/legal/terms-of-service"
+                  className="text-footer-subtle hover:text-wattle"
+                >
                   Terms
                 </Link>
                 <Link href="/legal/privacy-policy" className="text-footer-subtle hover:text-wattle">
