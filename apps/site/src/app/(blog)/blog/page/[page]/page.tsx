@@ -1,8 +1,9 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { PageHeader } from '@/src/components/sections/page-header';
-import { PaginatedPosts } from '@/src/components/sections/blog';
+import { PaginatedPosts, PaginatedPostsSkeleton } from '@/src/components/sections/blog';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
 import { getCachedBlogPostsPage } from '@/lib/payload/cache';
 import { BASE_URL } from '@/src/lib/constants';
@@ -75,6 +76,9 @@ export default async function BlogPageNumber({ params }: { params: Promise<{ pag
     notFound();
   }
 
+  const title = `Articles — Page ${page}`;
+  const subtitle = 'Explore our insights and updates from the farm';
+
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
@@ -86,12 +90,9 @@ export default async function BlogPageNumber({ params }: { params: Promise<{ pag
       </section>
 
       <section className="py-20 bg-white">
-        <PaginatedPosts
-          title={`Articles — Page ${page}`}
-          subtitle="Explore our insights and updates from the farm"
-          page={page}
-          perPage={POSTS_PER_PAGE}
-        />
+        <Suspense fallback={<PaginatedPostsSkeleton title={title} subtitle={subtitle} />}>
+          <PaginatedPosts title={title} subtitle={subtitle} page={page} perPage={POSTS_PER_PAGE} />
+        </Suspense>
       </section>
     </div>
   );

@@ -1,10 +1,16 @@
 export { metadata } from './metadata';
 
+import { Suspense } from 'react';
 import { PageHeader } from '@/src/components/sections/page-header';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { FeaturedPosts, PaginatedPosts } from '@/src/components/sections/blog';
+import {
+  FeaturedPosts,
+  FeaturedPostsSkeleton,
+  PaginatedPosts,
+  PaginatedPostsSkeleton,
+} from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
 
@@ -51,16 +57,25 @@ export default async function BlogPage() {
           <PageHeader {...pageHeaderProps} />
         </section>
 
-        {/* Featured Post Section */}
-        <FeaturedPosts limit={1} />
+        <Suspense fallback={<FeaturedPostsSkeleton />}>
+          <FeaturedPosts limit={1} />
+        </Suspense>
 
-        {/* Blog Posts Grid */}
         <section className="py-20 bg-white">
-          <PaginatedPosts
-            title="Recent Articles"
-            subtitle="Explore our latest insights and updates from the farm"
-            page={1}
-          />
+          <Suspense
+            fallback={
+              <PaginatedPostsSkeleton
+                title="Recent Articles"
+                subtitle="Explore our latest insights and updates from the farm"
+              />
+            }
+          >
+            <PaginatedPosts
+              title="Recent Articles"
+              subtitle="Explore our latest insights and updates from the farm"
+              page={1}
+            />
+          </Suspense>
         </section>
       </div>
     </>
