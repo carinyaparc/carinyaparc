@@ -14,7 +14,7 @@ import SocialLinks from './SocialLinks';
 const navigation = {
   sections: [
     {
-      title: 'About Carinya Parc',
+      title: 'About',
       items: [
         { name: 'Our Story', href: '/about' },
         { name: 'Meet Jonno', href: '/about/jonathan' },
@@ -30,7 +30,7 @@ const navigation = {
       ],
     },
     {
-      title: 'Community',
+      title: 'Connect',
       items: [
         { name: 'Contact Us', href: '/contact' },
         { name: 'Subscribe', href: '/subscribe' },
@@ -89,7 +89,7 @@ export default function Footer() {
       {/* Main Footer */}
       <div className="px-6 pt-[70px] pb-10 sm:px-8 lg:px-14">
         <div className="mx-auto max-w-[1240px]">
-          <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+          <div className="flex flex-col gap-8 xl:flex-row xl:justify-between">
             <div className="space-y-5">
               <h3 className="font-heading text-[22px] font-normal tracking-[0.3em] uppercase text-primary-foreground">
                 Carinya&nbsp;Parc
