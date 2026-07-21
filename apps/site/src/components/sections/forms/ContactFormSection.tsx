@@ -8,10 +8,11 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { CheckCircle, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -23,11 +24,17 @@ import {
   contactFormClientSchema,
   type ContactFormClientData,
   type ContactFormData,
-  inquiryTypes,
   type InquiryType,
 } from '@/src/lib/validation/contact-schema';
 import { sanitizeContactFormData } from '@/src/lib/validation/sanitize';
 import { FormQueryProvider } from '@/providers/FormQueryProvider';
+
+const INQUIRY_OPTIONS: { value: InquiryType; label: string }[] = [
+  { value: 'partnership', label: 'A grant or partnership' },
+  { value: 'volunteer', label: 'Volunteering / planting days' },
+  { value: 'tours', label: 'Booking a tour or visit' },
+  { value: 'general', label: 'Media, press, or something else' },
+];
 
 // Vercel Analytics tracking (if available)
 const trackEvent = (eventName: string, properties?: Record<string, unknown>) => {
@@ -95,7 +102,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
   });
 
   // TanStack Query mutation for form submission
-  const { mutate, isPending, isSuccess, isError, error } = useMutation({
+  const { mutate, reset: resetMutation, isPending, isSuccess, isError, error } = useMutation({
     mutationFn: submitContact,
     onSuccess: () => {
       trackEvent('contact_form_success');
@@ -140,32 +147,37 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
     mutate(fullData);
   };
 
-  // Success state UI
+  // Success state — swap form for confirmation (Contact.dc.html)
   if (isSuccess) {
     return (
-      <Alert variant="success" className="mt-4">
-        <CheckCircle className="h-5 w-5 text-eucalyptus-500 mr-2 mt-0.5 shrink-0" />
-        <div>
-          <p className="text-sm font-semibold">Thank you for your inquiry!</p>
-          <p className="text-sm mt-1">
-            We've received your message and will respond within 48 business hours.
-          </p>
-          <button
-            onClick={() => {
-              reset();
-              formLoadTime.current = Date.now();
-            }}
-            className="mt-3 text-sm font-semibold text-eucalyptus-600 hover:text-eucalyptus-500 underline"
-          >
-            Send Another Message
-          </button>
+      <div className="px-2 py-8 text-center sm:px-4 sm:py-10">
+        <div className="mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-pill bg-eucalypt-50">
+          <Image src="/motifs/motif-sprout.svg" alt="" width={38} height={38} aria-hidden />
         </div>
-      </Alert>
+        <h2 className="mt-[22px] font-heading text-[28px] font-normal text-eucalypt-600">
+          Message sent — thank you
+        </h2>
+        <p className="mx-auto mt-2.5 max-w-[400px] text-base leading-[1.6] text-charcoal">
+          We read every message ourselves. Expect a reply within a few days — sooner if the
+          kettle&apos;s on.
+        </p>
+        <Button
+          type="button"
+          className="mt-6"
+          onClick={() => {
+            resetMutation();
+            reset();
+            formLoadTime.current = Date.now();
+          }}
+        >
+          Send another →
+        </Button>
+      </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-xl lg:max-w-lg">
+    <div>
       {/* Error state UI */}
       {isError && (
         <Alert variant="destructive" className="mb-6">
@@ -183,7 +195,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           {/* First Name */}
-          <FormField name="firstName" label="First Name" error={errors.firstName?.message} required>
+          <FormField name="firstName" label="First name" error={errors.firstName?.message} required>
             <Input
               id="firstName"
               type="text"
@@ -195,7 +207,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
           </FormField>
 
           {/* Last Name */}
-          <FormField name="lastName" label="Last Name" error={errors.lastName?.message} required>
+          <FormField name="lastName" label="Last name" error={errors.lastName?.message} required>
             <Input
               id="lastName"
               type="text"
@@ -207,14 +219,14 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
 
           {/* Email Address */}
           <div className="sm:col-span-2">
-            <FormField name="email" label="Email Address" error={errors.email?.message} required>
+            <FormField name="email" label="Email" error={errors.email?.message} required>
               <Input
                 id="email"
                 type="email"
                 autoComplete="email"
                 {...register('email')}
                 disabled={isPending || isSubmitting}
-                placeholder="you@example.com"
+                placeholder="jane@example.com"
               />
             </FormField>
           </div>
@@ -223,7 +235,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
           <div className="sm:col-span-2">
             <FormField
               name="phone"
-              label="Phone Number"
+              label="Phone number"
               description="Optional"
               error={errors.phone?.message}
             >
@@ -242,7 +254,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
           <div className="sm:col-span-2">
             <FormField
               name="inquiryType"
-              label="Type of Inquiry"
+              label="I'm reaching out about"
               error={errors.inquiryType?.message}
               required
             >
@@ -251,10 +263,10 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
                 {...register('inquiryType')}
                 disabled={isPending || isSubmitting}
               >
-                <option value="">Select your inquiry type</option>
-                {inquiryTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type === 'tours' ? 'Farm Tours' : type.charAt(0).toUpperCase() + type.slice(1)}
+                <option value="">Select a topic</option>
+                {INQUIRY_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </Select>
@@ -266,7 +278,6 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
             <FormField
               name="message"
               label="Message"
-              description="Please provide details about your inquiry (50-500 characters)"
               error={errors.message?.message}
               required
             >
@@ -275,7 +286,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
                 rows={5}
                 {...register('message')}
                 disabled={isPending || isSubmitting}
-                placeholder="Tell us about your inquiry..."
+                placeholder="Tell us what you have in mind..."
                 maxLength={500}
               />
             </FormField>
@@ -283,7 +294,7 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
 
           {/* Honeypot field - hidden from users */}
           <div className="sm:col-span-2" aria-hidden="true" style={{ display: 'none' }}>
-            <label htmlFor="website" className="block text-sm/6 font-semibold text-charcoal-600">
+            <label htmlFor="website" className="block text-sm/6 font-semibold text-charcoal">
               Website
             </label>
             <div className="mt-2.5">
@@ -299,23 +310,23 @@ function ContactFormSectionInner({ onSuccess, onError }: ContactFormSectionProps
           </div>
 
           {/* Submit button */}
-          <div className="mt-8 sm:col-span-2">
+          <div className="mt-6 sm:col-span-2">
             <Button
               type="submit"
               disabled={isPending || isSubmitting || !isFormReady}
               isLoading={isPending}
-              className="w-full"
+              className="w-full justify-center"
             >
-              {isPending ? 'Sending Message...' : 'Send Message'}
+              {isPending ? 'Sending message…' : 'Send message →'}
             </Button>
 
-            <p className="mt-4 text-sm/6 text-charcoal-400 text-center">
-              By submitting this form, you agree to our{' '}
+            <p className="mt-3.5 text-center text-[13px] text-stone">
+              We respect your privacy. We&apos;ll only use your details to reply. Read our{' '}
               <Link
                 href="/legal/privacy-policy"
-                className="font-semibold text-eucalyptus-600 hover:text-eucalyptus-500"
+                className="font-semibold text-eucalypt-600 hover:opacity-70"
               >
-                Privacy Policy
+                privacy policy
               </Link>
               .
             </p>

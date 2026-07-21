@@ -3,10 +3,13 @@
  */
 
 import type { Metadata } from 'next';
-import { generateMetadata as generateMetadataHelper } from '@/src/lib/metadata';
-import { ContactFormSection } from '@/src/components/sections/forms';
+import Image from 'next/image';
+import Link from 'next/link';
 
-// SEO metadata for contact page
+import { ContactFormSection } from '@/components/sections/forms';
+import { PageIntro } from '@/components/sections/page';
+import { generateMetadata as generateMetadataHelper } from '@/src/lib/metadata';
+
 export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataHelper({
     pageTitle: 'Contact Us',
@@ -17,54 +20,72 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-/**
- * Contact page layout with hero section and form
- */
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pb-12 sm:pb-20 pt-24 sm:pt-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-eucalyptus-600 sm:text-4xl md:text-5xl">
-              We'd love to hear from you!
-            </h1>
-            <p className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-charcoal-600">
-              Whether you're interested in visiting the farm, learning about regenerative
-              agriculture, volunteering, or exploring partnership opportunities, we'd love to hear
-              from you.
-            </p>
+    <main className="min-h-screen bg-paperbark">
+      <PageIntro
+        eyebrow="Get in touch"
+        title="Let's talk about the land"
+        titleAs="h1"
+        description="Whether you're a funder, a neighbour, a school group or just curious — we'd love to hear from you. Tell us a little about what you have in mind and we'll get back to you."
+        align="left"
+        className="pb-10 pt-16 sm:pt-20"
+      />
+
+      <section className="pb-16 sm:pb-24">
+        <div className="mx-auto grid max-w-[1240px] items-start gap-10 px-6 lg:grid-cols-[1.25fr_0.75fr] lg:gap-12 lg:px-14">
+          <div className="rounded-xl border border-line bg-fleece p-8 shadow-md sm:p-11">
+            <ContactFormSection />
           </div>
-        </div>
-      </section>
 
-      {/* Main Content Section */}
-      <section className="relative -mt-4 sm:-mt-8 pb-16 sm:pb-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <div className="rounded-xl sm:rounded-2xl bg-white px-6 py-8 sm:px-8 sm:py-10 md:px-12 md:py-12 shadow-lg ring-1 ring-charcoal-100">
-              <div className="mb-8 text-center">
-                <h2 className="text-xl sm:text-2xl font-semibold text-eucalyptus-600">
-                  Send Us a Message
-                </h2>
-                <p className="mt-3 sm:mt-4 text-base leading-7 text-charcoal-600">
-                  We aim to respond to all inquiries within 48 business hours. For urgent matters,
-                  you can also reach us directly at{' '}
-                  <a
-                    href="mailto:contact@carinyaparc.com.au"
-                    className="font-semibold text-eucalyptus-600 hover:text-eucalyptus-500"
-                  >
-                    contact@carinyaparc.com.au
-                  </a>
-                </p>
-              </div>
-
-              <ContactFormSection />
+          <aside className="flex flex-col gap-5">
+            <div className="rounded-[22px] border border-line bg-paperbark p-7">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-bracken-500">
+                Visit
+              </p>
+              <p className="mt-2.5 font-heading text-xl text-bark">The Branch, NSW</p>
+              <p className="mt-1.5 text-[15px] leading-[1.6] text-stone">
+                315 Warraba Road
+                <br />
+                The Branch NSW 2425
+                <br />
+                Upper Hunter, Australia
+              </p>
+              <p className="mt-3 text-sm text-stone">
+                Visits by appointment — please get in touch first.
+              </p>
             </div>
-          </div>
+
+            <div className="rounded-[22px] border border-line bg-paperbark p-7">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-bracken-500">
+                Reach us
+              </p>
+              <div className="mt-3 flex flex-col gap-2.5 text-[15px]">
+                <a
+                  href="mailto:contact@carinyaparc.com.au"
+                  className="text-eucalypt-600 hover:opacity-70"
+                >
+                  contact@carinyaparc.com.au
+                </a>
+                <Link href="/#stay" className="text-eucalypt-600 hover:opacity-70">
+                  Subscribe to the newsletter
+                </Link>
+                <span className="text-stone">Instagram · Facebook · @carinyaparc</span>
+              </div>
+            </div>
+
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[22px] shadow-md">
+              <Image
+                src="/images/farm-dam-trees.jpg"
+                alt="The dam and trees at Carinya Parc"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 30vw"
+              />
+            </div>
+          </aside>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

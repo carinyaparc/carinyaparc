@@ -1,24 +1,59 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { HeroWithTiles } from '@/src/components/sections/hero';
-import { generatePageMetadata } from '@/src/lib/metadata';
-import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
-import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
+import Link from 'next/link';
 
-// Define stats data
-const stats = [
-  { label: 'Hectares to Rewild', value: '10+' },
-  { label: 'Natives to Plant', value: '30,000' },
-  { label: 'Riparian Repair', value: '400m' },
-  { label: 'Farm Dams', value: '5' },
-];
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Tag } from '@/components/ui/Tag';
+import {
+  Hero,
+  HeroBackgroundImage,
+  HeroContent,
+  HeroEyebrow,
+  HeroText,
+  HeroTitle,
+} from '@/components/sections/hero';
+import { MotifTile, PageIntro } from '@/components/sections/page';
+import { generatePageMetadata } from '@/src/lib/metadata';
+import { SchemaMarkup } from '@/components/ui/SchemaMarkup';
+
+const VALUES = [
+  {
+    motif: '/motifs/motif-leaf.svg',
+    tileClassName: 'bg-eucalypt-50',
+    title: 'Regeneration over extraction',
+    description:
+      'We rebuild soil, water and biodiversity rather than mine them. Every action leaves the land healthier.',
+  },
+  {
+    motif: '/motifs/motif-sprout.svg',
+    tileClassName: 'bg-eucalypt-50',
+    title: 'Stewardship over ownership',
+    description:
+      'The land is borrowed from future generations. We care for it with humility and patience.',
+  },
+  {
+    motif: '/motifs/motif-hills.svg',
+    tileClassName: 'bg-eucalypt-50',
+    title: 'Collaboration & transparency',
+    description:
+      'Many hands, open books. We publish our wins and setbacks so others can learn with us.',
+  },
+] as const;
+
+const PROPERTY_STATS = [
+  { value: '42 ha', label: 'under restoration' },
+  { value: '30k+', label: 'native trees to plant' },
+  { value: '104 ac', label: 'habitat corridor' },
+  { value: '1', label: 'river frontage revived' },
+] as const;
 
 export const metadata: Metadata = generatePageMetadata({
   title: 'About - Carinya Parc',
   description:
     "Discover the story of Carinya Parc, our peaceful home where we're regenerating land, building community, and demonstrating ecological stewardship in practice.",
   path: '/about',
-  image: '/images/hero-home.jpg',
+  image: '/images/farm-valley-landscape.jpg',
   keywords: [
     'about',
     'our story',
@@ -33,110 +68,172 @@ export const metadata: Metadata = generatePageMetadata({
 export default function AboutPage() {
   return (
     <>
-      {/* Schema markup for about page */}
       <SchemaMarkup type="about" />
 
-      <main className="isolate min-h-screen">
-        {/* Breadcrumb navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <Breadcrumb />
-        </div>
-
-        {/* Hero with Stats */}
-        <section>
-          <HeroWithTiles
-            variant="light"
-            title="Regenerating Country One Landscape at a Time"
-            subtitle="About Carinya Parc"
-            description="Discover the story of Carinya Parc, our peaceful home where we're regenerating land, building community, and demonstrating ecological stewardship in practice."
-            tileImages={[
-              { src: '/images/highland-cattle-paddock.jpg', alt: 'Carinya Parc landscape' },
-              { src: '/images/highland-cattle-dam.jpg', alt: 'Carinya Parc river' },
-              { src: '/images/alpacas-farm-field.jpg', alt: 'Native plantings' },
-              { src: '/images/farm-track-gate.jpg', alt: 'Farm dam' },
-              { src: '/images/farm-valley-landscape.jpg', alt: 'Carinya Parc landscape' }, // Duplicating first image to ensure we have 5 for the layout
-            ]}
+      <main className="min-h-screen bg-paperbark">
+        <Hero className="min-h-[560px]">
+          <HeroBackgroundImage
+            src="/images/farm-valley-landscape.jpg"
+            alt="Carinya Parc valley landscape"
           />
-        </section>
+          <HeroContent>
+            <HeroEyebrow>Our story</HeroEyebrow>
+            <HeroTitle>A peaceful home for land, food &amp; community</HeroTitle>
+            <HeroText>
+              Carinya is an Aboriginal word meaning &quot;peaceful home.&quot; That&apos;s what
+              we&apos;re building at The Branch — 42 hectares returning to health, one season at a
+              time.
+            </HeroText>
+          </HeroContent>
+        </Hero>
 
-        {/* Carinya meaning */}
-        <section className="isolate py-8 sm:py-12">
-          <div className="mx-auto my-16 max-w-7xl sm:my-20 sm:px-6 lg:px-8">
-            <div className="relative isolate overflow-hidden bg-charcoal-600 px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
-              <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-charcoal-200 sm:text-4xl">
-                What does Carinya mean?
-              </h2>
-              <p className="mx-auto mt-6 max-w-xl text-xl leading-8 text-white">
-                <strong>Carinya</strong> is an Aboriginal Australian word, primarily from the
-                Awabakal language of the Newcastle-Lake Macquarie region, that translates to{' '}
-                <span className="text-eucalyptus-600 font-semibold">"peaceful home"</span> or{' '}
-                <span className="text-eucalyptus-600 font-semibold">"happy home"</span>.
+        <PageIntro
+          eyebrow="Why we're here"
+          title="We didn't inherit healthy land. We're growing it back."
+          description="When we arrived, much of Carinya Parc had been cleared and tired out. We treat the land as borrowed from our grandkids — so we set out to prove that degraded country can become thriving woodland, clean waterways and productive farmland, in plain view and on the record."
+        />
+
+        {/* Founder */}
+        <section className="py-16 sm:py-20">
+          <div className="mx-auto grid max-w-[1240px] items-center gap-12 px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:px-14">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-lg lg:order-none">
+              <Image
+                src="/images/highland-cattle-paddock.jpg"
+                alt="On the land at Carinya Parc"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 45vw"
+              />
+            </div>
+            <div>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                Meet Jonno
               </p>
-              <div
-                aria-hidden="true"
-                className="absolute -top-24 right-0 -z-10 transform-gpu blur-3xl"
-              >
-                <div
-                  style={{
-                    clipPath:
-                      'polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)',
-                  }}
-                  className="aspect-[1404/767] w-[27.875rem] bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-25"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Mission section with stats */}
-        <section className="isolate py-8 sm:py-12">
-          <div className="mx-auto max-w-7xl px-6 sm:mt-0 lg:px-8 xl:-mt-8">
-            <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-              <h2 className="text-3xl font-semibold tracking-tight text-pretty text-eucalyptus-600 sm:text-4xl">
-                Our Mission
+              <h2 className="mt-3.5 font-heading text-[38px] font-normal leading-[1.14] text-eucalypt-600">
+                From strategy rooms to seed trays
               </h2>
-              <div className="mt-6 flex flex-col gap-x-8 gap-y-20 lg:flex-row">
-                <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
-                  <p className="text-xl/8 font-medium text-charcoal-500">
-                    At Carinya Parc, we're transforming a 42-hectare former grazing property into a
-                    living demonstration of regenerative agriculture and ecological restoration.
-                    Nestled on the mid-north coast of New South Wales, our land has been resting
-                    since early 2024—giving us time to observe, plan and begin the journey of
-                    renewal.
-                  </p>
-                  <p className="mt-10 max-w-xl text-lg/7 font-medium text-charcoal-500">
-                    What drives us? A vision of thriving landscapes where biodiversity, food
-                    production and community connection work in harmony to heal Country.
-                  </p>
-                </div>
-                <div className="lg:flex lg:flex-auto lg:justify-center">
-                  <dl className="w-64 space-y-8 xl:w-80">
-                    {stats.map((stat) => (
-                      <div key={stat.label} className="flex flex-col-reverse gap-y-4">
-                        <dt className="text-base/7 text-charcoal-500">{stat.label}</dt>
-                        <dd className="text-5xl font-semibold tracking-tight text-eucalyptus-600">
-                          {stat.value}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
+              <p className="mt-[18px] text-[17px] leading-[1.7] text-charcoal">
+                Carinya Parc was founded by Jonathan Daddia — a strategic leader who traded the
+                boardroom for a pair of boots and a plan. He brings evidence-based rigour to
+                regenerative farming: measure everything, share it openly, and let the land teach
+                the rest.
+              </p>
+              <p className="mt-4 text-[17px] leading-[1.7] text-charcoal">
+                &quot;Come get your hands dirty,&quot; is his standing invitation. &quot;Every tree
+                counts, and there&apos;s a place for you here.&quot;
+              </p>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                <Tag tone="eucalypt">Evidence-led</Tag>
+                <Tag tone="kangaroo">Hands-on</Tag>
+                <Tag tone="branch">Community-first</Tag>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Image section */}
-        <section>
-          <div className="mt-32 sm:mt-40 xl:mx-auto xl:max-w-7xl xl:px-8">
-            <Image
-              alt="Carinya Parc landscape"
-              src="/images/farm-track-gate.jpg"
-              width={1920}
-              height={768}
-              className="aspect-5/2 w-full object-cover xl:rounded-3xl"
-              quality={80}
-            />
+        {/* Values */}
+        <section className="border-y border-line bg-fleece py-16 sm:py-24">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+            <div className="mx-auto max-w-[720px] text-center">
+              <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                What guides us
+              </p>
+              <h2 className="mt-3.5 font-heading text-[38px] font-normal text-eucalypt-600">
+                Three principles, held lightly and firmly
+              </h2>
+            </div>
+            <div className="mt-12 grid gap-7 lg:grid-cols-3">
+              {VALUES.map((value) => (
+                <Card key={value.title} className="bg-paperbark">
+                  <CardContent className="p-[38px] pt-[38px]">
+                    <MotifTile src={value.motif} tileClassName={value.tileClassName} />
+                    <CardTitle className="mt-5 text-bark">{value.title}</CardTitle>
+                    <CardDescription className="mt-3 text-[15.5px] leading-[1.6]">
+                      {value.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* The property */}
+        <section className="py-16 sm:py-24">
+          <div className="mx-auto grid max-w-[1240px] items-center gap-12 px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:px-14">
+            <div>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                The property
+              </p>
+              <h2 className="mt-3.5 font-heading text-[38px] font-normal leading-[1.14] text-eucalypt-600">
+                42 hectares along the Branch
+              </h2>
+              <p className="mt-[18px] text-[17px] leading-[1.7] text-charcoal">
+                The land runs from dry gold pasture down to a working river frontage, framed by
+                blue-green ranges. We&apos;re rebuilding it as a mosaic: woodland, habitat
+                corridors, syntropic food forest, permaculture gardens and grazing for our Highland
+                herd.
+              </p>
+              <div className="mt-7 grid grid-cols-2 gap-5">
+                {PROPERTY_STATS.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-[18px] border border-line bg-fleece p-[22px]"
+                  >
+                    <div className="font-heading text-[38px] leading-none text-eucalypt-600">
+                      {stat.value}
+                    </div>
+                    <div className="mt-2 text-sm text-stone">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden rounded-xl shadow-lg">
+              <Image
+                src="/images/river-valley-aerial.jpg"
+                alt="Aerial of the river valley"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* CTA band */}
+        <section className="pb-16 sm:pb-24">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+            <div className="relative overflow-hidden rounded-xl px-8 py-16 text-center shadow-lg sm:px-14 sm:py-[72px]">
+              <Image
+                src="/images/farm-track-gate.jpg"
+                alt=""
+                fill
+                className="object-cover"
+                aria-hidden
+                sizes="100vw"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,38,26,0.55),rgba(18,38,26,0.78))]"
+              />
+              <div className="relative z-10 mx-auto max-w-[640px]">
+                <h2 className="font-heading text-[40px] font-normal leading-[1.14] text-fleece">
+                  Be part of the next chapter
+                </h2>
+                <p className="mx-auto mt-4 max-w-[520px] text-lg leading-[1.6] text-[#E4EADE]">
+                  Support the regeneration, join a planting day, or follow along from wherever you
+                  are.
+                </p>
+                <div className="mt-8 flex flex-wrap justify-center gap-3.5">
+                  <Button render={<Link href="/regenerate" />} variant="secondary">
+                    Support our work →
+                  </Button>
+                  <Button render={<Link href="/contact" />} variant="ghost-light">
+                    Get in touch
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
