@@ -17,7 +17,7 @@ interface SocialLinksProps {
 
 export default function SocialLinks({ links }: SocialLinksProps) {
   return (
-    <div className="flex justify-start -ml-2">
+    <div className="mt-4 flex justify-center md:mt-0 md:justify-end">
       {links.map((item) => (
         <a
           key={item.name}

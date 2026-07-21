@@ -93,7 +93,6 @@ export default function Footer() {
                 A regenerative farm focused on restoring the land and sustainable agricultural
                 practices.
               </p>
-              <SocialLinks links={socialLinks} />
               <p className="text-sm text-footer-muted max-w-xs">
                 <span>
                   Made with &nbsp;
@@ -110,18 +109,21 @@ export default function Footer() {
       {/* SubFooter */}
       <div>
         <div className="mx-auto flex max-w-[1240px] flex-col gap-4 px-6 py-8 sm:px-8 lg:px-14 border-t border-eucalypt-800">
-          <div className="md:flex md:items-center">
-            <p className="text-center text-sm text-footer-subtle md:text-left">
-              &copy; {currentYear} Carinya Parc. All rights reserved.
-            </p>
-            <div className="ml-0 mt-4 md:ml-6 md:mt-0 flex justify-center md:justify-start space-x-4 text-sm">
-              <Link href="/legal/privacy-policy" className="text-footer-subtle hover:text-wattle">
-                Privacy
-              </Link>
-              <Link href="/legal/terms-of-service" className="text-footer-subtle hover:text-wattle">
-                Terms
-              </Link>
+          <div className="md:flex md:items-center md:justify-between">
+            <div className="md:flex md:items-center">
+              <p className="text-center text-sm text-footer-subtle md:text-left">
+                &copy; {currentYear} Carinya Parc. All rights reserved.
+              </p>
+              <div className="ml-0 mt-4 md:ml-6 md:mt-0 flex justify-center md:justify-start space-x-4 text-sm">
+                <Link href="/legal/terms-of-service" className="text-footer-subtle hover:text-wattle">
+                  Terms
+                </Link>
+                <Link href="/legal/privacy-policy" className="text-footer-subtle hover:text-wattle">
+                  Privacy Policy
+                </Link>
+              </div>
             </div>
+            <SocialLinks links={socialLinks} />
           </div>
           <p className="hidden text-center text-[13px] text-footer-subtle md:block md:text-left">
             Carinya Parc acknowledges the Traditional Owners and Custodians of Country across

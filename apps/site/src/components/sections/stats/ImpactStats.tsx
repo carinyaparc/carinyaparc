@@ -9,7 +9,7 @@ const DEFAULT_STATS: ImpactStat[] = [
   { value: '42', label: 'hectares under restoration' },
   { value: '30k+', label: 'native trees to plant' },
   { value: '104', label: 'acres of habitat corridor' },
-  { value: '1', label: 'river frontage restored' },
+  { value: '400m', label: 'river frontage to restore' },
 ];
 
 interface ImpactStatsProps {
@@ -32,7 +32,7 @@ export function ImpactStats({
         <div className="mt-10 grid grid-cols-2 gap-10 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
-              <div className="font-heading text-5xl leading-none text-primary-foreground lg:text-[56px]">
+              <div className="font-heading text-5xl leading-none text-inverse lg:text-[56px]">
                 {stat.value}
               </div>
               <div className="mt-2.5 text-[15px] text-inverse-muted">{stat.label}</div>
