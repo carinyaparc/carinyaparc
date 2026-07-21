@@ -4,12 +4,11 @@ import type { Metadata } from 'next';
 
 import { PageIntro } from '@/components/sections/page';
 import {
-  JournalCategoryFilter,
   JournalSubscribeBand,
   PaginatedPosts,
   PaginatedPostsSkeleton,
 } from '@/src/components/sections/blog';
-import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
+import { getCachedBlogPostsPage } from '@/lib/payload/cache';
 import { BASE_URL } from '@/src/lib/constants';
 
 const POSTS_PER_PAGE = 6;
@@ -54,31 +53,22 @@ export async function generateStaticParams(): Promise<Array<{ page: string }>> {
   }));
 }
 
-interface BlogPageNumberProps {
-  params: Promise<{ page: string }>;
-  searchParams: Promise<{ category?: string }>;
-}
-
-export default async function BlogPageNumber({ params, searchParams }: BlogPageNumberProps) {
+export default async function BlogPageNumber({ params }: { params: Promise<{ page: string }> }) {
   const { page: rawPage } = await params;
-  const { category: categorySlug } = await searchParams;
   const page = parsePageParam(rawPage);
 
   if (!page) {
     notFound();
   }
 
-  const { totalPages } = await getCachedBlogPostsPage({
-    page,
-    perPage: POSTS_PER_PAGE,
-    categorySlug,
-  });
+  const { totalPages } = await getCachedBlogPostsPage({ page, perPage: POSTS_PER_PAGE });
 
   if (page > totalPages) {
     notFound();
   }
 
-  const categories = await getCachedBlogCategories();
+  const title = `Articles — Page ${page}`;
+  const subtitle = 'Explore our insights and updates from the farm';
 
   return (
     <div className="min-h-screen bg-paperbark">
@@ -90,15 +80,9 @@ export default async function BlogPageNumber({ params, searchParams }: BlogPageN
         className="pb-8 pt-12 sm:pt-16"
       />
 
-      <JournalCategoryFilter
-        categories={categories}
-        activeSlug={categorySlug}
-        basePath={`/blog/page/${page}/`}
-      />
-
       <section className="py-9 pb-20">
-        <Suspense fallback={<PaginatedPostsSkeleton count={POSTS_PER_PAGE} />}>
-          <PaginatedPosts page={page} perPage={POSTS_PER_PAGE} categorySlug={categorySlug} />
+        <Suspense fallback={<PaginatedPostsSkeleton title={title} subtitle={subtitle} />}>
+          <PaginatedPosts title={title} subtitle={subtitle} page={page} perPage={POSTS_PER_PAGE} />
         </Suspense>
       </section>
 

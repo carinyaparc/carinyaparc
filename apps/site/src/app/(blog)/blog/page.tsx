@@ -6,25 +6,23 @@ import { PageIntro } from '@/components/sections/page';
 import {
   FeaturedPosts,
   FeaturedPostsSkeleton,
-  JournalCategoryFilter,
+  JournalPostGrid,
   JournalSubscribeBand,
-  PaginatedPosts,
-  PaginatedPostsSkeleton,
 } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
-import { getCachedBlogCategories } from '@/lib/payload/cache';
+import { getCachedBlogCategories, getCachedBlogPosts } from '@/lib/payload/cache';
 
 export const revalidate = 86_400;
 
-const POSTS_PER_PAGE = 6;
+const LIST_LIMIT = 50;
 
-interface BlogPageProps {
-  searchParams: Promise<{ category?: string }>;
-}
+export default async function BlogPage() {
+  const [categories, posts] = await Promise.all([
+    getCachedBlogCategories(),
+    getCachedBlogPosts({ limit: LIST_LIMIT }),
+  ]);
 
-export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const { category: categorySlug } = await searchParams;
-  const categories = await getCachedBlogCategories();
+  const gridPosts = posts.filter((post) => !post.featured);
 
   return (
     <>
@@ -39,23 +37,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           className="pb-8 pt-12 sm:pt-16"
         />
 
-        {!categorySlug && (
-          <Suspense fallback={<FeaturedPostsSkeleton />}>
-            <FeaturedPosts limit={1} />
-          </Suspense>
-        )}
-
-        <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
+        <Suspense fallback={<FeaturedPostsSkeleton />}>
+          <FeaturedPosts limit={1} />
+        </Suspense>
 
         <section className="py-9 pb-20">
-          <Suspense fallback={<PaginatedPostsSkeleton count={POSTS_PER_PAGE} />}>
-            <PaginatedPosts
-              page={1}
-              perPage={POSTS_PER_PAGE}
-              excludeFeatured={!categorySlug}
-              categorySlug={categorySlug}
-            />
-          </Suspense>
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
+            <Suspense fallback={null}>
+              <JournalPostGrid posts={gridPosts} categories={categories} />
+            </Suspense>
+          </div>
         </section>
 
         <JournalSubscribeBand />
