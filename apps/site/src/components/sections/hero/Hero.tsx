@@ -1,6 +1,5 @@
 /**
  * Hero organism - Refactored with compound components
- * Maps to: * Task: T3.2
  *
  * Decorative motion is deferred to client-only subcomponents so the hero
  * background image can render from a Server Component.
@@ -80,11 +79,11 @@ export function HeroActions({ children }: { children: ReactNode }) {
 export function HeroButton({
   href,
   children,
-  variant = 'secondary',
+  variant = 'bracken',
 }: {
   href: string;
   children: ReactNode;
-  variant?: 'default' | 'secondary' | 'ghost-light' | 'outline' | 'ghost';
+  variant?: 'default' | 'bracken' | 'secondary' | 'ghost-light' | 'outline' | 'ghost';
 }) {
   return (
     <Button render={<Link href={href} />} variant={variant}>

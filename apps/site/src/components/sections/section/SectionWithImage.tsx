@@ -1,6 +1,5 @@
 /**
  * SectionWithImage organism - Refactored without React Context
- * Maps to: * Task: T3.4
  *
  * Removed React Context, uses explicit props
  * Preserved existing styling and layout
@@ -147,17 +146,9 @@ export function SectionActions({ children }: { children: ReactNode }) {
   return <div className="mt-8 flex flex-wrap gap-4">{children}</div>;
 }
 
-export function SectionButton({
-  href,
-  children,
-  variant = 'light',
-}: {
-  href: string;
-  children: ReactNode;
-  variant?: 'dark' | 'light';
-}) {
+export function SectionButton({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <Button render={<Link href={href} />} variant={variant === 'dark' ? 'secondary' : 'primary'}>
+    <Button render={<Link href={href} />} variant="bracken">
       {children}
     </Button>
   );

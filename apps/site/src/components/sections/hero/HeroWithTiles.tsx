@@ -1,6 +1,5 @@
 /**
  * HeroWithTiles organism - Refactored
- * Maps to: * Task: T3.3
  *
  * Hero with image tile grid
  * Preserved existing styling, simplified structure
@@ -51,9 +50,7 @@ export default function HeroWithTiles({
   const textColorClass = isDark ? 'text-white' : 'text-eucalypt-600';
   const subtitleColorClass = isDark ? 'text-eucalypt-300' : 'text-eucalypt-400';
   const descriptionColorClass = isDark ? 'text-eucalypt-100' : 'text-charcoal-500';
-  const primaryButtonClass = isDark
-    ? 'bg-eucalypt-600 text-white hover:bg-eucalypt-500'
-    : 'bg-eucalypt-600 text-white hover:bg-eucalypt-500';
+  const primaryButtonClass = 'bg-bracken-500 text-fleece hover:bg-bracken-600';
   const secondaryButtonClass = isDark ? 'text-white' : 'text-charcoal-900';
   const backgroundClass = isDark
     ? 'from-eucalypt-600 to-eucalypt-800'

@@ -81,7 +81,7 @@ export function JournalSubscribeBand({ className }: JournalSubscribeBandProps) {
               />
               <Button
                 type="submit"
-                variant="secondary"
+                variant="bracken"
                 disabled={status === 'loading'}
                 className="shrink-0"
               >
