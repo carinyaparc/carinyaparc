@@ -31,21 +31,21 @@ export default function ThePropertyPage() {
       {/* Schema markup for about page */}
       <SchemaMarkup type="about" />
 
-      <main className="isolate min-h-screen">
+      <main className="isolate min-h-screen bg-paperbark">
         {/* Breadcrumb navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1240px] mx-auto px-6 lg:px-14 pt-8">
           <Breadcrumb />
         </div>
 
-        <div className="relative isolate overflow-hidden py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl lg:flex lg:justify-between lg:px-8 xl:justify-end">
+        <div className="relative isolate overflow-hidden py-16 sm:py-24">
+          <div className="mx-auto max-w-[1240px] lg:flex lg:justify-between lg:px-14 xl:justify-end">
             <div className="lg:flex lg:w-1/2 lg:shrink lg:grow-0 xl:absolute xl:inset-y-0 xl:right-1/2 xl:w-1/2">
               <div className="relative h-80 lg:-ml-8 lg:h-auto lg:w-full lg:grow xl:ml-0">
                 <Image
                   alt="Aerial view of Carinya Parc property"
                   src="/images/river-valley-aerial.jpg"
                   fill
-                  className="absolute inset-0 size-full bg-gray-50 object-cover"
+                  className="absolute inset-0 size-full bg-line/40 object-cover"
                   priority
                   quality={80}
                 />
@@ -53,15 +53,17 @@ export default function ThePropertyPage() {
             </div>
             <div className="px-6 lg:contents">
               <div className="mx-auto max-w-2xl pt-16 pb-24 sm:pt-20 sm:pb-32 lg:mr-0 lg:ml-8 lg:w-full lg:max-w-lg lg:flex-none lg:pt-32 xl:w-1/2">
-                <p className="text-base/7 font-semibold text-eucalypt-400">Our Land</p>
-                <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-eucalypt-600 sm:text-5xl">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                  Our Land
+                </p>
+                <h1 className="mt-3.5 font-heading text-4xl font-normal tracking-tight text-pretty text-eucalypt-600 sm:text-5xl">
                   The Property
                 </h1>
-                <p className="mt-6 text-xl/8 text-charcoal-700">
+                <p className="mt-6 text-xl/8 text-charcoal">
                   Carinya Parc is 42 hectares (approximately 102 acres) of gently undulating
                   countryside at The Branch, on New South Wales's mid-north coast.
                 </p>
-                <div className="mt-10 max-w-xl text-base/7 text-charcoal-700 lg:max-w-none">
+                <div className="mt-10 max-w-xl text-base/7 text-charcoal lg:max-w-none">
                   <p>
                     The site runs for more than 400 metres along the Branch River, offering natural
                     frontage that supports swimming holes, fishing and, in time, improved riparian
@@ -72,7 +74,7 @@ export default function ThePropertyPage() {
                     across the property, while a sealed driveway and visitor parking beside the
                     homestead provide easy access for guests and volunteers.
                   </p>
-                  <ul role="list" className="mt-8 space-y-8 text-charcoal-600">
+                  <ul role="list" className="mt-8 space-y-8 text-charcoal">
                     <li className="flex gap-x-3">
                       <MapPin
                         aria-hidden="true"
@@ -107,7 +109,7 @@ export default function ThePropertyPage() {
                       </span>
                     </li>
                   </ul>
-                  <h2 className="mt-16 text-2xl font-bold tracking-tight text-charcoal-900">
+                  <h2 className="mt-16 font-heading text-2xl font-normal tracking-tight text-eucalypt-600">
                     A Canvas for Ecological Renewal
                   </h2>
                   <p className="mt-6">
@@ -130,7 +132,7 @@ export default function ThePropertyPage() {
                     </Button>
                     <Link
                       href="/about/"
-                      className="text-sm font-semibold leading-6 text-charcoal-900"
+                      className="text-sm font-semibold leading-6 text-eucalypt-600 hover:opacity-70"
                     >
                       <span>
                         Learn more about us <span aria-hidden="true">→</span>

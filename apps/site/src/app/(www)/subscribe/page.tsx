@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Shovel, Sprout, Newspaper } from 'lucide-react';
-import { PageHeader } from '@/src/components/sections/page-header';
+import { PageIntro } from '@/src/components/sections/page';
 import { generatePageMetadata } from '@/src/lib/metadata';
 import { SubscribeSection } from '@/src/components/sections/forms';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
@@ -34,31 +34,25 @@ export const metadata: Metadata = generatePageMetadata({
   ],
 });
 
-const pageHeaderProps = {
-  variant: 'light' as const,
-  align: 'center' as const,
-  title: 'Stay Connected to The Land',
-  subtitle: 'Subscribe',
-  description:
-    'Stay connected to our regenerative journey at Carinya Parc to receive thoughtful, seasonal updates directly from the farm to your inbox.',
-};
-
 export default function SubscribePage() {
   return (
     <>
       {/* Schema markup for subscribe page */}
       <SchemaMarkup type="page" />
 
-      <main className="isolate min-h-screen">
+      <main className="isolate min-h-screen bg-paperbark">
         {/* Breadcrumb navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-[1240px] mx-auto px-6 lg:px-14 pt-8">
           <Breadcrumb />
         </div>
 
-        {/* Page Header */}
-        <section>
-          <PageHeader {...pageHeaderProps} />
-        </section>
+        <PageIntro
+          eyebrow="Subscribe"
+          title="Stay connected to the land"
+          titleAs="h1"
+          description="Stay connected to our regenerative journey at Carinya Parc to receive thoughtful, seasonal updates directly from the farm to your inbox."
+          className="pb-4 pt-4 sm:pt-8"
+        />
 
         <SectionWithImage variant="light" imagePosition="left">
           <SectionImage imagePosition="left">
@@ -103,16 +97,16 @@ export default function SubscribePage() {
           </SectionContent>
         </SectionWithImage>
 
-        <div className="bg-white py-16">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="bg-fleece py-16 sm:py-24">
+          <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
             <div className="mx-auto max-w-2xl lg:text-center">
-              <h2 className="text-xl font-semibold leading-7 text-eucalypt-300">
-                What Can You Expect?
-              </h2>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-eucalypt-600 sm:text-4xl">
-                Authentic Stories
+              <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-bracken-500">
+                What can you expect?
               </p>
-              <p className="mt-6 text-lg leading-8 text-charcoal-600">
+              <h2 className="mt-3.5 font-heading text-3xl font-normal tracking-tight text-eucalypt-600 sm:text-4xl">
+                Authentic stories
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-charcoal">
                 Our newsletter shares the genuine journey of Carinya Parc. Our successes and
                 failures, our joys and our challenges. We want to help others learn from our
                 experiences and connect with the land.
@@ -121,10 +115,10 @@ export default function SubscribePage() {
             <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
               <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
                 <div className="flex flex-col">
-                  <dt className="text-base font-semibold leading-7 text-eucalypt-600">
+                  <dt className="font-heading text-xl font-normal text-eucalypt-600">
                     Seasonal Rhythm
                   </dt>
-                  <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal-600">
+                  <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal">
                     <p className="flex-auto">
                       Nature moves in cycles, and so do our updates. Expect content that reflects
                       what's happening on the farm right now—from winter planning to summer
@@ -133,10 +127,10 @@ export default function SubscribePage() {
                   </dd>
                 </div>
                 <div className="flex flex-col">
-                  <dt className="text-base font-semibold leading-7 text-eucalypt-600">
+                  <dt className="font-heading text-xl font-normal text-eucalypt-600">
                     Practical Value
                   </dt>
-                  <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal-600">
+                  <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal">
                     <p className="flex-auto">
                       Every edition includes something you can use — whether it's a seasonal recipe,
                       a gardening tip, or insights you can apply to your own relationship with food
@@ -145,10 +139,10 @@ export default function SubscribePage() {
                   </dd>
                 </div>
                 <div className="flex flex-col">
-                  <dt className="text-base font-semibold leading-7 text-eucalypt-600">
+                  <dt className="font-heading text-xl font-normal text-eucalypt-600">
                     Privacy Commitment
                   </dt>
-                  <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal-600">
+                  <dd className="mt-2 flex flex-auto flex-col text-base leading-7 text-charcoal">
                     <p className="flex-auto">
                       We care deeply about your trust. Your information is never shared with third
                       parties, and we use it solely to send you the updates you've requested.
