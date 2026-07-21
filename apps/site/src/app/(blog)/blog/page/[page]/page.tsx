@@ -5,7 +5,6 @@ import type { Metadata } from 'next';
 import { PageIntro } from '@/components/sections/page';
 import {
   JournalCategoryFilter,
-  JournalSubscribeBand,
   PaginatedPosts,
   PaginatedPostsSkeleton,
 } from '@/src/components/sections/blog';
@@ -99,9 +98,7 @@ export default async function BlogPageNumber({
         descriptionClassName="mx-auto mt-[18px] max-w-[620px] text-stone leading-[1.6]"
       />
 
-      <Suspense fallback={null}>
-        <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
-      </Suspense>
+      <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
 
       <section className="py-9 pb-[84px]">
         <Suspense fallback={<PaginatedPostsSkeleton />}>
@@ -113,8 +110,6 @@ export default async function BlogPageNumber({
           />
         </Suspense>
       </section>
-
-      <JournalSubscribeBand />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import type {
   Recipe as PayloadRecipe,
   Tag,
 } from '@/payload-types';
-import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import { postUrl, recipeUrl } from '@/lib/payload/urls';
 import type { Post } from '@/lib/posts';
 
@@ -61,7 +60,7 @@ export function resolveAuthorImageUrl(author: number | Author | null | undefined
     return author.imageUrl;
   }
 
-  return PLACEHOLDER_IMAGE;
+  return '';
 }
 
 export function resolveTagNames(tags: (number | Tag)[] | null | undefined): string[] {

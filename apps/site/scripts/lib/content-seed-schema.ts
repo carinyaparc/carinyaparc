@@ -44,8 +44,15 @@ export const recipeSeedSchema = z.object({
   instructions: z.array(z.object({ step: z.string().min(1) })).min(1),
 });
 
+export const categorySeedSchema = z.object({
+  slug: slugSchema,
+  name: z.string().min(1).max(100),
+  description: z.string().max(500).optional(),
+});
+
 export type PostSeed = z.infer<typeof postSeedSchema>;
 export type RecipeSeed = z.infer<typeof recipeSeedSchema>;
+export type CategorySeed = z.infer<typeof categorySeedSchema>;
 
 export function parsePostSeed(data: unknown): PostSeed {
   return postSeedSchema.parse(data);
@@ -55,9 +62,17 @@ export function parseRecipeSeed(data: unknown): RecipeSeed {
   return recipeSeedSchema.parse(data);
 }
 
+export function parseCategorySeed(data: unknown): CategorySeed {
+  return categorySeedSchema.parse(data);
+}
+
 export function validateSeedFile(
-  collection: 'posts' | 'recipes',
+  collection: 'categories' | 'posts' | 'recipes',
   data: unknown,
-): PostSeed | RecipeSeed {
+): CategorySeed | PostSeed | RecipeSeed {
+  if (collection === 'categories') {
+    return parseCategorySeed(data);
+  }
+
   return collection === 'posts' ? parsePostSeed(data) : parseRecipeSeed(data);
 }

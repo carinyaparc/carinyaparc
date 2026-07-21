@@ -7,8 +7,9 @@ seeds in PRs; humans merge, then run import to create **draft** documents in `/a
 
 ```text
 seeds/
-  posts/{slug}.json    → Posts collection
-  recipes/{slug}.json  → Recipes collection
+  categories/{slug}.json → Categories collection
+  posts/{slug}.json      → Posts collection
+  recipes/{slug}.json    → Recipes collection
 ```
 
 Body content is **markdown** in the JSON `body` field (posts only). The import script

@@ -8,7 +8,6 @@ import {
   FeaturedPostsSkeleton,
   JournalCategoryFilter,
   JournalPostGrid,
-  JournalSubscribeBand,
 } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
@@ -53,19 +52,13 @@ export default async function BlogPage({
           <FeaturedPosts limit={1} />
         </Suspense>
 
-        <Suspense fallback={null}>
-          <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
-        </Suspense>
+        <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
 
-        <Suspense fallback={null}>
-          <JournalPostGrid
-            posts={postsPage.posts}
-            totalPages={postsPage.totalPages}
-            categorySlug={categorySlug}
-          />
-        </Suspense>
-
-        <JournalSubscribeBand />
+        <JournalPostGrid
+          posts={postsPage.posts}
+          totalPages={postsPage.totalPages}
+          categorySlug={categorySlug}
+        />
       </div>
     </>
   );

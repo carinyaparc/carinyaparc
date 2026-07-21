@@ -21,7 +21,7 @@ export const DEFAULT_KEYWORDS = [
 
 // Social defaults
 export const DEFAULT_OG_IMAGE = '/images/hero-home.jpg';
-export const PLACEHOLDER_IMAGE = '/images/placeholder.jpg';
+export const PLACEHOLDER_IMAGE = '/images/placeholder.svg';
 export const PLACEHOLDER_IMAGE_SVG = '/images/placeholder.svg';
 export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 export const DEFAULT_OG_IMAGE_HEIGHT = 630;

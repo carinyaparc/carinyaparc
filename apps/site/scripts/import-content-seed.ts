@@ -15,11 +15,11 @@ import { convertMarkdownToLexical, editorConfigFactory } from '@payloadcms/richt
 import config from '@payload-config';
 import { getPayload } from 'payload';
 
-import type { PostSeed, RecipeSeed } from './lib/content-seed-schema';
+import type { PostSeed, RecipeSeed, CategorySeed } from './lib/content-seed-schema';
 import { resolveAuthorId, resolveCategoryId, resolveTagIds } from './lib/resolve-relationships';
 import { listSeedFiles, loadSeed } from './lib/validate-seeds';
 
-type CollectionSlug = 'posts' | 'recipes';
+type CollectionSlug = 'categories' | 'posts' | 'recipes';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const siteRoot = path.resolve(scriptDir, '..');
@@ -54,6 +54,34 @@ async function findExistingDoc(
   });
 
   return result.docs[0] ?? null;
+}
+
+async function importCategory(
+  payload: Awaited<ReturnType<typeof getPayload>>,
+  seed: CategorySeed,
+): Promise<'created' | 'updated'> {
+  const data = {
+    name: seed.name,
+    slug: seed.slug,
+    description: seed.description,
+  };
+
+  const existing = await findExistingDoc(payload, 'categories', seed.slug);
+
+  if (existing) {
+    await payload.update({
+      collection: 'categories',
+      id: existing.id,
+      data,
+    });
+    return 'updated';
+  }
+
+  await payload.create({
+    collection: 'categories',
+    data,
+  });
+  return 'created';
 }
 
 async function importPost(
@@ -161,9 +189,11 @@ async function main(): Promise<void> {
     const rel = path.relative(siteRoot, file);
 
     const result =
-      collection === 'posts'
-        ? await importPost(payload, editorConfig, seed as PostSeed)
-        : await importRecipe(payload, seed as RecipeSeed);
+      collection === 'categories'
+        ? await importCategory(payload, seed as CategorySeed)
+        : collection === 'posts'
+          ? await importPost(payload, editorConfig, seed as PostSeed)
+          : await importRecipe(payload, seed as RecipeSeed);
 
     console.log(`${result}: ${rel} → ${collection}/${seed.slug} (draft)`);
   }

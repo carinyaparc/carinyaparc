@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import DateComponent from '@/components/ui/Date';
-import { PLACEHOLDER_IMAGE } from '@/lib/constants';
 import {
   resolveAuthorImageUrl,
   resolveAuthorName,
@@ -68,7 +67,7 @@ export function BlogAuthorCard({ author }: BlogAuthorCardProps) {
   return (
     <aside className="mx-auto mt-12 flex max-w-[720px] gap-5 rounded-lg border border-line bg-fleece p-7 shadow-md">
       <span className="relative flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-pill bg-eucalypt-100 font-heading text-[22px] text-eucalypt-700">
-        {authorImageUrl && authorImageUrl !== PLACEHOLDER_IMAGE ? (
+        {authorImageUrl ? (
           <Image src={authorImageUrl} alt="" fill className="object-cover" sizes="60px" />
         ) : (
           authorInitials(authorName)
