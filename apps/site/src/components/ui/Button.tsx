@@ -15,7 +15,9 @@ const buttonVariants = cva(
         primary: 'bg-eucalypt-600 text-primary-foreground hover:bg-eucalypt-700 shadow-none',
         /** @deprecated Prefer `primary` — kept for back-compat */
         default: 'bg-eucalypt-600 text-primary-foreground hover:bg-eucalypt-700 shadow-none',
-        /** Wattle / kangaroo — high-emphasis CTAs (DS: secondary) */
+        /** Bracken — primary marketing CTAs (hero, nav, section actions) */
+        bracken: 'bg-bracken-500 text-fleece hover:bg-bracken-600 shadow-none',
+        /** Wattle / kangaroo — high-emphasis accent (DS: secondary) */
         secondary: 'bg-wattle text-kangaroo-900 hover:bg-kangaroo-400 shadow-none',
         outline:
           'border-[1.5px] border-eucalypt-600 bg-transparent text-eucalypt-600 hover:bg-eucalypt-50',

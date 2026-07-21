@@ -1,6 +1,5 @@
 /**
  * SocialLinks sub-component - Extracted from Footer
- * Maps to: * Task: T4.2
  */
 
 import * as React from 'react';

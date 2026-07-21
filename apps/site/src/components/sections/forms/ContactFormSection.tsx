@@ -1,6 +1,5 @@
 /**
  * ContactFormSection organism - Refactored with FormField molecule
- * Maps to: * Task: T4.3
  *
  *Preserved all existing validation and submission logic
  */

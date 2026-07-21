@@ -21,7 +21,6 @@ const navigation = {
       items: [
         { name: 'Regeneration Project', href: '/regenerate' },
         { name: 'Read Life on Pasture', href: '/blog' },
-        { name: 'Future Produce', href: '/products' },
       ],
     },
     {
@@ -128,7 +127,7 @@ export default function Footer() {
             </div>
             <SocialLinks links={socialLinks} />
           </div>
-          <p className="hidden text-center text-[13px] text-footer-subtle md:block md:text-left">
+          <p className="text-center text-[13px] text-footer-subtle md:text-left">
             Carinya Parc acknowledges the Traditional Owners and Custodians of Country across
             Australia. We recognise their enduring connection to land, waterways and community. We
             pay our respects to Elders past, present and emerging, and celebrate the enduring

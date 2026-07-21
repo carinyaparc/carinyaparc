@@ -1,6 +1,5 @@
 /**
  * PostCard molecule - Extracted from LatestPosts
- * Maps to: * Task: T4.5
  *
  * Reusable blog post card component — homepage journal teaser style
  */

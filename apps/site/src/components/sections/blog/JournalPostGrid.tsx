@@ -40,7 +40,7 @@ export function JournalPostGrid({ posts, totalPages, categorySlug }: JournalPost
 
         {totalPages > 1 && (
           <div className="mt-14 text-center">
-            <Button render={<Link href={loadMoreHref(2, categorySlug)} />} variant="primary">
+            <Button render={<Link href={loadMoreHref(2, categorySlug)} />} variant="bracken">
               Load more posts
             </Button>
           </div>

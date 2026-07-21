@@ -1,6 +1,5 @@
 /**
  * MobileMenu sub-component - Extracted from Header
- * Maps to: * Task: T4.1
  */
 
 'use client';
@@ -89,7 +88,7 @@ export default function MobileMenu({
               <Link
                 href="/regenerate"
                 onClick={onClose}
-                className="block w-full rounded-pill bg-wattle px-5 py-3.5 text-center text-sm font-semibold text-kangaroo-900 hover:bg-kangaroo-400 transition-colors"
+                className="block w-full rounded-pill bg-bracken-500 px-5 py-3.5 text-center text-sm font-semibold text-fleece transition-colors hover:bg-bracken-600"
               >
                 Get involved
               </Link>

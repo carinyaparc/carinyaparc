@@ -1,6 +1,5 @@
 /**
  * LatestPosts organism - Refactored with PostCard molecule
- * Maps to: * Task: T4.5
  */
 
 import Link from 'next/link';

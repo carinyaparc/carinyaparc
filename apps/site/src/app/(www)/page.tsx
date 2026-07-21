@@ -85,9 +85,7 @@ export default async function HomePage() {
                 and we&apos;d love your help.
               </HeroText>
               <HeroActions>
-                <HeroButton href="/regenerate" variant="secondary">
-                  Support our work →
-                </HeroButton>
+                <HeroButton href="/regenerate">Support our work →</HeroButton>
                 <HeroButton href="/#stay" variant="ghost-light">
                   Join the journey
                 </HeroButton>
@@ -174,7 +172,7 @@ export default async function HomePage() {
                     </span>
                   ))}
                 </div>
-                <Button render={<Link href="/about" />} variant="primary" className="mt-[30px]">
+                <Button render={<Link href="/about" />} variant="bracken" className="mt-[30px]">
                   Read our story →
                 </Button>
               </div>
@@ -213,10 +211,7 @@ export default async function HomePage() {
                     </li>
                   ))}
                 </ul>
-                <Button
-                  render={<Link href="/#stay" />}
-                  className="mt-[30px] bg-kangaroo-500 text-kangaroo-900 hover:bg-kangaroo-400"
-                >
+                <Button render={<Link href="/#stay" />} variant="bracken" className="mt-[30px]">
                   Be first to know →
                 </Button>
               </div>

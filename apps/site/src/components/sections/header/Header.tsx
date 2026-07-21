@@ -1,6 +1,5 @@
 /**
  * Header organism - Refactored with extracted MobileMenu
- * Maps to: * Task: T4.1
  */
 
 'use client';
@@ -17,15 +16,18 @@ import { cn } from '@/src/lib/cn';
 
 interface HeaderProps {
   navigation: NavItem[];
+  /** Transparent header over a full-bleed photo (home, 404). */
+  overlay?: boolean;
 }
 
-export default function Header({ navigation }: HeaderProps) {
+export default function Header({ navigation, overlay = false }: HeaderProps) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const isOverlayPage = overlay || isHomePage;
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [subscribeModalOpen, setSubscribeModalOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(!isHomePage);
+  const [isScrolled, setIsScrolled] = useState(!isOverlayPage);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -34,6 +36,11 @@ export default function Header({ navigation }: HeaderProps) {
 
   // Detect scroll position to change header background
   useEffect(() => {
+    if (overlay) {
+      setIsScrolled(false);
+      return;
+    }
+
     if (!isHomePage) {
       setIsScrolled(true);
       return;
@@ -48,7 +55,7 @@ export default function Header({ navigation }: HeaderProps) {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isHomePage]);
+  }, [overlay, isHomePage]);
 
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
@@ -62,7 +69,7 @@ export default function Header({ navigation }: HeaderProps) {
     };
   }, [mobileMenuOpen]);
 
-  const isSolid = isScrolled || !isHomePage;
+  const isSolid = overlay ? false : isScrolled || !isHomePage;
 
   const headerClass = isSolid
     ? 'sticky top-0 bg-fleece text-charcoal border-b border-line'

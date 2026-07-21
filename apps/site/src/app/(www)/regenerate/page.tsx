@@ -53,9 +53,7 @@ export default function RegeneratePage() {
               moves it forward.
             </HeroText>
             <HeroActions>
-              <HeroButton href="#support" variant="secondary">
-                Support the work →
-              </HeroButton>
+              <HeroButton href="#support">Support the work →</HeroButton>
               <HeroButton href="#volunteer" variant="ghost-light">
                 Join a planting day
               </HeroButton>

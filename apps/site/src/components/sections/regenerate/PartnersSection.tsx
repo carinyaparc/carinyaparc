@@ -49,7 +49,7 @@ export function PartnersSection() {
               </li>
             ))}
           </ul>
-          <Button render={<Link href="/contact" />} variant="secondary" className="mt-7">
+          <Button render={<Link href="/contact" />} variant="bracken" className="mt-7">
             Start a conversation →
           </Button>
         </div>

@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { Button } from '@/components/ui/Button';
+
 interface Author {
   name: string;
   imageUrl: string;
@@ -95,15 +97,9 @@ export function PostsLatest({ title, subtitle, posts, viewAllLink = '/blog' }: P
 
         {viewAllLink && (
           <div className="text-center mt-12">
-            <Link
-              href={viewAllLink}
-              className="inline-flex rounded-md bg-eucalypt-600 text-white hover:bg-eucalypt-700 px-3.5 py-2.5 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-eucalypt-600"
-            >
-              <span>
-                View All Posts
-                <span className="ml-2">→</span>
-              </span>
-            </Link>
+            <Button render={<Link href={viewAllLink} />} variant="bracken">
+              View All Posts →
+            </Button>
           </div>
         )}
       </div>

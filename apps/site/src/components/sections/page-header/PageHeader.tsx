@@ -1,6 +1,5 @@
 /**
  * PageHeader organism - Refactored
- * Maps to: * Task: T3.5
  *
  * Server-rendered shell with a static background image (no motion on LCP path).
  */
