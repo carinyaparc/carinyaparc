@@ -31,7 +31,7 @@ export async function RecipeGrid({ title, subtitle }: RecipeGridProps) {
           ))}
         </div>
       ) : (
-        <p className="mt-16 text-center text-lg text-charcoal-400">
+        <p className="mt-16 text-center text-lg text-stone">
           Recipes from the hearth are on their way — check back soon.
         </p>
       )}

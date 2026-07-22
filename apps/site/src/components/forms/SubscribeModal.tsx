@@ -26,10 +26,10 @@ export default function SubscribeModal({ open, onOpenChange }: SubscribeModalPro
           <span className="sr-only">Close</span>
         </DialogClose>
         <DialogHeader>
-          <DialogTitle className="text-4xl font-bold text-eucalypt-600 m-6">
+          <DialogTitle className="font-heading text-4xl font-normal text-eucalypt-600 m-6">
             Stay Connected to The Land
           </DialogTitle>
-          <DialogDescription className="px-6 mt-6 text-base/7 text-left text-charcoal-600">
+          <DialogDescription className="px-6 mt-6 text-base/7 text-left text-charcoal">
             Join our mailing list to be the first to receive:
           </DialogDescription>
           <div className="px-6 text-left">

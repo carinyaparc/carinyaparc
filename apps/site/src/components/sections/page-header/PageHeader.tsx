@@ -31,10 +31,10 @@ export default function PageHeader({
   const isDark = variant === 'dark';
   const isCenter = align === 'center';
 
-  const textColorClass = isDark ? 'text-white' : 'text-eucalypt-600';
-  const subtitleColorClass = isDark ? 'text-eucalypt-300' : 'text-eucalypt-300';
-  const descriptionColorClass = isDark ? 'text-eucalypt-100' : 'text-charcoal-500';
-  const bgColorClass = isDark ? 'bg-eucalypt-600' : 'bg-white';
+  const textColorClass = isDark ? 'text-fleece' : 'text-eucalypt-600';
+  const subtitleColorClass = isDark ? 'text-wattle' : 'text-bracken-500';
+  const descriptionColorClass = isDark ? 'text-eucalypt-100' : 'text-stone';
+  const bgColorClass = isDark ? 'bg-eucalypt-600' : 'bg-paperbark';
 
   return (
     <div
@@ -94,7 +94,10 @@ export default function PageHeader({
             <p className={cn('text-base/7 font-semibold', subtitleColorClass)}>{subtitle}</p>
           )}
           <h1
-            className={cn('mt-2 text-4xl font-semibold tracking-tight sm:text-5xl', textColorClass)}
+            className={cn(
+              'mt-2 font-heading text-4xl font-normal tracking-tight sm:text-5xl',
+              textColorClass,
+            )}
           >
             {title}
           </h1>
