@@ -482,7 +482,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - **Revalidation strategy:** _Resolved._ Path-based on-demand revalidation plus `revalidateTag` for
   Payload cache tags via `afterChange` and `afterDelete` hooks on `posts` and `recipes`
   (`lib/payload/revalidate.ts`). Public content routes also export ISR `revalidate = 86400` as a
-  fallback. Globals revalidation deferred to CP06.
+  fallback. Globals revalidation deferred to the site globals epic.
 - **Rate limit store:** Vercel KV vs Upstash vs other?
 - **Media migration:** Backfill strategy for existing public-path images when upload collection is added?
 - **Globals scope:** Which marketing surfaces move to Payload Globals vs remain in code?

@@ -8,7 +8,7 @@
 
 Site is indexable with sensible robots rules and sitemap declaration. Primary gaps are
 **Open Graph images** on blog/recipe pages, **recipes index discoverability** in sitemap,
-and **CP04 SEO metadata epic** work still in backlog. Findings filed as GitHub issues #88 and #89.
+and **the SEO metadata epic** work still pending. Findings filed as GitHub issues #88 and #89.
 
 ## Findings summary
 
