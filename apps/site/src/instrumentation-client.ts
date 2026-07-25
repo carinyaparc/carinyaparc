@@ -8,7 +8,11 @@ import { getClientSentryOptions, shouldEnableSentry } from './lib/sentry/options
 if (shouldEnableSentry()) {
   Sentry.init({
     ...getClientSentryOptions(),
-    integrations: [Sentry.replayIntegration()],
+    integrations: [
+      Sentry.replayIntegration(),
+      // Forward console.log / warn / error as structured logs to Sentry
+      Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
+    ],
   });
 }
 

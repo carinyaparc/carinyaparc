@@ -6,5 +6,11 @@ import * as Sentry from '@sentry/nextjs';
 import { getServerSentryOptions, shouldEnableSentry } from './src/lib/sentry/options';
 
 if (shouldEnableSentry()) {
-  Sentry.init(getServerSentryOptions());
+  Sentry.init({
+    ...getServerSentryOptions(),
+    integrations: [
+      // Forward console.log / warn / error as structured logs to Sentry
+      Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
+    ],
+  });
 }

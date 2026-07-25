@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 
-import { getServerSentryDsn } from './lib/sentry/options';
+import { getServerSentryDsn, shouldEnableSentry } from './lib/sentry/options';
 
 export async function register() {
   if (!getServerSentryDsn()) {
@@ -16,7 +16,4 @@ export async function register() {
   }
 }
 
-export const onRequestError =
-  process.env.NODE_ENV === 'production' && getServerSentryDsn()
-    ? Sentry.captureRequestError
-    : () => {};
+export const onRequestError = shouldEnableSentry() ? Sentry.captureRequestError : () => {};
