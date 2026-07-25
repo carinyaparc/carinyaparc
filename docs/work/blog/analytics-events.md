@@ -3,13 +3,14 @@ type: Work
 epic: blog
 epic_id: CP09
 story: S8
-task: CP09-14
+task: CP09-13
 owner: blog
 status: Draft
 last_updated: 2026-07-25
 related:
   - docs/work/blog/design.md
   - docs/work/blog/tasks.md
+  - docs/work/blog/funnel-dashboard.md
   - apps/site/src/lib/analytics/
   - apps/site/src/components/events/
   - docs/architecture/solution.md
@@ -28,7 +29,7 @@ Implementation: `apps/site/src/lib/analytics/`.
 | Consent          | `hasAnalyticsConsent()` reads `/api/consent`; caches a positive `accepted` result for the page session |
 | GTM              | `dataLayer.push({ event, ...params })` — custom event names match the table below                      |
 | Vercel Analytics | `window.va('track', event, params)` when `va` is present (same consent gate)                           |
-| Debug            | GA4 DebugView / GTM Preview with consent granted                                                       |
+| Debug            | GA4 DebugView / GTM Preview with consent granted — step-by-step in [`funnel-dashboard.md`](./funnel-dashboard.md) §5 |
 
 Do **not** put email addresses, names, or other PII in event parameters.
 
@@ -116,8 +117,12 @@ dataLayer.push({
 | `components/events/EventCard.tsx` (external / waitlist)   | `event_cta_click`                          |
 | `components/events/EventSignup.tsx`                       | `event_signup_complete`                    |
 
-## 5. Out of scope here
+## 5. Funnel dashboard (CP09-16)
 
-- Funnel dashboard / GA4 exploration UI (CP09-16)
+Operator setup for GA4 Explorations (subscribe + participation funnels) and DebugView verification with consent: [`funnel-dashboard.md`](./funnel-dashboard.md). **No in-app admin analytics page** — GA4 first per `design.md` §11.
+
+## 6. Out of scope here
+
 - Contact form Vercel `va` events (pre-existing; not part of this schema)
 - Changing ConsentGate / CSP for analytics hosts
+- Building `app/admin/analytics/page.tsx` (deferred; see `funnel-dashboard.md` §6)

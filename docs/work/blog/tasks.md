@@ -215,7 +215,7 @@ Scenario: Article scroll depth recorded
 
 - [ ] **[CP09-13]** [S8] Event schema + subscribe-funnel + scroll-depth instrumentation — `docs/work/blog/analytics-events.md`, `apps/site/src/lib/analytics/*`, `components/subscribe/*`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: CP09-05
 - [ ] **[CP09-14]** [P] [S8] Participation-funnel instrumentation — `components/events/*`, `lib/analytics/*` · Est 1 · Depends: CP09-11, CP09-12
-- [ ] **[CP09-16]** [S8] Funnel dashboard (GA4 exploration or lightweight admin view) — GA4 or `app/admin/analytics/page.tsx` · Est 1 · Depends: CP09-13, CP09-14
+- [x] **[CP09-16]** [S8] Funnel dashboard (GA4 exploration or lightweight admin view) — `docs/work/blog/funnel-dashboard.md` (GA4 explorations + DebugView; no admin UI) · Est 1 · Depends: CP09-13, CP09-14
 
 ### S9 — Share affordances (P2)
 **As a** reader, **I want** to share or copy a post link, **so that** I can pass it on.

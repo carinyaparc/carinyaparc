@@ -82,6 +82,7 @@ collections/EventRegistrations.ts            NEW     registrations against event
 # Measurement (S8) + Sharing (S9)
 lib/analytics/events.ts                      NEW     typed GA event helpers (consent-gated)
 docs/work/blog/analytics-events.md           NEW     event schema (names, params, allowed values)
+docs/work/blog/funnel-dashboard.md           NEW     GA4 Explorations + DebugView (no admin UI)
 components/blog/ShareBar.tsx                 NEW     copy-link + navigator.share
 
 # Reused unchanged
@@ -199,4 +200,4 @@ Subset of `solution.md` §2.1 this epic must satisfy: published-only visibility 
 
 1. **Subscribe payload.** Does `/api/subscribe` already accept `source`/`interest`, or is CP09-04 a genuine extension? Default: extend. Owner: implementer; non-blocking.
 2. **Events data source.** Confirm a Payload `Events` collection (decision 6) versus an external calendar feed. Default: Payload collection. Owner: product; blocks S7 only.
-3. **Funnel dashboard.** GA4 exploration (no build) versus an in-app admin view (CP09-16). Default: GA4 exploration first; build the admin view only if the exploration proves insufficient. Owner: JD; non-blocking.
+3. **Funnel dashboard.** ~~GA4 exploration (no build) versus an in-app admin view (CP09-16).~~ **Resolved (CP09-16):** GA4 Explorations only — operator guide in `docs/work/blog/funnel-dashboard.md`. In-app `app/admin/analytics/page.tsx` deferred unless GA4 proves insufficient (criteria in that doc §6). Owner: JD.
