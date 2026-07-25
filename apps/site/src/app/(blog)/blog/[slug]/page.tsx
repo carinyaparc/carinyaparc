@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 
 import { AuthorBlock } from '@/components/blog/AuthorBlock';
 import { RelatedPosts } from '@/components/blog/RelatedPosts';
+import { GetInvolvedCTA } from '@/components/events/GetInvolvedCTA';
 import { BlogPostHeader } from '@/components/sections/blog/BlogPostArticle';
 import { EndOfPostSubscribe } from '@/components/subscribe/EndOfPostSubscribe';
 import { InlineSubscribe } from '@/components/subscribe/InlineSubscribe';
@@ -14,6 +15,7 @@ import { BASE_URL } from '@/src/lib/constants';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { getCachedBlogPostBySlug, getCachedBlogPostSlugs } from '@/lib/payload/cache';
 import { resolveAuthorName, resolveTagNames } from '@/lib/payload/map-content';
+import { getNextUpcomingEvent } from '@/lib/payload/queries/events';
 import { getRelatedPosts } from '@/lib/payload/queries/related-posts';
 import { postUrl } from '@/lib/payload/urls';
 import { splitRichTextAtMidpoint } from '@/lib/subscribe/split-rich-text';
@@ -81,7 +83,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const author = resolveAuthorName(post.author);
   const tags = resolveTagNames(post.tags);
   const description = post.description ?? post.excerpt;
-  const relatedPosts = await getRelatedPosts(post, 3);
+  const [relatedPosts, nextEvent] = await Promise.all([
+    getRelatedPosts(post, 3),
+    getNextUpcomingEvent(),
+  ]);
   const heroImage = post.image ?? '/images/farm-track-gate.jpg';
   const subscribeSource = blogSubscribeSource(slug);
   const { before: bodyBefore, after: bodyAfter } = splitRichTextAtMidpoint(post.body);
@@ -143,6 +148,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <EndOfPostSubscribe source={subscribeSource} />
 
           <AuthorBlock author={post.author} />
+
+          <GetInvolvedCTA event={nextEvent} />
         </article>
 
         <RelatedPosts posts={relatedPosts} />

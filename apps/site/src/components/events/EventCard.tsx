@@ -17,7 +17,7 @@ export function formatEventDate(iso: string): string {
   }).format(new Date(iso));
 }
 
-function signupHref(event: UpcomingEvent): string {
+export function eventSignupHref(event: UpcomingEvent): string {
   if (event.signupTarget) {
     return event.signupTarget;
   }
@@ -25,7 +25,7 @@ function signupHref(event: UpcomingEvent): string {
   return `${eventsListingUrl()}#event-${event.slug}`;
 }
 
-function isExternalHref(href: string): boolean {
+export function isExternalEventHref(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
 
@@ -35,8 +35,8 @@ type EventCardProps = {
 };
 
 export function EventCard({ event, className }: EventCardProps) {
-  const href = signupHref(event);
-  const external = isExternalHref(href);
+  const href = eventSignupHref(event);
+  const external = isExternalEventHref(href);
   const full = Boolean(event.isFull);
   const ctaLabel = full ? 'Full — join the waitlist' : 'Sign up';
   const ctaHref = full ? '/subscribe/' : href;
