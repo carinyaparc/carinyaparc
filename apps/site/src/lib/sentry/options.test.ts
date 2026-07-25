@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { isPgPoolNoiseEvent, isRscConnectionClosedNoise } from './options';
+import {
+  isPgPoolNoiseEvent,
+  isRscConnectionClosedNoise,
+  isWebkitMessageHandlerNoise,
+} from './options';
 
 interface TestEventException {
   type?: string;
@@ -202,5 +206,83 @@ describe('isRscConnectionClosedNoise', () => {
       },
     };
     expect(isRscConnectionClosedNoise(productionEvent)).toBe(true);
+  });
+});
+
+describe('isWebkitMessageHandlerNoise', () => {
+  function makeWebkitEvent(overrides: Partial<TestEventException> = {}): TestEvent {
+    return {
+      exception: {
+        values: [
+          {
+            type: 'TypeError',
+            value: "undefined is not an object (evaluating 'window.webkit.messageHandlers')",
+            mechanism: { type: 'auto.browser.global_handlers.onerror', handled: false },
+            stacktrace: {
+              frames: [
+                { filename: 'safari-extension://com.example.extension/content.js', in_app: false },
+              ],
+            },
+            ...overrides,
+          },
+        ],
+      },
+    };
+  }
+
+  it('returns true for the exact WEBSITE-M production error with no in-app frames', () => {
+    expect(isWebkitMessageHandlerNoise(makeWebkitEvent())).toBe(true);
+  });
+
+  it('returns true when a specific handler is accessed (window.webkit.messageHandlers.handler.postMessage)', () => {
+    const event = makeWebkitEvent({
+      value:
+        "undefined is not an object (evaluating 'window.webkit.messageHandlers.log.postMessage')",
+    });
+    expect(isWebkitMessageHandlerNoise(event)).toBe(true);
+  });
+
+  it('returns false when at least one frame is in-app', () => {
+    const event = makeWebkitEvent();
+    firstEx(event).stacktrace!.frames = [
+      { filename: 'safari-extension://com.example.extension/content.js', in_app: false },
+      { filename: '/app/.next/static/chunks/app/page.js', in_app: true },
+    ];
+    expect(isWebkitMessageHandlerNoise(event)).toBe(false);
+  });
+
+  it('returns false when the error message does not mention window.webkit.messageHandlers', () => {
+    const event = makeWebkitEvent({ value: 'undefined is not an object (evaluating null.foo)' });
+    expect(isWebkitMessageHandlerNoise(event)).toBe(false);
+  });
+
+  it('returns true when stacktrace has no frames', () => {
+    const event = makeWebkitEvent({ stacktrace: { frames: [] } });
+    expect(isWebkitMessageHandlerNoise(event)).toBe(true);
+  });
+
+  it('returns true when stacktrace is missing entirely', () => {
+    const event = makeWebkitEvent({ stacktrace: undefined });
+    expect(isWebkitMessageHandlerNoise(event)).toBe(true);
+  });
+
+  it('returns false when exception is missing', () => {
+    expect(isWebkitMessageHandlerNoise({})).toBe(false);
+  });
+
+  it('matches the exact production event shape from WEBSITE-M', () => {
+    const productionEvent: TestEvent = {
+      exception: {
+        values: [
+          {
+            type: 'TypeError',
+            value: "undefined is not an object (evaluating 'window.webkit.messageHandlers')",
+            mechanism: { type: 'auto.browser.global_handlers.onerror', handled: false },
+            stacktrace: { frames: [] },
+          },
+        ],
+      },
+    };
+    expect(isWebkitMessageHandlerNoise(productionEvent)).toBe(true);
   });
 });
