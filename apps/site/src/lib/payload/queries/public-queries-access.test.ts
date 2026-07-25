@@ -25,6 +25,7 @@ import {
   getRecipeSlugs,
   getRecipes,
 } from '@/lib/payload/queries/recipes';
+import { getRelatedPosts } from '@/lib/payload/queries/related-posts';
 import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
 import { getPostsByTag, getTagSitemapEntries, getTagSlugs } from '@/lib/payload/queries/tags';
 
@@ -45,6 +46,15 @@ const publicQueries: Array<[string, () => Promise<unknown>]> = [
   ['getTagSlugs', () => getTagSlugs()],
   ['getPostsByTag', () => getPostsByTag('soil-health')],
   ['getTagSitemapEntries', () => getTagSitemapEntries()],
+  [
+    'getRelatedPosts',
+    () =>
+      getRelatedPosts({
+        slug: 'a-post',
+        category: { slug: 'restoration' },
+        tags: [{ slug: 'soil-health' }],
+      }),
+  ],
   ['getRecipes', () => getRecipes()],
   ['getRecipeBySlug', () => getRecipeBySlug('a-recipe')],
   ['getRecipeSlugs', () => getRecipeSlugs()],

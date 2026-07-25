@@ -4,14 +4,14 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+import { RelatedPosts } from '@/components/blog/RelatedPosts';
 import { BlogAuthorCard, BlogPostHeader } from '@/components/sections/blog/BlogPostArticle';
-import { RelatedPosts } from '@/components/sections/blog/RelatedPosts';
 import { RichText } from '@/src/components/rich-text/RichText';
 import { BASE_URL } from '@/src/lib/constants';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { getCachedBlogPostBySlug, getCachedBlogPostSlugs } from '@/lib/payload/cache';
-import { resolveAuthorName, resolveCategorySlug, resolveTagNames } from '@/lib/payload/map-content';
-import { getRelatedBlogPosts } from '@/lib/payload/queries/posts';
+import { resolveAuthorName, resolveTagNames } from '@/lib/payload/map-content';
+import { getRelatedPosts } from '@/lib/payload/queries/related-posts';
 import { postUrl } from '@/lib/payload/urls';
 
 export async function generateMetadata({
@@ -75,9 +75,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const author = resolveAuthorName(post.author);
   const tags = resolveTagNames(post.tags);
-  const categorySlug = resolveCategorySlug(post.category);
   const description = post.description ?? post.excerpt;
-  const relatedPosts = await getRelatedBlogPosts(slug, categorySlug, 3);
+  const relatedPosts = await getRelatedPosts(post, 3);
   const heroImage = post.image ?? '/images/farm-track-gate.jpg';
 
   const articleData = {

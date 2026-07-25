@@ -142,31 +142,6 @@ export async function getBlogPostBySlug(slug: string): Promise<PayloadPost | nul
   return result.docs[0] ?? null;
 }
 
-export async function getRelatedBlogPosts(
-  slug: string,
-  categorySlug: string | null,
-  limit = 3,
-): Promise<Post[]> {
-  const payload = await getPayloadClient();
-  const where: Where = categorySlug
-    ? {
-        and: [{ slug: { not_equals: slug } }, { 'category.slug': { equals: categorySlug } }],
-      }
-    : { slug: { not_equals: slug } };
-
-  const result = await payload.find({
-    collection: 'posts',
-    overrideAccess: false,
-    depth: 1,
-    limit,
-    sort: '-date',
-    select: POST_LIST_SELECT,
-    where,
-  });
-
-  return result.docs.map((doc, index) => mapPayloadPostToListItem(doc as PostListInput, index));
-}
-
 export async function getBlogPostSlugs(): Promise<string[]> {
   const payload = await getPayloadClient();
 
