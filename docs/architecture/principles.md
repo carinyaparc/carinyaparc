@@ -1,6 +1,6 @@
 # Guiding Principles
 
-Engineering rules for the Carinya Parc website.   |
+Engineering rules for the Carinya Parc website. |
 
 1. **Separation of Concerns:** Modules **SHALL** adhere to the single‑responsibility principle. UI components **SHALL NOT** contain side‑effects such as data fetching or business logic.
 
