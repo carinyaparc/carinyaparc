@@ -18,6 +18,9 @@ export type SubscribeFunnelParams = {
   interest?: string;
 };
 
+/** Attribution when the CTA is on the events listing page. */
+export const EVENTS_LISTING_SOURCE = 'events-listing';
+
 export type EventCtaClickParams = {
   event_id: string | number;
   source: string;
@@ -25,6 +28,7 @@ export type EventCtaClickParams = {
 
 export type EventSignupCompleteParams = {
   event_id: string | number;
+  source: string;
 };
 
 export type ArticleScrollDepthParams = {

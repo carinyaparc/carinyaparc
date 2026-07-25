@@ -9,6 +9,7 @@ export {
 export { trackEvent, trackEventAsync } from '@/lib/analytics/track';
 export {
   ANALYTICS_EVENTS,
+  EVENTS_LISTING_SOURCE,
   SCROLL_DEPTH_THRESHOLDS,
   type AnalyticsEventName,
   type AnalyticsEventParams,

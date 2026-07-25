@@ -8,6 +8,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { UpcomingEvent } from '@/lib/payload/queries/events';
 
+const trackEventCtaClick = vi.fn();
+
+vi.mock('@/lib/analytics', () => ({
+  trackEventCtaClick: (...args: unknown[]) => trackEventCtaClick(...args),
+  trackEventSignupComplete: vi.fn(),
+  EVENTS_LISTING_SOURCE: 'events-listing',
+}));
+
 vi.mock('next/link', () => ({
   default: ({
     href,
@@ -15,14 +23,16 @@ vi.mock('next/link', () => ({
     className,
     target,
     rel,
+    onClick,
   }: {
     href: string;
     children?: React.ReactNode;
     className?: string;
     target?: string;
     rel?: string;
+    onClick?: () => void;
   }) => (
-    <a href={href} className={className} target={target} rel={rel}>
+    <a href={href} className={className} target={target} rel={rel} onClick={onClick}>
       {children}
     </a>
   ),
@@ -39,6 +49,18 @@ const baseEvent: UpcomingEvent = {
   signupTarget: null,
 };
 
+function reactProps<T extends Record<string, unknown>>(el: Element): T {
+  const key = Object.keys(el).find((k) => k.startsWith('__reactProps$'));
+  if (!key) {
+    throw new Error('React props not found on element');
+  }
+  const props = (el as unknown as Record<string, T>)[key];
+  if (!props) {
+    throw new Error('React props missing on element');
+  }
+  return props;
+}
+
 describe('EventCard', () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -49,6 +71,7 @@ describe('EventCard', () => {
 
   beforeEach(async () => {
     vi.resetModules();
+    trackEventCtaClick.mockReset();
     ({ EventCard, EventsEmptyState, formatEventDate, eventSignupHref } =
       await import('@/components/events/EventCard'));
 
@@ -103,6 +126,33 @@ describe('EventCard', () => {
     expect(signup?.getAttribute('target')).toBe('_blank');
     expect(signup?.getAttribute('rel')).toContain('noopener');
     expect(container.querySelector('input[name="email"]')).toBeNull();
+  });
+
+  it('fires event_cta_click for external signup with listing source', async () => {
+    await act(async () => {
+      root.render(
+        <EventCard
+          event={{
+            ...baseEvent,
+            signupTarget: 'https://example.com/signup',
+          }}
+        />,
+      );
+    });
+
+    const signup = Array.from(container.querySelectorAll('a')).find((el) =>
+      el.textContent?.includes('Sign up'),
+    );
+    expect(signup).toBeTruthy();
+
+    await act(async () => {
+      reactProps<{ onClick?: () => void }>(signup!).onClick?.();
+    });
+
+    expect(trackEventCtaClick).toHaveBeenCalledWith({
+      event_id: 1,
+      source: 'events-listing',
+    });
   });
 
   it('shows waitlist state when the event is full', async () => {

@@ -8,6 +8,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { UpcomingEvent } from '@/lib/payload/queries/events';
 
+const trackEventCtaClick = vi.fn();
+
+vi.mock('@/lib/analytics', () => ({
+  trackEventCtaClick: (...args: unknown[]) => trackEventCtaClick(...args),
+  EVENTS_LISTING_SOURCE: 'events-listing',
+}));
+
 vi.mock('next/link', () => ({
   default: ({
     href,
@@ -15,14 +22,16 @@ vi.mock('next/link', () => ({
     className,
     target,
     rel,
+    onClick,
   }: {
     href: string;
     children?: React.ReactNode;
     className?: string;
     target?: string;
     rel?: string;
+    onClick?: () => void;
   }) => (
-    <a href={href} className={className} target={target} rel={rel}>
+    <a href={href} className={className} target={target} rel={rel} onClick={onClick}>
       {children}
     </a>
   ),
@@ -39,6 +48,18 @@ const nextEvent: UpcomingEvent = {
   signupTarget: null,
 };
 
+function reactProps<T extends Record<string, unknown>>(el: Element): T {
+  const key = Object.keys(el).find((k) => k.startsWith('__reactProps$'));
+  if (!key) {
+    throw new Error('React props not found on element');
+  }
+  const props = (el as unknown as Record<string, T>)[key];
+  if (!props) {
+    throw new Error('React props missing on element');
+  }
+  return props;
+}
+
 describe('GetInvolvedCTA', () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -47,6 +68,7 @@ describe('GetInvolvedCTA', () => {
 
   beforeEach(async () => {
     vi.resetModules();
+    trackEventCtaClick.mockReset();
     ({ GetInvolvedCTA } = await import('@/components/events/GetInvolvedCTA'));
     ({ formatEventDate } = await import('@/components/events/EventCard'));
 
@@ -64,7 +86,7 @@ describe('GetInvolvedCTA', () => {
 
   it('renders the next event with deep link and listing link', async () => {
     await act(async () => {
-      root.render(<GetInvolvedCTA event={nextEvent} />);
+      root.render(<GetInvolvedCTA event={nextEvent} source="blog:test-post" />);
     });
 
     expect(container.textContent).toContain('Come get your hands dirty');
@@ -83,10 +105,34 @@ describe('GetInvolvedCTA', () => {
     expect(listing?.getAttribute('href')).toBe('/get-involved/events/');
   });
 
+  it('fires event_cta_click with event_id and source on primary CTA click', async () => {
+    await act(async () => {
+      root.render(<GetInvolvedCTA event={nextEvent} source="blog:test-post" />);
+    });
+
+    const signup = Array.from(container.querySelectorAll('a')).find((el) =>
+      el.textContent?.includes('Sign up for this event'),
+    );
+    expect(signup).toBeTruthy();
+
+    await act(async () => {
+      reactProps<{ onClick?: () => void }>(signup!).onClick?.();
+    });
+
+    expect(trackEventCtaClick).toHaveBeenCalledTimes(1);
+    expect(trackEventCtaClick).toHaveBeenCalledWith({
+      event_id: 1,
+      source: 'blog:test-post',
+    });
+  });
+
   it('uses signupTarget for external registration URLs', async () => {
     await act(async () => {
       root.render(
-        <GetInvolvedCTA event={{ ...nextEvent, signupTarget: 'https://example.com/register' }} />,
+        <GetInvolvedCTA
+          event={{ ...nextEvent, signupTarget: 'https://example.com/register' }}
+          source="blog:test-post"
+        />,
       );
     });
 
@@ -100,7 +146,9 @@ describe('GetInvolvedCTA', () => {
 
   it('shows waitlist copy when the next event is full', async () => {
     await act(async () => {
-      root.render(<GetInvolvedCTA event={{ ...nextEvent, isFull: true }} />);
+      root.render(
+        <GetInvolvedCTA event={{ ...nextEvent, isFull: true }} source="blog:test-post" />,
+      );
     });
 
     expect(container.textContent).toContain('Full — join the waitlist');
@@ -112,7 +160,7 @@ describe('GetInvolvedCTA', () => {
 
   it('hides when there is no upcoming event', async () => {
     await act(async () => {
-      root.render(<GetInvolvedCTA event={null} />);
+      root.render(<GetInvolvedCTA event={null} source="blog:test-post" />);
     });
 
     expect(container.innerHTML).toBe('');

@@ -151,7 +151,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <AuthorBlock author={post.author} />
 
-          <GetInvolvedCTA event={nextEvent} />
+          <GetInvolvedCTA event={nextEvent} source={subscribeSource} />
         </article>
 
         <RelatedPosts posts={relatedPosts} />

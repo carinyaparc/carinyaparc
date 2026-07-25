@@ -7,6 +7,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { hasAnalyticsConsent, resetAnalyticsConsentCache } from '@/lib/analytics/consent';
 import {
   trackArticleScrollDepth,
+  trackEventCtaClick,
+  trackEventSignupComplete,
   trackSubscribeComplete,
   trackSubscribeStart,
 } from '@/lib/analytics/events';
@@ -116,6 +118,25 @@ describe('analytics helpers', () => {
       { event: 'subscribe_start', source: 'blog:slug' },
       { event: 'subscribe_complete', source: 'blog:slug', interest: 'learning' },
       { event: 'article_scroll_depth', depth: 25 },
+    ]);
+  });
+
+  it('typed participation helpers push event_id and source', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({ choice: 'accepted' }),
+    } as Response);
+
+    trackEventCtaClick({ event_id: 12, source: 'blog:slug' });
+    trackEventSignupComplete({ event_id: 12, source: 'events-listing' });
+
+    await vi.waitFor(() => {
+      expect(window.dataLayer?.length).toBe(2);
+    });
+
+    expect(window.dataLayer).toEqual([
+      { event: 'event_cta_click', event_id: 12, source: 'blog:slug' },
+      { event: 'event_signup_complete', event_id: 12, source: 'events-listing' },
     ]);
   });
 });

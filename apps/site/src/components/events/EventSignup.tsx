@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { FormField } from '@/components/ui/FormField';
 import { Input } from '@/components/ui/Input';
 import { SubscribePrivacyNote } from '@/components/subscribe/SubscribePrivacyNote';
+import { EVENTS_LISTING_SOURCE, trackEventSignupComplete } from '@/lib/analytics';
 import { cn } from '@/lib/cn';
 import {
   eventSignupClientSchema,
@@ -17,6 +18,8 @@ import {
 export type EventSignupProps = {
   eventId: number;
   eventTitle: string;
+  /** Funnel attribution source (e.g. events-listing or blog:{slug}). */
+  source?: string;
   /** When true, show waitlist / subscribe instead of the form. */
   isFull?: boolean;
   className?: string;
@@ -69,7 +72,13 @@ async function postEventSignup(payload: {
  * On-site event signup form with confirmation and full/waitlist states.
  * Wired onto listing cards at `#event-{slug}` (CP09-12).
  */
-export function EventSignup({ eventId, eventTitle, isFull = false, className }: EventSignupProps) {
+export function EventSignup({
+  eventId,
+  eventTitle,
+  source = EVENTS_LISTING_SOURCE,
+  isFull = false,
+  className,
+}: EventSignupProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [website, setWebsite] = useState('');
@@ -156,6 +165,7 @@ export function EventSignup({ eventId, eventTitle, isFull = false, className }: 
     });
 
     if (result.ok) {
+      trackEventSignupComplete({ event_id: parsed.data.eventId, source });
       setStatus('success');
       setSuccessMessage(result.message);
       setName('');

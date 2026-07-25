@@ -6,6 +6,13 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+const trackEventSignupComplete = vi.fn();
+
+vi.mock('@/lib/analytics', () => ({
+  EVENTS_LISTING_SOURCE: 'events-listing',
+  trackEventSignupComplete: (...args: unknown[]) => trackEventSignupComplete(...args),
+}));
+
 vi.mock('next/link', () => ({
   default: ({
     href,
@@ -22,6 +29,18 @@ vi.mock('next/link', () => ({
   ),
 }));
 
+function reactProps<T extends Record<string, unknown>>(el: Element): T {
+  const key = Object.keys(el).find((k) => k.startsWith('__reactProps$'));
+  if (!key) {
+    throw new Error('React props not found on element');
+  }
+  const props = (el as unknown as Record<string, T>)[key];
+  if (!props) {
+    throw new Error('React props missing on element');
+  }
+  return props;
+}
+
 describe('EventSignup', () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -29,6 +48,8 @@ describe('EventSignup', () => {
 
   beforeEach(async () => {
     vi.resetModules();
+    trackEventSignupComplete.mockReset();
+    vi.stubGlobal('fetch', vi.fn());
     ({ EventSignup } = await import('@/components/events/EventSignup'));
 
     container = document.createElement('div');
@@ -41,6 +62,7 @@ describe('EventSignup', () => {
       root.unmount();
     });
     container.remove();
+    vi.unstubAllGlobals();
   });
 
   it('renders name and email fields for an open event', async () => {
@@ -77,5 +99,76 @@ describe('EventSignup', () => {
     const honeypot = container.querySelector('input[name="website"]');
     expect(honeypot).toBeTruthy();
     expect(honeypot?.closest('[aria-hidden="true"]')).toBeTruthy();
+  });
+
+  it('fires event_signup_complete with event_id on successful submit', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => ({ message: "You're signed up — see you on the day." }),
+    } as Response);
+
+    await act(async () => {
+      root.render(<EventSignup eventId={12} eventTitle="Winter planting day" />);
+    });
+
+    const name = container.querySelector('input[name="name"]') as HTMLInputElement;
+    const email = container.querySelector('input[name="email"]') as HTMLInputElement;
+
+    await act(async () => {
+      reactProps<{ onChange?: (e: { target: { value: string } }) => void }>(name).onChange?.({
+        target: { value: 'Alex Reader' },
+      });
+      reactProps<{ onChange?: (e: { target: { value: string } }) => void }>(email).onChange?.({
+        target: { value: 'alex@example.com' },
+      });
+    });
+
+    const form = container.querySelector('form') as HTMLFormElement;
+
+    await act(async () => {
+      await reactProps<{
+        onSubmit?: (e: { preventDefault: () => void }) => void | Promise<void>;
+      }>(form).onSubmit?.({ preventDefault: () => undefined });
+    });
+
+    expect(trackEventSignupComplete).toHaveBeenCalledTimes(1);
+    expect(trackEventSignupComplete).toHaveBeenCalledWith({
+      event_id: 12,
+      source: 'events-listing',
+    });
+    expect(container.textContent).toMatch(/signed up/i);
+  });
+
+  it('does not fire event_signup_complete when the API fails', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: false,
+      json: async () => ({ error: 'Failed to sign up' }),
+    } as Response);
+
+    await act(async () => {
+      root.render(<EventSignup eventId={12} eventTitle="Winter planting day" />);
+    });
+
+    const name = container.querySelector('input[name="name"]') as HTMLInputElement;
+    const email = container.querySelector('input[name="email"]') as HTMLInputElement;
+
+    await act(async () => {
+      reactProps<{ onChange?: (e: { target: { value: string } }) => void }>(name).onChange?.({
+        target: { value: 'Alex Reader' },
+      });
+      reactProps<{ onChange?: (e: { target: { value: string } }) => void }>(email).onChange?.({
+        target: { value: 'alex@example.com' },
+      });
+    });
+
+    const form = container.querySelector('form') as HTMLFormElement;
+
+    await act(async () => {
+      await reactProps<{
+        onSubmit?: (e: { preventDefault: () => void }) => void | Promise<void>;
+      }>(form).onSubmit?.({ preventDefault: () => undefined });
+    });
+
+    expect(trackEventSignupComplete).not.toHaveBeenCalled();
   });
 });

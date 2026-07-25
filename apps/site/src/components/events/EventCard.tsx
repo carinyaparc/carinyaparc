@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 
 import { EventSignup } from '@/components/events/EventSignup';
 import { Button } from '@/components/ui/Button';
+import { EVENTS_LISTING_SOURCE, trackEventCtaClick } from '@/lib/analytics';
 import { cn } from '@/lib/cn';
 import type { UpcomingEvent } from '@/lib/payload/queries/events';
 import { eventsListingUrl } from '@/lib/payload/urls';
@@ -32,14 +35,20 @@ export function isExternalEventHref(href: string): boolean {
 
 type EventCardProps = {
   event: UpcomingEvent;
+  /** Attribution for external signup CTA clicks; defaults to listing. */
+  source?: string;
   className?: string;
 };
 
-export function EventCard({ event, className }: EventCardProps) {
+export function EventCard({ event, source = EVENTS_LISTING_SOURCE, className }: EventCardProps) {
   const externalHref = event.signupTarget?.trim() ? event.signupTarget.trim() : null;
   const external = externalHref ? isExternalEventHref(externalHref) : false;
   const full = Boolean(event.isFull);
   const showOnSiteSignup = !externalHref;
+
+  const handleExternalCtaClick = () => {
+    trackEventCtaClick({ event_id: event.id, source });
+  };
 
   return (
     <article
@@ -58,10 +67,19 @@ export function EventCard({ event, className }: EventCardProps) {
       <p className="mt-2 text-[14.5px] leading-[1.55] text-stone">{event.location}</p>
 
       {showOnSiteSignup ? (
-        <EventSignup eventId={event.id} eventTitle={event.title} isFull={full} />
+        <EventSignup
+          eventId={event.id}
+          eventTitle={event.title}
+          source={EVENTS_LISTING_SOURCE}
+          isFull={full}
+        />
       ) : full ? (
         <div className="mt-6">
-          <Button render={<Link href="/subscribe/" />} variant="outline" size="sm">
+          <Button
+            render={<Link href="/subscribe/" onClick={handleExternalCtaClick} />}
+            variant="outline"
+            size="sm"
+          >
             Full — join the waitlist
           </Button>
         </div>
@@ -71,6 +89,7 @@ export function EventCard({ event, className }: EventCardProps) {
             render={
               <Link
                 href={externalHref!}
+                onClick={handleExternalCtaClick}
                 {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               />
             }

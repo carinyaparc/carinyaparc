@@ -3,7 +3,7 @@ type: Work
 epic: blog
 epic_id: CP09
 story: S8
-task: CP09-13
+task: CP09-14
 owner: blog
 status: Draft
 last_updated: 2026-07-25
@@ -11,6 +11,7 @@ related:
   - docs/work/blog/design.md
   - docs/work/blog/tasks.md
   - apps/site/src/lib/analytics/
+  - apps/site/src/components/events/
   - docs/architecture/solution.md
 ---
 
@@ -46,12 +47,18 @@ Do **not** put email addresses, names, or other PII in event parameters.
 
 ### Participation funnel (CP09-14)
 
-| Event                   | When                                             | Parameters                                       | Allowed values                                                                 |
-| ----------------------- | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `event_cta_click`       | Reader activates the in-article get-involved CTA | `event_id` (string \| number), `source` (string) | `event_id`: Payload event id. `source`: e.g. `blog:{slug}` or `events-listing` |
-| `event_signup_complete` | Successful event signup                          | `event_id` (string \| number)                    | Payload event id                                                               |
+| Event                   | When                                                                 | Parameters                                       | Allowed values                                                                 |
+| ----------------------- | -------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `event_cta_click`       | Reader activates a participation CTA (in-article or listing)         | `event_id` (string \| number), `source` (string) | `event_id`: Payload event id. `source`: e.g. `blog:{slug}` or `events-listing` |
+| `event_signup_complete` | Successful on-site event signup API response (`ok`)                  | `event_id` (string \| number), `source` (string) | `event_id`: Payload event id. `source`: e.g. `events-listing` or `blog:{slug}` |
 
-Helpers for these names live in `lib/analytics` so CP09-14 can call them without redefining the schema.
+**Sources.** In-article `GetInvolvedCTA` uses `blogSubscribeSource(slug)` → `blog:{slug}`. Listing-card external CTAs default to `EVENTS_LISTING_SOURCE` (`events-listing`).
+
+**CTA surfaces.** Primary button on `GetInvolvedCTA` (sign up or full/waitlist). External signup / waitlist buttons on `EventCard`. The “All upcoming events” text link does not fire `event_cta_click`.
+
+**Signup complete.** Fires once per successful `/api/events/signup` response from `EventSignup`, with `event_id` and `source` (defaults to `events-listing` on the listing page). Honeypot fake-success does not fire.
+
+Helpers: `trackEventCtaClick`, `trackEventSignupComplete` in `lib/analytics`.
 
 ### Article engagement (CP09-13)
 
@@ -77,6 +84,20 @@ dataLayer.push({
   interest: 'community',
 });
 
+// In-article get-involved CTA
+dataLayer.push({
+  event: 'event_cta_click',
+  event_id: 12,
+  source: 'blog:winter-fencing-progress',
+});
+
+// Successful on-site event signup
+dataLayer.push({
+  event: 'event_signup_complete',
+  event_id: 12,
+  source: 'events-listing',
+});
+
 // Scroll depth
 dataLayer.push({
   event: 'article_scroll_depth',
@@ -91,7 +112,9 @@ dataLayer.push({
 | `components/subscribe/InlineSubscribe.tsx`                | `subscribe_start`, `subscribe_complete`    |
 | `components/subscribe/EndOfPostSubscribe.tsx`             | `subscribe_start`, `subscribe_complete`    |
 | `components/blog/ArticleScrollDepth.tsx` on `blog/[slug]` | `article_scroll_depth`                     |
-| `components/events/*` (CP09-14)                           | `event_cta_click`, `event_signup_complete` |
+| `components/events/GetInvolvedCTA.tsx`                    | `event_cta_click`                          |
+| `components/events/EventCard.tsx` (external / waitlist)   | `event_cta_click`                          |
+| `components/events/EventSignup.tsx`                       | `event_signup_complete`                    |
 
 ## 5. Out of scope here
 

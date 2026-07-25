@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 
 import {
@@ -6,6 +8,7 @@ import {
   isExternalEventHref,
 } from '@/components/events/EventCard';
 import { Button } from '@/components/ui/Button';
+import { trackEventCtaClick } from '@/lib/analytics';
 import { cn } from '@/lib/cn';
 import type { UpcomingEvent } from '@/lib/payload/queries/events';
 import { eventsListingUrl } from '@/lib/payload/urls';
@@ -13,6 +16,8 @@ import { eventsListingUrl } from '@/lib/payload/urls';
 export type GetInvolvedCTAProps = {
   /** Next upcoming published event, or null when none are scheduled. */
   event: UpcomingEvent | null;
+  /** Attribution for analytics, e.g. `blog:{slug}`. */
+  source: string;
   className?: string;
 };
 
@@ -20,7 +25,7 @@ export type GetInvolvedCTAProps = {
  * End-of-article participation CTA. Links to the next upcoming event when one
  * exists; returns null when the calendar is empty so articles stay clean.
  */
-export function GetInvolvedCTA({ event, className }: GetInvolvedCTAProps) {
+export function GetInvolvedCTA({ event, source, className }: GetInvolvedCTAProps) {
   if (!event) {
     return null;
   }
@@ -29,6 +34,10 @@ export function GetInvolvedCTA({ event, className }: GetInvolvedCTAProps) {
   const primaryHref = full ? '/subscribe/' : eventSignupHref(event);
   const primaryExternal = !full && isExternalEventHref(primaryHref);
   const listingHref = eventsListingUrl();
+
+  const handlePrimaryClick = () => {
+    trackEventCtaClick({ event_id: event.id, source });
+  };
 
   return (
     <aside
@@ -66,6 +75,7 @@ export function GetInvolvedCTA({ event, className }: GetInvolvedCTAProps) {
           render={
             <Link
               href={primaryHref}
+              onClick={handlePrimaryClick}
               {...(primaryExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             />
           }
