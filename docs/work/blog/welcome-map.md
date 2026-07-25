@@ -3,7 +3,7 @@ type: Work
 epic: blog
 epic_id: CP09
 story: S6
-task: CP09-07
+task: CP09-08
 owner: blog
 status: Draft
 last_updated: 2026-07-25
@@ -16,7 +16,7 @@ related:
 
 # Welcome map — interest → MailerLite automation
 
-Maps each subscribe **interest** enum value to a MailerLite welcome automation. Implements **S6** (CP09-07). External MailerLite configuration is **CP09-08** — use the checklist in §5.
+Maps each subscribe **interest** enum value to a MailerLite welcome automation. Implements **S6** (CP09-07 map; CP09-08 MailerLite configuration). **Automations are not yet live** — see §7 for status and the operator checklist.
 
 ## 1. How `/api/subscribe` drives the welcome
 
@@ -174,6 +174,100 @@ Expect `interest` and `interests` both `restoration` and the restoration welcome
 | Task | Description |
 | ---- | ----------- |
 | CP09-04 | Extended `/api/subscribe` to persist `interest`, `source` — **done** |
-| CP09-07 | This document |
-| CP09-08 | Configure MailerLite automations using §5 |
+| CP09-07 | This document (interest → automation map) — **done** |
+| CP09-08 | Configure MailerLite automations using §5 — **pending** (§7) |
 | CP09-09+ | `/get-involved` hub — community welcome CTA destination |
+
+## 7. CP09-08 status
+
+**Last checked:** 2026-07-25 (feat/blog, agent run)
+
+**Overall:** MailerLite welcome automations are **not configured**. All items in §5 remain **pending human operator** action in the MailerLite dashboard (and/or via API where supported).
+
+### 7.1 API verification attempt
+
+`MAILERLITE_API_KEY` is present in `apps/site/.env.local` but holds the **placeholder** value from `.env.example` (`mailerlite_api_key`), not a live token. A probe against the MailerLite Connect API returned **401 Unauthenticated**:
+
+```bash
+curl -sS -H "Authorization: Bearer $MAILERLITE_API_KEY" \
+  -H "Accept: application/json" \
+  "https://connect.mailerlite.com/api/fields"
+# → {"message":"Unauthenticated."}
+```
+
+No custom fields, automations, or subscriber state could be verified. **Do not treat welcome routing as live** until §7.3 verification passes.
+
+### 7.2 What a valid API key can verify (post-configuration)
+
+When a real key is available ([MailerLite API docs](https://developers.mailerlite.com/docs/)), an operator or agent can confirm:
+
+| Check | Endpoint | Confirms |
+| ----- | -------- | -------- |
+| Custom fields exist | `GET /api/fields` | Keys `interest`, `interests`, `source`, `name` with type `text` (§5.1) |
+| Welcome automations exist | `GET /api/automations?limit=100` | Six automations named per §5.2; `enabled: true`; `complete: true`; `broken: false` |
+| Trigger wiring (partial) | `GET /api/automations/{id}` | Trigger type (e.g. `subscriber_joins_group`), group IDs, step list |
+| Field-based conditions (partial) | Automation detail `steps[]` | Condition steps referencing custom field IDs and canonical values |
+| Test subscriber fields | `POST /api/subscribers` (upsert) then `GET /api/subscribers/{id}` | `fields.interest`, `fields.interests`, `fields.source` after §5.4 curl tests |
+| Automation run (indirect) | `GET /api/automations/{id}/activity` | Subscriber entered automation after test signup |
+
+**Not verifiable via API alone:** email body copy, primary CTA URLs (e.g. community → `/get-involved`), “run once” guardrails, and send-once policy on interest change (§5.3). Those require dashboard review or inbox inspection after §5.4 test signups.
+
+### 7.3 Operator checklist — all pending
+
+Copy of §5 for tracking. Mark each `[ ]` → `[x]` in MailerLite (or in this doc after confirmation).
+
+#### 7.3.1 Custom fields (§5.1) — pending
+
+- [ ] Create or verify custom field `interest` (text)
+- [ ] Create or verify custom field `interests` (text)
+- [ ] Create or verify custom field `source` (text)
+- [ ] Create or verify custom field `name` (text)
+
+#### 7.3.2 Welcome automations (§5.2) — pending
+
+- [ ] `Welcome — Ecological restoration` — trigger when `interest` equals `restoration`
+- [ ] `Welcome — Regenerative farming` — trigger when `interest` equals `regenerative-farming`
+- [ ] `Welcome — Community involvement` — trigger when `interest` equals `community`; primary CTA → `https://carinyaparc.com.au/get-involved`
+- [ ] `Welcome — Future produce` — trigger when `interest` equals `produce`
+- [ ] `Welcome — Learning opportunities` — trigger when `interest` equals `learning`
+- [ ] `Welcome — General` — trigger when new subscriber has **no** `interest` and **no** `interests`
+
+#### 7.3.3 Send-once guardrails (§5.3) — pending
+
+- [ ] Each welcome automation set to run **once per subscriber**
+- [ ] Interest-specific rules evaluated **before** general welcome (or general scoped to empty fields)
+- [ ] Product policy documented for re-subscribe with different interest (suppress re-send preferred)
+
+#### 7.3.4 End-to-end verification (§5.4) — pending
+
+Run against **production** after automations are enabled:
+
+```bash
+# One curl per canonical interest (replace INTEREST)
+curl -sS -X POST https://carinyaparc.com.au/api/subscribe \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"test+INTEREST@example.com","interest":"INTEREST","source":"welcome-map-verification"}'
+
+# Legacy regression
+curl -sS -X POST https://carinyaparc.com.au/api/subscribe \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"test+legacy@example.com","interests":"regeneration"}'
+```
+
+Confirm for each test:
+
+- [ ] Subscriber shows `interest` and `interests` set to the canonical value (MailerLite subscriber profile or API)
+- [ ] Matching welcome automation runs
+- [ ] Community test: email contains link to `/get-involved`
+- [ ] Legacy test: both fields `restoration`; restoration welcome fires
+
+### 7.4 Steps to complete CP09-08
+
+1. **Obtain a live API key** — MailerLite dashboard → Integrations → MailerLite API → Generate (see [authentication docs](https://developers.mailerlite.com/docs/#authentication)). Set `MAILERLITE_API_KEY` in `apps/site/.env.local` (local) and Vercel env (production).
+2. **Verify or create custom fields** — Complete §7.3.1; optionally confirm with `GET /api/fields`.
+3. **Build six welcome automations** — Complete §7.3.2 using trigger guidance in §5.2 and copy/CTAs from §2.
+4. **Apply send-once rules** — Complete §7.3.3.
+5. **Run §7.3.4 verification** — Production curl tests + inbox check.
+6. **Update this section** — Set §7 overall status to configured; check off §7.3 items; record verification date and operator initials.
+
+No application deploy is required for steps 2–5 (MailerLite-only). CP09-04 subscribe payload behaviour is already shipped.
