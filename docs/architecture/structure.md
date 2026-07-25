@@ -97,7 +97,8 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `Events.ts` – planting days / workshops (title, slug, startsAt, location, capacity, isFull, signupTarget, description).
   - `EventRegistrations.ts` – signup records against events (name, email, status registered/waitlisted).
 
-- `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
+- `src/fields/` – shared Payload field factories (`slugField`).
+- `src/collections/recipeIngredient.ts` – recipe ingredient/instruction field defs (Recipes-only).
 
 - `src/features/` – domain modules (product-area colocation; not full DDD).
   - `blog/` – journal UI, queries, RSS, article schema, blog layout wrapper.

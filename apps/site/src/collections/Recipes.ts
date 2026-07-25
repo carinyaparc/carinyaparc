@@ -4,7 +4,7 @@ import {
   createRevalidateAfterChange,
   createRevalidateAfterDelete,
 } from '@/collections/hooks/revalidate-content';
-import { recipeIngredientFields, recipeInstructionFields } from '@/fields/recipeIngredient';
+import { recipeIngredientFields, recipeInstructionFields } from '@/collections/recipeIngredient';
 import { authenticated, publicReadPublished } from '@/lib/payload/access';
 import { slugField } from '@/fields/slugField';
 
