@@ -64,7 +64,9 @@ function handleError(error: unknown, context: string) {
  * Next.js v16 proxy function (default export)
  * Implements: T2.1, SEC-001, SEC-004
  */
-export default function proxy(request: NextRequest) {
+export default function proxy(_request: NextRequest) {
+  // Next.js requires the request argument; headers are applied uniformly today.
+  void _request;
   try {
     // Check circuit breaker
     if (updateCircuitBreaker()) {
