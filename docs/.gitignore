@@ -2,6 +2,8 @@ work/*
 !work/README.md
 !work/seo/
 !work/seo/**
+!work/blog/
+!work/blog/**
 !work/blog-section/
 !work/blog-section/**
 !work/recipes-section/
