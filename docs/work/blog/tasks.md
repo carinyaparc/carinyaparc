@@ -3,8 +3,8 @@ type: Tasks
 epic: blog
 epic_id: CP09
 owner: blog
-status: Draft
-last_updated: 2026-07-24
+status: Validated — ops gaps
+last_updated: 2026-07-25
 related:
   - docs/work/blog/design.md
   - docs/product/roadmap.md
@@ -70,7 +70,7 @@ Scenario: Unknown category
   Then the response is HTTP 404
 ```
 
-- [ ] **[CP09-01]** [S1] Category archive route + nav — `apps/site/src/app/(blog)/blog/category/[slug]/page.tsx`, `components/blog/BlogTopicNav.tsx` · Est 5 · Depends: —
+- [x] **[CP09-01]** [S1] Category archive route + nav — `apps/site/src/app/(blog)/blog/category/[slug]/page.tsx`, `components/blog/BlogTopicNav.tsx` · Est 5 · Depends: — · status: done
   - Server-rendered, published-only; `getCategorySlugs`/`getPostsByCategory` in `lib/payload/queries/categories.ts`; category URLs in `sitemap.ts`; archive paths added to `revalidate.ts`.
 
 ### S2 — Tag archives (P2)
@@ -85,7 +85,7 @@ Scenario: Tag archive shows published posts only
   Then only published posts with that tag appear
 ```
 
-- [ ] **[CP09-02]** [P] [S2] Tag archive route — `apps/site/src/app/(blog)/blog/tag/[tag]/page.tsx` · Est 3 · Depends: CP09-01
+- [x] **[CP09-02]** [P] [S2] Tag archive route — `apps/site/src/app/(blog)/blog/tag/[tag]/page.tsx` · Est 3 · Depends: CP09-01 · status: done
   - Reuses the generic archive query behind `getPostsByTag`/`getTagSlugs`.
 
 ### S3 — Related posts at end of article (P1)
@@ -106,7 +106,7 @@ Scenario: Too few in-category posts
   Then the module falls back to the most recent other posts
 ```
 
-- [ ] **[CP09-03]** [S3] Related-posts selection + UI — `apps/site/src/lib/payload/queries/related-posts.ts`, `components/blog/RelatedPosts.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 3 · Depends: —
+- [x] **[CP09-03]** [S3] Related-posts selection + UI — `apps/site/src/lib/payload/queries/related-posts.ts`, `components/blog/RelatedPosts.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 3 · Depends: — · status: done
   - Published-only selection reusing the list mapper; rendered at the end of the article.
 
 ### S4 — In-article subscribe capture (P1)
@@ -132,8 +132,8 @@ Scenario: End-of-post subscribe records interest
   Then the subscriber is created with that interest recorded
 ```
 
-- [ ] **[CP09-04]** [S4] Extend subscribe endpoint for source + interest — `apps/site/src/app/api/subscribe/route.ts`, `lib/validation/subscribe.ts`, MailerLite integration · Est 2 · Depends: — `[confirm current payload]`
-- [ ] **[CP09-05]** [P] [S4] Inline + end-of-post subscribe components — `components/subscribe/InlineSubscribe.tsx`, `components/subscribe/EndOfPostSubscribe.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 3 · Depends: CP09-04
+- [x] **[CP09-04]** [S4] Extend subscribe endpoint for source + interest — `apps/site/src/app/api/subscribe/route.ts`, `lib/validation/subscribe.ts`, MailerLite integration · Est 2 · Depends: — · status: done
+- [x] **[CP09-05]** [P] [S4] Inline + end-of-post subscribe components — `components/subscribe/InlineSubscribe.tsx`, `components/subscribe/EndOfPostSubscribe.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 3 · Depends: CP09-04 · status: done
   - Reuses the five interest options from `/subscribe/`; privacy/consent copy consistent with the standalone page.
 
 ### S5 — Author / credibility block (P1)
@@ -149,7 +149,7 @@ Scenario: Author block on articles
   And it links to the full bio and the property page
 ```
 
-- [ ] **[CP09-06]** [S5] Author block component + placement — `components/blog/AuthorBlock.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: —
+- [x] **[CP09-06]** [S5] Author block component + placement — `components/blog/AuthorBlock.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: — · status: done
   - Uses the existing Payload `authors` relation and resolved author image.
 
 ### S6 — Interest-based welcome routing (P2)
@@ -165,8 +165,8 @@ Scenario: Interest routes the welcome
   And that welcome links to the get-involved page
 ```
 
-- [ ] **[CP09-07]** [S6] Map interests to welcome automations — `docs/work/blog/welcome-map.md` · Est 1 · Depends: CP09-04
-- [ ] **[CP09-08]** [P] [S6] Configure MailerLite automations — MailerLite (external), notes in `welcome-map.md` · Est 1 · Depends: CP09-07
+- [x] **[CP09-07]** [S6] Map interests to welcome automations — `docs/work/blog/welcome-map.md` · Est 1 · Depends: CP09-04 · status: done
+- [ ] **[CP09-08]** [P] [S6] Configure MailerLite automations — MailerLite (external), notes in `welcome-map.md` · Est 1 · Depends: CP09-07 · status: in-progress — ops pending (welcome-map.md §7; automations not live)
 
 ### S7 — Participation: events surface, CTA, signup (P3, Later)
 
@@ -192,10 +192,10 @@ Scenario: Event at capacity
   Then a "full — join the waitlist / subscribe" state is shown instead of the form
 ```
 
-- [ ] **[CP09-09]** [S7] Events data source + model — `apps/site/src/collections/Events.ts` (or content source) · Est 3 · Depends: — `[events source decision]`
-- [ ] **[CP09-10]** [P] [S7] Events listing page + card — `app/(www)/get-involved/events/page.tsx`, `components/events/EventCard.tsx` · Est 2 · Depends: CP09-09
-- [ ] **[CP09-11]** [P] [S7] In-article get-involved CTA — `components/events/GetInvolvedCTA.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: CP09-09
-- [ ] **[CP09-12]** [S7] Event signup endpoint + confirmation — `app/api/events/signup/route.ts`, `components/events/EventSignup.tsx` · Est 3 · Depends: CP09-09
+- [x] **[CP09-09]** [S7] Events data source + model — `apps/site/src/collections/Events.ts` (or content source) · Est 3 · Depends: — · status: done (apply Neon migration for live data)
+- [x] **[CP09-10]** [P] [S7] Events listing page + card — `app/(www)/get-involved/events/page.tsx`, `components/events/EventCard.tsx` · Est 2 · Depends: CP09-09 · status: done
+- [x] **[CP09-11]** [P] [S7] In-article get-involved CTA — `components/events/GetInvolvedCTA.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: CP09-09 · status: done
+- [x] **[CP09-12]** [S7] Event signup endpoint + confirmation — `app/api/events/signup/route.ts`, `components/events/EventSignup.tsx` · Est 3 · Depends: CP09-09 · status: done
 
 ### S8 — Measurement: funnel analytics (P2)
 
@@ -221,9 +221,9 @@ Scenario: Article scroll depth recorded
   Then an article_scroll_depth event is recorded with the depth reached
 ```
 
-- [ ] **[CP09-13]** [S8] Event schema + subscribe-funnel + scroll-depth instrumentation — `docs/work/blog/analytics-events.md`, `apps/site/src/lib/analytics/*`, `components/subscribe/*`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: CP09-05
-- [ ] **[CP09-14]** [P] [S8] Participation-funnel instrumentation — `components/events/*`, `lib/analytics/*` · Est 1 · Depends: CP09-11, CP09-12
-- [x] **[CP09-16]** [S8] Funnel dashboard (GA4 exploration or lightweight admin view) — `docs/work/blog/funnel-dashboard.md` (GA4 explorations + DebugView; no admin UI) · Est 1 · Depends: CP09-13, CP09-14
+- [x] **[CP09-13]** [S8] Event schema + subscribe-funnel + scroll-depth instrumentation — `docs/work/blog/analytics-events.md`, `apps/site/src/lib/analytics/*`, `components/subscribe/*`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: CP09-05 · status: done
+- [x] **[CP09-14]** [P] [S8] Participation-funnel instrumentation — `components/events/*`, `lib/analytics/*` · Est 1 · Depends: CP09-11, CP09-12 · status: done
+- [x] **[CP09-16]** [S8] Funnel dashboard (GA4 exploration or lightweight admin view) — `docs/work/blog/funnel-dashboard.md` (GA4 explorations + DebugView; no admin UI) · Est 1 · Depends: CP09-13, CP09-14 · status: done
 
 ### S9 — Share affordances (P2)
 
@@ -238,7 +238,7 @@ Scenario: Copy link
   And a confirmation is shown
 ```
 
-- [x] **[CP09-15]** [P] [S9] Share / copy-link control — `components/blog/ShareBar.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 1 · Depends: —
+- [x] **[CP09-15]** [P] [S9] Share / copy-link control — `components/blog/ShareBar.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 1 · Depends: — · status: done
 
 ## 4. Dependencies and Definition of Done
 
