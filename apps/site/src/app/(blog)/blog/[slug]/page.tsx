@@ -4,8 +4,9 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+import { AuthorBlock } from '@/components/blog/AuthorBlock';
 import { RelatedPosts } from '@/components/blog/RelatedPosts';
-import { BlogAuthorCard, BlogPostHeader } from '@/components/sections/blog/BlogPostArticle';
+import { BlogPostHeader } from '@/components/sections/blog/BlogPostArticle';
 import { EndOfPostSubscribe } from '@/components/subscribe/EndOfPostSubscribe';
 import { InlineSubscribe } from '@/components/subscribe/InlineSubscribe';
 import { RichText } from '@/src/components/rich-text/RichText';
@@ -141,7 +142,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <EndOfPostSubscribe source={subscribeSource} />
 
-          <BlogAuthorCard author={post.author} />
+          <AuthorBlock author={post.author} />
         </article>
 
         <RelatedPosts posts={relatedPosts} />
