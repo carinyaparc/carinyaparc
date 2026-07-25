@@ -1,10 +1,9 @@
-import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 import { BlogTopicNav } from '@/components/blog/BlogTopicNav';
 import { PageIntro } from '@/components/sections/page';
-import { PaginatedPosts, PaginatedPostsSkeleton } from '@/src/components/sections/blog';
+import { PaginatedPosts } from '@/src/components/sections/blog';
 import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
 import { BASE_URL } from '@/src/lib/constants';
 
@@ -90,9 +89,7 @@ export default async function BlogPageNumber({ params }: { params: Promise<{ pag
       <BlogTopicNav categories={categories} />
 
       <section className="py-9 pb-[84px]">
-        <Suspense fallback={<PaginatedPostsSkeleton />}>
-          <PaginatedPosts page={page} perPage={POSTS_PER_PAGE} excludeFeatured />
-        </Suspense>
+        <PaginatedPosts page={page} perPage={POSTS_PER_PAGE} excludeFeatured />
       </section>
     </div>
   );

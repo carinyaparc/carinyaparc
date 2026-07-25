@@ -1,18 +1,13 @@
 export { metadata } from './metadata';
 
-import { Suspense } from 'react';
-
 import { PageIntro } from '@/components/sections/page';
-import {
-  BlogIndexPosts,
-  FeaturedPosts,
-  FeaturedPostsSkeleton,
-  PaginatedPostsSkeleton,
-} from '@/src/components/sections/blog';
+import { BlogIndexPosts, FeaturedPosts } from '@/src/components/sections/blog';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 
 export const revalidate = 86_400;
 
+// Inline posts (no Suspense) so the prerendered HTML includes content — Suspense
+// shells were getting CDN-cached while RSC streams failed under bot mitigation.
 export default function BlogPage() {
   return (
     <>
@@ -29,13 +24,8 @@ export default function BlogPage() {
           descriptionClassName="mx-auto mt-[18px] max-w-[620px] text-stone leading-[1.6]"
         />
 
-        <Suspense fallback={<FeaturedPostsSkeleton />}>
-          <FeaturedPosts limit={1} />
-        </Suspense>
-
-        <Suspense fallback={<PaginatedPostsSkeleton count={6} />}>
-          <BlogIndexPosts />
-        </Suspense>
+        <FeaturedPosts limit={1} />
+        <BlogIndexPosts />
       </div>
     </>
   );
