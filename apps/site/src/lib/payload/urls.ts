@@ -4,6 +4,10 @@ export function postUrl(slug: string): string {
   return `/blog/${slug}/`;
 }
 
+export function categoryUrl(slug: string): string {
+  return `/blog/category/${slug}/`;
+}
+
 export function recipeUrl(slug: string): string {
   return `/recipes/${slug}/`;
 }

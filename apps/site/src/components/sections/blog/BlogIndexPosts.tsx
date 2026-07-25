@@ -1,5 +1,7 @@
-import { BlogIndexPostsClient } from './BlogIndexPostsClient';
+import { BlogTopicNav } from '@/components/blog/BlogTopicNav';
 import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
+
+import { BlogIndexPostsClient } from './BlogIndexPostsClient';
 
 const POSTS_PER_PAGE = 6;
 
@@ -14,10 +16,12 @@ export async function BlogIndexPosts() {
   ]);
 
   return (
-    <BlogIndexPostsClient
-      categories={categories}
-      initialPosts={postsPage.posts}
-      initialTotalPages={postsPage.totalPages}
-    />
+    <>
+      <BlogTopicNav categories={categories} />
+      <BlogIndexPostsClient
+        initialPosts={postsPage.posts}
+        initialTotalPages={postsPage.totalPages}
+      />
+    </>
   );
 }

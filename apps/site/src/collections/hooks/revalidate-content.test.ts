@@ -49,6 +49,33 @@ describe('createRevalidateAfterChange', () => {
     expect(revalidatePath).toHaveBeenCalledWith('/', 'page');
   });
 
+  it('revalidates category archive paths when category is populated', async () => {
+    const hook = createRevalidateAfterChange('posts');
+
+    await hook({
+      doc: {
+        slug: 'my-post',
+        featured: false,
+        _status: 'published',
+        category: { id: 1, slug: 'restoration' },
+      },
+      previousDoc: {
+        slug: 'my-post',
+        featured: false,
+        _status: 'published',
+        category: { id: 2, slug: 'farming' },
+      },
+      operation: 'update',
+      collection: { slug: 'posts' } as never,
+      context: {} as never,
+      data: {},
+      req: {} as never,
+    });
+
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/category/restoration/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/category/farming/', 'page');
+  });
+
   it('calls revalidateTag with recipe cache tags for a recipe afterChange hook', async () => {
     const hook = createRevalidateAfterChange('recipes');
 

@@ -9,6 +9,11 @@ vi.mock('@/lib/payload/client', () => ({
 }));
 
 import {
+  getCategorySitemapEntries,
+  getCategorySlugs,
+  getPostsByCategory,
+} from '@/lib/payload/queries/categories';
+import {
   getBlogPostBySlug,
   getBlogPosts,
   getBlogPostSlugs,
@@ -33,6 +38,9 @@ const publicQueries: Array<[string, () => Promise<unknown>]> = [
   ['getBlogPostBySlug', () => getBlogPostBySlug('a-post')],
   ['getBlogPostSlugs', () => getBlogPostSlugs()],
   ['getPostSitemapEntries', () => getPostSitemapEntries()],
+  ['getCategorySlugs', () => getCategorySlugs()],
+  ['getPostsByCategory', () => getPostsByCategory('restoration')],
+  ['getCategorySitemapEntries', () => getCategorySitemapEntries()],
   ['getRecipes', () => getRecipes()],
   ['getRecipeBySlug', () => getRecipeBySlug('a-recipe')],
   ['getRecipeSlugs', () => getRecipeSlugs()],

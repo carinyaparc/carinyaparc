@@ -4,6 +4,7 @@ import path from 'path';
 
 import { BASE_URL } from '../lib/constants';
 import { withTrailingSlash } from '@/lib/metadata/canonical';
+import { getCategorySitemapEntries } from '@/lib/payload/queries/categories';
 import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
 import { getRecipeSitemapEntries } from '@/lib/payload/queries/recipes';
 import type { ContentRouteEntry } from '@/lib/payload/map-content';
@@ -108,12 +109,19 @@ function combineRoutes(...routeGroups: RouteInfo[][]): RouteInfo[] {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [postRoutes, recipeRoutes] = await Promise.all([
+  const [postRoutes, recipeRoutes, categoryRoutes] = await Promise.all([
     getPostSitemapEntries(),
     getRecipeSitemapEntries(),
+    getCategorySitemapEntries(),
   ]);
 
-  const routes = combineRoutes(getAppRoutes(), getLegalContentRoutes(), postRoutes, recipeRoutes);
+  const routes = combineRoutes(
+    getAppRoutes(),
+    getLegalContentRoutes(),
+    postRoutes,
+    recipeRoutes,
+    categoryRoutes,
+  );
 
   return routes.map(({ route, lastModified, priority, changeFrequency }) => ({
     // Trailing slash matches next.config trailingSlash: true, so crawlers are
