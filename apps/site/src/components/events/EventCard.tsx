@@ -1,0 +1,91 @@
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/Button';
+import { cn } from '@/lib/cn';
+import type { UpcomingEvent } from '@/lib/payload/queries/events';
+import { eventsListingUrl } from '@/lib/payload/urls';
+
+export function formatEventDate(iso: string): string {
+  return new Intl.DateTimeFormat('en-AU', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: 'Australia/Sydney',
+  }).format(new Date(iso));
+}
+
+function signupHref(event: UpcomingEvent): string {
+  if (event.signupTarget) {
+    return event.signupTarget;
+  }
+  // Deep-link to this event's on-site signup slot on the listing page.
+  return `${eventsListingUrl()}#event-${event.slug}`;
+}
+
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
+
+type EventCardProps = {
+  event: UpcomingEvent;
+  className?: string;
+};
+
+export function EventCard({ event, className }: EventCardProps) {
+  const href = signupHref(event);
+  const external = isExternalHref(href);
+  const full = Boolean(event.isFull);
+  const ctaLabel = full ? 'Full — join the waitlist' : 'Sign up';
+  const ctaHref = full ? '/subscribe/' : href;
+  const ctaExternal = !full && external;
+
+  return (
+    <article
+      id={`event-${event.slug}`}
+      className={cn(
+        'flex flex-col rounded-lg border border-line bg-fleece p-7 shadow-md',
+        className,
+      )}
+    >
+      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-bracken-500">
+        <time dateTime={event.startsAt}>{formatEventDate(event.startsAt)}</time>
+      </p>
+      <h2 className="mt-2.5 font-heading text-[22px] font-normal leading-[1.22] text-bark">
+        {event.title}
+      </h2>
+      <p className="mt-2 text-[14.5px] leading-[1.55] text-stone">{event.location}</p>
+      <div className="mt-6">
+        <Button
+          render={
+            <Link
+              href={ctaHref}
+              {...(ctaExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            />
+          }
+          variant={full ? 'outline' : 'bracken'}
+          size="sm"
+        >
+          {ctaLabel}
+        </Button>
+      </div>
+    </article>
+  );
+}
+
+export function EventsEmptyState() {
+  return (
+    <div className="mx-auto max-w-xl py-12 text-center">
+      <p className="text-[17px] leading-[1.7] text-charcoal">
+        No upcoming events just now. Subscribe for invitations to planting days and workshops.
+      </p>
+      <div className="mt-6">
+        <Button render={<Link href="/subscribe/" />} variant="bracken" size="sm">
+          Subscribe for updates
+        </Button>
+      </div>
+    </div>
+  );
+}
