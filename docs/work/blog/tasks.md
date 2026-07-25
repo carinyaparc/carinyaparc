@@ -3,7 +3,7 @@ type: Tasks
 epic: blog
 epic_id: CP09
 owner: blog
-status: Validated — ops gaps
+status: Validated — ops gaps (CP09-08 MailerLite automations not configured)
 last_updated: 2026-07-25
 related:
   - docs/work/blog/design.md
@@ -192,7 +192,7 @@ Scenario: Event at capacity
   Then a "full — join the waitlist / subscribe" state is shown instead of the form
 ```
 
-- [x] **[CP09-09]** [S7] Events data source + model — `apps/site/src/collections/Events.ts` (or content source) · Est 3 · Depends: — · status: done (apply Neon migration for live data)
+- [x] **[CP09-09]** [S7] Events data source + model — `apps/site/src/collections/Events.ts` (or content source) · Est 3 · Depends: — · status: done — Neon migration (`migrations/20260725_add_events_tables.ts`) confirmed applied in production (operator-confirmed 2026-07-25)
 - [x] **[CP09-10]** [P] [S7] Events listing page + card — `app/(www)/get-involved/events/page.tsx`, `components/events/EventCard.tsx` · Est 2 · Depends: CP09-09 · status: done
 - [x] **[CP09-11]** [P] [S7] In-article get-involved CTA — `components/events/GetInvolvedCTA.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 2 · Depends: CP09-09 · status: done
 - [x] **[CP09-12]** [S7] Event signup endpoint + confirmation — `app/api/events/signup/route.ts`, `components/events/EventSignup.tsx` · Est 3 · Depends: CP09-09 · status: done
