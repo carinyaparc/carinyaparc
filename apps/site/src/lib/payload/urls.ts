@@ -8,6 +8,10 @@ export function categoryUrl(slug: string): string {
   return `/blog/category/${slug}/`;
 }
 
+export function tagUrl(tag: string): string {
+  return `/blog/tag/${tag}/`;
+}
+
 export function recipeUrl(slug: string): string {
   return `/recipes/${slug}/`;
 }

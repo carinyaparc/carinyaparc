@@ -76,6 +76,37 @@ describe('createRevalidateAfterChange', () => {
     expect(revalidatePath).toHaveBeenCalledWith('/blog/category/farming/', 'page');
   });
 
+  it('revalidates tag archive paths when tags are populated', async () => {
+    const hook = createRevalidateAfterChange('posts');
+
+    await hook({
+      doc: {
+        slug: 'my-post',
+        featured: false,
+        _status: 'published',
+        tags: [
+          { id: 1, slug: 'soil-health' },
+          { id: 2, slug: 'wildlife' },
+        ],
+      },
+      previousDoc: {
+        slug: 'my-post',
+        featured: false,
+        _status: 'published',
+        tags: [{ id: 3, slug: 'water' }],
+      },
+      operation: 'update',
+      collection: { slug: 'posts' } as never,
+      context: {} as never,
+      data: {},
+      req: {} as never,
+    });
+
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/tag/soil-health/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/tag/wildlife/', 'page');
+    expect(revalidatePath).toHaveBeenCalledWith('/blog/tag/water/', 'page');
+  });
+
   it('calls revalidateTag with recipe cache tags for a recipe afterChange hook', async () => {
     const hook = createRevalidateAfterChange('recipes');
 

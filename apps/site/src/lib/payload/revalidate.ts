@@ -9,6 +9,7 @@ export type RevalidationDoc = {
   featured?: boolean | null;
   _status?: string | null;
   categorySlug?: string | null;
+  tagSlugs?: string[];
 };
 
 export type RevalidationContext = {
@@ -62,6 +63,11 @@ export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
 
   if (ctx.previousDoc?.categorySlug && ctx.previousDoc.categorySlug !== categorySlug) {
     paths.push(`/blog/category/${ctx.previousDoc.categorySlug}/`);
+  }
+
+  const tagSlugs = new Set([...(ctx.doc.tagSlugs ?? []), ...(ctx.previousDoc?.tagSlugs ?? [])]);
+  for (const tagSlug of tagSlugs) {
+    paths.push(`/blog/tag/${tagSlug}/`);
   }
 
   return uniqueNormalizedPaths(paths);

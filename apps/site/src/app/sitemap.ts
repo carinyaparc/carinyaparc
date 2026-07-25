@@ -7,6 +7,7 @@ import { withTrailingSlash } from '@/lib/metadata/canonical';
 import { getCategorySitemapEntries } from '@/lib/payload/queries/categories';
 import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
 import { getRecipeSitemapEntries } from '@/lib/payload/queries/recipes';
+import { getTagSitemapEntries } from '@/lib/payload/queries/tags';
 import type { ContentRouteEntry } from '@/lib/payload/map-content';
 
 type RouteInfo = ContentRouteEntry;
@@ -109,10 +110,11 @@ function combineRoutes(...routeGroups: RouteInfo[][]): RouteInfo[] {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [postRoutes, recipeRoutes, categoryRoutes] = await Promise.all([
+  const [postRoutes, recipeRoutes, categoryRoutes, tagRoutes] = await Promise.all([
     getPostSitemapEntries(),
     getRecipeSitemapEntries(),
     getCategorySitemapEntries(),
+    getTagSitemapEntries(),
   ]);
 
   const routes = combineRoutes(
@@ -121,6 +123,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     postRoutes,
     recipeRoutes,
     categoryRoutes,
+    tagRoutes,
   );
 
   return routes.map(({ route, lastModified, priority, changeFrequency }) => ({

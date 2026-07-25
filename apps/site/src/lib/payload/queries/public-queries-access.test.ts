@@ -26,6 +26,7 @@ import {
   getRecipes,
 } from '@/lib/payload/queries/recipes';
 import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
+import { getPostsByTag, getTagSitemapEntries, getTagSlugs } from '@/lib/payload/queries/tags';
 
 /**
  * Payload's Local API defaults to overrideAccess: true, which bypasses the
@@ -41,6 +42,9 @@ const publicQueries: Array<[string, () => Promise<unknown>]> = [
   ['getCategorySlugs', () => getCategorySlugs()],
   ['getPostsByCategory', () => getPostsByCategory('restoration')],
   ['getCategorySitemapEntries', () => getCategorySitemapEntries()],
+  ['getTagSlugs', () => getTagSlugs()],
+  ['getPostsByTag', () => getPostsByTag('soil-health')],
+  ['getTagSitemapEntries', () => getTagSitemapEntries()],
   ['getRecipes', () => getRecipes()],
   ['getRecipeBySlug', () => getRecipeBySlug('a-recipe')],
   ['getRecipeSlugs', () => getRecipeSlugs()],

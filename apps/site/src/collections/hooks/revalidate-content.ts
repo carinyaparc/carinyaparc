@@ -46,6 +46,41 @@ async function resolveCategorySlug(category: unknown): Promise<string | null> {
   return null;
 }
 
+async function resolveTagSlug(tag: unknown): Promise<string | null> {
+  if (tag && typeof tag === 'object' && 'slug' in tag) {
+    const slug = (tag as { slug?: unknown }).slug;
+    return typeof slug === 'string' ? slug : null;
+  }
+
+  if (typeof tag === 'number') {
+    try {
+      // Dynamic import avoids a circular init with payload.config → collections → this hook.
+      const { getPayloadClient } = await import('@/lib/payload/client');
+      const payload = await getPayloadClient();
+      const doc = await payload.findByID({
+        collection: 'tags',
+        id: tag,
+        depth: 0,
+        overrideAccess: false,
+      });
+      return typeof doc?.slug === 'string' ? doc.slug : null;
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+}
+
+async function resolveTagSlugs(tags: unknown): Promise<string[]> {
+  if (!Array.isArray(tags) || tags.length === 0) {
+    return [];
+  }
+
+  const slugs = await Promise.all(tags.map((tag) => resolveTagSlug(tag)));
+  return [...new Set(slugs.filter((slug): slug is string => Boolean(slug)))];
+}
+
 async function toRevalidationDoc(
   doc: Record<string, unknown> | null | undefined,
 ): Promise<RevalidationDoc> {
@@ -54,6 +89,7 @@ async function toRevalidationDoc(
     featured: typeof doc?.featured === 'boolean' ? doc.featured : null,
     _status: typeof doc?._status === 'string' ? doc._status : null,
     categorySlug: await resolveCategorySlug(doc?.category),
+    tagSlugs: await resolveTagSlugs(doc?.tags),
   };
 }
 

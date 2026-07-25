@@ -10,7 +10,8 @@ export type BlogTopic = {
 
 type BlogTopicNavProps = {
   categories: BlogTopic[];
-  activeSlug?: string;
+  /** When omitted, "All" is active. Pass `null` when no chip should be active (e.g. tag archives). */
+  activeSlug?: string | null;
 };
 
 export function BlogTopicNav({ categories, activeSlug }: BlogTopicNavProps) {
@@ -28,7 +29,12 @@ export function BlogTopicNav({ categories, activeSlug }: BlogTopicNavProps) {
       <div className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-2.5 px-6 lg:px-14">
         <span className="mr-1.5 text-[13px] font-semibold text-charcoal">Browse:</span>
         {chips.map((chip) => {
-          const isActive = chip.slug ? activeSlug === chip.slug : !activeSlug;
+          const isActive =
+            activeSlug === null
+              ? false
+              : chip.slug
+                ? activeSlug === chip.slug
+                : activeSlug === undefined;
           const href = chip.slug ? categoryUrl(chip.slug) : '/blog/';
 
           return (
