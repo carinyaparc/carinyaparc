@@ -28,9 +28,10 @@ For product context and feature intent, read `docs/product.md` (what and why). F
 │           │   ├── (blog)/     # Blog index and post routes
 │           │   └── (recipes)/  # Recipe routes
 │           ├── collections/  # Payload CMS collection configs
-│           ├── components/   # React components (sections/, forms/, ui/, …)
+│           ├── components/   # Shared UI (sections chrome, forms, ui/, …)
+│           ├── features/     # Domain modules (blog/, recipes/, …)
 │           ├── hooks/        # Client hooks (use-*)
-│           ├── lib/          # Utilities (metadata/, schema/, security/, session/, …)
+│           ├── lib/          # Cross-cutting utilities (payload client, security/, …)
 │           ├── providers/    # App-wide React providers
 │           └── styles/       # Global CSS
 ├── packages/
@@ -50,7 +51,7 @@ Prefer aliases over deep relative paths (`../../../…`).
 - Route segments: **kebab-case** (`the-property`, `[post]`, `[recipe]`)
 - Components: **PascalCase** files and exports (`SubscribeForm.tsx`)
 - Hooks: **kebab-case** files, `use*` names (`use-mobile.ts`)
-- `page.tsx` files stay thin — delegate UI to `components/sections/` and data helpers to `lib/`
+- `page.tsx` files stay thin — delegate domain UI/data to `features/{domain}/`, shared chrome to `components/sections/`
 
 ## Build and test commands
 

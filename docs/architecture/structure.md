@@ -26,12 +26,13 @@ At a high level, the monorepo is structured as:
 │       ├── src/
 │       │   ├── app/          # App Router routes, layouts, and route-level files
 │       │   │   └── (payload)/ # Payload admin UI and REST/GraphQL API routes
-│       │   ├── components/   # Shared React components
+│       │   ├── components/   # Shared React components (chrome, ui, layouts)
+│       │   ├── features/     # Domain modules (blog, recipes, …)
 │       │   ├── collections/  # Payload CMS collection configs
 │       │   ├── fields/       # Reusable Payload field definitions
 │       │   ├── hooks/        # Reusable hooks
 │       │   ├── providers/    # App-wide React context providers
-│       │   ├── lib/          # Utilities, metadata, schema, session helpers
+│       │   ├── lib/          # Cross-cutting utilities (payload client, security, …)
 │       │   ├── styles/       # Global and component-level styles
 │       ├── eslint.config.mjs
 │       ├── next.config.mjs
@@ -98,29 +99,43 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
 
+- `src/features/` – domain modules (product-area colocation; not full DDD).
+  - `blog/` – journal UI, queries, RSS, article schema, blog layout wrapper.
+    - `components/` – PostCard, FeaturedPosts, RelatedPosts, ShareBar, AuthorBlock, …
+    - `queries/` – posts, related-posts, categories, tags, sitemap-posts.
+    - `rss/` – RSS feed builder.
+    - `schema/` – Article JSON-LD helper.
+    - `layout/` – `blog-root-layout.tsx`.
+    - `types.ts` – list `Post` type; re-exports common blog query helpers.
+  - `recipes/` – recipe UI, queries, duration helpers, recipe schema.
+    - `components/` – RecipeCard, RecipeGrid.
+    - `queries/` – recipes list/detail/sitemap.
+    - `lib/` – `format-duration.ts`.
+    - `schema/` – Recipe JSON-LD helper.
+  - Prefer `@/features/{domain}` for domain code. Keep Next routes in `app/` and Payload
+    collection configs in `collections/`.
+
 - `src/components/`
-  - `sections/` – larger page sections (hero blocks, feature sections, etc.).
+  - `sections/` – shared page chrome only (hero, header, footer, page-header, regenerate, …).
   - `forms/` under `sections/` for reusable form UI (e.g. `ContactFormSection`, subscribe flows).
-  - `events/` – event listing cards, on-site signup form, and get-involved CTA.
-  - `blog/` – blog-specific UI (topic nav, author block, related posts, share).
-  - `layouts/` – layout-level components.
+  - `events/` – event listing cards, on-site signup form, and get-involved CTA (candidate for a future `features/events` module).
+  - `layouts/` – shared layout-level components (site root shell).
   - `rich-text/` – Lexical rich-text renderer for Payload post bodies.
-  - `posts/`, `pages/`, `ui/` – post components, page-specific extras, and shared UI wrappers.
+  - `subscribe/`, `pages/`, `ui/` – subscribe flows, page-specific extras, and shared UI primitives.
 
 - `src/hooks/`
   - Hooks such as `use-mobile`, `use-toast`, etc.
 
 - `src/lib/`
   - `cn.ts` – class name utility.
-  - `payload/` – Payload client, queries, content mappers, access control, slugify.
+  - `payload/` – Payload client, cache wrappers, content mappers, access control, slugify.
     - `client.ts` – cached `getPayloadClient()` (server-only).
-    - `queries/` – `posts.ts`, `recipes.ts`, `events.ts`, `sitemap-posts.ts` for route and sitemap data.
+    - `cache.ts` – `unstable_cache` wrappers over feature query functions.
+    - `queries/` – remaining cross-domain or non-feature queries (e.g. `events.ts`).
     - `map-content.ts` – maps Payload documents to list/detail shapes.
     - `urls.ts` – `/blog/{slug}` and `/recipes/{slug}` path helpers.
-  - `posts.ts` – `Post` type; re-exports blog query functions from `payload/queries/posts`.
-  - `recipes/` – recipe display helpers (e.g. `format-duration.ts`).
   - `metadata/` – helper functions for route metadata.
-  - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).
+  - `schema/` – shared schema utilities (organization, breadcrumb, localBusiness) and `generateJsonLd` orchestrator; article/recipe generators live under `features/`.
   - `analytics/` – consent-gated GA/GTM helpers (`trackEvent`, typed funnel events); event schema in `docs/work/blog/analytics-events.md`; GA4 funnel explorations in `docs/work/blog/funnel-dashboard.md`.
   - `consent/` – cookie-consent server actions (httpOnly `cp_consent` cookie).
   - `session/` – JWT helpers for a future `cp_session` cookie (scaffold only; not used by routes today).
@@ -138,6 +153,8 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
 
 - `src/components/layouts/site-root-layout.tsx`
   - Shared site root layout (HTML shell, providers, header, footer). Used by `(www)/layout.tsx`, `(blog)/layout.tsx`, and `(recipes)/layout.tsx`.
+- `src/features/blog/layout/blog-root-layout.tsx`
+  - Blog route-group layout wrapper (re-exported from `(blog)/layout.tsx`).
 - `(payload)/layout.tsx`
   - Payload admin root layout — separate from the public site so `/admin` does not nest two `<html>` documents.
 
@@ -208,13 +225,14 @@ Future booking flows may live under `/stay` or `/visit` (see [`product.md`](prod
 
 ### Components
 
-- Live under `src/components/` with subfolders by concern:
-  - `sections/` for large page sections (hero, story grids, etc.).
+- Shared chrome lives under `src/components/` with subfolders by concern:
+  - `sections/` for large shared page sections (hero, footer, regenerate, etc.).
   - `forms/` for reusable form sections:
     - `ContactFormSection.tsx` – contact inquiry form
     - `SubscribeSection.tsx` – newsletter subscription
   - `ui/` for low-level UI primitives and wrappers (built on Base UI), e.g. `button.tsx`, `card.tsx`, `input.tsx`.
-  - `pages/` and `posts/` for page-specific and post-specific components.
+  - `pages/` for page-specific extras.
+- Domain UI (blog, recipes) lives under `src/features/{domain}/components/`.
 
 ### Providers
 
@@ -239,7 +257,9 @@ Future booking flows may live under `/stay` or `/visit` (see [`product.md`](prod
 
 - Live under `src/lib/`.
 - **Data-fetching and content utilities**:
-  - Blog and recipe data: `getBlogPosts`, `getBlogPostBySlug`, `getRecipeDetailBySlug` in `src/lib/payload/queries/` (re-exported from `posts.ts` where applicable).
+  - Blog data: `src/features/blog/queries/` (cached via `lib/payload/cache.ts`).
+  - Recipe data: `src/features/recipes/queries/` (cached via `lib/payload/cache.ts`).
+  - Events and other non-feature queries: `src/lib/payload/queries/`.
   - Legal pages: loaded from `content/legal/` MDX in route handlers.
 
 - **Naming convention**:
@@ -264,7 +284,8 @@ Examples of established folder patterns:
 - `src/lib/email/` – email service integration:
   - `send-contact-notification.ts` - Resend SDK integration
   - `templates/contact-notification.ts` - Email HTML templates
-- `src/lib/schema/` – schema generators (article, breadcrumb, recipe) with tests.
+- `src/lib/schema/` – shared schema generators (organization, breadcrumb, localBusiness) plus `generateJsonLd`.
+- `src/features/blog/schema/` / `src/features/recipes/schema/` – article and recipe JSON-LD generators.
 - `src/lib/consent/` – cookie-consent server actions:
   - `actions.ts` – `setConsent('accepted' | 'rejected')`; sets httpOnly `cp_consent` (defined in `constants.ts`).
 - `src/lib/analytics/` – consent-gated blog funnel events (`subscribe_*`, `article_scroll_depth`, participation); schema in `docs/work/blog/analytics-events.md`; operator dashboard = GA4 Explorations (`docs/work/blog/funnel-dashboard.md`).
@@ -317,11 +338,12 @@ From `apps/site/tsconfig.json`, the primary aliases are:
 **Examples:**
 
 ```ts
-// Importing a section component
+// Importing shared chrome
 import { RegenerateSection } from '@/components/sections/regenerate-section';
 
-// Importing a data helper
-import { getBlogPosts } from '@/lib/posts';
+// Importing a domain feature
+import { FeaturedPosts, getBlogPosts } from '@/features/blog';
+import { RecipeGrid } from '@/features/recipes';
 
 import { setConsent } from '@/lib/consent/actions';
 
@@ -344,16 +366,17 @@ When adding a new feature (page, component, or flow):
 
 2. **Add the route under `src/app/`** — use the appropriate route group, e.g. `(www)/`, `(blog)/`, or `(recipes)/`.
    - Create `page.tsx` for a new page.
-   - Keep the page component light; delegate UI to `src/components/sections/`.
+   - Keep the page component light; delegate domain UI to `src/features/{domain}/` or shared chrome to `src/components/sections/`.
 
 3. **Create or reuse components**
-   - Add page sections to `src/components/sections/`.
+   - Add domain UI under `src/features/{domain}/components/`.
+   - Add shared page chrome to `src/components/sections/`.
    - Reuse primitives and wrappers in `src/components/ui/`.
-   - Avoid duplicating patterns already present in `sections`, `forms`, or `ui`.
+   - Avoid duplicating patterns already present in `features`, `sections`, `forms`, or `ui`.
 
 4. **Add hooks or utilities if needed**
    - Place new hooks in `src/hooks/` (e.g., `use-experiences-filter.ts`).
-   - Place content or data helpers in `src/lib/` (e.g., Payload queries under `lib/payload/queries/`).
+   - Place domain queries under `src/features/{domain}/queries/`; keep Payload client/cache/mappers in `src/lib/payload/`.
 
 5. **Add tests (when behaviour is non-trivial)**
    - Prefer tests for API routes and validation logic only (e.g. `route.test.ts` next to `route.ts`).

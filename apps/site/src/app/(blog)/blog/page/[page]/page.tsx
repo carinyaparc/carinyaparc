@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import { BlogTopicNav } from '@/components/blog/BlogTopicNav';
+import { BlogTopicNav } from '@/features/blog/components/BlogTopicNav';
 import { PageIntro } from '@/components/sections/page';
-import { PaginatedPosts } from '@/src/components/sections/blog';
+import { PaginatedPosts } from '@/features/blog/components';
 import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
 import { BASE_URL } from '@/src/lib/constants';
 

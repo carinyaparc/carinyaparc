@@ -4,10 +4,10 @@ import path from 'path';
 
 import { BASE_URL } from '../lib/constants';
 import { withTrailingSlash } from '@/lib/metadata/canonical';
-import { getCategorySitemapEntries } from '@/lib/payload/queries/categories';
-import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
-import { getRecipeSitemapEntries } from '@/lib/payload/queries/recipes';
-import { getTagSitemapEntries } from '@/lib/payload/queries/tags';
+import { getCategorySitemapEntries } from '@/features/blog/queries/categories';
+import { getPostSitemapEntries } from '@/features/blog/queries/sitemap-posts';
+import { getRecipeSitemapEntries } from '@/features/recipes/queries/recipes';
+import { getTagSitemapEntries } from '@/features/blog/queries/tags';
 import type { ContentRouteEntry } from '@/lib/payload/map-content';
 
 type RouteInfo = ContentRouteEntry;

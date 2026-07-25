@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 
 const SITE_ROOT = path.resolve(import.meta.dirname, '../../..');
 const LAYOUTS_DIR = path.join(SITE_ROOT, 'src/components/layouts');
-const BLOG_SECTIONS_DIR = path.join(SITE_ROOT, 'src/components/sections/blog');
+const BLOG_SECTIONS_DIR = path.join(SITE_ROOT, 'src/features/blog/components');
 
 const DYNAMIC_REQUEST_API_PATTERN =
   /\b(cookies|headers|draftMode)\s*\(|from\s+['"]next\/headers['"]/;

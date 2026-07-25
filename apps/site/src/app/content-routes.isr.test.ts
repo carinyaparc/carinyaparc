@@ -49,13 +49,13 @@ describe('content route ISR config', () => {
 describe('blog section cached queries', () => {
   it('fetches latest posts via getCachedBlogPosts', () => {
     const source = readFileSync(
-      resolve(import.meta.dirname, '../components/sections/blog/LatestPosts.tsx'),
+      resolve(import.meta.dirname, '../features/blog/components/LatestPosts.tsx'),
       'utf8',
     );
 
     expect(source).toContain("from '@/lib/payload/cache'");
     expect(source).toContain('getCachedBlogPosts');
-    expect(source).not.toContain("from '@/lib/payload/queries/posts'");
-    expect(source).not.toContain("from '@/src/lib/posts'");
+    expect(source).not.toContain("from '@/features/blog/queries/posts'");
+    expect(source).not.toMatch(/import\s*\{[^}]*getBlogPosts/);
   });
 });

@@ -1,7 +1,7 @@
 export { metadata } from './metadata';
 
 import { PageIntro } from '@/components/sections/page';
-import { BlogIndexPosts, FeaturedPosts } from '@/src/components/sections/blog';
+import { BlogIndexPosts, FeaturedPosts } from '@/features/blog/components';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 
 export const revalidate = 86_400;

@@ -15,7 +15,7 @@ import {
   HeroButton,
 } from '@/src/components/sections/hero';
 import { ImpactStats } from '@/src/components/sections/stats/ImpactStats';
-import { LatestPosts } from '@/src/components/sections/blog';
+import { LatestPosts } from '@/features/blog/components';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 
 export const revalidate = 86_400;

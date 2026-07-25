@@ -1,8 +1,8 @@
 // src/lib/schema/index.ts
 import { generateOrganizationSchema, type OrganizationSchema } from './organization';
 import { generateBreadcrumbSchema, type BreadcrumbSchema } from './breadcrumb';
-import { generateArticleSchema, type ArticleSchema } from './article';
-import { generateRecipeSchema, type RecipeSchema } from './recipe';
+import { generateArticleSchema, type ArticleSchema } from '@/features/blog/schema/article';
+import { generateRecipeSchema, type RecipeSchema } from '@/features/recipes/schema/recipe';
 import { generateLocalBusinessSchema, type LocalBusinessSchema } from './localBusiness';
 
 export type PageType = 'page' | 'blog' | 'recipe' | 'ancillary';

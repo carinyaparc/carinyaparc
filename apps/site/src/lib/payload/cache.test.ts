@@ -9,20 +9,20 @@ import {
   getCachedRecipeSlugs,
   PAYLOAD_CACHE_TAGS,
 } from '@/lib/payload/cache';
-import { getBlogPostBySlug, getBlogPosts, getBlogPostSlugs } from '@/lib/payload/queries/posts';
-import { getRecipeBySlug, getRecipeSlugs } from '@/lib/payload/queries/recipes';
+import { getBlogPostBySlug, getBlogPosts, getBlogPostSlugs } from '@/features/blog/queries/posts';
+import { getRecipeBySlug, getRecipeSlugs } from '@/features/recipes/queries/recipes';
 
 vi.mock('next/cache', () => ({
   unstable_cache: vi.fn((fn: () => unknown) => fn),
 }));
 
-vi.mock('@/lib/payload/queries/posts', () => ({
+vi.mock('@/features/blog/queries/posts', () => ({
   getBlogPosts: vi.fn(),
   getBlogPostBySlug: vi.fn(),
   getBlogPostSlugs: vi.fn(),
 }));
 
-vi.mock('@/lib/payload/queries/recipes', () => ({
+vi.mock('@/features/recipes/queries/recipes', () => ({
   getRecipeBySlug: vi.fn(),
   getRecipeSlugs: vi.fn(),
 }));

@@ -1,6 +1,6 @@
 import { getCachedBlogPosts } from '@/lib/payload/cache';
 import { BASE_URL, BLOG_NAME, SITE_DESCRIPTION } from '@/lib/constants';
-import { buildRssFeed } from '@/lib/rss/build-feed';
+import { buildRssFeed } from '@/features/blog/rss/build-feed';
 
 // ISR fallback; publish-time freshness comes from the payload:posts cache tag
 // plus the /feed.xml path revalidated by the Payload afterChange hooks.

@@ -12,13 +12,13 @@ import {
   getCategorySitemapEntries,
   getCategorySlugs,
   getPostsByCategory,
-} from '@/lib/payload/queries/categories';
+} from '@/features/blog/queries/categories';
 import {
   getBlogPostBySlug,
   getBlogPosts,
   getBlogPostSlugs,
   getBlogPostsPage,
-} from '@/lib/payload/queries/posts';
+} from '@/features/blog/queries/posts';
 import {
   getEventBySlug,
   getNextUpcomingEvent,
@@ -29,10 +29,10 @@ import {
   getRecipeSitemapEntries,
   getRecipeSlugs,
   getRecipes,
-} from '@/lib/payload/queries/recipes';
-import { getRelatedPosts } from '@/lib/payload/queries/related-posts';
-import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
-import { getPostsByTag, getTagSitemapEntries, getTagSlugs } from '@/lib/payload/queries/tags';
+} from '@/features/recipes/queries/recipes';
+import { getRelatedPosts } from '@/features/blog/queries/related-posts';
+import { getPostSitemapEntries } from '@/features/blog/queries/sitemap-posts';
+import { getPostsByTag, getTagSitemapEntries, getTagSlugs } from '@/features/blog/queries/tags';
 
 /**
  * Payload's Local API defaults to overrideAccess: true, which bypasses the
