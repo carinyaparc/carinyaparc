@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { captureException } from '@sentry/nextjs';
+import * as Sentry from '@sentry/nextjs';
 
 import { sendEventSignupConfirmation } from '@/features/events/email/send-event-signup-confirmation';
 import { getPayloadClient } from '@/lib/payload/client';
@@ -93,6 +93,9 @@ export async function POST(request: NextRequest) {
 
     // Honeypot — silent success so bots do not learn
     if (data.website && data.website.length > 0) {
+      Sentry.metrics.count('event.signups', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json(
         { success: true, message: "You're signed up — see you on the day." },
         { status: 200 },
@@ -100,6 +103,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (typeof data.submissionTime === 'number' && data.submissionTime < MIN_SUBMISSION_TIME_MS) {
+      Sentry.metrics.count('event.signups', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json(
         { success: true, message: "You're signed up — see you on the day." },
         { status: 200 },
@@ -108,6 +114,9 @@ export async function POST(request: NextRequest) {
 
     // Schema refine also catches spam emails; belt-and-braces silent path
     if (isSpamEmail(data.email)) {
+      Sentry.metrics.count('event.signups', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json(
         { success: true, message: "You're signed up — see you on the day." },
         { status: 200 },
@@ -115,6 +124,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (checkEmailRateLimit(data.email)) {
+      Sentry.metrics.count('event.signups', 1, {
+        attributes: { status: 'rate_limited' },
+      });
       return NextResponse.json(
         {
           error:
@@ -139,6 +151,9 @@ export async function POST(request: NextRequest) {
 
     const existing = await findEventRegistrationByEmail(event.id, email);
     if (existing) {
+      Sentry.metrics.count('event.signups', 1, {
+        attributes: { status: 'duplicate' },
+      });
       return NextResponse.json(
         {
           success: true,
@@ -156,6 +171,9 @@ export async function POST(request: NextRequest) {
     const atCapacity = isEventAtCapacity(event, registeredCount);
 
     if (atCapacity) {
+      Sentry.metrics.count('event.signups', 1, {
+        attributes: { status: 'full' },
+      });
       return NextResponse.json(
         {
           error: 'This event is full',
@@ -182,9 +200,12 @@ export async function POST(request: NextRequest) {
       });
     } catch (error) {
       console.error('Failed to create event registration:', error);
-      captureException(error, {
+      Sentry.captureException(error, {
         tags: { feature: 'event_signup', error_type: 'persist' },
         extra: { event_id: event.id },
+      });
+      Sentry.metrics.count('event.signups', 1, {
+        attributes: { status: 'failed' },
       });
       return NextResponse.json(
         { error: 'Failed to record your signup. Please try again.' },
@@ -209,6 +230,10 @@ export async function POST(request: NextRequest) {
 
     console.log(`Event signup recorded for event ${event.id} (${email.split('@')[1]})`);
 
+    Sentry.metrics.count('event.signups', 1, {
+      attributes: { status: 'registered' },
+    });
+
     return NextResponse.json(
       {
         success: true,
@@ -219,8 +244,11 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('Unexpected error in event signup API:', error);
-    captureException(error, {
+    Sentry.captureException(error, {
       tags: { feature: 'event_signup', error_type: 'unexpected' },
+    });
+    Sentry.metrics.count('event.signups', 1, {
+      attributes: { status: 'failed' },
     });
     return NextResponse.json(
       { error: 'An unexpected error occurred. Please try again.' },

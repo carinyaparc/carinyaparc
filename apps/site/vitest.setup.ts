@@ -13,6 +13,12 @@ vi.mock('next/headers', () => ({
 
 vi.mock('@sentry/nextjs', () => ({
   captureException: vi.fn(),
+  captureMessage: vi.fn(),
+  metrics: {
+    count: vi.fn(),
+    gauge: vi.fn(),
+    distribution: vi.fn(),
+  },
   withSentry: (handler: unknown) => handler,
   init: vi.fn(),
 }));

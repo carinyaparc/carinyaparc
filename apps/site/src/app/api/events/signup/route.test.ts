@@ -33,6 +33,11 @@ vi.mock('@/features/events/email/send-event-signup-confirmation', () => ({
 
 vi.mock('@sentry/nextjs', () => ({
   captureException: vi.fn(),
+  metrics: {
+    count: vi.fn(),
+    gauge: vi.fn(),
+    distribution: vi.fn(),
+  },
 }));
 
 import { POST } from '@/app/api/events/signup/route';

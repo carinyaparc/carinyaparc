@@ -7,7 +7,7 @@ import { headers } from 'next/headers';
 import { contactFormSchema } from '@/src/lib/validation/contact-schema';
 import { sanitizeContactFormData } from '@/src/lib/validation/sanitize';
 import { sendContactNotification } from '@/src/lib/email/send-contact-notification';
-import { captureException } from '@sentry/nextjs';
+import * as Sentry from '@sentry/nextjs';
 
 // Rate limiting configuration
 const RATE_LIMIT_MAX = parseInt(process.env.CONTACT_RATE_LIMIT_MAX || '3', 10);
@@ -76,6 +76,9 @@ export async function POST(request: NextRequest) {
     if (data.website && data.website.length > 0) {
       // Silent rejection to avoid bot learning
       console.log('Contact form submission rejected: honeypot triggered');
+      Sentry.metrics.count('contact.submissions', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json(
         {
           success: true,
@@ -88,6 +91,9 @@ export async function POST(request: NextRequest) {
     if (data.submissionTime && data.submissionTime < 2000) {
       // Silent rejection to avoid bot learning
       console.log('Contact form submission rejected: too fast');
+      Sentry.metrics.count('contact.submissions', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json(
         {
           success: true,
@@ -111,6 +117,9 @@ export async function POST(request: NextRequest) {
           if (existingRecord.count >= RATE_LIMIT_MAX) {
             // Rate limit exceeded
             console.log(`Contact form rate limit exceeded for: ${data.email.split('@')[1]}`);
+            Sentry.metrics.count('contact.submissions', 1, {
+              attributes: { status: 'rate_limited' },
+            });
             return NextResponse.json(
               {
                 error:
@@ -163,7 +172,7 @@ export async function POST(request: NextRequest) {
       console.error('Failed to send contact notification email:', emailResult.error);
 
       // Capture to Sentry with context (but no PII)
-      captureException(new Error(emailResult.error || 'Email send failed'), {
+      Sentry.captureException(new Error(emailResult.error || 'Email send failed'), {
         tags: {
           feature: 'contact_form',
           inquiry_type: data.inquiryType,
@@ -172,6 +181,9 @@ export async function POST(request: NextRequest) {
           email_domain: data.email.split('@')[1],
           error_message: emailResult.error,
         },
+      });
+      Sentry.metrics.count('contact.submissions', 1, {
+        attributes: { status: 'failed' },
       });
 
       return NextResponse.json(
@@ -187,6 +199,10 @@ export async function POST(request: NextRequest) {
       `Contact form submitted successfully: ${data.inquiryType} inquiry from ${data.email.split('@')[1]}`,
     );
 
+    Sentry.metrics.count('contact.submissions', 1, {
+      attributes: { status: 'success', inquiry_type: data.inquiryType },
+    });
+
     return NextResponse.json(
       {
         success: true,
@@ -197,11 +213,14 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Unexpected error in contact API route:', error);
 
-    captureException(error, {
+    Sentry.captureException(error, {
       tags: {
         feature: 'contact_form',
         error_type: 'unexpected',
       },
+    });
+    Sentry.metrics.count('contact.submissions', 1, {
+      attributes: { status: 'failed' },
     });
 
     return NextResponse.json(

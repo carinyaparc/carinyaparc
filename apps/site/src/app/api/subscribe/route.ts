@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import * as Sentry from '@sentry/nextjs';
 
 import {
   resolveSubscribeInterest,
@@ -158,17 +159,26 @@ export async function POST(req: Request) {
     // 1. Check for honeypot field (should be empty)
     if (website) {
       // Return success to prevent the bot from knowing it was detected
+      Sentry.metrics.count('subscribe.submissions', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
     // 2. Check submission time when the client reports it (too fast means bot)
     if (typeof submissionTime === 'number' && submissionTime < RATE_LIMIT.MIN_SUBMISSION_TIME_MS) {
+      Sentry.metrics.count('subscribe.submissions', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
     // 3. Check for spam email patterns
     if (isSpamEmail(email)) {
       // Silently reject but report success
+      Sentry.metrics.count('subscribe.submissions', 1, {
+        attributes: { status: 'spam' },
+      });
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
@@ -181,6 +191,9 @@ export async function POST(req: Request) {
     );
 
     if (emailLimitResult.limited) {
+      Sentry.metrics.count('subscribe.submissions', 1, {
+        attributes: { status: 'rate_limited' },
+      });
       return NextResponse.json(
         { error: 'This email address has already been submitted recently.' },
         { status: 429 },
@@ -190,6 +203,9 @@ export async function POST(req: Request) {
     // Check for API key
     if (!process.env.MAILERLITE_API_KEY) {
       console.error('MAILERLITE_API_KEY is not defined in environment variables');
+      Sentry.metrics.count('subscribe.submissions', 1, {
+        attributes: { status: 'failed' },
+      });
       return NextResponse.json(
         { error: 'Newsletter service not configured. Please add MAILERLITE_API_KEY to .env.local' },
         { status: 500 },
@@ -240,15 +256,24 @@ export async function POST(req: Request) {
           errorMessage = data.errors ? JSON.stringify(data.errors) : 'Validation error';
         }
         console.error('MailerLite API error:', errorMessage);
+        Sentry.metrics.count('subscribe.submissions', 1, {
+          attributes: { status: 'failed' },
+        });
         return NextResponse.json(
           { error: `Subscription failed: ${errorMessage}` },
           { status: response.status },
         );
       }
 
+      Sentry.metrics.count('subscribe.submissions', 1, {
+        attributes: { status: 'success' },
+      });
       return NextResponse.json({ success: true });
     } catch (fetchError) {
       console.error('Fetch error:', fetchError);
+      Sentry.metrics.count('subscribe.submissions', 1, {
+        attributes: { status: 'failed' },
+      });
       return NextResponse.json(
         { error: 'Network error. Please try again later.' },
         { status: 500 },
