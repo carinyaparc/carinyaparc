@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { eventSignupClientSchema, eventSignupSchema } from '@/lib/validation/event-signup-schema';
+import {
+  eventSignupClientSchema,
+  eventSignupSchema,
+} from '@/features/events/validation/event-signup-schema';
 
 describe('eventSignupSchema', () => {
   const valid = {

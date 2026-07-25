@@ -8,7 +8,7 @@ import { ArticleScrollDepth } from '@/features/blog/components/ArticleScrollDept
 import { AuthorBlock } from '@/features/blog/components/AuthorBlock';
 import { RelatedPosts } from '@/features/blog/components/RelatedPosts';
 import { ShareBar } from '@/features/blog/components/ShareBar';
-import { GetInvolvedCTA } from '@/components/events/GetInvolvedCTA';
+import { GetInvolvedCTA } from '@/features/events/components/GetInvolvedCTA';
 import { BlogPostHeader } from '@/features/blog/components/BlogPostArticle';
 import { EndOfPostSubscribe } from '@/components/subscribe/EndOfPostSubscribe';
 import { InlineSubscribe } from '@/components/subscribe/InlineSubscribe';
@@ -17,7 +17,7 @@ import { BASE_URL } from '@/src/lib/constants';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { getCachedBlogPostBySlug, getCachedBlogPostSlugs } from '@/lib/payload/cache';
 import { resolveAuthorName, resolveTagNames } from '@/lib/payload/map-content';
-import { getNextUpcomingEvent } from '@/lib/payload/queries/events';
+import { getNextUpcomingEvent } from '@/features/events/queries/events';
 import { getRelatedPosts } from '@/features/blog/queries/related-posts';
 import { postUrl } from '@/lib/payload/urls';
 import { splitRichTextAtMidpoint } from '@/lib/subscribe/split-rich-text';

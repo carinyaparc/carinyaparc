@@ -6,7 +6,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { UpcomingEvent } from '@/lib/payload/queries/events';
+import type { UpcomingEvent } from '@/features/events/queries/events';
 
 const trackEventCtaClick = vi.fn();
 
@@ -63,14 +63,14 @@ function reactProps<T extends Record<string, unknown>>(el: Element): T {
 describe('GetInvolvedCTA', () => {
   let container: HTMLDivElement;
   let root: Root;
-  let GetInvolvedCTA: typeof import('@/components/events/GetInvolvedCTA').GetInvolvedCTA;
-  let formatEventDate: typeof import('@/components/events/EventCard').formatEventDate;
+  let GetInvolvedCTA: typeof import('@/features/events/components/GetInvolvedCTA').GetInvolvedCTA;
+  let formatEventDate: typeof import('@/features/events/components/EventCard').formatEventDate;
 
   beforeEach(async () => {
     vi.resetModules();
     trackEventCtaClick.mockReset();
-    ({ GetInvolvedCTA } = await import('@/components/events/GetInvolvedCTA'));
-    ({ formatEventDate } = await import('@/components/events/EventCard'));
+    ({ GetInvolvedCTA } = await import('@/features/events/components/GetInvolvedCTA'));
+    ({ formatEventDate } = await import('@/features/events/components/EventCard'));
 
     container = document.createElement('div');
     document.body.appendChild(container);

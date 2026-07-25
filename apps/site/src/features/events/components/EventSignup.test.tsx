@@ -44,13 +44,13 @@ function reactProps<T extends Record<string, unknown>>(el: Element): T {
 describe('EventSignup', () => {
   let container: HTMLDivElement;
   let root: Root;
-  let EventSignup: typeof import('@/components/events/EventSignup').EventSignup;
+  let EventSignup: typeof import('@/features/events/components/EventSignup').EventSignup;
 
   beforeEach(async () => {
     vi.resetModules();
     trackEventSignupComplete.mockReset();
     vi.stubGlobal('fetch', vi.fn());
-    ({ EventSignup } = await import('@/components/events/EventSignup'));
+    ({ EventSignup } = await import('@/features/events/components/EventSignup'));
 
     container = document.createElement('div');
     document.body.appendChild(container);

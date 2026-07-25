@@ -18,7 +18,7 @@ import {
   getNextUpcomingEvent,
   getUpcomingEvents,
   isEventAtCapacity,
-} from '@/lib/payload/queries/events';
+} from '@/features/events/queries/events';
 
 describe('events queries', () => {
   beforeEach(() => {

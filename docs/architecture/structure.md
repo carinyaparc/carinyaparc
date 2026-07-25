@@ -112,13 +112,17 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
     - `queries/` – recipes list/detail/sitemap.
     - `lib/` – `format-duration.ts`.
     - `schema/` – Recipe JSON-LD helper.
+  - `events/` – planting days / workshops listing, signup UI, queries, validation, confirmation email.
+    - `components/` – EventCard, EventSignup, GetInvolvedCTA.
+    - `queries/` – upcoming events, capacity, registration lookups.
+    - `validation/` – event signup Zod schemas.
+    - `email/` – Resend confirmation sender + template.
   - Prefer `@/features/{domain}` for domain code. Keep Next routes in `app/` and Payload
     collection configs in `collections/`.
 
 - `src/components/`
   - `sections/` – shared page chrome only (hero, header, footer, page-header, regenerate, …).
   - `forms/` under `sections/` for reusable form UI (e.g. `ContactFormSection`, subscribe flows).
-  - `events/` – event listing cards, on-site signup form, and get-involved CTA (candidate for a future `features/events` module).
   - `layouts/` – shared layout-level components (site root shell).
   - `rich-text/` – Lexical rich-text renderer for Payload post bodies.
   - `subscribe/`, `pages/`, `ui/` – subscribe flows, page-specific extras, and shared UI primitives.
@@ -131,7 +135,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `payload/` – Payload client, cache wrappers, content mappers, access control, slugify.
     - `client.ts` – cached `getPayloadClient()` (server-only).
     - `cache.ts` – `unstable_cache` wrappers over feature query functions.
-    - `queries/` – remaining cross-domain or non-feature queries (e.g. `events.ts`).
+    - `queries/` – remaining non-feature query helpers (most content queries live under `features/`).
     - `map-content.ts` – maps Payload documents to list/detail shapes.
     - `urls.ts` – `/blog/{slug}` and `/recipes/{slug}` path helpers.
   - `metadata/` – helper functions for route metadata.
@@ -259,7 +263,7 @@ Future booking flows may live under `/stay` or `/visit` (see [`product.md`](prod
 - **Data-fetching and content utilities**:
   - Blog data: `src/features/blog/queries/` (cached via `lib/payload/cache.ts`).
   - Recipe data: `src/features/recipes/queries/` (cached via `lib/payload/cache.ts`).
-  - Events and other non-feature queries: `src/lib/payload/queries/`.
+  - Events data: `src/features/events/queries/`.
   - Legal pages: loaded from `content/legal/` MDX in route handlers.
 
 - **Naming convention**:

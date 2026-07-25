@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 
-import { EventSignup } from '@/components/events/EventSignup';
+import { EventSignup } from './EventSignup';
 import { Button } from '@/components/ui/Button';
 import { EVENTS_LISTING_SOURCE, trackEventCtaClick } from '@/lib/analytics';
 import { cn } from '@/lib/cn';
-import type { UpcomingEvent } from '@/lib/payload/queries/events';
+import type { UpcomingEvent } from '../queries/events';
 import { eventsListingUrl } from '@/lib/payload/urls';
 
 export function formatEventDate(iso: string): string {

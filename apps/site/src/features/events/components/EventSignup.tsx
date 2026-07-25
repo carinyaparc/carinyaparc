@@ -13,7 +13,7 @@ import { cn } from '@/lib/cn';
 import {
   eventSignupClientSchema,
   type EventSignupClientData,
-} from '@/lib/validation/event-signup-schema';
+} from '@/features/events/validation/event-signup-schema';
 
 export type EventSignupProps = {
   eventId: number;

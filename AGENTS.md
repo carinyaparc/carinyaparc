@@ -29,7 +29,7 @@ For product context and feature intent, read `docs/product.md` (what and why). F
 │           │   └── (recipes)/  # Recipe routes
 │           ├── collections/  # Payload CMS collection configs
 │           ├── components/   # Shared UI (sections chrome, forms, ui/, …)
-│           ├── features/     # Domain modules (blog/, recipes/, …)
+│           ├── features/     # Domain modules (blog/, recipes/, events/, …)
 │           ├── hooks/        # Client hooks (use-*)
 │           ├── lib/          # Cross-cutting utilities (payload client, security/, …)
 │           ├── providers/    # App-wide React providers

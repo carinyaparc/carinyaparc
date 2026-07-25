@@ -16,7 +16,7 @@ const {
   sendEventSignupConfirmation: vi.fn(),
 }));
 
-vi.mock('@/lib/payload/queries/events', () => ({
+vi.mock('@/features/events/queries/events', () => ({
   getEventById,
   countEventRegistrations,
   findEventRegistrationByEmail,
@@ -27,7 +27,7 @@ vi.mock('@/lib/payload/client', () => ({
   getPayloadClient,
 }));
 
-vi.mock('@/lib/email/send-event-signup-confirmation', () => ({
+vi.mock('@/features/events/email/send-event-signup-confirmation', () => ({
   sendEventSignupConfirmation,
 }));
 

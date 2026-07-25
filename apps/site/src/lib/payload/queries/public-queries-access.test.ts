@@ -23,7 +23,7 @@ import {
   getEventBySlug,
   getNextUpcomingEvent,
   getUpcomingEvents,
-} from '@/lib/payload/queries/events';
+} from '@/features/events/queries/events';
 import {
   getRecipeBySlug,
   getRecipeSitemapEntries,

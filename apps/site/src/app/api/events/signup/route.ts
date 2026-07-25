@@ -6,16 +6,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { captureException } from '@sentry/nextjs';
 
-import { sendEventSignupConfirmation } from '@/lib/email/send-event-signup-confirmation';
+import { sendEventSignupConfirmation } from '@/features/events/email/send-event-signup-confirmation';
 import { getPayloadClient } from '@/lib/payload/client';
 import {
   countEventRegistrations,
   findEventRegistrationByEmail,
   getEventById,
   isEventAtCapacity,
-} from '@/lib/payload/queries/events';
+} from '@/features/events/queries/events';
 import { sanitizePlainText } from '@/lib/validation/sanitize';
-import { eventSignupSchema } from '@/lib/validation/event-signup-schema';
+import { eventSignupSchema } from '@/features/events/validation/event-signup-schema';
 import { isSpamEmail } from '@/lib/validation/spam-email';
 
 const RATE_LIMIT_MAX = parseInt(process.env.EVENT_SIGNUP_RATE_LIMIT_MAX || '5', 10);

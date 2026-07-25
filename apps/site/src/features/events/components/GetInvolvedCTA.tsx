@@ -2,15 +2,11 @@
 
 import Link from 'next/link';
 
-import {
-  eventSignupHref,
-  formatEventDate,
-  isExternalEventHref,
-} from '@/components/events/EventCard';
+import { eventSignupHref, formatEventDate, isExternalEventHref } from './EventCard';
 import { Button } from '@/components/ui/Button';
 import { trackEventCtaClick } from '@/lib/analytics';
 import { cn } from '@/lib/cn';
-import type { UpcomingEvent } from '@/lib/payload/queries/events';
+import type { UpcomingEvent } from '../queries/events';
 import { eventsListingUrl } from '@/lib/payload/urls';
 
 export type GetInvolvedCTAProps = {
