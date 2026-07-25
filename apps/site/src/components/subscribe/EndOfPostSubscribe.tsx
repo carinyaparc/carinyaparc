@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/SelectNative';
 import { FormField } from '@/components/ui/FormField';
 import { SubscribePrivacyNote } from '@/components/subscribe/SubscribePrivacyNote';
+import { trackSubscribeComplete, trackSubscribeStart } from '@/lib/analytics';
 import { postSubscribe } from '@/lib/subscribe/client';
 import {
   getSubscribeEmailError,
@@ -33,6 +34,19 @@ export function EndOfPostSubscribe({ source, className }: EndOfPostSubscribeProp
   const [emailError, setEmailError] = useState('');
   const [formError, setFormError] = useState('');
   const [formLoadTime] = useState(() => Date.now());
+  const startedRef = useRef(false);
+
+  const markStarted = (nextInterest?: SubscribeInterest | '') => {
+    if (startedRef.current) {
+      return;
+    }
+    startedRef.current = true;
+    const interestParam = nextInterest || interest || undefined;
+    trackSubscribeStart({
+      source,
+      ...(interestParam ? { interest: interestParam } : {}),
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,15 +71,21 @@ export function EndOfPostSubscribe({ source, className }: EndOfPostSubscribeProp
       return;
     }
 
+    const submittedInterest = interest || undefined;
+
     const result = await postSubscribe({
       email: email.trim(),
       source,
-      interest: interest || undefined,
+      interest: submittedInterest,
       website: '',
       submissionTime: Date.now() - formLoadTime,
     });
 
     if (result.ok) {
+      trackSubscribeComplete({
+        source,
+        ...(submittedInterest ? { interest: submittedInterest } : {}),
+      });
       setStatus('success');
       setEmail('');
       setInterest('');
@@ -141,7 +161,9 @@ export function EndOfPostSubscribe({ source, className }: EndOfPostSubscribeProp
                 name="email"
                 id="end-subscribe-email"
                 value={email}
+                onFocus={() => markStarted()}
                 onChange={(e) => {
+                  markStarted();
                   setEmail(e.target.value);
                   if (emailError) setEmailError('');
                 }}
@@ -161,7 +183,12 @@ export function EndOfPostSubscribe({ source, className }: EndOfPostSubscribeProp
                 name="interest"
                 id="end-subscribe-interest"
                 value={interest}
-                onChange={(e) => setInterest(e.target.value as SubscribeInterest | '')}
+                onFocus={() => markStarted()}
+                onChange={(e) => {
+                  const next = e.target.value as SubscribeInterest | '';
+                  markStarted(next);
+                  setInterest(next);
+                }}
                 disabled={status === 'loading'}
               >
                 <option value="">Select your main interest</option>

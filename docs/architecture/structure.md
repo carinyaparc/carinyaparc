@@ -121,6 +121,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `recipes/` – recipe display helpers (e.g. `format-duration.ts`).
   - `metadata/` – helper functions for route metadata.
   - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).
+  - `analytics/` – consent-gated GA/GTM helpers (`trackEvent`, typed funnel events); see `docs/work/blog/analytics-events.md`.
   - `consent/` – cookie-consent server actions (httpOnly `cp_consent` cookie).
   - `session/` – JWT helpers for a future `cp_session` cookie (scaffold only; not used by routes today).
   - `security/` – security utilities (CSP, headers, caching).
@@ -266,6 +267,7 @@ Examples of established folder patterns:
 - `src/lib/schema/` – schema generators (article, breadcrumb, recipe) with tests.
 - `src/lib/consent/` – cookie-consent server actions:
   - `actions.ts` – `setConsent('accepted' | 'rejected')`; sets httpOnly `cp_consent` (defined in `constants.ts`).
+- `src/lib/analytics/` – consent-gated blog funnel events (`subscribe_*`, `article_scroll_depth`, participation stubs); schema in `docs/work/blog/analytics-events.md`.
 - `src/lib/session/` – JWT helpers for future `cp_session` (scaffold; not wired to routes):
   - `server.ts` – `getSession`, `setSession`, `updateSession`, `clearSession`
   - `types.ts`, `index.ts` – types and barrel export

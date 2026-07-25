@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CheckCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { FormField } from '@/components/ui/FormField';
 import { SubscribePrivacyNote } from '@/components/subscribe/SubscribePrivacyNote';
+import { trackSubscribeComplete, trackSubscribeStart } from '@/lib/analytics';
 import { postSubscribe } from '@/lib/subscribe/client';
 import { getSubscribeEmailError } from '@/lib/validation/subscribe-schema';
 
@@ -27,6 +28,15 @@ export function InlineSubscribe({ source, className }: InlineSubscribeProps) {
   const [emailError, setEmailError] = useState('');
   const [formError, setFormError] = useState('');
   const [formLoadTime] = useState(() => Date.now());
+  const startedRef = useRef(false);
+
+  const markStarted = () => {
+    if (startedRef.current) {
+      return;
+    }
+    startedRef.current = true;
+    trackSubscribeStart({ source });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +68,7 @@ export function InlineSubscribe({ source, className }: InlineSubscribeProps) {
     });
 
     if (result.ok) {
+      trackSubscribeComplete({ source });
       setStatus('success');
       setEmail('');
       return;
@@ -134,7 +145,9 @@ export function InlineSubscribe({ source, className }: InlineSubscribeProps) {
               name="email"
               id="inline-subscribe-email"
               value={email}
+              onFocus={markStarted}
               onChange={(e) => {
+                markStarted();
                 setEmail(e.target.value);
                 if (emailError) setEmailError('');
               }}

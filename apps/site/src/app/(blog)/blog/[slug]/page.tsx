@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+import { ArticleScrollDepth } from '@/components/blog/ArticleScrollDepth';
 import { AuthorBlock } from '@/components/blog/AuthorBlock';
 import { RelatedPosts } from '@/components/blog/RelatedPosts';
 import { GetInvolvedCTA } from '@/components/events/GetInvolvedCTA';
@@ -114,6 +115,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <main className="min-h-screen bg-paperbark">
         <article>
+          <ArticleScrollDepth />
           <BlogPostHeader post={post} />
 
           <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
