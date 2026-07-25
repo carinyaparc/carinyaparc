@@ -229,7 +229,7 @@ Scenario: Copy link
   And a confirmation is shown
 ```
 
-- [ ] **[CP09-15]** [P] [S9] Share / copy-link control — `components/blog/ShareBar.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 1 · Depends: —
+- [x] **[CP09-15]** [P] [S9] Share / copy-link control — `components/blog/ShareBar.tsx`, `app/(blog)/blog/[slug]/page.tsx` · Est 1 · Depends: —
 
 ## 4. Dependencies and Definition of Done
 

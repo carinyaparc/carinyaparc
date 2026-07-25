@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import { ArticleScrollDepth } from '@/components/blog/ArticleScrollDepth';
 import { AuthorBlock } from '@/components/blog/AuthorBlock';
 import { RelatedPosts } from '@/components/blog/RelatedPosts';
+import { ShareBar } from '@/components/blog/ShareBar';
 import { GetInvolvedCTA } from '@/components/events/GetInvolvedCTA';
 import { BlogPostHeader } from '@/components/sections/blog/BlogPostArticle';
 import { EndOfPostSubscribe } from '@/components/subscribe/EndOfPostSubscribe';
@@ -90,6 +91,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   ]);
   const heroImage = post.image ?? '/images/farm-track-gate.jpg';
   const subscribeSource = blogSubscribeSource(slug);
+  const canonicalUrl = `${BASE_URL}${postUrl(slug)}`;
   const { before: bodyBefore, after: bodyAfter } = splitRichTextAtMidpoint(post.body);
 
   const articleData = {
@@ -148,6 +150,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           )}
 
           <EndOfPostSubscribe source={subscribeSource} />
+
+          <ShareBar url={canonicalUrl} title={post.title} />
 
           <AuthorBlock author={post.author} />
 
