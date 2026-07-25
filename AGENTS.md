@@ -165,7 +165,9 @@ Add or update tests when changing validation, API behaviour, or security-sensiti
 **HTTP security:**
 
 - CSP, HSTS, and security headers are implemented in `src/lib/security/` and applied per request.
-- CSP uses nonce-based `strict-dynamic` scripting; do not weaken directives without explicit approval.
+- CSP uses host allowlists + `'unsafe-inline'` for scripts (static/ISR public shell cannot use
+  per-request script nonces). Do not reintroduce nonce/`strict-dynamic` on public routes without
+  making those routes dynamic; do not weaken other directives without explicit approval.
 - Feature flags: `SECURITY_CSP_ENABLED`, `SECURITY_CSP_REPORT_ONLY`.
 - Middleware does not set `Cache-Control`; Next.js/Vercel own caching for HTML and static routes, and sensitive API routes set `no-store` in their handlers.
 

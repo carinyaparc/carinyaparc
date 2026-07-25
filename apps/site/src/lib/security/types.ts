@@ -50,7 +50,10 @@ export interface CSPResult {
   headerName: string;
   /** The complete CSP header value */
   headerValue: string;
-  /** The nonce that was injected into the CSP */
+  /**
+   * Reserved for callers that still mint a request nonce.
+   * Public CSP no longer injects script nonces (static/ISR incompatible).
+   */
   nonce: string;
 }
 

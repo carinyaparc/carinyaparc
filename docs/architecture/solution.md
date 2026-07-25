@@ -128,7 +128,7 @@ Ordered by priority for architectural trade-offs.
 | MDX for legal only                        | Git-reviewed legal text, no CMS scope creep            | Two content pipelines to document and test                     |
 | Text-path image fields (interim)          | Fast migration, static `public/` assets                | No media library, alt enforcement, or upload workflow yet      |
 | `map-content.ts` mapping layer            | Stable UI types decoupled from Payload shapes          | Extra indirection when schema changes                          |
-| Security via `proxy.ts` + nonce CSP       | Trust goal                                             | Admin UI must be verified under production CSP                 |
+| Security via `proxy.ts` + CSP             | Trust goal                                             | Admin UI must be verified under production CSP                 |
 | Base UI + inline `src/components/ui/`     | No external primitive package; leaner dependency graph | Primitive API differs from Radix (`render` prop vs `asChild`)  |
 
 ### 3.3 Principles applied
@@ -263,9 +263,9 @@ GET /legal/{slug}
 ```text
 Incoming request
   → proxy.ts
-  → generate nonce → attach to CSP (strict-dynamic in prod)
+  → attach CSP (host allowlists + unsafe-inline for scripts; no script nonces)
   → HSTS, X-Frame-Options, etc.
-  → NextResponse.next() with headers on request for downstream nonce use
+  → NextResponse.next()
 ```
 
 ---
@@ -321,7 +321,10 @@ User (standalone; auth only)
 
 ### 7.1 Security
 
-- **CSP:** Nonce-based `strict-dynamic` scripting in production; `'unsafe-eval'` only in development for admin tooling. Feature flags: `SECURITY_CSP_ENABLED`, `SECURITY_CSP_REPORT_ONLY`.
+- **CSP:** Host-allowlist policy with `'unsafe-inline'` for scripts on the public static/ISR shell
+  (Next.js flight scripts have no per-request nonces). Vercel Toolbar hosts (`vercel.live`, Pusher)
+  are allowlisted. `'unsafe-eval'` only in development. Feature flags: `SECURITY_CSP_ENABLED`,
+  `SECURITY_CSP_REPORT_ONLY`.
 - **Rate limiting:** Contact and subscribe use in-process maps on each serverless instance (see §10).
 - **Cookies:** `cp_consent` — httpOnly analytics consent via `setConsent` server action. `cp_session` — httpOnly JWT helpers in `lib/session/` exist as a scaffold for future public-site auth; not read or set by any route today. Payload admin authenticates via Payload Users, not `cp_session`.
 - **Input validation:** Zod schemas in `lib/validation/`; contact/subscribe sanitisation without browser-only DOM libraries.
@@ -436,15 +439,15 @@ Key env vars (non-exhaustive; see `apps/site/.env.example` and `turbo.json`):
 
 Formal ADR files are not yet authored. Candidate decisions recorded here; bodies marked pending.
 
-| ID      | Decision                                                           | Status                                                                                                                |
-| ------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| ADR-001 | Embed Payload in Next.js rather than standalone CMS                | _(Not yet written)_ — reflects shipped state                                                                          |
-| ADR-002 | Postgres (Neon) as CMS database                                    | _(Not yet written)_                                                                                                   |
-| ADR-003 | Keep legal content in git MDX, not Payload                         | _(Not yet written)_                                                                                                   |
-| ADR-004 | Static generation for blog/recipe detail at build time             | _(Not yet written)_ — revisit when revalidation ships                                                                 |
-| ADR-005 | Interim text-path images instead of Media uploads                  | _(Not yet written)_ — time-bounded; supersede when Media lands                                                        |
-| ADR-006 | Inline UI components into `apps/site`; adopt Base UI + Sonner      | _(Not yet written)_ — `@repo/ui` removed from site dependencies; `packages/ui` deleted during flat-repo consolidation |
-| ADR-007 | Nonce-based strict CSP on all non-static routes including `/admin` | _(Not yet written)_ — production verification pending                                                                 |
+| ID      | Decision                                                                     | Status                                                                                                                |
+| ------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| ADR-001 | Embed Payload in Next.js rather than standalone CMS                          | _(Not yet written)_ — reflects shipped state                                                                          |
+| ADR-002 | Postgres (Neon) as CMS database                                              | _(Not yet written)_                                                                                                   |
+| ADR-003 | Keep legal content in git MDX, not Payload                                   | _(Not yet written)_                                                                                                   |
+| ADR-004 | Static generation for blog/recipe detail at build time                       | _(Not yet written)_ — revisit when revalidation ships                                                                 |
+| ADR-005 | Interim text-path images instead of Media uploads                            | _(Not yet written)_ — time-bounded; supersede when Media lands                                                        |
+| ADR-006 | Inline UI components into `apps/site`; adopt Base UI + Sonner                | _(Not yet written)_ — `@repo/ui` removed from site dependencies; `packages/ui` deleted during flat-repo consolidation |
+| ADR-007 | Public CSP: host allowlists + `'unsafe-inline'` (not nonce/`strict-dynamic`) | _(Not yet written)_ — static/ISR shell cannot stamp script nonces; revisit if public routes go dynamic                |
 
 ---
 
@@ -477,6 +480,9 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - No skip-navigation link; no route-group error boundaries.
 - Text-path image fields (no Media collection or enforced alt text).
 - `posts.date` and `posts.featured` indexes declared in collection config but not yet applied to production DB — run `pnpm payload migrate:create` from `apps/site`, then deploy to materialise indexes (resolves Sentry WEBSITE-F performance regression).
+- Public CSP uses host allowlists + `'unsafe-inline'` for scripts because the static public shell
+  cannot apply per-request nonces to Next.js flight scripts. Nonce + `'strict-dynamic'` remains a
+  future option only if public routes become fully dynamic.
 
 ### 10.3 Open questions
 
@@ -502,7 +508,7 @@ Patterns that may lift to shared `architecture/patterns/` if a second product or
 | **Cached Payload client wrapper** (`getPayloadClient` + `server-only`) | Second Next.js + Payload app in the portfolio                 |
 | **Public published access helper** (`publicReadPublished`)             | Reused across multiple Payload collections/projects           |
 | **Content mapper layer** (CMS DTO → UI types)                          | Second content type or second CMS backend                     |
-| **Nonce CSP proxy module**                                             | Standard security baseline for all public Next.js apps in org |
+| **CSP proxy module** (static-compatible public policy)                 | Standard security baseline for all public Next.js apps in org |
 | **Metadata + JSON-LD composer split**                                  | Third site requiring the same SEO structure                   |
 
 Until then, these remain conventions inside `apps/site` documented in [`structure.md`](structure.md) and [`AGENTS.md`](../../AGENTS.md).

@@ -6,16 +6,14 @@
 import type { NonceContext, CSPConfig, CSPResult } from './types';
 
 /**
- * Generate a cryptographically secure nonce for CSP
- * Implements: T1.3, SEC-001
- * Uses Web Crypto API for Edge Runtime compatibility
- * Encodes nonce as base64 per Next.js v16 best practices
+ * Generate a cryptographically secure nonce
+ * Kept for callers that still want a request-scoped token; public CSP no longer
+ * injects script nonces (static/ISR pages cannot stamp them onto scripts).
  *
  * @param requestId - Optional request correlation ID
  * @returns NonceContext with base64-encoded nonce and metadata
  */
 export function generateNonce(requestId?: string): NonceContext {
-  // Generate UUID and encode as base64 (Next.js v16 recommendation)
   const uuid = crypto.randomUUID();
   const nonce = Buffer.from(uuid).toString('base64');
 
@@ -37,41 +35,6 @@ export function formatNonceForCSP(nonce: string): string {
 }
 
 /**
- * Inject nonce into CSP directives
- * Adds nonce to script-src only (not style-src)
- *
- * Note: We don't inject nonce into style-src because:
- * 1. Next.js and React inject inline styles without nonces
- * 2. When a nonce is present in CSP, 'unsafe-inline' is ignored
- * 3. We use 'unsafe-inline' for styles to support framework-injected styles
- *
- * @param directives - Original CSP directives
- * @param nonce - Nonce to inject
- * @returns Updated directives with nonce
- */
-function injectNonceIntoDirectives(
-  directives: Record<string, string[]>,
-  nonce: string,
-): Record<string, string[]> {
-  const updated = { ...directives };
-  const formattedNonce = formatNonceForCSP(nonce);
-
-  // Inject nonce into script-src and script-src-elem (Next.js script tags use src + nonce)
-  if (updated['script-src']) {
-    updated['script-src'] = [formattedNonce, ...updated['script-src']];
-  }
-
-  if (updated['script-src-elem']) {
-    updated['script-src-elem'] = [formattedNonce, ...updated['script-src-elem']];
-  }
-
-  // DO NOT inject nonce into style-src - see function comment above
-  // The 'unsafe-inline' in proxy.ts handles inline styles
-
-  return updated;
-}
-
-/**
  * Build CSP header value from directives
  *
  * @param directives - CSP directives to build from
@@ -90,26 +53,20 @@ function buildCSPHeaderValue(directives: Record<string, string[]>): string {
 }
 
 /**
- * Build complete CSP header with nonce injection
- * Implements: T1.4, SEC-001
+ * Build complete CSP header without script nonce injection.
+ * Public routes are static/ISR; a per-request nonce in CSP would disable
+ * `'unsafe-inline'` and block Next.js flight scripts that have no nonce attrs.
  *
  * @param config - CSP configuration
- * @param nonce - Nonce to inject into directives
- * @returns CSP result with header name, value, and nonce
+ * @returns CSP result with header name and value
  */
-export function buildCSPHeader(config: CSPConfig, nonce: string): CSPResult {
-  // Inject nonce into directives
-  const directivesWithNonce = injectNonceIntoDirectives(config.directives, nonce);
+export function buildCSPHeader(config: CSPConfig): CSPResult {
+  let headerValue = buildCSPHeaderValue(config.directives);
 
-  // Build header value
-  let headerValue = buildCSPHeaderValue(directivesWithNonce);
-
-  // Add report URI if configured
   if (config.reportUri) {
     headerValue += `; report-uri ${config.reportUri}`;
   }
 
-  // Determine header name based on report-only mode
   const headerName = config.reportOnly
     ? 'Content-Security-Policy-Report-Only'
     : 'Content-Security-Policy';
@@ -117,7 +74,7 @@ export function buildCSPHeader(config: CSPConfig, nonce: string): CSPResult {
   return {
     headerName,
     headerValue,
-    nonce,
+    nonce: '',
   };
 }
 

@@ -1,11 +1,11 @@
 /**
  * Next.js v16 proxy function for security headers
- * Follows Next.js v16 best practices for CSP with nonces
+ * Applies CSP and security headers on matched routes.
  * See: https://nextjs.org/docs/app/guides/content-security-policy
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { generateNonce, buildCSPHeader } from './lib/security/csp';
+import { buildCSPHeader } from './lib/security/csp';
 import { generateSecurityHeaders, createSecurityHeadersConfig } from './lib/security/headers';
 import { CSP_DIRECTIVES } from './lib/security/constants';
 
@@ -72,47 +72,41 @@ export default function proxy(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Generate nonce for CSP (T2.1, SEC-001)
+    // Generate CSP (T2.1, SEC-001) — no script nonces (static/ISR public shell)
     if (!SECURITY_CSP_ENABLED) {
       // CSP disabled, just apply other headers
       const response = NextResponse.next();
       return applyNonCSPHeaders(response);
     }
 
-    let nonce = '';
     let cspHeaderName = '';
     let cspHeaderValue = '';
 
     try {
-      const nonceContext = generateNonce();
-      nonce = nonceContext.nonce;
-
-      // Build CSP directives
-      const directives = { ...CSP_DIRECTIVES.BALANCED };
+      // Build CSP directives (shallow-copy arrays we may mutate)
+      const directives: Record<string, string[]> = Object.fromEntries(
+        Object.entries(CSP_DIRECTIVES.BALANCED).map(([key, sources]) => [key, [...sources]]),
+      );
 
       // Allow unsafe-inline for styles (Next.js injects styles without nonces)
-      // This is required for Next.js to work properly
-      if (directives['style-src']) {
+      if (directives['style-src'] && !directives['style-src'].includes("'unsafe-inline'")) {
         directives['style-src'] = [...directives['style-src'], "'unsafe-inline'"];
       }
 
       // In development, also allow unsafe-eval for debugging/hot reload
-      if (IS_DEV && directives['script-src']) {
-        directives['script-src'] = [
-          ...directives['script-src'],
-          "'unsafe-eval'",
-          "'unsafe-inline'",
-        ];
+      if (
+        IS_DEV &&
+        directives['script-src'] &&
+        !directives['script-src'].includes("'unsafe-eval'")
+      ) {
+        directives['script-src'] = [...directives['script-src'], "'unsafe-eval'"];
       }
 
-      const cspResult = buildCSPHeader(
-        {
-          directives,
-          reportOnly: SECURITY_CSP_REPORT_ONLY,
-          reportUri: SECURITY_CSP_REPORT_URI,
-        },
-        nonce,
-      );
+      const cspResult = buildCSPHeader({
+        directives,
+        reportOnly: SECURITY_CSP_REPORT_ONLY,
+        reportUri: SECURITY_CSP_REPORT_URI,
+      });
 
       cspHeaderName = cspResult.headerName;
       cspHeaderValue = cspResult.headerValue;
@@ -123,17 +117,7 @@ export default function proxy(request: NextRequest) {
       return applyNonCSPHeaders(response);
     }
 
-    // Set nonce and CSP on request headers (Next.js v16 pattern)
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-nonce', nonce);
-    requestHeaders.set(cspHeaderName, cspHeaderValue);
-
-    // Create response with modified request headers
-    const response = NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
-    });
+    const response = NextResponse.next();
 
     // Set CSP on response headers
     response.headers.set(cspHeaderName, cspHeaderValue);
@@ -145,7 +129,7 @@ export default function proxy(request: NextRequest) {
     // Apply security headers (T2.1, SEC-004)
     try {
       const securityConfig = createSecurityHeadersConfig();
-      const securityHeaders = generateSecurityHeaders(securityConfig, { nonce });
+      const securityHeaders = generateSecurityHeaders(securityConfig);
 
       Object.entries(securityHeaders).forEach(([key, value]) => {
         response.headers.set(key, value);
