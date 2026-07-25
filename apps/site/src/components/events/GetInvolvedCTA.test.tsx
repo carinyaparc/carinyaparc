@@ -86,9 +86,7 @@ describe('GetInvolvedCTA', () => {
   it('uses signupTarget for external registration URLs', async () => {
     await act(async () => {
       root.render(
-        <GetInvolvedCTA
-          event={{ ...nextEvent, signupTarget: 'https://example.com/register' }}
-        />,
+        <GetInvolvedCTA event={{ ...nextEvent, signupTarget: 'https://example.com/register' }} />,
       );
     });
 

@@ -94,13 +94,14 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `Posts.ts` – blog posts (title, slug, date, author, category, excerpt, body, tags, featured, image).
   - `Recipes.ts` – recipes (title, slug, times, servings, ingredients, instructions, tags, difficulty, SEO fields).
   - `Events.ts` – planting days / workshops (title, slug, startsAt, location, capacity, isFull, signupTarget, description).
+  - `EventRegistrations.ts` – signup records against events (name, email, status registered/waitlisted).
 
 - `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
 
 - `src/components/`
   - `sections/` – larger page sections (hero blocks, feature sections, etc.).
   - `forms/` under `sections/` for reusable form UI (e.g. `ContactFormSection`, subscribe flows).
-  - `events/` – event listing cards and (upcoming) signup / CTA modules.
+  - `events/` – event listing cards, on-site signup form, and get-involved CTA.
   - `blog/` – blog-specific UI (topic nav, author block, related posts, share).
   - `layouts/` – layout-level components.
   - `rich-text/` – Lexical rich-text renderer for Payload post bodies.
@@ -179,6 +180,7 @@ API routes:
 
 - `/api/subscribe` → `src/app/api/subscribe/route.ts`.
 - `/api/contact` → `src/app/api/contact/route.ts`.
+- `/api/events/signup` → `src/app/api/events/signup/route.ts`.
 - `/api/csp-report` → `src/app/api/csp-report/route.ts`.
 
 Cookie consent is not an API route. It uses the server action `setConsent` in `src/lib/consent/actions.ts`, called from `src/components/ui/Policy.tsx`. The root layout reads the httpOnly `cp_consent` cookie to gate analytics and banner visibility.

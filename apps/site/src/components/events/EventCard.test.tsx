@@ -45,10 +45,11 @@ describe('EventCard', () => {
   let EventCard: typeof import('@/components/events/EventCard').EventCard;
   let EventsEmptyState: typeof import('@/components/events/EventCard').EventsEmptyState;
   let formatEventDate: typeof import('@/components/events/EventCard').formatEventDate;
+  let eventSignupHref: typeof import('@/components/events/EventCard').eventSignupHref;
 
   beforeEach(async () => {
     vi.resetModules();
-    ({ EventCard, EventsEmptyState, formatEventDate } =
+    ({ EventCard, EventsEmptyState, formatEventDate, eventSignupHref } =
       await import('@/components/events/EventCard'));
 
     container = document.createElement('div');
@@ -63,7 +64,7 @@ describe('EventCard', () => {
     container.remove();
   });
 
-  it('renders title, date, location, and a signup link', async () => {
+  it('renders title, date, location, and on-site signup form', async () => {
     await act(async () => {
       root.render(<EventCard event={baseEvent} />);
     });
@@ -72,12 +73,15 @@ describe('EventCard', () => {
     expect(container.textContent).toContain('Carinya Parc, The Branch NSW');
     expect(container.textContent).toContain(formatEventDate(baseEvent.startsAt));
 
+    const article = container.querySelector('#event-winter-planting-day');
+    expect(article).toBeTruthy();
+
     const time = container.querySelector('time');
     expect(time?.getAttribute('dateTime')).toBe(baseEvent.startsAt);
 
-    const links = Array.from(container.querySelectorAll('a'));
-    const signup = links.find((el) => el.textContent?.includes('Sign up'));
-    expect(signup?.getAttribute('href')).toBe('/get-involved/events/#event-winter-planting-day');
+    expect(container.querySelector('input[name="name"]')).toBeTruthy();
+    expect(container.querySelector('input[name="email"]')).toBeTruthy();
+    expect(eventSignupHref(baseEvent)).toBe('/get-involved/events/#event-winter-planting-day');
   });
 
   it('uses an external signupTarget when set', async () => {
@@ -98,9 +102,10 @@ describe('EventCard', () => {
     expect(signup?.getAttribute('href')).toBe('https://example.com/signup');
     expect(signup?.getAttribute('target')).toBe('_blank');
     expect(signup?.getAttribute('rel')).toContain('noopener');
+    expect(container.querySelector('input[name="email"]')).toBeNull();
   });
 
-  it('shows waitlist CTA when the event is full', async () => {
+  it('shows waitlist state when the event is full', async () => {
     await act(async () => {
       root.render(<EventCard event={{ ...baseEvent, isFull: true }} />);
     });
@@ -110,6 +115,7 @@ describe('EventCard', () => {
       el.textContent?.includes('waitlist'),
     );
     expect(waitlist?.getAttribute('href')).toBe('/subscribe/');
+    expect(container.querySelector('input[name="email"]')).toBeNull();
   });
 
   it('renders an empty state with a subscribe path', async () => {

@@ -91,3 +91,68 @@ export async function getEventById(id: number): Promise<PayloadEvent | null> {
     return null;
   }
 }
+
+/**
+ * Count confirmed registrations for capacity checks (excludes waitlisted).
+ */
+export async function countEventRegistrations(eventId: number): Promise<number> {
+  const payload = await getPayloadClient();
+
+  const result = await payload.count({
+    collection: 'event-registrations',
+    overrideAccess: true,
+    where: {
+      and: [{ event: { equals: eventId } }, { status: { equals: 'registered' } }],
+    },
+  });
+
+  return result.totalDocs;
+}
+
+/**
+ * True when the event is manually marked full or registered count meets capacity.
+ */
+export function isEventAtCapacity(
+  event: Pick<PayloadEvent, 'capacity' | 'isFull'>,
+  registeredCount: number,
+): boolean {
+  if (event.isFull) {
+    return true;
+  }
+
+  if (typeof event.capacity === 'number' && event.capacity > 0) {
+    return registeredCount >= event.capacity;
+  }
+
+  return false;
+}
+
+/**
+ * Find an existing registration for this event + email (idempotent signup).
+ */
+export async function findEventRegistrationByEmail(
+  eventId: number,
+  email: string,
+): Promise<{ id: number; status: 'registered' | 'waitlisted' } | null> {
+  const payload = await getPayloadClient();
+
+  const result = await payload.find({
+    collection: 'event-registrations',
+    overrideAccess: true,
+    depth: 0,
+    limit: 1,
+    where: {
+      and: [{ event: { equals: eventId } }, { email: { equals: email.toLowerCase() } }],
+    },
+  });
+
+  const doc = result.docs[0];
+  if (!doc) {
+    return null;
+  }
+
+  return {
+    id: doc.id,
+    status: doc.status === 'waitlisted' ? 'waitlisted' : 'registered',
+  };
+}

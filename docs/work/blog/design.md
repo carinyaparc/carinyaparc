@@ -77,6 +77,7 @@ components/events/EventCard.tsx              NEW     event card + empty state
 components/events/GetInvolvedCTA.tsx         NEW     in-article CTA to next event
 app/api/events/signup/route.ts               NEW     signup handler (contact-form pattern)
 components/events/EventSignup.tsx            NEW     signup form + confirmation
+collections/EventRegistrations.ts            NEW     registrations against events
 
 # Measurement (S8) + Sharing (S9)
 lib/analytics/events.ts                      NEW     typed GA event helpers (consent-gated)
@@ -128,6 +129,7 @@ type Event = {
   _status: 'draft' | 'published';
 };
 // EventSignup: { eventId, name, email, website(honeypot) }
+// EventRegistrations collection: { event, name, email, status: 'registered' | 'waitlisted' }
 ```
 
 Analytics events (GA, consent-gated) — full names/params in `docs/work/blog/analytics-events.md`:

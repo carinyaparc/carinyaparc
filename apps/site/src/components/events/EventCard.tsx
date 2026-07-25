@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { EventSignup } from '@/components/events/EventSignup';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import type { UpcomingEvent } from '@/lib/payload/queries/events';
@@ -35,12 +36,10 @@ type EventCardProps = {
 };
 
 export function EventCard({ event, className }: EventCardProps) {
-  const href = eventSignupHref(event);
-  const external = isExternalEventHref(href);
+  const externalHref = event.signupTarget?.trim() ? event.signupTarget.trim() : null;
+  const external = externalHref ? isExternalEventHref(externalHref) : false;
   const full = Boolean(event.isFull);
-  const ctaLabel = full ? 'Full — join the waitlist' : 'Sign up';
-  const ctaHref = full ? '/subscribe/' : href;
-  const ctaExternal = !full && external;
+  const showOnSiteSignup = !externalHref;
 
   return (
     <article
@@ -57,20 +56,31 @@ export function EventCard({ event, className }: EventCardProps) {
         {event.title}
       </h2>
       <p className="mt-2 text-[14.5px] leading-[1.55] text-stone">{event.location}</p>
-      <div className="mt-6">
-        <Button
-          render={
-            <Link
-              href={ctaHref}
-              {...(ctaExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            />
-          }
-          variant={full ? 'outline' : 'bracken'}
-          size="sm"
-        >
-          {ctaLabel}
-        </Button>
-      </div>
+
+      {showOnSiteSignup ? (
+        <EventSignup eventId={event.id} eventTitle={event.title} isFull={full} />
+      ) : full ? (
+        <div className="mt-6">
+          <Button render={<Link href="/subscribe/" />} variant="outline" size="sm">
+            Full — join the waitlist
+          </Button>
+        </div>
+      ) : (
+        <div className="mt-6">
+          <Button
+            render={
+              <Link
+                href={externalHref!}
+                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              />
+            }
+            variant="bracken"
+            size="sm"
+          >
+            Sign up
+          </Button>
+        </div>
+      )}
     </article>
   );
 }
