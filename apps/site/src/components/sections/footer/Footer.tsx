@@ -27,6 +27,7 @@ const navigation = {
       title: 'Connect',
       items: [
         { name: 'Contact Us', href: '/contact' },
+        { name: 'Events', href: '/get-involved/events/' },
         { name: 'Subscribe', href: '/subscribe' },
       ],
     },

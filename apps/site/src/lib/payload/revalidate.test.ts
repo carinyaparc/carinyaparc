@@ -86,6 +86,35 @@ describe('getPostRevalidationPaths', () => {
     expect(paths).toContain('/blog/old-slug/');
     expect(paths).toContain('/blog/new-slug/');
   });
+
+  it('includes category archive paths for the current and previous category', () => {
+    const ctx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'my-post', categorySlug: 'restoration' },
+      previousDoc: { slug: 'my-post', categorySlug: 'farming' },
+      operation: 'update',
+    };
+
+    const paths = getPostRevalidationPaths(ctx);
+
+    expect(paths).toContain('/blog/category/restoration/');
+    expect(paths).toContain('/blog/category/farming/');
+  });
+
+  it('includes tag archive paths for current and previous tags', () => {
+    const ctx: RevalidationContext = {
+      collection: 'posts',
+      doc: { slug: 'my-post', tagSlugs: ['soil-health', 'wildlife'] },
+      previousDoc: { slug: 'my-post', tagSlugs: ['wildlife', 'water'] },
+      operation: 'update',
+    };
+
+    const paths = getPostRevalidationPaths(ctx);
+
+    expect(paths).toContain('/blog/tag/soil-health/');
+    expect(paths).toContain('/blog/tag/wildlife/');
+    expect(paths).toContain('/blog/tag/water/');
+  });
 });
 
 describe('getRecipeRevalidationPaths', () => {

@@ -71,12 +71,13 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
     - `legal/[slug]/page.tsx` – legal pages resolved by slug.
     - `subscribe/page.tsx` – subscription / newsletter flows.
     - `contact/page.tsx` – contact form.
+    - `get-involved/events/page.tsx` – upcoming events listing (Payload `events`).
 
   - `(blog)/` – routing group for blog content (shared site root layout):
     - `blog/page.tsx` – blog index at `/blog` (page 1 + pagination).
     - `blog/page/[page]/page.tsx` – paginated archive at `/blog/page/{n}`.
     - `blog/[slug]/page.tsx` – individual post at `/blog/{slug}` (Payload-backed).
-    - Future: `blog/category/[slug]/page.tsx`, `blog/tag/[tag]/page.tsx`.
+    - `blog/category/[slug]/page.tsx`, `blog/tag/[tag]/page.tsx` – published-only archives.
 
   - `(recipes)/` – routing group for recipe content (shared site root layout):
     - `recipes/page.tsx` – recipes index at `/recipes`.
@@ -92,12 +93,16 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `Authors.ts`, `Categories.ts`, `Tags.ts` – blog supporting entities.
   - `Posts.ts` – blog posts (title, slug, date, author, category, excerpt, body, tags, featured, image).
   - `Recipes.ts` – recipes (title, slug, times, servings, ingredients, instructions, tags, difficulty, SEO fields).
+  - `Events.ts` – planting days / workshops (title, slug, startsAt, location, capacity, isFull, signupTarget, description).
+  - `EventRegistrations.ts` – signup records against events (name, email, status registered/waitlisted).
 
 - `src/fields/` – reusable Payload field definitions (slug, recipe ingredients, instructions).
 
 - `src/components/`
   - `sections/` – larger page sections (hero blocks, feature sections, etc.).
   - `forms/` under `sections/` for reusable form UI (e.g. `ContactFormSection`, subscribe flows).
+  - `events/` – event listing cards, on-site signup form, and get-involved CTA.
+  - `blog/` – blog-specific UI (topic nav, author block, related posts, share).
   - `layouts/` – layout-level components.
   - `rich-text/` – Lexical rich-text renderer for Payload post bodies.
   - `posts/`, `pages/`, `ui/` – post components, page-specific extras, and shared UI wrappers.
@@ -109,13 +114,14 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - `cn.ts` – class name utility.
   - `payload/` – Payload client, queries, content mappers, access control, slugify.
     - `client.ts` – cached `getPayloadClient()` (server-only).
-    - `queries/` – `posts.ts`, `recipes.ts`, `sitemap-posts.ts` for route and sitemap data.
+    - `queries/` – `posts.ts`, `recipes.ts`, `events.ts`, `sitemap-posts.ts` for route and sitemap data.
     - `map-content.ts` – maps Payload documents to list/detail shapes.
     - `urls.ts` – `/blog/{slug}` and `/recipes/{slug}` path helpers.
   - `posts.ts` – `Post` type; re-exports blog query functions from `payload/queries/posts`.
   - `recipes/` – recipe display helpers (e.g. `format-duration.ts`).
   - `metadata/` – helper functions for route metadata.
   - `schema/` – schema generation utilities (article, breadcrumb, recipe, etc.).
+  - `analytics/` – consent-gated GA/GTM helpers (`trackEvent`, typed funnel events); event schema in `docs/work/blog/analytics-events.md`; GA4 funnel explorations in `docs/work/blog/funnel-dashboard.md`.
   - `consent/` – cookie-consent server actions (httpOnly `cp_consent` cookie).
   - `session/` – JWT helpers for a future `cp_session` cookie (scaffold only; not used by routes today).
   - `security/` – security utilities (CSP, headers, caching).
@@ -175,6 +181,7 @@ API routes:
 
 - `/api/subscribe` → `src/app/api/subscribe/route.ts`.
 - `/api/contact` → `src/app/api/contact/route.ts`.
+- `/api/events/signup` → `src/app/api/events/signup/route.ts`.
 - `/api/csp-report` → `src/app/api/csp-report/route.ts`.
 
 Cookie consent is not an API route. It uses the server action `setConsent` in `src/lib/consent/actions.ts`, called from `src/components/ui/Policy.tsx`. The root layout reads the httpOnly `cp_consent` cookie to gate analytics and banner visibility.
@@ -260,6 +267,7 @@ Examples of established folder patterns:
 - `src/lib/schema/` – schema generators (article, breadcrumb, recipe) with tests.
 - `src/lib/consent/` – cookie-consent server actions:
   - `actions.ts` – `setConsent('accepted' | 'rejected')`; sets httpOnly `cp_consent` (defined in `constants.ts`).
+- `src/lib/analytics/` – consent-gated blog funnel events (`subscribe_*`, `article_scroll_depth`, participation); schema in `docs/work/blog/analytics-events.md`; operator dashboard = GA4 Explorations (`docs/work/blog/funnel-dashboard.md`).
 - `src/lib/session/` – JWT helpers for future `cp_session` (scaffold; not wired to routes):
   - `server.ts` – `getSession`, `setSession`, `updateSession`, `clearSession`
   - `types.ts`, `index.ts` – types and barrel export

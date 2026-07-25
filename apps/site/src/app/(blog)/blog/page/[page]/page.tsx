@@ -2,12 +2,9 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+import { BlogTopicNav } from '@/components/blog/BlogTopicNav';
 import { PageIntro } from '@/components/sections/page';
-import {
-  JournalCategoryFilter,
-  PaginatedPosts,
-  PaginatedPostsSkeleton,
-} from '@/src/components/sections/blog';
+import { PaginatedPosts, PaginatedPostsSkeleton } from '@/src/components/sections/blog';
 import { getCachedBlogCategories, getCachedBlogPostsPage } from '@/lib/payload/cache';
 import { BASE_URL } from '@/src/lib/constants';
 
@@ -57,15 +54,8 @@ export async function generateStaticParams(): Promise<Array<{ page: string }>> {
   }));
 }
 
-export default async function BlogPageNumber({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ page: string }>;
-  searchParams: Promise<{ category?: string }>;
-}) {
+export default async function BlogPageNumber({ params }: { params: Promise<{ page: string }> }) {
   const { page: rawPage } = await params;
-  const { category: categorySlug } = await searchParams;
   const page = parsePageParam(rawPage);
 
   if (!page) {
@@ -77,7 +67,6 @@ export default async function BlogPageNumber({
       page,
       perPage: POSTS_PER_PAGE,
       excludeFeatured: true,
-      categorySlug,
     }),
     getCachedBlogCategories(),
   ]);
@@ -98,16 +87,11 @@ export default async function BlogPageNumber({
         descriptionClassName="mx-auto mt-[18px] max-w-[620px] text-stone leading-[1.6]"
       />
 
-      <JournalCategoryFilter categories={categories} activeSlug={categorySlug} />
+      <BlogTopicNav categories={categories} />
 
       <section className="py-9 pb-[84px]">
         <Suspense fallback={<PaginatedPostsSkeleton />}>
-          <PaginatedPosts
-            page={page}
-            perPage={POSTS_PER_PAGE}
-            excludeFeatured
-            categorySlug={categorySlug}
-          />
+          <PaginatedPosts page={page} perPage={POSTS_PER_PAGE} excludeFeatured />
         </Suspense>
       </section>
     </div>

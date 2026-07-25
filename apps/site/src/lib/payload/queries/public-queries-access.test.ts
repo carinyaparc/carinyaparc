@@ -9,18 +9,30 @@ vi.mock('@/lib/payload/client', () => ({
 }));
 
 import {
+  getCategorySitemapEntries,
+  getCategorySlugs,
+  getPostsByCategory,
+} from '@/lib/payload/queries/categories';
+import {
   getBlogPostBySlug,
   getBlogPosts,
   getBlogPostSlugs,
   getBlogPostsPage,
 } from '@/lib/payload/queries/posts';
 import {
+  getEventBySlug,
+  getNextUpcomingEvent,
+  getUpcomingEvents,
+} from '@/lib/payload/queries/events';
+import {
   getRecipeBySlug,
   getRecipeSitemapEntries,
   getRecipeSlugs,
   getRecipes,
 } from '@/lib/payload/queries/recipes';
+import { getRelatedPosts } from '@/lib/payload/queries/related-posts';
 import { getPostSitemapEntries } from '@/lib/payload/queries/sitemap-posts';
+import { getPostsByTag, getTagSitemapEntries, getTagSlugs } from '@/lib/payload/queries/tags';
 
 /**
  * Payload's Local API defaults to overrideAccess: true, which bypasses the
@@ -33,10 +45,28 @@ const publicQueries: Array<[string, () => Promise<unknown>]> = [
   ['getBlogPostBySlug', () => getBlogPostBySlug('a-post')],
   ['getBlogPostSlugs', () => getBlogPostSlugs()],
   ['getPostSitemapEntries', () => getPostSitemapEntries()],
+  ['getCategorySlugs', () => getCategorySlugs()],
+  ['getPostsByCategory', () => getPostsByCategory('restoration')],
+  ['getCategorySitemapEntries', () => getCategorySitemapEntries()],
+  ['getTagSlugs', () => getTagSlugs()],
+  ['getPostsByTag', () => getPostsByTag('soil-health')],
+  ['getTagSitemapEntries', () => getTagSitemapEntries()],
+  [
+    'getRelatedPosts',
+    () =>
+      getRelatedPosts({
+        slug: 'a-post',
+        category: { slug: 'restoration' },
+        tags: [{ slug: 'soil-health' }],
+      }),
+  ],
   ['getRecipes', () => getRecipes()],
   ['getRecipeBySlug', () => getRecipeBySlug('a-recipe')],
   ['getRecipeSlugs', () => getRecipeSlugs()],
   ['getRecipeSitemapEntries', () => getRecipeSitemapEntries()],
+  ['getUpcomingEvents', () => getUpcomingEvents()],
+  ['getNextUpcomingEvent', () => getNextUpcomingEvent()],
+  ['getEventBySlug', () => getEventBySlug('planting-day')],
 ];
 
 describe('public Payload queries enforce access control', () => {

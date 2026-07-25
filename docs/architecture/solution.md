@@ -278,6 +278,7 @@ Incoming request
 | -------------- | ------------------------------------------------------------ | ------------------------ |
 | **Post**       | Long-form blog article                                       | Payload `posts`          |
 | **Recipe**     | Structured cooking content with ingredients and instructions | Payload `recipes`        |
+| **Event**      | Planting day / workshop listing (draft/publish)              | Payload `events`         |
 | **Author**     | Byline identity for posts/recipes                            | Payload `authors`        |
 | **Category**   | Primary taxonomy for posts                                   | Payload `categories`     |
 | **Tag**        | Cross-cutting labels for posts and recipes                   | Payload `tags`           |
@@ -300,7 +301,7 @@ User (standalone; auth only)
 ### 6.3 Invariants
 
 - **Slug uniqueness** — enforced per collection; public URLs are `/blog/{slug}` and `/recipes/{slug}` (`lib/payload/urls.ts`).
-- **Published visibility** — anonymous Payload reads return only `_status: published` for posts and recipes.
+- **Published visibility** — anonymous Payload reads return only `_status: published` for posts, recipes, and events.
 - **Required publish date** — `date` on posts and recipes drives sort order and metadata.
 - **Draft safety** — authenticated admin sees drafts; public queries must never leak draft bodies (verify when changing access rules).
 - **Image paths (interim)** — `image` / `imageUrl` string fields reference paths under `public/`; not upload relations until Media collection lands.

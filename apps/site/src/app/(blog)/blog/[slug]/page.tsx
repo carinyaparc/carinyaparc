@@ -4,15 +4,24 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import { BlogAuthorCard, BlogPostHeader } from '@/components/sections/blog/BlogPostArticle';
-import { RelatedPosts } from '@/components/sections/blog/RelatedPosts';
+import { ArticleScrollDepth } from '@/components/blog/ArticleScrollDepth';
+import { AuthorBlock } from '@/components/blog/AuthorBlock';
+import { RelatedPosts } from '@/components/blog/RelatedPosts';
+import { ShareBar } from '@/components/blog/ShareBar';
+import { GetInvolvedCTA } from '@/components/events/GetInvolvedCTA';
+import { BlogPostHeader } from '@/components/sections/blog/BlogPostArticle';
+import { EndOfPostSubscribe } from '@/components/subscribe/EndOfPostSubscribe';
+import { InlineSubscribe } from '@/components/subscribe/InlineSubscribe';
 import { RichText } from '@/src/components/rich-text/RichText';
 import { BASE_URL } from '@/src/lib/constants';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { getCachedBlogPostBySlug, getCachedBlogPostSlugs } from '@/lib/payload/cache';
-import { resolveAuthorName, resolveCategorySlug, resolveTagNames } from '@/lib/payload/map-content';
-import { getRelatedBlogPosts } from '@/lib/payload/queries/posts';
+import { resolveAuthorName, resolveTagNames } from '@/lib/payload/map-content';
+import { getNextUpcomingEvent } from '@/lib/payload/queries/events';
+import { getRelatedPosts } from '@/lib/payload/queries/related-posts';
 import { postUrl } from '@/lib/payload/urls';
+import { splitRichTextAtMidpoint } from '@/lib/subscribe/split-rich-text';
+import { blogSubscribeSource } from '@/lib/validation/subscribe-schema';
 
 export async function generateMetadata({
   params,
@@ -75,10 +84,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const author = resolveAuthorName(post.author);
   const tags = resolveTagNames(post.tags);
-  const categorySlug = resolveCategorySlug(post.category);
   const description = post.description ?? post.excerpt;
-  const relatedPosts = await getRelatedBlogPosts(slug, categorySlug, 3);
+  const [relatedPosts, nextEvent] = await Promise.all([
+    getRelatedPosts(post, 3),
+    getNextUpcomingEvent(),
+  ]);
   const heroImage = post.image ?? '/images/farm-track-gate.jpg';
+  const subscribeSource = blogSubscribeSource(slug);
+  const canonicalUrl = `${BASE_URL}${postUrl(slug)}`;
+  const { before: bodyBefore, after: bodyAfter } = splitRichTextAtMidpoint(post.body);
 
   const articleData = {
     title: post.title,
@@ -103,6 +117,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <main className="min-h-screen bg-paperbark">
         <article>
+          <ArticleScrollDepth />
           <BlogPostHeader post={post} />
 
           <div className="mx-auto max-w-[1240px] px-6 lg:px-14">
@@ -118,11 +133,29 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
 
-          <div className="blog-prose pb-8 pt-3">
-            <RichText data={post.body} />
+          <div className="blog-prose pt-3">
+            <RichText data={bodyBefore} />
           </div>
 
-          <BlogAuthorCard author={post.author} />
+          <div className="mx-auto max-w-[720px] px-6">
+            <InlineSubscribe source={subscribeSource} />
+          </div>
+
+          {bodyAfter ? (
+            <div className="blog-prose pb-8">
+              <RichText data={bodyAfter} />
+            </div>
+          ) : (
+            <div className="pb-8" />
+          )}
+
+          <EndOfPostSubscribe source={subscribeSource} />
+
+          <ShareBar url={canonicalUrl} title={post.title} />
+
+          <AuthorBlock author={post.author} />
+
+          <GetInvolvedCTA event={nextEvent} source={subscribeSource} />
         </article>
 
         <RelatedPosts posts={relatedPosts} />

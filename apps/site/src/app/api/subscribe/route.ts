@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { subscribeFormSchema } from '@/src/lib/validation/subscribe-schema';
+import {
+  resolveSubscribeInterest,
+  subscribeFormSchema,
+  type SubscribeInterest,
+} from '@/src/lib/validation/subscribe-schema';
 import { isSpamEmail } from '@/src/lib/validation/spam-email';
 
 // Simple in-memory rate limiting
@@ -68,6 +72,58 @@ function checkRateLimit(
   return { limited, remainingRequests, resetTime };
 }
 
+type MailerLiteFields = {
+  name?: string;
+  interest?: string;
+  interests?: string;
+  source?: string;
+  [key: string]: string | undefined;
+};
+
+type MailerLiteSubscriberPayload = {
+  email: string;
+  fields?: MailerLiteFields;
+};
+
+/**
+ * Build the MailerLite upsert body from validated subscribe input.
+ * Persists canonical `interest` + `source` as custom fields; keeps `interests`
+ * populated for existing MailerLite automations that still read that field.
+ */
+export function buildMailerLiteSubscriberPayload(input: {
+  email: string;
+  name?: string;
+  interest?: SubscribeInterest;
+  interests?: string;
+  source?: string;
+}): MailerLiteSubscriberPayload {
+  const resolvedInterest = resolveSubscribeInterest(input.interest, input.interests);
+
+  const fields: MailerLiteFields = {};
+
+  if (input.name && input.name.trim() !== '') {
+    fields.name = input.name;
+  }
+
+  if (resolvedInterest) {
+    fields.interest = resolvedInterest;
+    fields.interests = resolvedInterest;
+  } else if (input.interests && input.interests !== '') {
+    // Unknown legacy value — still forward so existing data is not dropped
+    fields.interests = input.interests;
+  }
+
+  if (input.source && input.source.trim() !== '') {
+    fields.source = input.source.trim();
+  }
+
+  const payload: MailerLiteSubscriberPayload = { email: input.email };
+  if (Object.keys(fields).length > 0) {
+    payload.fields = fields;
+  }
+  return payload;
+}
+
 export async function POST(req: Request) {
   try {
     let body: unknown;
@@ -84,10 +140,20 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: nameError.message }, { status: 400 });
       }
 
+      const sourceError = validation.error.issues.find((issue) => issue.path[0] === 'source');
+      if (sourceError) {
+        return NextResponse.json({ error: sourceError.message }, { status: 400 });
+      }
+
+      const interestError = validation.error.issues.find((issue) => issue.path[0] === 'interest');
+      if (interestError) {
+        return NextResponse.json({ error: interestError.message }, { status: 400 });
+      }
+
       return NextResponse.json({ error: 'Please provide a valid email address' }, { status: 400 });
     }
 
-    const { email, name, interests, website, submissionTime } = validation.data;
+    const { email, name, interest, interests, source, website, submissionTime } = validation.data;
 
     // 1. Check for honeypot field (should be empty)
     if (website) {
@@ -95,8 +161,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
-    // 2. Check submission time (too fast means bot)
-    if (submissionTime < RATE_LIMIT.MIN_SUBMISSION_TIME_MS) {
+    // 2. Check submission time when the client reports it (too fast means bot)
+    if (typeof submissionTime === 'number' && submissionTime < RATE_LIMIT.MIN_SUBMISSION_TIME_MS) {
       return NextResponse.json({ success: true }, { status: 200 });
     }
 
@@ -134,36 +200,13 @@ export async function POST(req: Request) {
     // Base URL is https://connect.mailerlite.com/api
     // We need to use Authorization: Bearer XXX header format
     try {
-      // Define type for subscriber data
-      interface SubscriberData {
-        email: string;
-        fields?: {
-          name?: string;
-          interests?: string;
-          [key: string]: string | undefined;
-        };
-      }
-
-      const subscriberData: SubscriberData = {
+      const subscriberData = buildMailerLiteSubscriberPayload({
         email,
-        // Remove the groups parameter if you don't have a group ID
-        // If you know your group ID, use: groups: [12345]
-      };
-
-      // Add name field if provided
-      if (name && name.trim() !== '') {
-        subscriberData.fields = {
-          name: name,
-        };
-      }
-
-      // Add interests as a custom field if provided
-      if (interests && interests !== '') {
-        subscriberData.fields = {
-          ...subscriberData.fields,
-          interests: interests,
-        };
-      }
+        name,
+        interest,
+        interests,
+        source,
+      });
 
       const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
         method: 'POST',

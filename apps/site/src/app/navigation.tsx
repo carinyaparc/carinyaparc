@@ -49,7 +49,7 @@ export const navigation: NavItem[] = [
   {
     verb: 'Join',
     rest: 'Our Community',
-    href: '#',
-    visible: false,
+    href: '/get-involved/events/',
+    visible: true,
   },
 ];

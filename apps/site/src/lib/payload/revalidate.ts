@@ -4,10 +4,18 @@ import { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
 
 export type RevalidatableCollection = 'posts' | 'recipes';
 
+export type RevalidationDoc = {
+  slug?: string | null;
+  featured?: boolean | null;
+  _status?: string | null;
+  categorySlug?: string | null;
+  tagSlugs?: string[];
+};
+
 export type RevalidationContext = {
   collection: RevalidatableCollection;
-  doc: { slug?: string | null; featured?: boolean | null; _status?: string | null };
-  previousDoc?: { slug?: string | null; featured?: boolean | null; _status?: string | null } | null;
+  doc: RevalidationDoc;
+  previousDoc?: RevalidationDoc | null;
   operation: 'create' | 'update' | 'delete';
 };
 
@@ -46,6 +54,20 @@ export function getPostRevalidationPaths(ctx: RevalidationContext): string[] {
 
   if (ctx.previousDoc?.slug && ctx.previousDoc.slug !== slug) {
     paths.push(`/blog/${ctx.previousDoc.slug}/`);
+  }
+
+  const categorySlug = ctx.doc.categorySlug;
+  if (categorySlug) {
+    paths.push(`/blog/category/${categorySlug}/`);
+  }
+
+  if (ctx.previousDoc?.categorySlug && ctx.previousDoc.categorySlug !== categorySlug) {
+    paths.push(`/blog/category/${ctx.previousDoc.categorySlug}/`);
+  }
+
+  const tagSlugs = new Set([...(ctx.doc.tagSlugs ?? []), ...(ctx.previousDoc?.tagSlugs ?? [])]);
+  for (const tagSlug of tagSlugs) {
+    paths.push(`/blog/tag/${tagSlug}/`);
   }
 
   return uniqueNormalizedPaths(paths);
