@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import { BlogTopicNav } from '@/components/blog/BlogTopicNav';
-import PostCard from '@/components/sections/blog/PostCard';
+import { BlogTopicNav } from '@/features/blog/components/BlogTopicNav';
+import PostCard from '@/features/blog/components/PostCard';
 import { PageIntro } from '@/components/sections/page';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { generatePageMetadata } from '@/src/lib/metadata';
@@ -11,7 +11,7 @@ import {
   getCategoryBySlug,
   getCategorySlugs,
   getPostsByCategory,
-} from '@/lib/payload/queries/categories';
+} from '@/features/blog/queries/categories';
 import { categoryUrl } from '@/lib/payload/urls';
 
 export const revalidate = 86_400;

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { PageHeader } from '@/src/components/sections/page-header';
-import { RecipeGrid } from '@/src/components/sections/recipes';
+import { RecipeGrid } from '@/features/recipes/components';
 import { SchemaMarkup } from '@/src/components/ui/SchemaMarkup';
 import { Breadcrumb } from '@/src/components/ui/Breadcrumb';
 import { generatePageMetadata } from '@/src/lib/metadata';

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 
-import { EventCard, EventsEmptyState } from '@/components/events/EventCard';
+import { EventCard, EventsEmptyState } from '@/features/events/components/EventCard';
 import { PageIntro } from '@/components/sections/page';
 import { SchemaMarkup } from '@/components/ui/SchemaMarkup';
 import { generatePageMetadata } from '@/lib/metadata';
-import { getUpcomingEvents } from '@/lib/payload/queries/events';
+import { getUpcomingEvents } from '@/features/events/queries/events';
 import { eventsListingUrl } from '@/lib/payload/urls';
 
 export const revalidate = 86_400;

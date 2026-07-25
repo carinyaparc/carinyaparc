@@ -17,4 +17,4 @@ export {
 } from './headers';
 
 // Export constants
-export { CSP_DIRECTIVES, SECURITY_HEADER_PRESETS } from './constants';
+export { CSP_BALANCED_DIRECTIVES, CSP_DIRECTIVES, SECURITY_HEADER_PRESETS } from './constants';

@@ -6,7 +6,7 @@ import type {
   Tag,
 } from '@/payload-types';
 import { postUrl, recipeUrl } from '@/lib/payload/urls';
-import type { Post } from '@/lib/posts';
+import type { Post } from '@/features/blog/types';
 
 /**
  * Subset of PayloadPost fields required to render a post card/list item.

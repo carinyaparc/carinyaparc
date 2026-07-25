@@ -9,7 +9,7 @@ import { getCachedRecipeBySlug, getCachedRecipeSlugs } from '@/lib/payload/cache
 import { mapPayloadRecipeToDetail, resolveAuthorName } from '@/lib/payload/map-content';
 import { recipeUrl } from '@/lib/payload/urls';
 import { BASE_URL } from '@/src/lib/constants';
-import { formatIsoDuration } from '@/lib/recipes/format-duration';
+import { formatIsoDuration } from '@/features/recipes/lib/format-duration';
 
 export async function generateMetadata({
   params,

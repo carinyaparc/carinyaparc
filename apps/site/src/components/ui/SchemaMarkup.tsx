@@ -2,8 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 import { generateBreadcrumbsFromPath, generateBreadcrumbSchema } from '@/lib/schema/breadcrumb';
-import { generateArticleSchema, type ArticleData } from '@/lib/schema/article';
-import { generateRecipeSchema, type RecipeData } from '@/lib/schema/recipe';
+import { generateArticleSchema, type ArticleData } from '@/features/blog/schema/article';
+import { generateRecipeSchema, type RecipeData } from '@/features/recipes/schema/recipe';
 import { generateLocalBusinessSchema } from '@/lib/schema/localBusiness';
 import { LOCAL_BUSINESS } from '@/lib/constants';
 

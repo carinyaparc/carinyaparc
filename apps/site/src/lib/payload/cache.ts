@@ -3,7 +3,7 @@ import 'server-only';
 import { unstable_cache } from 'next/cache';
 
 import type { Post as PayloadPost, Recipe as PayloadRecipe } from '@/payload-types';
-import type { Post } from '@/lib/posts';
+import type { Post } from '@/features/blog/types';
 import type { RecipeListItem } from '@/lib/payload/map-content';
 import { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
 import {
@@ -13,9 +13,9 @@ import {
   getBlogPostsPage,
   type BlogPostsPage,
   type BlogPostsPageOptions,
-} from '@/lib/payload/queries/posts';
-import { getBlogCategories } from '@/lib/payload/queries/categories';
-import { getRecipeBySlug, getRecipeSlugs, getRecipes } from '@/lib/payload/queries/recipes';
+} from '@/features/blog/queries/posts';
+import { getBlogCategories } from '@/features/blog/queries/categories';
+import { getRecipeBySlug, getRecipeSlugs, getRecipes } from '@/features/recipes/queries/recipes';
 
 export { PAYLOAD_CACHE_TAGS } from '@/lib/payload/cache-tags';
 
