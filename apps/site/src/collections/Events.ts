@@ -78,7 +78,22 @@ export const Events: CollectionConfig = {
       type: 'text',
       admin: {
         position: 'sidebar',
-        description: 'Optional external signup URL. Empty = use the on-site form.',
+        description:
+          'Optional external signup URL (must start with https:// or http://). Empty = use the on-site form.',
+      },
+      validate: (value) => {
+        if (!value || value.trim() === '') {
+          return true;
+        }
+        try {
+          const parsed = new URL(value.trim());
+          if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+            return 'Signup target must be a valid http:// or https:// URL.';
+          }
+          return true;
+        } catch {
+          return 'Signup target must be a valid http:// or https:// URL.';
+        }
       },
     },
     {
