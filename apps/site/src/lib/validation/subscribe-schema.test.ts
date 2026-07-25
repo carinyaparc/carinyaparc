@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  blogSubscribeSource,
+  getSubscribeEmailError,
   LEGACY_INTEREST_MAP,
   resolveSubscribeInterest,
+  SUBSCRIBE_INTEREST_OPTIONS,
   SUBSCRIBE_INTERESTS,
   subscribeFormSchema,
 } from '@/src/lib/validation/subscribe-schema';
@@ -111,5 +114,36 @@ describe('resolveSubscribeInterest', () => {
     expect(resolveSubscribeInterest(undefined, '')).toBeUndefined();
     expect(resolveSubscribeInterest(undefined, 'unknown-topic')).toBeUndefined();
     expect(resolveSubscribeInterest()).toBeUndefined();
+  });
+});
+
+describe('SUBSCRIBE_INTEREST_OPTIONS', () => {
+  it('exposes the five interest options with /subscribe/ labels', () => {
+    expect(SUBSCRIBE_INTEREST_OPTIONS).toHaveLength(5);
+    expect(SUBSCRIBE_INTEREST_OPTIONS.map((o) => o.value)).toEqual([...SUBSCRIBE_INTERESTS]);
+    expect(SUBSCRIBE_INTEREST_OPTIONS.map((o) => o.label)).toEqual([
+      'Ecological restoration',
+      'Regenerative farming',
+      'Community involvement',
+      'Future produce',
+      'Learning opportunities',
+    ]);
+  });
+});
+
+describe('blogSubscribeSource', () => {
+  it('prefixes the post slug for attribution', () => {
+    expect(blogSubscribeSource('winter-fencing-progress')).toBe('blog:winter-fencing-progress');
+  });
+});
+
+describe('getSubscribeEmailError', () => {
+  it('returns undefined for a valid email', () => {
+    expect(getSubscribeEmailError('reader@example.com')).toBeUndefined();
+  });
+
+  it('returns an inline error for invalid email without needing a request', () => {
+    expect(getSubscribeEmailError('not-an-email')).toBe('Please provide a valid email address');
+    expect(getSubscribeEmailError('')).toBe('Please provide a valid email address');
   });
 });
