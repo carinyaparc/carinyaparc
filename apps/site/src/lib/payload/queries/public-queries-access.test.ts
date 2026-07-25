@@ -20,6 +20,11 @@ import {
   getBlogPostsPage,
 } from '@/lib/payload/queries/posts';
 import {
+  getEventBySlug,
+  getNextUpcomingEvent,
+  getUpcomingEvents,
+} from '@/lib/payload/queries/events';
+import {
   getRecipeBySlug,
   getRecipeSitemapEntries,
   getRecipeSlugs,
@@ -59,6 +64,9 @@ const publicQueries: Array<[string, () => Promise<unknown>]> = [
   ['getRecipeBySlug', () => getRecipeBySlug('a-recipe')],
   ['getRecipeSlugs', () => getRecipeSlugs()],
   ['getRecipeSitemapEntries', () => getRecipeSitemapEntries()],
+  ['getUpcomingEvents', () => getUpcomingEvents()],
+  ['getNextUpcomingEvent', () => getNextUpcomingEvent()],
+  ['getEventBySlug', () => getEventBySlug('planting-day')],
 ];
 
 describe('public Payload queries enforce access control', () => {

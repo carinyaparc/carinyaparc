@@ -8,6 +8,7 @@ import sharp from 'sharp';
 
 import { Authors } from './collections/Authors';
 import { Categories } from './collections/Categories';
+import { Events } from './collections/Events';
 import { Posts } from './collections/Posts';
 import { Recipes } from './collections/Recipes';
 import { Tags } from './collections/Tags';
@@ -24,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Authors, Categories, Tags, Posts, Recipes],
+  collections: [Users, Authors, Categories, Tags, Posts, Recipes, Events],
   editor: lexicalEditor(),
   secret: getPayloadSecret(),
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',

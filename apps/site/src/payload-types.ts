@@ -73,6 +73,7 @@ export interface Config {
     tags: Tag;
     posts: Post;
     recipes: Recipe;
+    events: Event;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     tags: TagsSelect<false> | TagsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     recipes: RecipesSelect<false> | RecipesSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents':
       PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -281,6 +283,55 @@ export interface Recipe {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Planting days, workshops, and other participation events.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  slug: string;
+  /**
+   * Event start date and time (ISO datetime).
+   */
+  startsAt: string;
+  /**
+   * Where the event takes place, e.g. Carinya Parc, Glen Innes.
+   */
+  location: string;
+  /**
+   * Maximum attendees. Leave empty for uncapped.
+   */
+  capacity?: number | null;
+  /**
+   * Show waitlist / subscribe instead of the signup form.
+   */
+  isFull?: boolean | null;
+  /**
+   * Optional external signup URL. Empty = use the on-site form.
+   */
+  signupTarget?: string | null;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -327,6 +378,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'recipes';
         value: number | Recipe;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -475,6 +530,23 @@ export interface RecipesSelect<T extends boolean = true> {
         step?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  startsAt?: T;
+  location?: T;
+  capacity?: T;
+  isFull?: T;
+  signupTarget?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
