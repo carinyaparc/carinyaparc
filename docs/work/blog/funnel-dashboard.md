@@ -21,10 +21,10 @@ Operator guide for measuring subscribe and participation funnels. Event names an
 
 ## 1. Decision: GA4 first (no admin UI)
 
-| Option | Choice | Rationale |
-| ------ | ------ | --------- |
-| **GA4 Explorations** | **Selected** | Events already flow through consent-gated GTM → GA4. Explorations give funnel steps, breakdowns by `source` / `interest` / `event_id`, and date ranges without new code, auth, or Payload surface. |
-| In-app `app/admin/analytics/page.tsx` | Deferred | Not needed while GA4 Explorations answer “are we converting by placement?” and “are people signing up for events?”. Build only if GA4 proves insufficient (see §6). |
+| Option                                | Choice       | Rationale                                                                                                                                                                                          |
+| ------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GA4 Explorations**                  | **Selected** | Events already flow through consent-gated GTM → GA4. Explorations give funnel steps, breakdowns by `source` / `interest` / `event_id`, and date ranges without new code, auth, or Payload surface. |
+| In-app `app/admin/analytics/page.tsx` | Deferred     | Not needed while GA4 Explorations answer “are we converting by placement?” and “are people signing up for events?”. Build only if GA4 proves insufficient (see §6).                                |
 
 Design default (`design.md` §11 Q3): prefer GA4 exploration; admin view only if exploration is insufficient. Owner: JD.
 
@@ -39,10 +39,10 @@ Design default (`design.md` §11 Q3): prefer GA4 exploration; admin view only if
 
 | Dimension display name | Event parameter | Scope |
 | ---------------------- | --------------- | ----- |
-| Subscribe source | `source` | Event |
-| Subscribe interest | `interest` | Event |
-| Participation event id | `event_id` | Event |
-| Scroll depth | `depth` | Event |
+| Subscribe source       | `source`        | Event |
+| Subscribe interest     | `interest`      | Event |
+| Participation event id | `event_id`      | Event |
+| Scroll depth           | `depth`         | Event |
 
 Register dimensions under **Admin → Data display → Custom definitions**. Until registered, params still appear on individual events in DebugView / Realtime but may not be usable as Exploration dimensions.
 
@@ -58,10 +58,10 @@ Register dimensions under **Admin → Data display → Custom definitions**. Unt
 2. Technique: **Funnel exploration**.
 3. Steps (ordered):
 
-| Step | Event name | Optional filter |
-| ---- | ---------- | --------------- |
-| 1 — Start | `subscribe_start` | — |
-| 2 — Complete | `subscribe_complete` | — |
+| Step         | Event name           | Optional filter |
+| ------------ | -------------------- | --------------- |
+| 1 — Start    | `subscribe_start`    | —               |
+| 2 — Complete | `subscribe_complete` | —               |
 
 4. Open funnel settings:
    - **Open funnel** (steps need not be in the same session if you care about multi-session completes; use **Closed** for same-session conversion).
@@ -90,10 +90,10 @@ Technique **Free form**: rows = event name; values = event count; filter event n
 1. GA4 → **Explore** → **Funnel exploration**.
 2. Steps:
 
-| Step | Event name | Optional filter |
-| ---- | ---------- | --------------- |
-| 1 — CTA click | `event_cta_click` | — |
-| 2 — Signup complete | `event_signup_complete` | — |
+| Step                | Event name              | Optional filter |
+| ------------------- | ----------------------- | --------------- |
+| 1 — CTA click       | `event_cta_click`       | —               |
+| 2 — Signup complete | `event_signup_complete` | —               |
 
 3. Use a **Closed** funnel for same-session CTA → signup.
 4. Breakdown: **Participation event id** (`event_id`), then **Subscribe source** / participation `source` (`blog:{slug}` vs `events-listing`).
@@ -117,11 +117,11 @@ Use this before trusting exploration charts. Matches S8 Gherkin: events visible 
 
 Pick one:
 
-| Method | Steps |
-| ------ | ----- |
-| **GA Debugger (Chrome)** | Install [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger); enable; open the site. |
-| **GTM Preview** | Tag Manager → **Preview** → connect to the site URL; confirm tags fire on the custom events. |
-| **Debug query param** | If configured in GTM/GA (e.g. `debug_mode` event param or GA DebugView-linked device), follow your property’s usual debug linking. |
+| Method                   | Steps                                                                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **GA Debugger (Chrome)** | Install [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger); enable; open the site.   |
+| **GTM Preview**          | Tag Manager → **Preview** → connect to the site URL; confirm tags fire on the custom events.                                       |
+| **Debug query param**    | If configured in GTM/GA (e.g. `debug_mode` event param or GA DebugView-linked device), follow your property’s usual debug linking. |
 
 Then in GA4: **Admin → DebugView** (or **Configure → DebugView** depending on UI) and select the debug device.
 
@@ -133,18 +133,20 @@ Then in GA4: **Admin → DebugView** (or **Configure → DebugView** depending o
 4. Optional console check after interacting:
 
 ```js
-window.dataLayer?.filter((e) => e?.event?.includes?.('subscribe') || e?.event?.includes?.('event_'));
+window.dataLayer?.filter(
+  (e) => e?.event?.includes?.('subscribe') || e?.event?.includes?.('event_'),
+);
 ```
 
 ### 5.3 Trigger each funnel event
 
-| Event | How to fire |
-| ----- | ----------- |
-| `subscribe_start` | Focus or change a field on inline or end-of-post subscribe. |
-| `subscribe_complete` | Submit a valid email (and interest on end-of-post) so `/api/subscribe` returns ok. Prefer a test address. |
-| `article_scroll_depth` | Scroll the article past 25% / 50% / 75% / 100%. |
-| `event_cta_click` | Click the in-article get-involved CTA or an external signup / waitlist control on an event card. |
-| `event_signup_complete` | Complete on-site event signup successfully (not honeypot fake-success). |
+| Event                   | How to fire                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------------- |
+| `subscribe_start`       | Focus or change a field on inline or end-of-post subscribe.                                               |
+| `subscribe_complete`    | Submit a valid email (and interest on end-of-post) so `/api/subscribe` returns ok. Prefer a test address. |
+| `article_scroll_depth`  | Scroll the article past 25% / 50% / 75% / 100%.                                                           |
+| `event_cta_click`       | Click the in-article get-involved CTA or an external signup / waitlist control on an event card.          |
+| `event_signup_complete` | Complete on-site event signup successfully (not honeypot fake-success).                                   |
 
 ### 5.4 Confirm in DebugView
 

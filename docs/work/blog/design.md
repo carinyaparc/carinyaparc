@@ -21,13 +21,13 @@ Design for epic CP09 at `docs/work/blog/`. Covers the full blog surface: discove
 
 Builds reader-facing capability on top of the **already-shipped** blog foundation — SSG/ISR rendering, pagination, RSS, on-demand revalidation, and draft-safe public queries (`solution.md` §5.1, §7.4, §6.3). This epic adds the surfaces those foundations were built for.
 
-| Capability | Stories | tasks.md |
-| ---------- | ------- | -------- |
-| Discoverability — category/tag archives, related posts | S1, S2, S3 | CP09-01…03 |
-| Conversion — in-flow subscribe, author credibility, welcome routing | S4, S5, S6 | CP09-04…08 |
-| Participation — events surface, in-article CTA, signup | S7 | CP09-09…12 |
-| Measurement — subscribe/participation funnels, scroll depth, dashboard | S8 | CP09-13, 14, 16 |
-| Sharing — copy-link / native share | S9 | CP09-15 |
+| Capability                                                             | Stories    | tasks.md        |
+| ---------------------------------------------------------------------- | ---------- | --------------- |
+| Discoverability — category/tag archives, related posts                 | S1, S2, S3 | CP09-01…03      |
+| Conversion — in-flow subscribe, author credibility, welcome routing    | S4, S5, S6 | CP09-04…08      |
+| Participation — events surface, in-article CTA, signup                 | S7         | CP09-09…12      |
+| Measurement — subscribe/participation funnels, scroll depth, dashboard | S8         | CP09-13, 14, 16 |
+| Sharing — copy-link / native share                                     | S9         | CP09-15         |
 
 **MVP slice.** S1 (category archives) — the thinnest end-to-end proof: a published-only `/blog/category/{slug}/` reachable from nav, satisfying the roadmap Phase 4 category-UI exit.
 
@@ -35,17 +35,17 @@ Builds reader-facing capability on top of the **already-shipped** blog foundatio
 
 ## 2. Architecture fit
 
-| Concern | How this epic fits |
-| ------- | ------------------ |
-| Rendering | New archive and article-embedded surfaces use the existing SSG + ISR path (`solution.md` §5.1, §7.4). No `force-dynamic`. |
-| Draft safety | All new queries pass `overrideAccess: false` / `_status` filters (`solution.md` §6.3); enforced by regression tests. |
-| Revalidation | Archive/related freshness rides the existing `payload:posts` cache tag; publish hooks in `revalidate.ts` gain the new archive paths (`solution.md` §7.4). |
-| Data model | Reuses `Post`, `Author`, `Category`, `Tag` relations (`solution.md` §6.1–6.2). Adds one new collection, `Events` (§4). |
-| Subscribe | Reuses the public `/api/subscribe` handler and MailerLite integration (`solution.md` §7.8, §1.1); in-flow modules call it with added `source`/`interest`. |
-| Forms/security | Event signup mirrors the contact-form pattern — Zod validation, honeypot, rate limit, sanitise (`solution.md` §5.3, §7.1). |
-| Metadata/SEO | Archive and article surfaces reuse `lib/metadata` + `lib/schema` composers (`solution.md` §7.5). |
-| Analytics | GA events flow through the existing GTM/dataLayer, strictly consent-gated via `ConsentGate` (`solution.md` §7.2, §7.4). |
-| Accessibility | New UI meets the semantic-HTML/alt baseline (`solution.md` §7.6). |
+| Concern        | How this epic fits                                                                                                                                        |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rendering      | New archive and article-embedded surfaces use the existing SSG + ISR path (`solution.md` §5.1, §7.4). No `force-dynamic`.                                 |
+| Draft safety   | All new queries pass `overrideAccess: false` / `_status` filters (`solution.md` §6.3); enforced by regression tests.                                      |
+| Revalidation   | Archive/related freshness rides the existing `payload:posts` cache tag; publish hooks in `revalidate.ts` gain the new archive paths (`solution.md` §7.4). |
+| Data model     | Reuses `Post`, `Author`, `Category`, `Tag` relations (`solution.md` §6.1–6.2). Adds one new collection, `Events` (§4).                                    |
+| Subscribe      | Reuses the public `/api/subscribe` handler and MailerLite integration (`solution.md` §7.8, §1.1); in-flow modules call it with added `source`/`interest`. |
+| Forms/security | Event signup mirrors the contact-form pattern — Zod validation, honeypot, rate limit, sanitise (`solution.md` §5.3, §7.1).                                |
+| Metadata/SEO   | Archive and article surfaces reuse `lib/metadata` + `lib/schema` composers (`solution.md` §7.5).                                                          |
+| Analytics      | GA events flow through the existing GTM/dataLayer, strictly consent-gated via `ConsentGate` (`solution.md` §7.2, §7.4).                                   |
+| Accessibility  | New UI meets the semantic-HTML/alt baseline (`solution.md` §7.6).                                                                                         |
 
 ## 3. Files and components
 
@@ -109,9 +109,11 @@ Subscribe payload (extends the existing schema):
 const SubscribeInput = z.object({
   email: z.string().email(),
   name: z.string().max(120).optional(),
-  interest: z.enum(['restoration','regenerative-farming','community','produce','learning']).optional(),
+  interest: z
+    .enum(['restoration', 'regenerative-farming', 'community', 'produce', 'learning'])
+    .optional(),
   source: z.string().max(200).optional(), // e.g. "blog:{slug}"
-  website: z.string().max(0).optional(),  // honeypot (solution §7.1)
+  website: z.string().max(0).optional(), // honeypot (solution §7.1)
 });
 ```
 
@@ -122,11 +124,11 @@ Events collection (new — participation, S7):
 type Event = {
   title: string;
   slug: string;
-  startsAt: string;          // ISO datetime
+  startsAt: string; // ISO datetime
   location: string;
   description: RichText;
-  capacity?: number;         // omit = uncapped
-  signupTarget?: string;     // external URL or internal form
+  capacity?: number; // omit = uncapped
+  signupTarget?: string; // external URL or internal form
   _status: 'draft' | 'published';
 };
 // EventSignup: { eventId, name, email, website(honeypot) }
@@ -157,15 +159,15 @@ Event signup (S7)
 
 ## 6. Error paths
 
-| Failure | Behaviour |
-| ------- | --------- |
-| Unknown category/tag slug | `notFound()` → branded 404 |
-| Empty category/tag | Explicit empty state; never a draft leak (`solution.md` §6.3) |
-| Too few related posts | Recency fallback; module still renders |
-| Invalid subscribe email | Inline validation error; no ESP call |
-| MailerLite unavailable | Retryable error surfaced/queued; submission not lost silently |
-| Event at capacity | Waitlist / subscribe state instead of the form |
-| Consent not granted | Analytics events suppressed (no dataLayer push) |
+| Failure                   | Behaviour                                                     |
+| ------------------------- | ------------------------------------------------------------- |
+| Unknown category/tag slug | `notFound()` → branded 404                                    |
+| Empty category/tag        | Explicit empty state; never a draft leak (`solution.md` §6.3) |
+| Too few related posts     | Recency fallback; module still renders                        |
+| Invalid subscribe email   | Inline validation error; no ESP call                          |
+| MailerLite unavailable    | Retryable error surfaced/queued; submission not lost silently |
+| Event at capacity         | Waitlist / subscribe state instead of the form                |
+| Consent not granted       | Analytics events suppressed (no dataLayer push)               |
 
 ## 7. Testing strategy
 

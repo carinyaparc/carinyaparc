@@ -35,13 +35,13 @@ Reader submits form
 
 **Key implementation details** (already shipped in CP09-04):
 
-| Item | Detail |
-| ---- | ------ |
-| Canonical field | `interest` — one of the five enum values below |
-| Legacy field | `interests` — still written with the **same canonical value** when mappable, so existing automations that read `interests` keep working during transition |
-| Attribution | `source` — e.g. `blog:winter-fencing-progress` from in-flow modules; omitted on standalone `/subscribe/` |
-| No interest | When the reader leaves interest blank (inline subscribe, header modal, etc.), neither `interest` nor `interests` is set → **default welcome** (§4) |
-| Idempotency | MailerLite upsert on email; re-subscribe with a different interest updates fields and may re-trigger automations — configure MailerLite to send welcome **once per subscriber** (§5.3) |
+| Item            | Detail                                                                                                                                                                                 |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Canonical field | `interest` — one of the five enum values below                                                                                                                                         |
+| Legacy field    | `interests` — still written with the **same canonical value** when mappable, so existing automations that read `interests` keep working during transition                              |
+| Attribution     | `source` — e.g. `blog:winter-fencing-progress` from in-flow modules; omitted on standalone `/subscribe/`                                                                               |
+| No interest     | When the reader leaves interest blank (inline subscribe, header modal, etc.), neither `interest` nor `interests` is set → **default welcome** (§4)                                     |
+| Idempotency     | MailerLite upsert on email; re-subscribe with a different interest updates fields and may re-trigger automations — configure MailerLite to send welcome **once per subscriber** (§5.3) |
 
 **Code references:**
 
@@ -52,13 +52,13 @@ Reader submits form
 
 Canonical values are the **exact strings** persisted in MailerLite custom fields. Automations must match these values (case-sensitive).
 
-| Canonical `interest` | UI label (forms) | Legacy `/subscribe/` value | Suggested automation name | Welcome focus | Primary CTA |
-| ---------------------- | ---------------- | -------------------------- | ------------------------- | ------------- | ------------- |
-| `restoration` | Ecological restoration | `regeneration` | `Welcome — Ecological restoration` | Native planting, habitat corridors, landscape transformation stories | `https://carinyaparc.com.au/regenerate` |
-| `regenerative-farming` | Regenerative farming | `farming` | `Welcome — Regenerative farming` | Soil health, agroforestry, syntropic and polyculture practice on the property | `https://carinyaparc.com.au/about/the-property` |
-| `community` | Community involvement | `community` | `Welcome — Community involvement` | Planting days, workshops, volunteering — **participation-first** tone for locals | `https://carinyaparc.com.au/get-involved` |
-| `produce` | Future produce | `produce` | `Welcome — Future produce` | Seasonal garden rhythm, future farm-gate produce, cooking from the land | `https://carinyaparc.com.au/recipes` |
-| `learning` | Learning opportunities | `learning` | `Welcome — Learning opportunities` | Workshops, farm learning, practical takeaways from the Carinya Parc journey | `https://carinyaparc.com.au/blog` |
+| Canonical `interest`   | UI label (forms)       | Legacy `/subscribe/` value | Suggested automation name          | Welcome focus                                                                    | Primary CTA                                     |
+| ---------------------- | ---------------------- | -------------------------- | ---------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `restoration`          | Ecological restoration | `regeneration`             | `Welcome — Ecological restoration` | Native planting, habitat corridors, landscape transformation stories             | `https://carinyaparc.com.au/regenerate`         |
+| `regenerative-farming` | Regenerative farming   | `farming`                  | `Welcome — Regenerative farming`   | Soil health, agroforestry, syntropic and polyculture practice on the property    | `https://carinyaparc.com.au/about/the-property` |
+| `community`            | Community involvement  | `community`                | `Welcome — Community involvement`  | Planting days, workshops, volunteering — **participation-first** tone for locals | `https://carinyaparc.com.au/get-involved`       |
+| `produce`              | Future produce         | `produce`                  | `Welcome — Future produce`         | Seasonal garden rhythm, future farm-gate produce, cooking from the land          | `https://carinyaparc.com.au/recipes`            |
+| `learning`             | Learning opportunities | `learning`                 | `Welcome — Learning opportunities` | Workshops, farm learning, practical takeaways from the Carinya Parc journey      | `https://carinyaparc.com.au/blog`               |
 
 ### 2.1 Community welcome (acceptance scenario)
 
@@ -73,25 +73,25 @@ Per `tasks.md` S6 Gherkin: a subscriber who selects **Community involvement** mu
 
 Use sparingly; one primary CTA per email.
 
-| Interest | Secondary link ideas |
-| -------- | -------------------- |
-| `restoration` | `/blog` (restoration-tagged posts), `/about/the-property` |
-| `regenerative-farming` | `/blog`, `/regenerate` |
-| `community` | `/contact` (groups, schools, partners) |
-| `produce` | `/blog`, `/subscribe` (manage preferences) |
-| `learning` | `/get-involved`, `/about` |
+| Interest               | Secondary link ideas                                      |
+| ---------------------- | --------------------------------------------------------- |
+| `restoration`          | `/blog` (restoration-tagged posts), `/about/the-property` |
+| `regenerative-farming` | `/blog`, `/regenerate`                                    |
+| `community`            | `/contact` (groups, schools, partners)                    |
+| `produce`              | `/blog`, `/subscribe` (manage preferences)                |
+| `learning`             | `/get-involved`, `/about`                                 |
 
 ## 3. Legacy interest mapping
 
 The standalone `/subscribe/` page still posts `interests` with legacy option values. The API maps them to canonical values before upsert:
 
 | Legacy `interests` (form) | Canonical `interest` / `interests` (MailerLite) |
-| --------------------------- | ----------------------------------------------- |
-| `regeneration` | `restoration` |
-| `farming` | `regenerative-farming` |
-| `community` | `community` |
-| `produce` | `produce` |
-| `learning` | `learning` |
+| ------------------------- | ----------------------------------------------- |
+| `regeneration`            | `restoration`                                   |
+| `farming`                 | `regenerative-farming`                          |
+| `community`               | `community`                                     |
+| `produce`                 | `produce`                                       |
+| `learning`                | `learning`                                      |
 
 Automations should key off the **canonical** values in §2. During CP09-08 rollout, duplicate triggers on `interests` equal to the same canonical value if older workflows still exist.
 
@@ -99,9 +99,9 @@ Automations should key off the **canonical** values in §2. During CP09-08 rollo
 
 Subscribers with **no** `interest` / `interests` field (email-only forms: inline subscribe, header modal, journal band, etc.) should enter a single default automation:
 
-| Condition | Suggested automation name | Focus |
-| --------- | ------------------------- | ----- |
-| `interest` is empty **and** `interests` is empty | `Welcome — General` | Broad Carinya Parc introduction; seasonal newsletter promise; link to `/about` and `/blog` |
+| Condition                                        | Suggested automation name | Focus                                                                                      |
+| ------------------------------------------------ | ------------------------- | ------------------------------------------------------------------------------------------ |
+| `interest` is empty **and** `interests` is empty | `Welcome — General`       | Broad Carinya Parc introduction; seasonal newsletter promise; link to `/about` and `/blog` |
 
 Ensure interest-specific automations **exclude** this path (they only fire when the matching field is set).
 
@@ -113,12 +113,12 @@ Hand this section to whoever configures MailerLite externally.
 
 Create or verify these custom fields exist with **exact keys** (API field names):
 
-| Field key | Type | Used for |
-| --------- | ---- | -------- |
-| `interest` | Text | Canonical enum — **primary automation trigger** |
-| `interests` | Text | Legacy mirror; same value as `interest` when mapped |
-| `source` | Text | Attribution (`blog:{slug}`, etc.); segmentation only — not welcome routing |
-| `name` | Text | Personalisation in email body |
+| Field key   | Type | Used for                                                                   |
+| ----------- | ---- | -------------------------------------------------------------------------- |
+| `interest`  | Text | Canonical enum — **primary automation trigger**                            |
+| `interests` | Text | Legacy mirror; same value as `interest` when mapped                        |
+| `source`    | Text | Attribution (`blog:{slug}`, etc.); segmentation only — not welcome routing |
+| `name`      | Text | Personalisation in email body                                              |
 
 ### 5.2 Automations to create
 
@@ -171,12 +171,12 @@ Expect `interest` and `interests` both `restoration` and the restoration welcome
 
 ## 6. Related stories
 
-| Task | Description |
-| ---- | ----------- |
-| CP09-04 | Extended `/api/subscribe` to persist `interest`, `source` — **done** |
-| CP09-07 | This document (interest → automation map) — **done** |
-| CP09-08 | Configure MailerLite automations using §5 — **pending** (§7) |
-| CP09-09+ | `/get-involved` hub — community welcome CTA destination |
+| Task     | Description                                                          |
+| -------- | -------------------------------------------------------------------- |
+| CP09-04  | Extended `/api/subscribe` to persist `interest`, `source` — **done** |
+| CP09-07  | This document (interest → automation map) — **done**                 |
+| CP09-08  | Configure MailerLite automations using §5 — **pending** (§7)         |
+| CP09-09+ | `/get-involved` hub — community welcome CTA destination              |
 
 ## 7. CP09-08 status
 
@@ -201,14 +201,14 @@ No custom fields, automations, or subscriber state could be verified. **Do not t
 
 When a real key is available ([MailerLite API docs](https://developers.mailerlite.com/docs/)), an operator or agent can confirm:
 
-| Check | Endpoint | Confirms |
-| ----- | -------- | -------- |
-| Custom fields exist | `GET /api/fields` | Keys `interest`, `interests`, `source`, `name` with type `text` (§5.1) |
-| Welcome automations exist | `GET /api/automations?limit=100` | Six automations named per §5.2; `enabled: true`; `complete: true`; `broken: false` |
-| Trigger wiring (partial) | `GET /api/automations/{id}` | Trigger type (e.g. `subscriber_joins_group`), group IDs, step list |
-| Field-based conditions (partial) | Automation detail `steps[]` | Condition steps referencing custom field IDs and canonical values |
-| Test subscriber fields | `POST /api/subscribers` (upsert) then `GET /api/subscribers/{id}` | `fields.interest`, `fields.interests`, `fields.source` after §5.4 curl tests |
-| Automation run (indirect) | `GET /api/automations/{id}/activity` | Subscriber entered automation after test signup |
+| Check                            | Endpoint                                                          | Confirms                                                                           |
+| -------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Custom fields exist              | `GET /api/fields`                                                 | Keys `interest`, `interests`, `source`, `name` with type `text` (§5.1)             |
+| Welcome automations exist        | `GET /api/automations?limit=100`                                  | Six automations named per §5.2; `enabled: true`; `complete: true`; `broken: false` |
+| Trigger wiring (partial)         | `GET /api/automations/{id}`                                       | Trigger type (e.g. `subscriber_joins_group`), group IDs, step list                 |
+| Field-based conditions (partial) | Automation detail `steps[]`                                       | Condition steps referencing custom field IDs and canonical values                  |
+| Test subscriber fields           | `POST /api/subscribers` (upsert) then `GET /api/subscribers/{id}` | `fields.interest`, `fields.interests`, `fields.source` after §5.4 curl tests       |
+| Automation run (indirect)        | `GET /api/automations/{id}/activity`                              | Subscriber entered automation after test signup                                    |
 
 **Not verifiable via API alone:** email body copy, primary CTA URLs (e.g. community → `/get-involved`), “run once” guardrails, and send-once policy on interest change (§5.3). Those require dashboard review or inbox inspection after §5.4 test signups.
 

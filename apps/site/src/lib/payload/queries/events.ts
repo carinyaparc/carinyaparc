@@ -24,26 +24,32 @@ const EVENT_LIST_SELECT = {
  */
 export async function getUpcomingEvents(opts: { limit?: number } = {}): Promise<UpcomingEvent[]> {
   const { limit = 50 } = opts;
-  const payload = await getPayloadClient();
-  const now = new Date().toISOString();
+  try {
+    const payload = await getPayloadClient();
+    const now = new Date().toISOString();
 
-  const result = await payload.find({
-    collection: 'events',
-    // Local API bypasses access control by default; enforce publicReadPublished
-    // so drafts never reach public surfaces.
-    overrideAccess: false,
-    depth: 0,
-    limit,
-    sort: 'startsAt',
-    select: EVENT_LIST_SELECT,
-    where: {
-      startsAt: {
-        greater_than_equal: now,
+    const result = await payload.find({
+      collection: 'events',
+      // Local API bypasses access control by default; enforce publicReadPublished
+      // so drafts never reach public surfaces.
+      overrideAccess: false,
+      depth: 0,
+      limit,
+      sort: 'startsAt',
+      select: EVENT_LIST_SELECT,
+      where: {
+        startsAt: {
+          greater_than_equal: now,
+        },
       },
-    },
-  });
+    });
 
-  return result.docs as UpcomingEvent[];
+    return result.docs as UpcomingEvent[];
+  } catch (error) {
+    // Before the Events migration is applied, builds should not fail every blog page.
+    console.error('getUpcomingEvents failed; returning empty list', error);
+    return [];
+  }
 }
 
 /**

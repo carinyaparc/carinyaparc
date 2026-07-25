@@ -24,11 +24,11 @@ Squad B delivery epic — the full blog surface: discoverability, reader engagem
 
 **Scope (phased by priority).**
 
-| Phase | Stories | Theme |
-| ----- | ------- | ----- |
-| Now (P1) | S1, S3, S4, S5 | Category archives, related posts, in-article subscribe, author block |
-| Next (P2) | S2, S6, S8 | Tag archives, interest welcome routing, funnel measurement |
-| Later (P3) | S7 | Participation: events surface, CTA, signup |
+| Phase      | Stories        | Theme                                                                |
+| ---------- | -------------- | -------------------------------------------------------------------- |
+| Now (P1)   | S1, S3, S4, S5 | Category archives, related posts, in-article subscribe, author block |
+| Next (P2)  | S2, S6, S8     | Tag archives, interest welcome routing, funnel measurement           |
+| Later (P3) | S7             | Participation: events surface, CTA, signup                           |
 
 **Out of scope.** Editorial content (Squad D Payload seeds); on-site search (product non-goal); rendering/CWV (shipped in the performance work); the standalone `/subscribe/` page (already live — these are in-flow modules that reuse it).
 
@@ -41,18 +41,19 @@ Squad B delivery epic — the full blog surface: discoverability, reader engagem
 
 ## 2. Conventions
 
-| Convention | Value |
-| ---------- | ----- |
-| Task ID | `CP09-{nn}` — sequential, never reused (contract with GitHub issues) |
-| Story label | `[S{n}]` on every task |
-| Parallel marker | `[P]` — different files, no incomplete dependency |
-| Acceptance | Gherkin on the story |
-| Estimate | Fibonacci story points |
-| Paths | `apps/site/src/...` (`structure.md`) |
+| Convention      | Value                                                                |
+| --------------- | -------------------------------------------------------------------- |
+| Task ID         | `CP09-{nn}` — sequential, never reused (contract with GitHub issues) |
+| Story label     | `[S{n}]` on every task                                               |
+| Parallel marker | `[P]` — different files, no incomplete dependency                    |
+| Acceptance      | Gherkin on the story                                                 |
+| Estimate        | Fibonacci story points                                               |
+| Paths           | `apps/site/src/...` (`structure.md`)                                 |
 
 ## 3. Stories
 
 ### S1 — Category archives + navigation (P1) — MVP
+
 **As a** reader, **I want** to browse posts by category, **so that** I can find related stories — and the category UI actually works.
 **Independent test criterion.** `/blog/category/{slug}/` lists only published posts for that slug; categories are reachable from blog nav.
 
@@ -73,6 +74,7 @@ Scenario: Unknown category
   - Server-rendered, published-only; `getCategorySlugs`/`getPostsByCategory` in `lib/payload/queries/categories.ts`; category URLs in `sitemap.ts`; archive paths added to `revalidate.ts`.
 
 ### S2 — Tag archives (P2)
+
 **As a** reader, **I want** to browse posts by tag, **so that** I can follow a cross-cutting theme.
 **Independent test criterion.** `/blog/tag/{tag}/` lists only published posts for that tag.
 
@@ -87,6 +89,7 @@ Scenario: Tag archive shows published posts only
   - Reuses the generic archive query behind `getPostsByTag`/`getTagSlugs`.
 
 ### S3 — Related posts at end of article (P1)
+
 **As a** reader who just finished a post, **I want** related posts, **so that** I keep reading.
 **Independent test criterion.** Every article shows 2–3 related posts (same category/tag, recency fallback), excluding the current post.
 
@@ -107,6 +110,7 @@ Scenario: Too few in-category posts
   - Published-only selection reusing the list mapper; rendered at the end of the article.
 
 ### S4 — In-article subscribe capture (P1)
+
 **As a** reader mid- or end-of-article, **I want** to subscribe in place, **so that** I act at peak intent.
 **Independent test criterion.** Submitting the inline module creates a MailerLite subscriber tagged with the article as source; the end-of-post module also records the selected interest.
 
@@ -133,6 +137,7 @@ Scenario: End-of-post subscribe records interest
   - Reuses the five interest options from `/subscribe/`; privacy/consent copy consistent with the standalone page.
 
 ### S5 — Author / credibility block (P1)
+
 **As a** reader deciding whether to trust the advice, **I want** to see who wrote it, **so that** I trust it and subscribe.
 **Independent test criterion.** Every article shows a byline with the author's photo, one-line bio, and links to `/about/jonathan/` and `/about/the-property/`.
 
@@ -148,6 +153,7 @@ Scenario: Author block on articles
   - Uses the existing Payload `authors` relation and resolved author image.
 
 ### S6 — Interest-based welcome routing (P2)
+
 **As a** new subscriber, **I want** a first email matched to my interest, **so that** my first experience is relevant (locals → participation).
 **Independent test criterion.** A test signup for each interest triggers the matching MailerLite welcome.
 
@@ -163,6 +169,7 @@ Scenario: Interest routes the welcome
 - [ ] **[CP09-08]** [P] [S6] Configure MailerLite automations — MailerLite (external), notes in `welcome-map.md` · Est 1 · Depends: CP09-07
 
 ### S7 — Participation: events surface, CTA, signup (P3, Later)
+
 **As a** local reader moved by a story, **I want** to see and sign up for planting days, **so that** inspiration becomes attendance.
 **Independent test criterion.** `/get-involved/events` lists upcoming events; an in-article CTA links to the next one; a signup records a registration and confirms.
 
@@ -191,6 +198,7 @@ Scenario: Event at capacity
 - [ ] **[CP09-12]** [S7] Event signup endpoint + confirmation — `app/api/events/signup/route.ts`, `components/events/EventSignup.tsx` · Est 3 · Depends: CP09-09
 
 ### S8 — Measurement: funnel analytics (P2)
+
 **As** JD, **I want** subscribe and participation funnels tracked, **so that** I can measure growth and participation by placement.
 **Independent test criterion.** Subscribe and event interactions fire named GA events with source/interest/event params, visible in GA DebugView (consent-gated).
 
@@ -218,6 +226,7 @@ Scenario: Article scroll depth recorded
 - [x] **[CP09-16]** [S8] Funnel dashboard (GA4 exploration or lightweight admin view) — `docs/work/blog/funnel-dashboard.md` (GA4 explorations + DebugView; no admin UI) · Est 1 · Depends: CP09-13, CP09-14
 
 ### S9 — Share affordances (P2)
+
 **As a** reader, **I want** to share or copy a post link, **so that** I can pass it on.
 **Independent test criterion.** Each article exposes a working copy-link control and native share where supported.
 

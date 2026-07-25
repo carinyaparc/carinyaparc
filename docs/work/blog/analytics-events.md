@@ -24,11 +24,11 @@ Implementation: `apps/site/src/lib/analytics/`.
 
 ## 1. Transport
 
-| Layer            | Behaviour                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------ |
-| Consent          | `hasAnalyticsConsent()` reads `/api/consent`; caches a positive `accepted` result for the page session |
-| GTM              | `dataLayer.push({ event, ...params })` — custom event names match the table below                      |
-| Vercel Analytics | `window.va('track', event, params)` when `va` is present (same consent gate)                           |
+| Layer            | Behaviour                                                                                                            |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Consent          | `hasAnalyticsConsent()` reads `/api/consent`; caches a positive `accepted` result for the page session               |
+| GTM              | `dataLayer.push({ event, ...params })` — custom event names match the table below                                    |
+| Vercel Analytics | `window.va('track', event, params)` when `va` is present (same consent gate)                                         |
 | Debug            | GA4 DebugView / GTM Preview with consent granted — step-by-step in [`funnel-dashboard.md`](./funnel-dashboard.md) §5 |
 
 Do **not** put email addresses, names, or other PII in event parameters.
@@ -48,10 +48,10 @@ Do **not** put email addresses, names, or other PII in event parameters.
 
 ### Participation funnel (CP09-14)
 
-| Event                   | When                                                                 | Parameters                                       | Allowed values                                                                 |
-| ----------------------- | -------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `event_cta_click`       | Reader activates a participation CTA (in-article or listing)         | `event_id` (string \| number), `source` (string) | `event_id`: Payload event id. `source`: e.g. `blog:{slug}` or `events-listing` |
-| `event_signup_complete` | Successful on-site event signup API response (`ok`)                  | `event_id` (string \| number), `source` (string) | `event_id`: Payload event id. `source`: e.g. `events-listing` or `blog:{slug}` |
+| Event                   | When                                                         | Parameters                                       | Allowed values                                                                 |
+| ----------------------- | ------------------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `event_cta_click`       | Reader activates a participation CTA (in-article or listing) | `event_id` (string \| number), `source` (string) | `event_id`: Payload event id. `source`: e.g. `blog:{slug}` or `events-listing` |
+| `event_signup_complete` | Successful on-site event signup API response (`ok`)          | `event_id` (string \| number), `source` (string) | `event_id`: Payload event id. `source`: e.g. `events-listing` or `blog:{slug}` |
 
 **Sources.** In-article `GetInvolvedCTA` uses `blogSubscribeSource(slug)` → `blog:{slug}`. Listing-card external CTAs default to `EVENTS_LISTING_SOURCE` (`events-listing`).
 
@@ -108,14 +108,14 @@ dataLayer.push({
 
 ## 4. Instrumentation map
 
-| Surface                                                   | Events                                     |
-| --------------------------------------------------------- | ------------------------------------------ |
-| `components/subscribe/InlineSubscribe.tsx`                | `subscribe_start`, `subscribe_complete`    |
-| `components/subscribe/EndOfPostSubscribe.tsx`             | `subscribe_start`, `subscribe_complete`    |
-| `components/blog/ArticleScrollDepth.tsx` on `blog/[slug]` | `article_scroll_depth`                     |
-| `components/events/GetInvolvedCTA.tsx`                    | `event_cta_click`                          |
-| `components/events/EventCard.tsx` (external / waitlist)   | `event_cta_click`                          |
-| `components/events/EventSignup.tsx`                       | `event_signup_complete`                    |
+| Surface                                                   | Events                                  |
+| --------------------------------------------------------- | --------------------------------------- |
+| `components/subscribe/InlineSubscribe.tsx`                | `subscribe_start`, `subscribe_complete` |
+| `components/subscribe/EndOfPostSubscribe.tsx`             | `subscribe_start`, `subscribe_complete` |
+| `components/blog/ArticleScrollDepth.tsx` on `blog/[slug]` | `article_scroll_depth`                  |
+| `components/events/GetInvolvedCTA.tsx`                    | `event_cta_click`                       |
+| `components/events/EventCard.tsx` (external / waitlist)   | `event_cta_click`                       |
+| `components/events/EventSignup.tsx`                       | `event_signup_complete`                 |
 
 ## 5. Funnel dashboard (CP09-16)
 
