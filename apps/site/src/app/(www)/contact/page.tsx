@@ -43,13 +43,10 @@ export default function ContactPage() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-bracken-500">
                 Visit
               </p>
-              <p className="mt-2.5 font-heading text-xl text-bark">The Branch, NSW</p>
               <p className="mt-1.5 text-[15px] leading-[1.6] text-stone">
-                315 Warraba Road
-                <br />
                 The Branch NSW 2425
                 <br />
-                Upper Hunter, Australia
+                Australia
               </p>
               <p className="mt-3 text-sm text-stone">
                 Visits by appointment — please get in touch first.
@@ -65,7 +62,7 @@ export default function ContactPage() {
                   href="mailto:contact@carinyaparc.com.au"
                   className="text-eucalypt-600 hover:opacity-70"
                 >
-                  contact@carinyaparc.com.au
+                  hello@carinyaparc.com.au
                 </a>
                 <Link href="/#stay" className="text-eucalypt-600 hover:opacity-70">
                   Subscribe to the newsletter
