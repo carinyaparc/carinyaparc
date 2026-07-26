@@ -12,7 +12,12 @@ import { CSP_DIRECTIVES } from './lib/security/constants';
 // Environment configuration
 const SECURITY_CSP_ENABLED = process.env.SECURITY_CSP_ENABLED !== 'false';
 const SECURITY_CSP_REPORT_ONLY = process.env.SECURITY_CSP_REPORT_ONLY === 'true';
-const SECURITY_CSP_REPORT_URI = process.env.SECURITY_CSP_REPORT_URI || '/api/csp-report';
+// Trailing slash required: next.config trailingSlash: true issues a 308 otherwise,
+// and browsers do not follow redirects for CSP report POSTs.
+const SECURITY_CSP_REPORT_URI = (process.env.SECURITY_CSP_REPORT_URI || '/api/csp-report/').replace(
+  /\/?$/,
+  '/',
+);
 const IS_DEV = process.env.NODE_ENV === 'development';
 
 // Circuit breaker state (in-memory)

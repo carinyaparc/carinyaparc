@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { FAVICON_ICO_PATH, FAVICON_192_PATH } from '../constants';
+import { APPLE_TOUCH_ICON_PATH, FAVICON_ICO_PATH, FAVICON_192_PATH } from '../constants';
 
 interface IconsConfig {
   icon?: string;
@@ -17,7 +17,7 @@ export function generateIcons(config: IconsConfig = {}): NonNullable<Metadata['i
   const {
     icon = FAVICON_ICO_PATH,
     shortcut = FAVICON_192_PATH,
-    apple = FAVICON_192_PATH,
+    apple = APPLE_TOUCH_ICON_PATH,
     other = [],
   } = config;
 

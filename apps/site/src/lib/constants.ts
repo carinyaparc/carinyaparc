@@ -35,6 +35,7 @@ export const FAVICON_DIR = '/favicon';
 export const FAVICON_ICO_PATH = `${FAVICON_DIR}/favicon.ico`;
 export const FAVICON_192_PATH = `${FAVICON_DIR}/favicon-192x192.png`;
 export const FAVICON_512_PATH = `${FAVICON_DIR}/favicon-512x512.png`;
+export const APPLE_TOUCH_ICON_PATH = `${FAVICON_DIR}/apple-touch-icon-180.png`;
 
 // JSON‑LD schema defaults
 export const ORG_LOGO_URL = `${BASE_URL}${FAVICON_512_PATH}`;
