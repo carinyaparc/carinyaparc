@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig, TextFieldSingleValidation } from 'payload';
 
 import { authenticated, publicReadPublished } from '@/lib/payload/access';
 import { slugField } from '@/fields/slugField';
@@ -81,7 +81,7 @@ export const Events: CollectionConfig = {
         description:
           'Optional external signup URL (must start with https:// or http://). Empty = use the on-site form.',
       },
-      validate: (value) => {
+      validate: ((value) => {
         if (!value || value.trim() === '') {
           return true;
         }
@@ -94,7 +94,7 @@ export const Events: CollectionConfig = {
         } catch {
           return 'Signup target must be a valid http:// or https:// URL.';
         }
-      },
+      }) satisfies TextFieldSingleValidation,
     },
     {
       name: 'description',
