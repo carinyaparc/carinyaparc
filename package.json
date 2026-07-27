@@ -24,7 +24,7 @@
     "@repo/typescript-config": "workspace:*",
     "eslint": "^10.8.0",
     "prettier": "^3.9.6",
-    "turbo": "^2.10.6",
+    "turbo": "^2.10.7",
     "typescript": "~7.0.2"
   },
   "pnpm": {
