@@ -62,10 +62,14 @@ type EventCardProps = {
 };
 
 export function EventCard({ event, source = EVENTS_LISTING_SOURCE, className }: EventCardProps) {
-  const externalHref = event.signupTarget?.trim() ? event.signupTarget.trim() : null;
-  const external = externalHref ? isExternalEventHref(externalHref) : false;
+  const hasSignupTarget = Boolean(event.signupTarget?.trim());
   const full = Boolean(event.isFull);
-  const showOnSiteSignup = !externalHref;
+  const showOnSiteSignup = !hasSignupTarget;
+  // Always resolve through the safe helper so malformed admin-entered values
+  // (e.g. `"http:"`) fall back to the on-site listing anchor instead of being
+  // passed raw into <Link> and crashing the client router (WEBSITE-N).
+  const signupHref = eventSignupHref(event);
+  const external = isExternalEventHref(signupHref);
 
   const handleExternalCtaClick = () => {
     trackEventCtaClick({ event_id: event.id, source });
@@ -109,7 +113,7 @@ export function EventCard({ event, source = EVENTS_LISTING_SOURCE, className }: 
           <Button
             render={
               <Link
-                href={externalHref!}
+                href={signupHref}
                 onClick={handleExternalCtaClick}
                 {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               />
