@@ -136,6 +136,37 @@ export function isWebkitMessageHandlerNoise(event: SentryEventShape): boolean {
   return !hasAppFrame;
 }
 
+/**
+ * Returns true for `TypeError: Failed to construct 'URL': Invalid URL` events
+ * that have no in-app stack frames.
+ *
+ * Root cause (WEBSITE-N): the Sentry SDK's app-router routing instrumentation
+ * (`appRouterRoutingInstrumentation.js`) calls `new URL(href, location.href)`
+ * without a try-catch when processing router transitions.  If a Next.js Link
+ * href resolves to a malformed absolute URL (e.g. `"http:"` — scheme only,
+ * no authority), the URL constructor throws and the error propagates to the
+ * global handler.  The primary fix is `eventSignupHref` (which now validates
+ * `signupTarget` before returning it) and Payload collection-level validation
+ * that rejects non-http/https values at save time.  This filter acts as a
+ * safety net for any residual events or similar patterns from third-party code.
+ *
+ * Keeping the in-app-frames guard ensures that any future `new URL()` call
+ * that we add to application code (with in-app frames) still fires in Sentry.
+ */
+export function isInvalidUrlConstructionNoise(event: SentryEventShape): boolean {
+  const firstException = event.exception?.values?.[0];
+
+  const message = firstException?.value ?? '';
+  if (!message.includes("Failed to construct 'URL'") && !message.includes('Invalid URL')) {
+    return false;
+  }
+
+  const frames = firstException?.stacktrace?.frames ?? [];
+  const hasAppFrame = frames.some((f) => f.in_app === true);
+
+  return !hasAppFrame;
+}
+
 export function getClientSentryOptions(): BrowserOptions {
   return {
     dsn: getPublicSentryDsn(),
@@ -149,6 +180,7 @@ export function getClientSentryOptions(): BrowserOptions {
     beforeSend(event) {
       if (isRscConnectionClosedNoise(event)) return null;
       if (isWebkitMessageHandlerNoise(event)) return null;
+      if (isInvalidUrlConstructionNoise(event)) return null;
       return event;
     },
   };

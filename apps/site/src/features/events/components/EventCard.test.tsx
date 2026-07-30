@@ -180,3 +180,69 @@ describe('EventCard', () => {
     expect(subscribe?.getAttribute('href')).toBe('/subscribe/');
   });
 });
+
+describe('eventSignupHref URL safety (WEBSITE-N)', () => {
+  let eventSignupHref: typeof import('@/features/events/components/EventCard').eventSignupHref;
+  const fallback = '/get-involved/events/#event-winter-planting-day';
+  const validEvent: UpcomingEvent = {
+    id: 1,
+    title: 'Winter planting day',
+    slug: 'winter-planting-day',
+    startsAt: '2030-06-15T23:00:00.000Z',
+    location: 'Carinya Parc',
+    capacity: 20,
+    isFull: false,
+    signupTarget: null,
+  };
+
+  beforeEach(async () => {
+    vi.resetModules();
+    ({ eventSignupHref } = await import('@/features/events/components/EventCard'));
+  });
+
+  it('returns the listing anchor when signupTarget is null', () => {
+    expect(eventSignupHref(validEvent)).toBe(fallback);
+  });
+
+  it('returns the listing anchor when signupTarget is empty string', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: '' })).toBe(fallback);
+  });
+
+  it('returns a valid https signupTarget unchanged', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'https://example.com/signup' })).toBe(
+      'https://example.com/signup',
+    );
+  });
+
+  it('returns a valid http signupTarget unchanged', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'http://example.com/signup' })).toBe(
+      'http://example.com/signup',
+    );
+  });
+
+  it('falls back to the listing anchor for "http:" (scheme only — would throw in new URL without a base)', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'http:' })).toBe(fallback);
+  });
+
+  it('falls back for "https:" (scheme only)', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'https:' })).toBe(fallback);
+  });
+
+  it('falls back for "http://" (missing hostname)', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'http://' })).toBe(fallback);
+  });
+
+  it('falls back for "javascript:" scheme (not http/https)', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'javascript:alert(1)' })).toBe(fallback);
+  });
+
+  it('falls back for "data:" scheme (not http/https)', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'data:text/html,<h1>hi</h1>' })).toBe(
+      fallback,
+    );
+  });
+
+  it('falls back for a completely invalid string that is not a URL', () => {
+    expect(eventSignupHref({ ...validEvent, signupTarget: 'not a url at all!!!' })).toBe(fallback);
+  });
+});

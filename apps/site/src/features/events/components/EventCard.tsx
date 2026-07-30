@@ -21,12 +21,33 @@ export function formatEventDate(iso: string): string {
   }).format(new Date(iso));
 }
 
+/**
+ * Returns a safe href for an event's signup link.
+ *
+ * When `signupTarget` is set we validate it with the URL constructor before
+ * using it.  An admin could have saved a malformed value (e.g. `"http:"`)
+ * that would pass basic string checks but then cause `new URL(href, base)` to
+ * throw inside the Sentry SDK's unguarded router-transition hook, surfacing as
+ * a `TypeError: Failed to construct 'URL': Invalid URL` (WEBSITE-N).  If the
+ * value is not a valid absolute http/https URL we fall through to the on-site
+ * listing anchor so the CTA always renders a safe, navigable href.
+ */
 export function eventSignupHref(event: UpcomingEvent): string {
-  if (event.signupTarget) {
-    return event.signupTarget;
+  const fallback = `${eventsListingUrl()}#event-${event.slug}`;
+
+  if (!event.signupTarget) {
+    return fallback;
   }
-  // Deep-link to this event's on-site signup slot on the listing page.
-  return `${eventsListingUrl()}#event-${event.slug}`;
+
+  try {
+    const parsed = new URL(event.signupTarget);
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      return fallback;
+    }
+    return event.signupTarget;
+  } catch {
+    return fallback;
+  }
 }
 
 export function isExternalEventHref(href: string): boolean {
@@ -41,10 +62,14 @@ type EventCardProps = {
 };
 
 export function EventCard({ event, source = EVENTS_LISTING_SOURCE, className }: EventCardProps) {
-  const externalHref = event.signupTarget?.trim() ? event.signupTarget.trim() : null;
-  const external = externalHref ? isExternalEventHref(externalHref) : false;
+  const hasSignupTarget = Boolean(event.signupTarget?.trim());
   const full = Boolean(event.isFull);
-  const showOnSiteSignup = !externalHref;
+  const showOnSiteSignup = !hasSignupTarget;
+  // Always resolve through the safe helper so malformed admin-entered values
+  // (e.g. `"http:"`) fall back to the on-site listing anchor instead of being
+  // passed raw into <Link> and crashing the client router (WEBSITE-N).
+  const signupHref = eventSignupHref(event);
+  const external = isExternalEventHref(signupHref);
 
   const handleExternalCtaClick = () => {
     trackEventCtaClick({ event_id: event.id, source });
@@ -88,7 +113,7 @@ export function EventCard({ event, source = EVENTS_LISTING_SOURCE, className }: 
           <Button
             render={
               <Link
-                href={externalHref!}
+                href={signupHref}
                 onClick={handleExternalCtaClick}
                 {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               />
