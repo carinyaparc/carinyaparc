@@ -1,4 +1,4 @@
-/** Canonical analytics event names for blog funnels (see docs/work/blog/analytics-events.md). */
+/** Canonical analytics event names for blog funnels. */
 export const ANALYTICS_EVENTS = {
   subscribeStart: 'subscribe_start',
   subscribeComplete: 'subscribe_complete',
