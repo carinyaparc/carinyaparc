@@ -1,10 +1,10 @@
 ---
 type: Roadmap
 domain: carinya-parc-website
-version: '0.3'
+version: '0.4'
 owner: product
 status: Draft
-last_updated: 2026-06-17
+last_updated: 2026-08-13
 parent_product: docs/product.md
 parent_roadmap: null
 related:
@@ -41,9 +41,9 @@ Each phase unlocks the next without stacking risky changes.
 
 1. **Marketing and editorial outcomes first** — Stay information, publishable posts and recipes with assets and SEO, and editable key site copy address guest pipeline, brand-building, and daily content work from [`product.md`](../product.md).
 2. **Production hardening woven in, not blocking content** — CI lands early so CMS and marketing changes merge safely; shared rate limits and production admin verification follow once editors are actively publishing.
-3. **Live editing before repo surgery** — Content changes must appear on the public site without redeploy. Prove the Payload + Next.js integration in production before collapsing the monorepo.
+3. **Live editing before shared-package extraction** — Content changes must appear on the public site without redeploy. Prove the Payload + Next.js integration in production before growing `packages/`.
 4. **Editorial foundations before full page CMS** — Media, SEO, and site globals address daily editing without migrating every marketing page into Payload.
-5. **Repo simplification after stability** — Flatten to a single Next.js app only once CMS behaviour is proven in production.
+5. **Grow the product monorepo after stability** — Extract `@carinya/theme` and colocate brand markdown and product-local skills once CMS behaviour is proven. Do not flatten to a single app.
 6. **Discoverability after the content model settles** — Syndication, social previews, and richer structured data depend on stable media and recipe fields.
 
 ---
@@ -85,7 +85,7 @@ Each phase unlocks the next without stacking risky changes.
 - [ ] Draft content never appears on the public site (verified after any access changes).
 - [ ] CI runs lint, typecheck, test, and build on pull requests; build succeeds with production-equivalent database and CMS secrets.
 
-**Out of scope:** Full page CMS for about, contact, and regenerate routes; scheduled publishing; multi-user roles beyond basic admin/editor; legal MDX migration; site search; shared rate limiting; repo flattening; RSS; dynamic social images.
+**Out of scope:** Full page CMS for about, contact, and regenerate routes; scheduled publishing; multi-user roles beyond basic admin/editor; legal MDX migration; site search; shared rate limiting; theme package extraction; RSS; dynamic social images.
 
 ---
 
@@ -112,35 +112,37 @@ Each phase unlocks the next without stacking risky changes.
 - [ ] Single clear content source of truth in the repository and database.
 - [ ] Misleading or non-functional UI removed or corrected (including blog category filter if not yet addressed).
 
-**Out of scope:** New CMS schema or marketing pages; media uploads; SEO plugin; repo flattening; RSS; dynamic social images.
+**Out of scope:** New CMS schema or marketing pages; media uploads; SEO plugin; theme package extraction; RSS; dynamic social images.
 
 **Entry condition:** Phase 1 exit criteria met, or Phase 1 in progress with revalidation and CI already landed (rate limiting and production verification may proceed in parallel once CI is green).
 
 ---
 
-### Phase 3 — Repo consolidation
+### Phase 3 — Shared theme and product monorepo
 
-**Objective:** Collapse the monorepo to a single deployable Next.js app, reducing tooling overhead.
+**Objective:** Grow the existing pnpm + Turborepo into a product monorepo — extract design tokens into `@carinya/theme`, and colocate brand markdown and product-local skills. Do not flatten to a single app.
 
 **In scope:**
 
-- Move shared UI into the application.
-- Inline lint and TypeScript configuration at the repository root. (Tailwind inlined in `apps/site`.)
-- Promote the site app to repo root; remove workspace orchestration and the packages folder.
-- Update deployment configuration and normalise import paths.
+- Add `packages/carinya-theme` (`@carinya/theme`) from the production token CSS; the site consumes it via `@import '@carinya/theme'`.
+- Add `brand/` (voice, positioning) as the markdown source of truth for agents and humans.
+- Add `skills/carinya-parc` for product-local agent guidance.
+- Keep UI primitives in `apps/site/src/components/ui/` (no `packages/ui` or `packages/icons`).
 
 **Quality gates:**
 
-- Single-app repository builds, tests, and deploys with no functional regression.
+- Site build, tests, and Tailwind utilities (`eucalypt-*` and semantic tokens) are unchanged in behaviour.
+- No copied `carinya-tokens.css` remains in the site app.
+- Engineering docs (`structure.md`, `AGENTS.md`) match the tree.
 
 **Exit criteria:**
 
-- [ ] Repository root is one Next.js + Payload application.
-- [ ] Dev, test, build, and CI pass on the flat structure.
-- [ ] Production deployment succeeds from the new root.
-- [ ] Import paths and engineering docs reflect the flat layout.
+- [ ] `@carinya/theme` is a workspace package; the site imports it and no longer copies tokens.
+- [ ] `brand/voice.md` and `brand/positioning.md` are the voice/positioning source of truth in this repo.
+- [ ] `skills/carinya-parc` resolves paths inside this repository.
+- [ ] UI stays inlined in `apps/site`; lint and TypeScript configs stay as `@repo/*` packages.
 
-**Out of scope:** New product features, CMS schema changes, legal MDX migration.
+**Out of scope:** Flattening to a single Next.js app; extracting a UI or icon package; merging the agents compiler or carinya-plugins; publishing `@carinya/theme` to npm; new product features or CMS schema changes.
 
 **Entry condition:** Phase 2 exit criteria met and a stable production editing period with no critical CMS regressions.
 
@@ -188,7 +190,7 @@ Each phase unlocks the next without stacking risky changes.
 | CI green on every PR                  | 1     | Internal only     | Woven hardening — safe merges during CMS work |
 | Production admin verified             | 2     | Internal only     | Security headers + env checklist              |
 | Shared form rate limiting             | 2     | Internal only     | Reliable abuse resistance                     |
-| Flat single-app repository            | 3     | No                | Reduced maintenance overhead                  |
+| `@carinya/theme` in the monorepo      | 3     | No                | Tokens as a workspace package, not a copy     |
 | RSS feed live                         | 4     | Yes               | New distribution channel                      |
 | Rich social previews                  | 4     | Yes               | When links are shared                         |
 | Experiences and partner pages         | 4     | Yes               | Marketing scaffolding for future offers       |
@@ -204,7 +206,7 @@ Each phase unlocks the next without stacking risky changes.
 | On-demand revalidation (Next.js + Payload) | Engineering           | Phase 1 — live editorial workflow  | Not started |
 | SEO plugin (Payload)                       | Engineering           | Phase 1 — per-document SEO         | Not started |
 | Shared rate-limit store                    | Engineering           | Phase 2 — reliable form protection | Not started |
-| Vercel project root change                 | Engineering / hosting | Phase 3 — flat repo deploy         | Not started |
+| Design-token package (`@carinya/theme`)    | Engineering           | Phase 3 — stop copying tokens      | Not started |
 
 ---
 
