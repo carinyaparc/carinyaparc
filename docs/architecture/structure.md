@@ -45,14 +45,15 @@ At a high level, the monorepo is structured as:
 ├── brand/                    # Voice and positioning markdown (not a workspace package)
 ├── skills/
 │   └── carinya-parc/         # Product-local agent skill (not a workspace package)
-├── docs/                     # Documentation (product/, architecture/, work/)
+├── specs/                    # Domain TDDs and TASKS.md
+├── docs/                     # Documentation (product/, architecture/)
 ├── pnpm-workspace.yaml
 ├── pnpm-lock.yaml
 ├── turbo.json
 └── package.json              # Monorepo scripts and dev dependencies
 ```
 
-The `docs/` directory contains [`product/product.md`](../product/product.md), architecture docs in [`architecture/`](.) ([`solution.md`](solution.md), [`principles.md`](principles.md)), [`product/roadmap.md`](../product/roadmap.md), and this file. Update the relevant doc alongside code changes.
+The `docs/` directory contains [`product/product.md`](../product/product.md), architecture docs in [`architecture/`](.) ([`solution.md`](solution.md), [`principles.md`](principles.md)), [`product/roadmap.md`](../product/roadmap.md), and this file. Delivery work lives in [`specs/`](../../specs/). Update the relevant doc alongside code changes.
 
 `pnpm-workspace.yaml` includes `apps/*` and `packages/*` only. `brand/` and `skills/` are source trees, not installable packages.
 
@@ -152,7 +153,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
     - `urls.ts` – `/blog/{slug}` and `/recipes/{slug}` path helpers.
   - `metadata/` – helper functions for route metadata.
   - `schema/` – shared schema utilities (organization, breadcrumb, localBusiness) and `generateJsonLd` orchestrator; article/recipe generators live under `features/`.
-  - `analytics/` – consent-gated GA/GTM helpers (`trackEvent`, typed funnel events); event schema in `docs/work/blog/analytics-events.md`; GA4 funnel explorations in `docs/work/blog/funnel-dashboard.md`.
+  - `analytics/` – consent-gated GA/GTM helpers (`trackEvent`, typed funnel events); event schema in `specs/blog/tdd.md` §4; GA4 funnel explorations in `specs/blog/tdd.md` §8.
   - `consent/` – cookie-consent server actions (httpOnly `cp_consent` cookie).
   - `session/` – JWT helpers for a future `cp_session` cookie (scaffold only; not used by routes today).
   - `security/` – security utilities (CSP, headers, caching).
@@ -304,7 +305,7 @@ Examples of established folder patterns:
 - `src/features/blog/schema/` / `src/features/recipes/schema/` – article and recipe JSON-LD generators.
 - `src/lib/consent/` – cookie-consent server actions:
   - `actions.ts` – `setConsent('accepted' | 'rejected')`; sets httpOnly `cp_consent` (defined in `constants.ts`).
-- `src/lib/analytics/` – consent-gated blog funnel events (`subscribe_*`, `article_scroll_depth`, participation); schema in `docs/work/blog/analytics-events.md`; operator dashboard = GA4 Explorations (`docs/work/blog/funnel-dashboard.md`).
+- `src/lib/analytics/` – consent-gated blog funnel events (`subscribe_*`, `article_scroll_depth`, participation); schema in `specs/blog/tdd.md` §4; operator dashboard = GA4 Explorations (`specs/blog/tdd.md` §8).
 - `src/lib/session/` – JWT helpers for future `cp_session` (scaffold; not wired to routes):
   - `server.ts` – `getSession`, `setSession`, `updateSession`, `clearSession`
   - `types.ts`, `index.ts` – types and barrel export

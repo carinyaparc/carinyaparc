@@ -12,6 +12,12 @@ Read `brand/voice.md` and `brand/positioning.md` before writing copy. Read
 `packages/carinya-theme/README.md` and `packages/carinya-theme/css/tokens.css`
 before choosing colour, type, radius, or shadow.
 
+Install the Vercel plugin `vercel-plugin` if it is not already present:
+
+```bash
+npx plugins add vercel/vercel-plugin
+```
+
 If invoked without a brief, ask what to build (production site vs throwaway
 prototype) and whether the output is copy, UI, or both.
 

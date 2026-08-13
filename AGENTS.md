@@ -42,7 +42,7 @@ For product context and feature intent, read `docs/product.md` (what and why). F
 ├── brand/                    # Voice and positioning markdown (not a workspace package)
 ├── skills/
 │   └── carinya-parc/         # Product-local agent skill (not a workspace package)
-└── docs/                     # product/, architecture/, work/
+└── docs/                     # product/, architecture/
 ```
 
 **Import aliases** (from `apps/site/tsconfig.json`):
