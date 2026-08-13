@@ -3,7 +3,7 @@ import { fontClassNames } from '@/lib/font';
 import { SiteOrganizationSchema } from '@/components/layouts/site-organization-schema';
 
 const criticalCSS = `
-  /* Essential design tokens for critical styles (design-system) */
+  /* Essential design tokens for critical styles — must match @carinya/theme semantic tokens */
   :root {
     --font-sans: var(--font-hanken), system-ui, -apple-system, sans-serif;
     --font-heading: var(--font-marcellus), Georgia, serif;
