@@ -3,8 +3,7 @@ import animate from 'tailwindcss-animate';
 import typography from '@tailwindcss/typography';
 
 /**
- * Font families and color/radius/shadow tokens live in
- * src/styles/carinya-tokens.css (@theme). Keep this mapping in sync.
+ * Font families live here; color/radius/shadow tokens live in @carinya/theme.
  */
 const config: Config = {
   darkMode: 'class',

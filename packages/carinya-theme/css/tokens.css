@@ -1,13 +1,7 @@
 /* ============================================================
    Carinya Parc — brand tokens for Tailwind CSS 4
-   Copied from design-system/tailwindcss/carinya-tokens.css
-   Augmented with radius/shadow from design-system/tokens/layout.css
    Fonts: load Marcellus (headings) + Hanken Grotesk (body) via next/font.
    ============================================================ */
-
-@import 'tailwindcss';
-@plugin '@tailwindcss/typography';
-@import './components.css';
 
 @theme {
   /* ---- Type ---- */
@@ -74,7 +68,7 @@
   --color-fleece: #fbf7ee; /* raised surface */
   --color-white: #ffffff;
 
-  /* ---- Radius (from tokens/layout.css) ---- */
+  /* ---- Radius ---- */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
@@ -82,7 +76,7 @@
   --radius-pill: 999px;
   --radius: 1rem; /* 16px default */
 
-  /* ---- Elevation — warm brown-tinted (from tokens/layout.css) ---- */
+  /* ---- Elevation — warm brown-tinted ---- */
   --shadow-sm: 0 4px 10px -6px rgba(60, 45, 20, 0.45);
   --shadow-md: 0 18px 40px -30px rgba(60, 45, 20, 0.5);
   --shadow-lg: 0 30px 60px -40px rgba(60, 45, 20, 0.6);
@@ -145,9 +139,6 @@
  * onto `:root` regardless of any trailing keyword — Tailwind v4 does not
  * support scoping a theme block to a variant this way — so this must be a
  * real `.dark` selector to stay conditional on the custom variant above.
- * (Previously written as `@theme dark { ... }`, which silently overwrote
- * every light-theme value below at :root, breaking bg-card/text-foreground
- * etc. sitewide since nothing ever added a `.dark` class.)
  */
 .dark {
   --color-background: var(--color-eucalypt-900);

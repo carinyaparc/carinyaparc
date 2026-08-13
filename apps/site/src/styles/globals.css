@@ -1,5 +1,7 @@
-/* Site entry — design-system Tailwind bridge + base typography rules. */
-@import './carinya-tokens.css';
+/* Site entry — @carinya/theme + site-specific CSS. */
+@import '@carinya/theme';
+@plugin '@tailwindcss/typography';
+@import './components.css';
 
 @layer base {
   h1,

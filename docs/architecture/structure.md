@@ -56,7 +56,7 @@ The `docs/` directory contains [`product/product.md`](../product/product.md), ar
 
 `pnpm-workspace.yaml` includes `apps/*` and `packages/*` only. `brand/` and `skills/` are source trees, not installable packages.
 
-Until `@carinya/theme` lands, production tokens remain in `apps/site/src/styles/carinya-tokens.css` (copied from the design-system repo). Site-specific CSS stays in `apps/site/src/styles/` after extraction.
+Design tokens live in `packages/carinya-theme` (`@carinya/theme`). Site-specific CSS stays in `apps/site/src/styles/`.
 
 ## Site App Structure (`apps/site`)
 
@@ -156,7 +156,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - Other cross-cutting library code.
 
 - `src/styles/`
-  - `globals.css`, `components.css`, and page-level overrides. Design tokens belong in `packages/carinya-theme` (`@carinya/theme`); until that package lands they live in `carinya-tokens.css` here.
+  - `globals.css`, `components.css`, and page-level overrides. Design tokens live in `packages/carinya-theme` (`@carinya/theme`).
 
 - `vitest.config.mjs`, `vitest.setup.ts` – Vitest config; tests colocated under `src/`
 
