@@ -18,7 +18,7 @@ Engineering rules for the Carinya Parc website. |
 
 8. **Testing:** Automated tests are **REQUIRED** for non-trivial logic. Test suites **SHOULD** be colocated with source as `*.test.ts` / `*.test.tsx` under `src/` (API routes, validation, Payload helpers, schema generators).
 
-9. **Styling:** Global CSS or Tailwind imports **SHALL** live in `styles/`. Component‑level styles **MAY** use CSS modules or utility classes. All dynamic class merging **MUST** use a central util (e.g. `cn()`).
+9. **Styling:** Design tokens and the Tailwind CSS 4 theme **SHALL** live in `packages/carinya-theme` (`@carinya/theme`). The site's global CSS entry **SHALL** live in `apps/site/src/styles/` and consume the theme via `@import '@carinya/theme'`. Component‑level styles **MAY** use CSS modules or utility classes. All dynamic class merging **MUST** use a central util (e.g. `cn()`).
 
 10. **Performance Optimisation:** Large or rarely used dependencies **SHOULD** be loaded via dynamic imports. Pure components **MAY** be memoised (e.g. `React.memo`) to minimise unnecessary re‑renders.
 
