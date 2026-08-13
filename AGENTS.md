@@ -9,6 +9,7 @@ Carinya Parc ([carinyaparc.com.au](https://carinyaparc.com.au)) is a working rur
 - **Primary app:** `apps/site` — Next.js 16 (App Router) with Payload CMS 3, Postgres, Tailwind CSS 4, and React 19.
 - **Content:** Blog posts and recipes from Payload (Postgres); legal pages from MDX in `content/legal/`.
 - **Shared packages:** `@carinya/theme` (design tokens), `@repo/eslint-config`, `@repo/typescript-config`. UI primitives live in the app at `apps/site/src/components/ui/` (built on Base UI).
+- **Brand:** `brand/voice.md` and `brand/positioning.md`. Product skill: `skills/carinya-parc/SKILL.md`.
 - **Deployment:** Vercel (production). Payload admin at `/admin`; public marketing site, blog, and recipes share a common site root layout.
 
 For product context and feature intent, read `docs/product.md` (what and why). For delivery phasing, read `docs/product/roadmap.md` (when). For architecture and debt, read `docs/architecture/solution.md` (how; §10). For routing and folders, read `docs/architecture/structure.md` (where). For engineering rules, read `docs/architecture/principles.md`.

@@ -56,6 +56,8 @@ The `docs/` directory contains [`product/product.md`](../product/product.md), ar
 
 `pnpm-workspace.yaml` includes `apps/*` and `packages/*` only. `brand/` and `skills/` are source trees, not installable packages.
 
+Voice and positioning live in `brand/voice.md` and `brand/positioning.md`. The product skill is `skills/carinya-parc/SKILL.md`.
+
 Design tokens live in `packages/carinya-theme` (`@carinya/theme`). Site-specific CSS stays in `apps/site/src/styles/`.
 
 ## Site App Structure (`apps/site`)
