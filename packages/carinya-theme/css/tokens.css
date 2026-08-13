@@ -8,6 +8,30 @@
   --font-sans: var(--font-hanken), system-ui, -apple-system, sans-serif;
   --font-heading: var(--font-marcellus), Georgia, serif;
 
+  --text-display: 64px;
+  --text-display--line-height: 1.05;
+  --text-h1: 48px;
+  --text-h1--line-height: 1.15;
+  --text-h2: 34px;
+  --text-h2--line-height: 1.15;
+  --text-h3: 24px;
+  --text-h3--line-height: 1.15;
+  --text-body-lg: 19px;
+  --text-body-lg--line-height: 1.6;
+  --text-body: 17px;
+  --text-body--line-height: 1.6;
+  --text-small: 14px;
+  --text-eyebrow: 13px;
+  --text-eyebrow--letter-spacing: 0.24em;
+  --text-eyebrow--font-weight: 600;
+
+  --leading-display: 1.05;
+  --leading-heading: 1.15;
+  --leading-body: 1.6;
+
+  --tracking-eyebrow: 0.24em;
+  --tracking-wordmark: 0.3em;
+
   /* ---- Eucalypt (primary · foliage green) ---- */
   --color-eucalypt-50: #eaf0ea;
   --color-eucalypt-100: #d3e1d6;
