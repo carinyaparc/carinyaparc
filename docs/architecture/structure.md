@@ -1,6 +1,6 @@
 # Project Structure
 
-**Where** code and routes live — folder layout, naming, and conventions for `apps/site`.
+**Where** code and routes live — folder layout, naming, and conventions for the product monorepo and `apps/site`.
 
 | Doc                                           | Role                            |
 | --------------------------------------------- | ------------------------------- |
@@ -33,14 +33,18 @@ At a high level, the monorepo is structured as:
 │       │   ├── hooks/        # Reusable hooks
 │       │   ├── providers/    # App-wide React context providers
 │       │   ├── lib/          # Cross-cutting utilities (payload client, security, …)
-│       │   ├── styles/       # Global and component-level styles
+│       │   ├── styles/       # Site CSS (components, page overrides)
 │       ├── eslint.config.mjs
 │       ├── next.config.mjs
 │       ├── tailwind.config.ts
 │       └── vitest.config.mjs
 ├── packages/
+│   ├── carinya-theme/        # @carinya/theme — CSS-first Tailwind 4 tokens
 │   ├── eslint-config/        # Shared ESLint configuration
 │   └── typescript-config/    # Shared TypeScript configs
+├── brand/                    # Voice and positioning markdown (not a workspace package)
+├── skills/
+│   └── carinya-parc/         # Product-local agent skill (not a workspace package)
 ├── docs/                     # Documentation (product/, architecture/, work/)
 ├── pnpm-workspace.yaml
 ├── pnpm-lock.yaml
@@ -49,6 +53,10 @@ At a high level, the monorepo is structured as:
 ```
 
 The `docs/` directory contains [`product/product.md`](../product/product.md), architecture docs in [`architecture/`](.) ([`solution.md`](solution.md), [`principles.md`](principles.md)), [`product/roadmap.md`](../product/roadmap.md), and this file. Update the relevant doc alongside code changes.
+
+`pnpm-workspace.yaml` includes `apps/*` and `packages/*` only. `brand/` and `skills/` are source trees, not installable packages.
+
+Until `@carinya/theme` lands, production tokens remain in `apps/site/src/styles/carinya-tokens.css` (copied from the design-system repo). Site-specific CSS stays in `apps/site/src/styles/` after extraction.
 
 ## Site App Structure (`apps/site`)
 
@@ -148,7 +156,7 @@ Within `apps/site`, the primary directories relevant to web behaviour are:
   - Other cross-cutting library code.
 
 - `src/styles/`
-  - `globals.css`, `components.css`, typography, and page-level overrides.
+  - `globals.css`, `components.css`, and page-level overrides. Design tokens belong in `packages/carinya-theme` (`@carinya/theme`); until that package lands they live in `carinya-tokens.css` here.
 
 - `vitest.config.mjs`, `vitest.setup.ts` – Vitest config; tests colocated under `src/`
 

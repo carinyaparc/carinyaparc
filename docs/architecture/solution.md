@@ -4,7 +4,7 @@ scope: carinyaparc-website
 version: '0.1'
 owner: engineering
 status: Draft
-last_updated: 2026-07-02
+last_updated: 2026-08-13
 related:
   - docs/product/product.md
   - docs/architecture/principles.md
@@ -106,7 +106,7 @@ Ordered by priority for architectural trade-offs.
 - Australian English for user-visible copy ([`product.md`](product.md)).
 - Single property, single editor today — RBAC and multi-tenant patterns deferred.
 - Build-time static generation currently queries Postgres (`generateStaticParams`) — CI and Vercel builds require database connectivity and secrets.
-- Monorepo shape today (`apps/site` + `packages/*`); consolidation to a flat repo is a future structural change, not current runtime behaviour.
+- Monorepo shape today (`apps/site` + `packages/*`); the repo grows as a product monorepo (`packages/carinya-theme`, `brand/`, `skills/`). It is not flattened to a single app.
 
 ---
 
@@ -493,7 +493,7 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - **Rate limit store:** Vercel KV vs Upstash vs other?
 - **Media migration:** Backfill strategy for existing public-path images when upload collection is added?
 - **Globals scope:** Which marketing surfaces move to Payload Globals vs remain in code?
-- **Repo flatten timing:** Entry criteria beyond roadmap exit checks?
+- **Repo flatten timing:** _Superseded._ The monorepo grows (`@carinya/theme`, `brand/`, `skills/`); it is not collapsed to a single app. See [`product/roadmap.md`](../product/roadmap.md) Phase 3.
 
 Mitigation timing is in [`product/roadmap.md`](product/roadmap.md). Do not track debt elsewhere in this doc set.
 
