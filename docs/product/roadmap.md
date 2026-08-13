@@ -137,10 +137,10 @@ Each phase unlocks the next without stacking risky changes.
 
 **Exit criteria:**
 
-- [ ] `@carinya/theme` is a workspace package; the site imports it and no longer copies tokens.
-- [ ] `brand/voice.md` and `brand/positioning.md` are the voice/positioning source of truth in this repo.
-- [ ] `skills/carinya-parc` resolves paths inside this repository.
-- [ ] UI stays inlined in `apps/site`; lint and TypeScript configs stay as `@repo/*` packages.
+- [x] `@carinya/theme` is a workspace package; the site imports it and no longer copies tokens.
+- [x] `brand/voice.md` and `brand/positioning.md` are the voice/positioning source of truth in this repo.
+- [x] `skills/carinya-parc` resolves paths inside this repository.
+- [x] UI stays inlined in `apps/site`; lint and TypeScript configs stay as `@repo/*` packages.
 
 **Out of scope:** Flattening to a single Next.js app; extracting a UI or icon package; merging the agents compiler or carinya-plugins; publishing `@carinya/theme` to npm; new product features or CMS schema changes.
 
