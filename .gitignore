@@ -48,5 +48,6 @@ next-env.d.ts
 # turbo
 .turbo
 
-# Ralph loop state
-.cursor/loop/
+# local files 
+*.local.md
+*.local
