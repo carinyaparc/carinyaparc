@@ -45,7 +45,7 @@ At a high level, the monorepo is structured as:
 ├── brand/                    # Voice and positioning markdown (not a workspace package)
 ├── skills/
 │   └── carinya-parc/         # Product-local agent skill (not a workspace package)
-├── specs/                    # Domain TDDs and TASKS.md
+├── specs/                    # Domain TDDs (board is GitHub issues)
 ├── docs/                     # Documentation (product/, architecture/)
 ├── pnpm-workspace.yaml
 ├── pnpm-lock.yaml
@@ -53,7 +53,7 @@ At a high level, the monorepo is structured as:
 └── package.json              # Monorepo scripts and dev dependencies
 ```
 
-The `docs/` directory contains [`product/product.md`](../product/product.md), architecture docs in [`architecture/`](.) ([`solution.md`](solution.md), [`principles.md`](principles.md)), [`product/roadmap.md`](../product/roadmap.md), and this file. Delivery work lives in [`specs/`](../../specs/). Update the relevant doc alongside code changes.
+The `docs/` directory contains [`product/product.md`](../product/product.md), architecture docs in [`architecture/`](.) ([`solution.md`](solution.md), [`principles.md`](principles.md)), [`product/roadmap.md`](../product/roadmap.md), and this file. Delivery work lives in GitHub issues; [`specs/`](../../specs/) holds domain TDDs those issues may link to. Update the relevant doc alongside code changes.
 
 `pnpm-workspace.yaml` includes `apps/*` and `packages/*` only. `brand/` and `skills/` are source trees, not installable packages.
 
