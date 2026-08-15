@@ -22,6 +22,7 @@ const tracesSampleRate = process.env.NODE_ENV === 'production' ? 0.1 : 1;
 interface SentryEventShape {
   exception?: {
     values?: Array<{
+      type?: string | null;
       mechanism?: { type?: string | null };
       value?: string | null;
       stacktrace?: { frames?: Array<{ in_app?: boolean | null }> | null } | null;
@@ -167,6 +168,34 @@ export function isInvalidUrlConstructionNoise(event: SentryEventShape): boolean 
   return !hasAppFrame;
 }
 
+/**
+ * Returns true for `EvalError` events that have no in-app stack frames.
+ *
+ * Root cause (WEBSITE-Q): Google Tag Manager executes Custom JavaScript
+ * Variables via `new Function(...)` internally. Because the site CSP
+ * intentionally omits `'unsafe-eval'`, this call throws an `EvalError` that
+ * propagates uncaught to Sentry's global error handler.  Unlike Zod's probe
+ * (WEBSITE-P — wrapped in try/catch so only a `securitypolicyviolation` event
+ * fired), GTM's runtime does not catch the EvalError, so it reaches Sentry.
+ *
+ * All stack frames come from GTM's script loaded from
+ * `www.googletagmanager.com` — there are no in-app frames.  The in-app-frames
+ * guard ensures any future application-level `eval()` usage (which would have
+ * in-app frames) still fires in Sentry.
+ */
+export function isEvalErrorNoise(event: SentryEventShape): boolean {
+  const firstException = event.exception?.values?.[0];
+
+  if (firstException?.type !== 'EvalError') {
+    return false;
+  }
+
+  const frames = firstException?.stacktrace?.frames ?? [];
+  const hasAppFrame = frames.some((f) => f.in_app === true);
+
+  return !hasAppFrame;
+}
+
 export function getClientSentryOptions(): BrowserOptions {
   return {
     dsn: getPublicSentryDsn(),
@@ -181,6 +210,7 @@ export function getClientSentryOptions(): BrowserOptions {
       if (isRscConnectionClosedNoise(event)) return null;
       if (isWebkitMessageHandlerNoise(event)) return null;
       if (isInvalidUrlConstructionNoise(event)) return null;
+      if (isEvalErrorNoise(event)) return null;
       return event;
     },
   };
