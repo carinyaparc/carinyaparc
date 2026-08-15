@@ -4,6 +4,10 @@
  * Receives reports from the report-uri directive set in proxy.ts. Accepts both
  * the legacy report-uri payload ({ "csp-report": { ... } }) and the Reporting
  * API shape ([{ type: "csp-violation", body: { ... } }]).
+ *
+ * Only processes reports whose document-uri originates from our own domain(s).
+ * Off-domain reports (e.g. third parties that misconfigure their report-uri) are
+ * silently discarded to prevent foreign CSP violations from polluting Sentry.
  */
 
 import { NextResponse } from 'next/server';
@@ -12,6 +16,33 @@ import { captureMessage } from '@sentry/nextjs';
 export const dynamic = 'force-dynamic';
 
 const MAX_BODY_BYTES = 32_768;
+
+// Hostnames that are allowed to submit CSP reports to this endpoint.
+// Covers production, local development, and Vercel preview deployments.
+const ALLOWED_REPORT_HOSTNAMES: ReadonlySet<string> = new Set([
+  'carinyaparc.com.au',
+  'www.carinyaparc.com.au',
+  'localhost',
+  '127.0.0.1',
+  '[::1]',
+]);
+
+/**
+ * Returns true when the documentUri hostname is one of our own origins.
+ * Vercel preview URLs (*.vercel.app) are also accepted so that CSP errors
+ * surfaced during preview reviews reach Sentry.
+ */
+export function isAllowedReportOrigin(documentUri: string | undefined): boolean {
+  if (!documentUri) return false;
+  try {
+    const { hostname } = new URL(documentUri);
+    if (ALLOWED_REPORT_HOSTNAMES.has(hostname)) return true;
+    if (hostname.endsWith('.vercel.app')) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
 
 // Cap Sentry captures per instance so a report flood cannot burn quota;
 // violations are always written to server logs regardless.
@@ -115,7 +146,15 @@ export async function POST(request: Request) {
     return new NextResponse(null, { status: 400 });
   }
 
-  for (const report of reports) {
+  // Discard reports from foreign origins. Third parties that point their own
+  // report-uri at this endpoint (intentionally or by misconfiguration) would
+  // otherwise pollute Sentry with violations that are not ours to fix.
+  const ownReports = reports.filter((r) => isAllowedReportOrigin(r.documentUri));
+  if (ownReports.length === 0) {
+    return new NextResponse(null, { status: 204 });
+  }
+
+  for (const report of ownReports) {
     console.warn({ event: 'csp_violation', ...report });
 
     if (underSentryCaptureLimit()) {
