@@ -30,19 +30,40 @@ interface SentryEventShape {
 }
 
 /**
+ * Mechanism type strings that indicate an unhandled promise rejection.
+ *
+ * Three known forms:
+ *  - 'onunhandledrejection'                                  — Node SDK (legacy, pre-10.65)
+ *  - 'auto.node.onunhandledrejection'                        — Node SDK (≥10.65, trace-origin naming)
+ *  - 'auto.browser.global_handlers.onunhandledrejection'     — Browser SDK
+ *
+ * The Node SDK changed mechanism type in PR #17636 (sentry-javascript) to follow
+ * the same trace-origin naming convention as the browser global handlers. All three
+ * strings must be covered to ensure filters remain effective across SDK upgrades.
+ */
+const UNHANDLED_REJECTION_TYPES = new Set([
+  'onunhandledrejection',
+  'auto.node.onunhandledrejection',
+  'auto.browser.global_handlers.onunhandledrejection',
+]);
+
+/**
  * Returns true for undefined unhandled rejections that originate entirely
  * inside node_modules (no in_app frames). These come from the pg pool during
  * Neon serverless cold-start connection resets and produce noise without
  * actionable signal. They started being captured when @sentry/nextjs was
  * updated to 10.56.0 which broadened the onUnhandledRejection handler.
+ *
+ * The Sentry Node SDK changed its mechanism type string in the 10.65 era
+ * (PR #17636 in sentry-javascript) from 'onunhandledrejection' to
+ * 'auto.node.onunhandledrejection'. Both strings are covered via the shared
+ * UNHANDLED_REJECTION_TYPES set to handle all SDK versions.
  */
 export function isPgPoolNoiseEvent(event: SentryEventShape): boolean {
   const firstException = event.exception?.values?.[0];
 
-  if (
-    firstException?.mechanism?.type !== 'onunhandledrejection' ||
-    firstException?.value !== 'undefined'
-  ) {
+  const mechanismType = firstException?.mechanism?.type ?? '';
+  if (!UNHANDLED_REJECTION_TYPES.has(mechanismType) || firstException?.value !== 'undefined') {
     return false;
   }
 
@@ -51,16 +72,6 @@ export function isPgPoolNoiseEvent(event: SentryEventShape): boolean {
 
   return !hasAppFrame;
 }
-
-/**
- * Mechanism type strings that indicate an unhandled promise rejection.
- * The server-side Node SDK uses 'onunhandledrejection'; the browser SDK
- * (since @sentry/nextjs ≥10.56) uses the longer qualified form.
- */
-const UNHANDLED_REJECTION_TYPES = new Set([
-  'onunhandledrejection',
-  'auto.browser.global_handlers.onunhandledrejection',
-]);
 
 /**
  * Returns true for "Connection closed." unhandled rejections thrown by
