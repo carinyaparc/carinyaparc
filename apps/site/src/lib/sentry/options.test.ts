@@ -91,6 +91,58 @@ describe('isPgPoolNoiseEvent', () => {
   it('returns false when exception is missing', () => {
     expect(isPgPoolNoiseEvent({})).toBe(false);
   });
+
+  /**
+   * Regression test for WEBSITE-6 re-regression.
+   *
+   * The Sentry Node SDK changed its mechanism type from 'onunhandledrejection'
+   * to 'auto.node.onunhandledrejection' around SDK 10.65 (PR #17636 in
+   * sentry-javascript). Events captured with the new type must still be filtered.
+   */
+  it('returns true for auto.node.onunhandledrejection mechanism (SDK ≥10.65 form)', () => {
+    const event = makeEvent();
+    firstEx(event).mechanism!.type = 'auto.node.onunhandledrejection';
+    expect(isPgPoolNoiseEvent(event)).toBe(true);
+  });
+
+  it('returns false for auto.node.onunhandledrejection when there is an in-app frame', () => {
+    const event = makeEvent();
+    firstEx(event).mechanism!.type = 'auto.node.onunhandledrejection';
+    firstEx(event).stacktrace!.frames = [
+      { filename: 'node:internal/process/promises', in_app: false },
+      { filename: '/var/task/.next/server/app/page.js', in_app: true },
+    ];
+    expect(isPgPoolNoiseEvent(event)).toBe(false);
+  });
+
+  it('returns false for auto.node.onunhandledrejection when the rejection value is not undefined', () => {
+    const event = makeEvent();
+    firstEx(event).mechanism!.type = 'auto.node.onunhandledrejection';
+    firstEx(event).value = 'Connection refused';
+    expect(isPgPoolNoiseEvent(event)).toBe(false);
+  });
+
+  it('matches the production event shape with the new Node SDK mechanism type', () => {
+    const productionEvent: TestEvent = {
+      exception: {
+        values: [
+          {
+            type: 'UnhandledRejection',
+            value: 'undefined',
+            mechanism: { type: 'auto.node.onunhandledrejection', handled: false },
+            stacktrace: {
+              frames: [
+                { filename: 'node:internal/process/promises', in_app: false },
+                { filename: '/var/task/node_modules/@neondatabase/serverless/index.js', in_app: false },
+                { filename: '/var/task/node_modules/pg-pool/index.js', in_app: false },
+              ],
+            },
+          },
+        ],
+      },
+    };
+    expect(isPgPoolNoiseEvent(productionEvent)).toBe(true);
+  });
 });
 
 describe('isRscConnectionClosedNoise', () => {
@@ -139,6 +191,14 @@ describe('isRscConnectionClosedNoise', () => {
     expect(
       isRscConnectionClosedNoise(
         makeRscEvent({ mechanism: { type: 'onunhandledrejection', handled: false } }),
+      ),
+    ).toBe(true);
+  });
+
+  it('returns true for Connection closed. rejection with auto.node.onunhandledrejection mechanism type (SDK ≥10.65)', () => {
+    expect(
+      isRscConnectionClosedNoise(
+        makeRscEvent({ mechanism: { type: 'auto.node.onunhandledrejection', handled: false } }),
       ),
     ).toBe(true);
   });
