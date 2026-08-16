@@ -38,9 +38,14 @@ export default buildConfig({
       connectionString: getNeonDatabaseUrl(),
       // Neon serverless: limit concurrent connections per Lambda instance and
       // set explicit timeouts so cold-start connection resets don't linger.
+      // connectionTimeoutMillis covers both the pg client TCP handshake and the
+      // pg-pool queue wait; 30 s gives Neon's auto-suspended compute enough time
+      // to wake up (typically < 4 s but can spike under load) and prevents the
+      // "cannot connect to Postgres: Connection terminated due to connection
+      // timeout" error that was surfacing in Sentry (WEBSITE-R).
       max: 3,
       idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 10_000,
+      connectionTimeoutMillis: 30_000,
     },
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
