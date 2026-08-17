@@ -23,49 +23,49 @@ Phase 2 epic — closes the Payload admin trust gaps called out in `roadmap.md` 
 
 ### In scope
 
-| Capability                           | Description                                                                                                                                                                                            |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Users collection access control      | Explicit `access` rules on `users`: bootstrap-first-user, then authenticated-only create; authenticated read/update/delete; block anonymous REST enumeration of admin accounts.                        |
-| GraphQL playground off in production | `graphQL.disablePlaygroundInProduction: true` in `payload.config.ts` so `/api/graphql-playground` is not served in production.                                                                         |
-| Payload API cache headers            | Extend security cache patterns so Payload auth and API routes (`/api/users/*`, `/api/graphql`, `/api/graphql-playground`) receive auth/sensitive cache directives via `proxy.ts` (`solution.md` §7.1). |
-| Access regression tests              | Unit tests for `Users` access functions (bootstrap, authenticated, anonymous) mirroring posts/recipes draft tests.                                                                                     |
-| Production CSP verification          | Prod-like build smoke test documented; operator verification record (operator note on the TASKS.md item when signed off) confirming `/admin` login, navigation, and save under production security headers.                             |
-| Architecture documentation           | Update `solution.md` §7.1 and §10.1 CSP risk row; note ADR-007 verification outcome.                                                                                                                   |
+| Capability                           | Description                                                                                                                                                                                                 |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Users collection access control      | Explicit `access` rules on `users`: bootstrap-first-user, then authenticated-only create; authenticated read/update/delete; block anonymous REST enumeration of admin accounts.                             |
+| GraphQL playground off in production | `graphQL.disablePlaygroundInProduction: true` in `payload.config.ts` so `/api/graphql-playground` is not served in production.                                                                              |
+| Payload API cache headers            | Extend security cache patterns so Payload auth and API routes (`/api/users/*`, `/api/graphql`, `/api/graphql-playground`) receive auth/sensitive cache directives via `proxy.ts` (`solution.md` §7.1).      |
+| Access regression tests              | Unit tests for `Users` access functions (bootstrap, authenticated, anonymous) mirroring posts/recipes draft tests.                                                                                          |
+| Production CSP verification          | Prod-like build smoke test documented; operator verification record (operator note on the TASKS.md item when signed off) confirming `/admin` login, navigation, and save under production security headers. |
+| Architecture documentation           | Update `solution.md` §7.1 and §10.1 CSP risk row; note ADR-007 verification outcome.                                                                                                                        |
 
 ### Out of scope (defer)
 
-| Deferred item                                        | Epic / reason                                                                                                                                     |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shared rate limiting on contact/subscribe            | Phase 2 separate epic — `solution.md` §10.2; not admin login.                                                                                     |
+| Deferred item                                        | Epic / reason                                                                                                                                      |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared rate limiting on contact/subscribe            | Phase 2 separate epic — `solution.md` §10.2; not admin login.                                                                                      |
 | Login brute-force rate limiting in app code          | Prefer Vercel Firewall / edge rules; document as operator checklist in verification, not implement in ADMIN unless trivial middleware hook exists. |
-| Multi-user RBAC, roles, 2FA                          | `roadmap.md` §6 — deferred beyond basic admin/editor.                                                                                             |
-| IP allowlisting, Vercel Deployment Protection        | Platform/operator configuration; checklist only in verification.                                                                                  |
-| Admin path obfuscation or separate subdomain         | Security through auth + access control, not obscurity.                                                                                            |
-| CSP directive changes unless prod verification fails | Adjust only when verification proves admin broken; document exception narrowly if required.                                                       |
-| `cp_session` wiring                                  | Unrelated scaffold — `solution.md` §7.1.                                                                                                          |
+| Multi-user RBAC, roles, 2FA                          | `roadmap.md` §6 — deferred beyond basic admin/editor.                                                                                              |
+| IP allowlisting, Vercel Deployment Protection        | Platform/operator configuration; checklist only in verification.                                                                                   |
+| Admin path obfuscation or separate subdomain         | Security through auth + access control, not obscurity.                                                                                             |
+| CSP directive changes unless prod verification fails | Adjust only when verification proves admin broken; document exception narrowly if required.                                                        |
+| `cp_session` wiring                                  | Unrelated scaffold — `solution.md` §7.1.                                                                                                           |
 
 ### Capability map (for tasks skill)
 
-| Capability                     | Suggested task theme                |
-| ------------------------------ | ----------------------------------- |
-| Users access rules             | `Users.ts` + shared access helpers  |
-| GraphQL playground config      | `payload.config.ts`                 |
-| Security cache patterns        | `lib/security/constants.ts` + tests |
-| Users access tests             | `users-collections.test.ts`         |
-| Prod CSP smoke script / docs   | Build verification steps            |
-| Production verification record | `TASKS.md` (dated operator note on ADMIN-05)                   |
-| `solution.md` update           | Close CSP risk / ADR-007 note       |
+| Capability                     | Suggested task theme                         |
+| ------------------------------ | -------------------------------------------- |
+| Users access rules             | `Users.ts` + shared access helpers           |
+| GraphQL playground config      | `payload.config.ts`                          |
+| Security cache patterns        | `lib/security/constants.ts` + tests          |
+| Users access tests             | `users-collections.test.ts`                  |
+| Prod CSP smoke script / docs   | Build verification steps                     |
+| Production verification record | `TASKS.md` (dated operator note on ADMIN-05) |
+| `solution.md` update           | Close CSP risk / ADR-007 note                |
 
 ## 2. Architecture fit
 
-| Concern                         | How this epic fits                                                                                                                                                                                  |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Embedded CMS monolith           | Admin UI and Payload REST/GraphQL share the Next.js app at `/admin` and `/api/*` (`solution.md` §1.2). Hardening is collection access + config + existing security proxy — no new services.         |
-| Trust and security (priority 1) | Strengthens `solution.md` §2.1 goal: explicit auth collection rules, no public user enumeration, production-only playground disabled, admin routes non-cacheable.                                   |
+| Concern                         | How this epic fits                                                                                                                                                                                   |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Embedded CMS monolith           | Admin UI and Payload REST/GraphQL share the Next.js app at `/admin` and `/api/*` (`solution.md` §1.2). Hardening is collection access + config + existing security proxy — no new services.          |
+| Trust and security (priority 1) | Strengthens `solution.md` §2.1 goal: explicit auth collection rules, no public user enumeration, production-only playground disabled, admin routes non-cacheable.                                    |
 | Payload auth model              | Editors authenticate via Payload `users` collection (`auth: true`); sessions signed with `PAYLOAD_SECRET` (`solution.md` §5.2, §7.1). ADMIN does not introduce `cp_session`.                         |
 | Existing collection access      | Posts/recipes already use `authenticated` + `publicReadPublished` (`lib/payload/access.ts`). ADMIN applies the same helper pattern to `users` with bootstrap-aware create.                           |
 | Security proxy                  | `proxy.ts` already applies CSP, HSTS, and cache control to `/admin/*` (`solution.md` §7.1). ADMIN extends cache pattern coverage for Payload API paths the proxy currently treats as default-public. |
-| Single editor today             | Access rules assume a small set of admin accounts; no role matrix.                                                                                                                                  |
+| Single editor today             | Access rules assume a small set of admin accounts; no role matrix.                                                                                                                                   |
 
 ## 3. Files and components
 
@@ -75,7 +75,7 @@ Phase 2 epic — closes the Payload admin trust gaps called out in `roadmap.md` 
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `apps/site/src/lib/payload/access-users.ts`           | Bootstrap-aware access functions: `usersCreate`, `usersRead`, `usersUpdate`, `usersDelete` (or inline in `Users.ts` if helpers stay single-use — prefer shared module if testable in isolation). |
 | `apps/site/src/collections/users-collections.test.ts` | Access regression tests for Users collection config.                                                                                                                                             |
-| Dated operator note on ADMIN-05 in `TASKS.md`     | Prod `/admin` under CSP, env checklist, GraphQL playground absent in prod.                                                                                                                       |
+| Dated operator note on ADMIN-05 in `TASKS.md`         | Prod `/admin` under CSP, env checklist, GraphQL playground absent in prod.                                                                                                                       |
 
 ### Modified
 
@@ -211,7 +211,7 @@ Editor → /admin → edit Post → save
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Operators**        | Run verification protocol after deploy; confirm `PAYLOAD_SECRET` is strong (≥32 hex chars) and unique in Vercel; optional Vercel Firewall on `/api/users/login`. |
 | **CI**               | New tests and config changes must pass lint, typecheck, test, build in CI.                                                                                       |
-| **Future RBAC epic** | ADMIN access is all-authenticated-users-are-equal; roles plugin or custom fields deferred.                                                                        |
+| **Future RBAC epic** | ADMIN access is all-authenticated-users-are-equal; roles plugin or custom fields deferred.                                                                       |
 
 ## 7. Error paths
 
@@ -225,11 +225,11 @@ Editor → /admin → edit Post → save
 
 ## 8. Observability
 
-| Signal              | Implementation                                                                                                                            |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Verification record | `TASKS.md` (dated operator note on ADMIN-05) captures pass/fail per scenario with date and operator.                                                                 |
+| Signal              | Implementation                                                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Verification record | `TASKS.md` (dated operator note on ADMIN-05) captures pass/fail per scenario with date and operator.                                       |
 | Failed admin login  | Payload default behaviour; no new PII logging. Optional Sentry breadcrumb from existing Payload/Next integration — not required for ADMIN. |
-| CSP violations      | Existing `/api/csp-report` endpoint if `SECURITY_CSP_REPORT_URI` set; review reports during verification.                                 |
+| CSP violations      | Existing `/api/csp-report` endpoint if `SECURITY_CSP_REPORT_URI` set; review reports during verification.                                  |
 
 ## 9. Testing strategy
 
@@ -239,7 +239,7 @@ Editor → /admin → edit Post → save
 | **Unit** (`lib/security/cache` or dedicated test) | `/api/users/login`, `/api/graphql` match auth/sensitive patterns and receive non-cacheable directives.                                                                                                        |
 | **Collection config**                             | `Users.access` exports all four functions; `Users.auth === true`.                                                                                                                                             |
 | **Build smoke**                                   | `pnpm site:build && NODE_ENV=production pnpm start` — load `/admin/login` locally; no console CSP errors blocking render (document steps in verification).                                                    |
-| **Manual / production**                           | Operator protocol in `TASKS.md` (dated operator note on ADMIN-05): login, list collections, save post, confirm GraphQL playground 404 in prod.                                                                                           |
+| **Manual / production**                           | Operator protocol in `TASKS.md` (dated operator note on ADMIN-05): login, list collections, save post, confirm GraphQL playground 404 in prod.                                                                |
 | **Not tested**                                    | E2E login flow in CI against live Neon; brute-force resistance (edge platform).                                                                                                                               |
 
 ## 10. Acceptance gates

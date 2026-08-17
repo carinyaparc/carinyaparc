@@ -34,13 +34,13 @@ this list as `apps/site` work.
 
 ## 2. Conventions
 
-| Convention | Value |
-| ---------- | ----- |
-| Task ID | `AGENTS-{nn}` — never reused |
-| Priority | P0 (blocking) → P2 (later) |
-| Acceptance | Gherkin required per task |
-| Checkbox | `[ ]` open · `[x]` done |
-| Estimate | Fibonacci story points |
+| Convention | Value                        |
+| ---------- | ---------------------------- |
+| Task ID    | `AGENTS-{nn}` — never reused |
+| Priority   | P0 (blocking) → P2 (later)   |
+| Acceptance | Gherkin required per task    |
+| Checkbox   | `[ ]` open · `[x]` done      |
+| Estimate   | Fibonacci story points       |
 
 ## 3. Prioritised checklist
 
@@ -159,7 +159,7 @@ Work top-to-bottom within each tier unless a dependency blocks progress.
     Standup schedule, committed `dist/cursor/` with four `customSubagents`.
     Root agent scripts, `agent-ci.yml`, `agent-deploy.yml` (dry-run default
     true). One dispatch: lead posts to `#site` after reports. `autoCreatePR:
-    false`. Not in `pnpm-workspace.yaml`.
+false`. Not in `pnpm-workspace.yaml`.
   - **Acceptance (Gherkin):**
 
     ```gherkin

@@ -30,11 +30,11 @@ Remaining operator work on the shipped blog surface. Canonical AC lives here. De
 
 ## 2. Conventions
 
-| Convention | Value |
-| ---------- | ----- |
-| Task ID | `BLOG-{nn}` — never reused |
-| Acceptance | Gherkin per task |
-| Estimate | Fibonacci story points |
+| Convention | Value                      |
+| ---------- | -------------------------- |
+| Task ID    | `BLOG-{nn}` — never reused |
+| Acceptance | Gherkin per task           |
+| Estimate   | Fibonacci story points     |
 
 ## 3. Tasks
 

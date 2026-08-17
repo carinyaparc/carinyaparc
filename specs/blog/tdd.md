@@ -21,10 +21,10 @@ Technical design for BLOG at `specs/blog/`. The reader-facing blog surface is **
 
 ### In scope (remaining)
 
-| Capability | Description | TASKS.md |
-| ---------- | ----------- | -------- |
-| Interest-routed welcome emails | MailerLite automations keyed off `/api/subscribe` custom fields | BLOG-01 |
-| Funnel measurement in GA4 | Custom dimensions + closed funnel explorations; DebugView with consent | BLOG-02 |
+| Capability                     | Description                                                            | TASKS.md |
+| ------------------------------ | ---------------------------------------------------------------------- | -------- |
+| Interest-routed welcome emails | MailerLite automations keyed off `/api/subscribe` custom fields        | BLOG-01  |
+| Funnel measurement in GA4      | Custom dimensions + closed funnel explorations; DebugView with consent | BLOG-02  |
 
 ### Already shipped (do not rebuild)
 
@@ -36,12 +36,12 @@ On-site search (product non-goal). Per-category RSS. In-app `app/admin/analytics
 
 ## 2. Architecture fit
 
-| Concern | Fit |
-| ------- | --- |
+| Concern   | Fit                                                                                                                                                      |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Subscribe | Reuses `/api/subscribe` + MailerLite (`solution.md` §7.8, §1.1). Welcome routing is **ESP-side** — the app upserts fields; it does not call automations. |
-| Analytics | GTM/dataLayer, consent-gated via `ConsentGate` (`solution.md` §7.2, §7.4). |
-| Events | Payload `Events` + `EventRegistrations`; signup mirrors contact-form validation (`solution.md` §5.3, §7.1). |
-| Rendering | SSG + ISR; no `force-dynamic` on new archive routes (`solution.md` §5.1, §7.4). |
+| Analytics | GTM/dataLayer, consent-gated via `ConsentGate` (`solution.md` §7.2, §7.4).                                                                               |
+| Events    | Payload `Events` + `EventRegistrations`; signup mirrors contact-form validation (`solution.md` §5.3, §7.1).                                              |
+| Rendering | SSG + ISR; no `force-dynamic` on new archive routes (`solution.md` §5.1, §7.4).                                                                          |
 
 ## 3. Files and components
 
@@ -77,35 +77,35 @@ const SubscribeInput = z.object({
 
 MailerLite custom fields (BLOG-01 must create or verify):
 
-| Field key   | Type | Role |
-| ----------- | ---- | ---- |
-| `interest`  | Text | Canonical enum — primary automation trigger |
+| Field key   | Type | Role                                                |
+| ----------- | ---- | --------------------------------------------------- |
+| `interest`  | Text | Canonical enum — primary automation trigger         |
 | `interests` | Text | Legacy mirror; same value as `interest` when mapped |
-| `source`    | Text | Attribution only — not welcome routing |
-| `name`      | Text | Email personalisation |
+| `source`    | Text | Attribution only — not welcome routing              |
+| `name`      | Text | Email personalisation                               |
 
 Interest → welcome map (case-sensitive field values):
 
-| Canonical `interest`   | Automation name                        | Primary CTA |
-| ---------------------- | -------------------------------------- | ----------- |
-| `restoration`          | Welcome — Ecological restoration       | `/regenerate` |
-| `regenerative-farming` | Welcome — Regenerative farming         | `/about/the-property` |
-| `community`            | Welcome — Community involvement        | `/get-involved/events/` |
-| `produce`              | Welcome — Future produce               | `/recipes` |
-| `learning`             | Welcome — Learning opportunities       | `/blog` |
-| _(empty)_              | Welcome — General                      | `/about` and `/blog` |
+| Canonical `interest`   | Automation name                  | Primary CTA             |
+| ---------------------- | -------------------------------- | ----------------------- |
+| `restoration`          | Welcome — Ecological restoration | `/regenerate`           |
+| `regenerative-farming` | Welcome — Regenerative farming   | `/about/the-property`   |
+| `community`            | Welcome — Community involvement  | `/get-involved/events/` |
+| `produce`              | Welcome — Future produce         | `/recipes`              |
+| `learning`             | Welcome — Learning opportunities | `/blog`                 |
+| _(empty)_              | Welcome — General                | `/about` and `/blog`    |
 
 Legacy form values `regeneration` → `restoration`, `farming` → `regenerative-farming`. Automations key off **canonical** values.
 
 GA4 events (consent-gated; no PII in params). Implementation: `apps/site/src/lib/analytics/`.
 
-| Event | When | Params |
-| ----- | ---- | ------ |
-| `subscribe_start` | First field interaction on an in-flow subscribe form | `source`, `interest?` |
-| `subscribe_complete` | Successful `/api/subscribe` | `source`, `interest?` |
-| `event_cta_click` | Get-involved CTA (in-article or listing external/waitlist) | `event_id`, `source` |
-| `event_signup_complete` | Successful on-site event signup (not honeypot) | `event_id`, `source` |
-| `article_scroll_depth` | Article 25/50/75/100% (once each per page view) | `depth`: `25` \| `50` \| `75` \| `100` |
+| Event                   | When                                                       | Params                                 |
+| ----------------------- | ---------------------------------------------------------- | -------------------------------------- |
+| `subscribe_start`       | First field interaction on an in-flow subscribe form       | `source`, `interest?`                  |
+| `subscribe_complete`    | Successful `/api/subscribe`                                | `source`, `interest?`                  |
+| `event_cta_click`       | Get-involved CTA (in-article or listing external/waitlist) | `event_id`, `source`                   |
+| `event_signup_complete` | Successful on-site event signup (not honeypot)             | `event_id`, `source`                   |
+| `article_scroll_depth`  | Article 25/50/75/100% (once each per page view)            | `depth`: `25` \| `50` \| `75` \| `100` |
 
 `source` for in-flow blog modules is `blog:{slug}`. Listing CTAs use `events-listing`.
 
@@ -131,12 +131,12 @@ Operators configure MailerLite and GA4. No application deploy for BLOG-01 or BLO
 
 ## 7. Error paths
 
-| Failure | Behaviour |
-| ------- | --------- |
-| No interest selected | General welcome only; interest automations must not fire |
-| Re-subscribe with a new interest | Prefer send-once; do not spam a second welcome |
-| Consent rejected | No `dataLayer` push (`solution.md` §7.4) |
-| MailerLite 4xx/5xx | SITE-03 generic public error; log server-side |
+| Failure                          | Behaviour                                                |
+| -------------------------------- | -------------------------------------------------------- |
+| No interest selected             | General welcome only; interest automations must not fire |
+| Re-subscribe with a new interest | Prefer send-once; do not spam a second welcome           |
+| Consent rejected                 | No `dataLayer` push (`solution.md` §7.4)                 |
+| MailerLite 4xx/5xx               | SITE-03 generic public error; log server-side            |
 
 ## 8. Observability
 

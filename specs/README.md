@@ -16,13 +16,13 @@ issues (AGENTS-09) and delete them so the source is not split.
 `agents/` also has a team design ([`SPEC.md`](agents/SPEC.md)) because the
 work is a Cursor desk, not a site-app epic. Other domains keep TDD only.
 
-| Domain | Status | Notes |
-| ------ | ------ | ----- |
-| [`admin/`](admin/) | Open | Payload admin hardening |
-| [`agents/`](agents/) | Draft | Site product-manager on Cursor Cloud |
-| [`blog/`](blog/) | Open (ops) | MailerLite welcomes + GA4 funnels; reader surface shipped |
-| [`media/`](media/) | Open | Media library |
-| [`site/`](site/) | Open | Remaining site hardening |
+| Domain               | Status     | Notes                                                     |
+| -------------------- | ---------- | --------------------------------------------------------- |
+| [`admin/`](admin/)   | Open       | Payload admin hardening                                   |
+| [`agents/`](agents/) | Draft      | Site product-manager on Cursor Cloud                      |
+| [`blog/`](blog/)     | Open (ops) | MailerLite welcomes + GA4 funnels; reader surface shipped |
+| [`media/`](media/)   | Open       | Media library                                             |
+| [`site/`](site/)     | Open       | Remaining site hardening                                  |
 
 Canonical product/architecture docs stay under `docs/`. Slack `#site` is
 standup, not intake.
