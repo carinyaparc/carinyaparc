@@ -33,9 +33,11 @@ describe('CSP_DIRECTIVES.BALANCED', () => {
     expect(scriptSrc.some((source) => source.startsWith("'sha256-"))).toBe(false);
   });
 
-  it('does not include unsafe-eval (Zod jitless mode prevents the CSP violation)', () => {
+  it('does not include unsafe-eval (Zod jitless mode and GTM noise filter handle eval violations)', () => {
     // Zod v4 probes JIT availability with new Function("") at schema-creation time.
-    // instrumentation-client.ts sets z.config({ jitless: true }) to skip this probe.
+    // instrumentation-client.ts sets z.config({ jitless: true }) to skip this probe (WEBSITE-P).
+    // GTM Custom JavaScript Variables also use new Function() and throw an EvalError when blocked;
+    // that noise is suppressed by isEvalErrorNoise() in beforeSend (WEBSITE-Q).
     // This test ensures we do not accidentally weaken the CSP by adding 'unsafe-eval'.
     const scriptSrc = balanced['script-src'] ?? [];
     expect(scriptSrc).not.toContain("'unsafe-eval'");

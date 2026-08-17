@@ -437,22 +437,22 @@ Cleanup
 
 ## 5. Related epics (not duplicated here)
 
-| Epic                         | Folder                   | Why it stays separate                                      |
-| ---------------------------- | ------------------------ | ---------------------------------------------------------- |
-| Media library (MEDIA)        | `specs/media/`           | Phase 1 P0 — upload collection, alt, backfill              |
-| Admin hardening (ADMIN)      | `specs/admin/`           | Phase 2 — Users access, GraphQL playground, prod CSP check |
-| MailerLite welcome (BLOG-01) | `specs/blog/TASKS.md`    | Ops only — in-repo blog epic is otherwise shipped          |
+| Epic                         | Folder                | Why it stays separate                                      |
+| ---------------------------- | --------------------- | ---------------------------------------------------------- |
+| Media library (MEDIA)        | `specs/media/`        | Phase 1 P0 — upload collection, alt, backfill              |
+| Admin hardening (ADMIN)      | `specs/admin/`        | Phase 2 — Users access, GraphQL playground, prod CSP check |
+| MailerLite welcome (BLOG-01) | `specs/blog/TASKS.md` | Ops only — in-repo blog epic is otherwise shipped          |
 
 ## 6. Closed — do not re-open
 
-| ID     | Why closed                                                                 |
-| ------ | -------------------------------------------------------------------------- |
-| SH-01  | Typecheck and `/recipes/` static-route assertion restored (2026-07-04).    |
-| SH-04  | Mobile menu button uses `isSolid` colour (`text-bark` on fleece).          |
-| SH-19  | Category and tag archives shipped in the blog epic (CP09).                 |
-| SH-20  | On-site search is a product non-goal.                                      |
-| SH-21  | MDX posts/recipes live under `content/archive/`, not a live pipeline.      |
-| SH-23  | Chronological prev/next superseded by related posts on article pages.      |
+| ID    | Why closed                                                              |
+| ----- | ----------------------------------------------------------------------- |
+| SH-01 | Typecheck and `/recipes/` static-route assertion restored (2026-07-04). |
+| SH-04 | Mobile menu button uses `isSolid` colour (`text-bark` on fleece).       |
+| SH-19 | Category and tag archives shipped in the blog epic (CP09).              |
+| SH-20 | On-site search is a product non-goal.                                   |
+| SH-21 | MDX posts/recipes live under `content/archive/`, not a live pipeline.   |
+| SH-23 | Chronological prev/next superseded by related posts on article pages.   |
 
 July 2026 review items already verified complete at the time (draft-safe public
 queries, middleware cache, CSP report endpoint, trailing-slash canonicals, RSS,

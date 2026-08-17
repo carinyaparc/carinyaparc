@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   isPgPoolNoiseEvent,
+  isEvalErrorNoise,
   isInvalidUrlConstructionNoise,
   isRscConnectionClosedNoise,
   isWebkitMessageHandlerNoise,
@@ -449,5 +450,101 @@ describe('isInvalidUrlConstructionNoise', () => {
       },
     };
     expect(isInvalidUrlConstructionNoise(productionEvent)).toBe(true);
+  });
+});
+
+describe('isEvalErrorNoise', () => {
+  /**
+   * Simulates the EvalError thrown when GTM's Custom JavaScript Variable
+   * runtime calls new Function(...) and CSP blocks it.
+   * Root cause: WEBSITE-Q.
+   */
+  function makeEvalErrorEvent(overrides: Partial<TestEventException> = {}): TestEvent {
+    return {
+      exception: {
+        values: [
+          {
+            type: 'EvalError',
+            value:
+              "Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' blob: https://www.googletagmanager.com https://www.google-analytics.com\"",
+            mechanism: { type: 'auto.browser.global_handlers.onerror', handled: false },
+            stacktrace: {
+              frames: [
+                {
+                  filename: 'https://www.googletagmanager.com/gtm.js',
+                  in_app: false,
+                },
+                {
+                  filename: 'https://www.googletagmanager.com/gtm.js',
+                  in_app: false,
+                },
+              ],
+            },
+            ...overrides,
+          },
+        ],
+      },
+    };
+  }
+
+  it('returns true for an EvalError with no in-app frames (GTM CSP violation)', () => {
+    expect(isEvalErrorNoise(makeEvalErrorEvent())).toBe(true);
+  });
+
+  it('returns true when Firefox reports the same exception type with a different message', () => {
+    const event = makeEvalErrorEvent({ value: 'call to eval() blocked by CSP' });
+    expect(isEvalErrorNoise(event)).toBe(true);
+  });
+
+  it('returns true when there are no frames at all', () => {
+    const event = makeEvalErrorEvent({ stacktrace: { frames: [] } });
+    expect(isEvalErrorNoise(event)).toBe(true);
+  });
+
+  it('returns true when stacktrace is missing', () => {
+    const event = makeEvalErrorEvent({ stacktrace: undefined });
+    expect(isEvalErrorNoise(event)).toBe(true);
+  });
+
+  it('returns false when at least one frame is in-app (application code called eval)', () => {
+    const event = makeEvalErrorEvent();
+    firstEx(event).stacktrace!.frames = [
+      { filename: 'https://www.googletagmanager.com/gtm.js', in_app: false },
+      { filename: '/app/.next/static/chunks/app/page.js', in_app: true },
+    ];
+    expect(isEvalErrorNoise(event)).toBe(false);
+  });
+
+  it('returns false when the exception type is TypeError (not EvalError)', () => {
+    const event = makeEvalErrorEvent({ type: 'TypeError' });
+    expect(isEvalErrorNoise(event)).toBe(false);
+  });
+
+  it('returns false when the exception type is Error', () => {
+    const event = makeEvalErrorEvent({ type: 'Error' });
+    expect(isEvalErrorNoise(event)).toBe(false);
+  });
+
+  it('returns false when exception is missing', () => {
+    expect(isEvalErrorNoise({})).toBe(false);
+  });
+
+  it('matches the exact production event shape from WEBSITE-Q (Chrome EvalError from GTM)', () => {
+    const productionEvent: TestEvent = {
+      exception: {
+        values: [
+          {
+            type: 'EvalError',
+            value:
+              "Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' blob: https://www.googletagmanager.com https://www.google-analytics.com https://*.vercel-scripts.com https://vercel.live\"",
+            mechanism: { type: 'auto.browser.global_handlers.onerror', handled: false },
+            stacktrace: {
+              frames: [{ filename: 'https://www.googletagmanager.com/gtm.js', in_app: false }],
+            },
+          },
+        ],
+      },
+    };
+    expect(isEvalErrorNoise(productionEvent)).toBe(true);
   });
 });

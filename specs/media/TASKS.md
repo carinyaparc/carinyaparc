@@ -306,7 +306,7 @@ Companion artefacts: [`./tdd.md`](tdd.md) · [`docs/architecture/solution.md`](.
 ### Tasks to design sections
 
 | Task     | tdd.md      |
-| ------- | ----------- |
+| -------- | ----------- |
 | MEDIA-01 | §3, §4, §7  |
 | MEDIA-02 | §3, §4      |
 | MEDIA-03 | §4, §7, §9  |
@@ -318,8 +318,8 @@ Companion artefacts: [`./tdd.md`](tdd.md) · [`docs/architecture/solution.md`](.
 
 ### Tasks to solution.md
 
-| Task    | solution.md                            |
-| ------- | -------------------------------------- |
+| Task     | solution.md                            |
+| -------- | -------------------------------------- |
 | MEDIA-01 | §3.2 (supersedes interim images), §4.2 |
 | MEDIA-04 | §4.2 (mapper layer), §7.6 (a11y)       |
 | MEDIA-06 | §10.3 (media migration)                |

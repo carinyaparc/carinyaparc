@@ -127,14 +127,14 @@ and whether the board is honest. It does not implement. It does not fetch.
 What makes the others sub-agents is that none of them chooses the work or
 ships the standup.
 
-| Agent | Tier | Reads | Reports / writes |
-| ----- | ---- | ----- | ---------------- |
-| **product-manager** (lead) | strong | Sub-agent reports, `brand/`, `docs/product.md` | The standup post to `#site`. That is the only action. |
-| **issue-analyst** | standard | GitHub issues | Board: open / stale / missing AC / blocked. Never posts Slack. |
-| **pr-analyst** | standard | GitHub PRs + checks | Doing: review/CI blockers, issue links. Never posts Slack. |
-| **slack-analyst** | standard | `#site` since last run | Progress and blockers people mentioned. Not a backlog. Chat without an issue is signal, not a row. |
-| **codebase-analyst** | standard | Clone: `specs/*/tdd.md`, CI, `main` | What the tree and pipelines actually show vs what issues claim. |
-| **sentry-analyst** | standard | Sentry (when MCP exists) | Errors/regressions that should change priority. Deferred. |
+| Agent                      | Tier     | Reads                                          | Reports / writes                                                                                   |
+| -------------------------- | -------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **product-manager** (lead) | strong   | Sub-agent reports, `brand/`, `docs/product.md` | The standup post to `#site`. That is the only action.                                              |
+| **issue-analyst**          | standard | GitHub issues                                  | Board: open / stale / missing AC / blocked. Never posts Slack.                                     |
+| **pr-analyst**             | standard | GitHub PRs + checks                            | Doing: review/CI blockers, issue links. Never posts Slack.                                         |
+| **slack-analyst**          | standard | `#site` since last run                         | Progress and blockers people mentioned. Not a backlog. Chat without an issue is signal, not a row. |
+| **codebase-analyst**       | standard | Clone: `specs/*/tdd.md`, CI, `main`            | What the tree and pipelines actually show vs what issues claim.                                    |
+| **sentry-analyst**         | standard | Sentry (when MCP exists)                       | Errors/regressions that should change priority. Deferred.                                          |
 
 Dispatch the v1 researchers **together** at the start of every standup.
 They are independent. Do not serialise them.
@@ -206,11 +206,11 @@ research — assignment is a decision on already-reported facts.
 Same load-bearing idea as content-marketer, different tracker. **One issue
 source.**
 
-| Surface | Role |
-| ------- | ---- |
-| GitHub issues | The board. Intake, AC, assignment. Owned by `issue-analyst` to read. |
-| GitHub PRs | Doing. Linked from the issue. Owned by `pr-analyst`. |
-| Slack `#site` | Standup destination (lead) and progress signal (`slack-analyst`). Not intake. |
+| Surface                             | Role                                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------- |
+| GitHub issues                       | The board. Intake, AC, assignment. Owned by `issue-analyst` to read.                  |
+| GitHub PRs                          | Doing. Linked from the issue. Owned by `pr-analyst`.                                  |
+| Slack `#site`                       | Standup destination (lead) and progress signal (`slack-analyst`). Not intake.         |
 | `docs/`, `brand/`, `specs/*/tdd.md` | Judgment (`codebase-analyst` reads design; lead reads product/brand). Not work items. |
 
 Linear stays with `content-marketer`. Filesystem `TASKS.md` is replaced by
@@ -229,10 +229,10 @@ the issue source is GitHub; there is no filesystem checklist left to read.
 
 ## 8. Plugins (carinya-plugins)
 
-| Plugin | Skills the **lead** instructions name |
-| ------ | ------------------------------------- |
+| Plugin               | Skills the **lead** instructions name                                                                                       |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | `product-management` | `stakeholder-update`, `backlog-refine` (v1.1), `tasks` / `sprint-planning` only if the lead is planning — not for gathering |
-| `skills-index` | `find` |
+| `skills-index`       | `find`                                                                                                                      |
 
 Researchers do not run PM skills. They report. The lead judges with
 `stakeholder-update`.
@@ -265,10 +265,10 @@ the environment gets `carinya-plugins`.
 
 ## 10. Cadence (proposed)
 
-| Loop | Cron | Timezone | Prompt gist |
-| ---- | ---- | -------- | ----------- |
+| Loop    | Cron          | Timezone         | Prompt gist                                                                                                               |
+| ------- | ------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Standup | `0 8 * * 1-5` | Australia/Sydney | Fan out to the four researchers. Read all reports. Post standup. Do not fetch. Propose nothing if the board is unchanged. |
-| Refine | `0 9 * * 1` | Australia/Sydney | Same roster. Backlog-refine on GitHub issues. Comment via `issue-analyst`. |
+| Refine  | `0 9 * * 1`   | Australia/Sydney | Same roster. Backlog-refine on GitHub issues. Comment via `issue-analyst`.                                                |
 
 Clock: **Cursor Automations** if writable; else GitHub Actions UTC cron.
 See tdd.md.
@@ -286,13 +286,13 @@ See tdd.md.
 
 ## 12. Success metrics
 
-| Kind | Metric | Target (first 15 weekdays) |
-| ---- | ------ | -------------------------- |
-| Leading | Standup posted by 08:15 Sydney on a weekday | ≥ 12 / 15 runs |
-| Leading | Standup cites sub-agent findings (issue/PR numbers or an explicit empty board) | 100% of posts |
-| Lagging | Operator: "lead fetched instead of dispatching" / invented work | 0 on P0 items |
-| Lagging | Accidental PR, merge, or CMS write | 0 |
-| Lagging | Standup posted by a sub-agent | 0 |
+| Kind    | Metric                                                                         | Target (first 15 weekdays) |
+| ------- | ------------------------------------------------------------------------------ | -------------------------- |
+| Leading | Standup posted by 08:15 Sydney on a weekday                                    | ≥ 12 / 15 runs             |
+| Leading | Standup cites sub-agent findings (issue/PR numbers or an explicit empty board) | 100% of posts              |
+| Lagging | Operator: "lead fetched instead of dispatching" / invented work                | 0 on P0 items              |
+| Lagging | Accidental PR, merge, or CMS write                                             | 0                          |
+| Lagging | Standup posted by a sub-agent                                                  | 0                          |
 
 ## 13. Suggested order
 

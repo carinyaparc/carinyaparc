@@ -8,7 +8,7 @@ vi.mock('@sentry/nextjs', () => ({
   captureMessage,
 }));
 
-import { GET, POST } from './route';
+import { GET, POST, isAllowedReportOrigin } from './route';
 
 function post(body: string): Request {
   return new Request('http://localhost/api/csp-report', {
@@ -17,6 +17,36 @@ function post(body: string): Request {
     body,
   });
 }
+
+describe('isAllowedReportOrigin', () => {
+  it('allows the production hostname', () => {
+    expect(isAllowedReportOrigin('https://carinyaparc.com.au/page/')).toBe(true);
+    expect(isAllowedReportOrigin('https://www.carinyaparc.com.au/')).toBe(true);
+  });
+
+  it('allows localhost and loopback for development', () => {
+    expect(isAllowedReportOrigin('http://localhost:3000/')).toBe(true);
+    expect(isAllowedReportOrigin('http://127.0.0.1:3000/')).toBe(true);
+  });
+
+  it('allows Vercel preview deployments (*.vercel.app)', () => {
+    expect(isAllowedReportOrigin('https://carinyaparccom-abc123-daddiaco.vercel.app/')).toBe(true);
+    expect(isAllowedReportOrigin('https://some-preview.vercel.app/path/')).toBe(true);
+  });
+
+  it('rejects foreign domains (WEBSITE-P regression: agwatch.app flooding)', () => {
+    expect(isAllowedReportOrigin('https://agwatch.app/get-involved/events/')).toBe(false);
+    expect(isAllowedReportOrigin('https://agwatch.app/')).toBe(false);
+    expect(isAllowedReportOrigin('https://evil.example/page/')).toBe(false);
+    expect(isAllowedReportOrigin('https://not-vercel.app/')).toBe(false);
+  });
+
+  it('rejects undefined or unparseable document URIs', () => {
+    expect(isAllowedReportOrigin(undefined)).toBe(false);
+    expect(isAllowedReportOrigin('')).toBe(false);
+    expect(isAllowedReportOrigin('not-a-url')).toBe(false);
+  });
+});
 
 describe('POST /api/csp-report', () => {
   beforeEach(() => {
@@ -61,6 +91,59 @@ describe('POST /api/csp-report', () => {
 
     expect(response.status).toBe(204);
     expect(captureMessage).toHaveBeenCalledOnce();
+  });
+
+  it('accepts reports from Vercel preview deployments', async () => {
+    const response = await POST(
+      post(
+        JSON.stringify({
+          'csp-report': {
+            'document-uri': 'https://carinyaparccom-preview123-daddiaco.vercel.app/',
+            'effective-directive': 'script-src',
+            'blocked-uri': 'eval',
+          },
+        }),
+      ),
+    );
+
+    expect(response.status).toBe(204);
+    expect(captureMessage).toHaveBeenCalledOnce();
+  });
+
+  it('silently discards reports from foreign origins without forwarding to Sentry', async () => {
+    // Regression test for WEBSITE-P: agwatch.app was misconfiguring its report-uri
+    // to point at our endpoint, flooding Sentry with eval violations from their app.
+    const response = await POST(
+      post(
+        JSON.stringify({
+          'csp-report': {
+            'document-uri': 'https://agwatch.app/get-involved/events/',
+            'violated-directive': 'script-src',
+            'effective-directive': 'script-src',
+            'blocked-uri': 'eval',
+          },
+        }),
+      ),
+    );
+
+    expect(response.status).toBe(204);
+    expect(captureMessage).not.toHaveBeenCalled();
+  });
+
+  it('silently discards a report with missing document-uri', async () => {
+    const response = await POST(
+      post(
+        JSON.stringify({
+          'csp-report': {
+            'effective-directive': 'script-src',
+            'blocked-uri': 'eval',
+          },
+        }),
+      ),
+    );
+
+    expect(response.status).toBe(204);
+    expect(captureMessage).not.toHaveBeenCalled();
   });
 
   it('rejects malformed JSON', async () => {
