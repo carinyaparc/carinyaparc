@@ -133,7 +133,10 @@ describe('isPgPoolNoiseEvent', () => {
             stacktrace: {
               frames: [
                 { filename: 'node:internal/process/promises', in_app: false },
-                { filename: '/var/task/node_modules/@neondatabase/serverless/index.js', in_app: false },
+                {
+                  filename: '/var/task/node_modules/@neondatabase/serverless/index.js',
+                  in_app: false,
+                },
                 { filename: '/var/task/node_modules/pg-pool/index.js', in_app: false },
               ],
             },
