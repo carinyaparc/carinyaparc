@@ -40,6 +40,7 @@ updates:
           - '@swc/helpers'
           - 'dompurify'
           - 'esbuild'
+          - 'nanoid'
           - 'postcss'
       # Remaining apps/site dependencies.
       site:
@@ -63,6 +64,7 @@ updates:
           - '@swc/helpers'
           - 'dompurify'
           - 'esbuild'
+          - 'nanoid'
           - 'postcss'
     commit-message:
       prefix: 'chore'
