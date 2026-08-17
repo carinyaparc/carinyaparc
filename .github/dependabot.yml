@@ -1,6 +1,7 @@
 version: 2
 updates:
-  # Enable version updates for npm
+  # Single pnpm lockfile at the repo root. Groups split PRs: workspace (root +
+  # packages/*), site (apps/site), and shared deps that appear in both.
   - package-ecosystem: 'pnpm'
     directory: '/'
     schedule:
@@ -10,15 +11,59 @@ updates:
     target-branch: 'main'
     labels:
       - 'dependencies'
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 8
     ignore:
       # typescript-eslint does not support TS 7.0; site tsc still uses `baseUrl`.
       - dependency-name: 'typescript'
         update-types: ['version-update:semver-major']
     groups:
-      dependencies:
+      # Declared in root/packages and in apps/site — bump every copy in one PR.
+      shared:
+        patterns:
+          - 'eslint'
+          - 'eslint-config-prettier'
+          - 'prettier'
+          - 'typescript'
+          - 'webpack'
+      # Root package.json and packages/* only (not a direct apps/site dependency).
+      workspace:
+        patterns:
+          - 'turbo'
+          - '@eslint/js'
+          - '@next/eslint-plugin-next'
+          - 'eslint-plugin-only-warn'
+          - 'eslint-plugin-react'
+          - 'eslint-plugin-react-hooks'
+          - 'eslint-plugin-turbo'
+          - 'globals'
+          - 'typescript-eslint'
+          - '@swc/helpers'
+          - 'dompurify'
+          - 'esbuild'
+          - 'postcss'
+      # Remaining apps/site dependencies.
+      site:
         patterns:
           - '*'
+        exclude-patterns:
+          - 'eslint'
+          - 'eslint-config-prettier'
+          - 'prettier'
+          - 'typescript'
+          - 'webpack'
+          - 'turbo'
+          - '@eslint/js'
+          - '@next/eslint-plugin-next'
+          - 'eslint-plugin-only-warn'
+          - 'eslint-plugin-react'
+          - 'eslint-plugin-react-hooks'
+          - 'eslint-plugin-turbo'
+          - 'globals'
+          - 'typescript-eslint'
+          - '@swc/helpers'
+          - 'dompurify'
+          - 'esbuild'
+          - 'postcss'
     commit-message:
       prefix: 'chore'
       include: 'scope'
