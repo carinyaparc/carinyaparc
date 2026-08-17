@@ -110,12 +110,12 @@ Technical design for MEDIA at `specs/media/`. Architecture-wide patterns are aut
 
 ### Not modified
 
-| Path                                      | Reason                                                                    |
-| ----------------------------------------- | ------------------------------------------------------------------------- |
-| `apps/site/src/lib/payload/revalidate.ts` | revalidation paths sufficient when parent document saves.                 |
-| `apps/site/src/components/rich-text/*`    | Inline media embeds are editor tooling.                                   |
-| `apps/site/src/lib/metadata/index.ts`     | Generic helpers unchanged; page-level metadata passes resolved URLs.      |
-| `apps/site/src/app/(www)/page.tsx`        | Marketing hero remains static `public/` until site globals.               |
+| Path                                      | Reason                                                                     |
+| ----------------------------------------- | -------------------------------------------------------------------------- |
+| `apps/site/src/lib/payload/revalidate.ts` | revalidation paths sufficient when parent document saves.                  |
+| `apps/site/src/components/rich-text/*`    | Inline media embeds are editor tooling.                                    |
+| `apps/site/src/lib/metadata/index.ts`     | Generic helpers unchanged; page-level metadata passes resolved URLs.       |
+| `apps/site/src/app/(www)/page.tsx`        | Marketing hero remains static `public/` until site globals.                |
 | `apps/site/public/images/**`              | Retained for static pages and backfill source files; not deleted in MEDIA. |
 
 ## 4. Data contracts
@@ -295,7 +295,7 @@ Recipe with null heroImage
 | Consumer             | Contract                                                                                                                                                      |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SEO metadata**     | Add optional `ogImage` upload → `media` on posts/recipes; use `resolveMedia(..., { size: 'og' })` for absolute OG URL. Do not reintroduce text-path fields.   |
-| **editor tooling**   | Lexical upload feature targets `media` collection; toolbar allow-list documented in editor tooling. MEDIA does not configure Lexical uploads.                  |
+| **editor tooling**   | Lexical upload feature targets `media` collection; toolbar allow-list documented in editor tooling. MEDIA does not configure Lexical uploads.                 |
 | **site globals**     | Global hero field is `upload` → `media`; reuse resolver helpers and `revalidatePaths`.                                                                        |
 | **Stay information** | Stay photography uses same `media` collection and alt rules.                                                                                                  |
 | **CI**               | Blob token available in CI secrets if build executes upload handlers; otherwise builds only need DB for `generateStaticParams`. Add env vars to `turbo.json`. |
