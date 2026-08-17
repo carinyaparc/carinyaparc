@@ -4,7 +4,7 @@ scope: carinyaparc-website
 version: '0.1'
 owner: engineering
 status: Draft
-last_updated: 2026-08-13
+last_updated: 2026-08-17
 related:
   - docs/product/product.md
   - docs/architecture/principles.md
@@ -483,6 +483,9 @@ Formal ADR files are not yet authored. Candidate decisions recorded here; bodies
 - Public CSP uses host allowlists + `'unsafe-inline'` for scripts because the static public shell
   cannot apply per-request nonces to Next.js flight scripts. Nonce + `'strict-dynamic'` remains a
   future option only if public routes become fully dynamic.
+- Site and `@repo/eslint-config` stay on TypeScript 6 (`~6.0.3`). TS 7 removes `baseUrl` and
+  typescript-eslint does not support 7.0; Dependabot ignores TypeScript majors until both are
+  unblocked. Root `package.json` already declares `~7.0.2` but is not the compiler used by the site.
 
 ### 10.3 Open questions
 
